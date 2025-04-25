@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Guest Guidebook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to 123 Main Street</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <header>
+  <header class="fade-in">
     <h1 class="section-heading">01 Welcome</h1>
-    <p class="main-text">Your personalized local guidebook</p>
+    <p class="main-text">Welcome to 123 Main Street</p>
+    <p class="sub-text">Let’s curate your dream vacation in [City Name]</p>
   </header>
 
-  <main>
-    <section id="experience-list">
-      <!-- Experiences will be injected here via Airtable JS -->
-    </section>
+  <main id="experience-list" class="fade-in">
+    <!-- Dynamic Experiences will be injected here -->
   </main>
 
-  <footer>
-    <p class="footer-note">Powered by [Your Brand]</p>
+  <footer class="fade-in">
+    <p class="footer-note">Powered by StayCurated</p>
   </footer>
 
   <script>
-    // Airtable fetch placeholder
     const airtableApiKey = 'YOUR_API_KEY';
     const baseId = 'YOUR_BASE_ID';
     const tableName = 'Experiences';
@@ -38,7 +37,7 @@
       const container = document.getElementById('experience-list');
       data.records.forEach(record => {
         const div = document.createElement('div');
-        div.className = 'experience-card';
+        div.className = 'experience-card fade-in';
         div.innerHTML = `
           <h2 class="experience-title">${record.fields.Name}</h2>
           <p class="experience-desc">${record.fields.Description || ''}</p>
@@ -50,6 +49,18 @@
     .catch(err => {
       console.error('Airtable fetch error:', err);
     });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
