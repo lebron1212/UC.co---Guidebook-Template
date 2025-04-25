@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guest Guidebook</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header>
+    <h1 class="section-heading">01 Welcome</h1>
+    <p class="main-text">Your personalized local guidebook</p>
+  </header>
 
+  <main>
+    <section id="experience-list">
+      <!-- Experiences will be injected here via Airtable JS -->
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-note">Powered by [Your Brand]</p>
+  </footer>
+
+  <script>
+    // Airtable fetch placeholder
+    const airtableApiKey = 'YOUR_API_KEY';
+    const baseId = 'YOUR_BASE_ID';
+    const tableName = 'Experiences';
+
+    fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+      headers: {
+        Authorization: `Bearer ${airtableApiKey}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('experience-list');
+      data.records.forEach(record => {
+        const div = document.createElement('div');
+        div.className = 'experience-card';
+        div.innerHTML = `
+          <h2 class="experience-title">${record.fields.Name}</h2>
+          <p class="experience-desc">${record.fields.Description || ''}</p>
+          <a href="${record.fields.Link}" class="experience-link" target="_blank">Book Now</a>
+        `;
+        container.appendChild(div);
+      });
+    })
+    .catch(err => {
+      console.error('Airtable fetch error:', err);
+    });
+  </script>
+</body>
+</html>
