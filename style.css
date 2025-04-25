@@ -1,1 +1,74 @@
+:root {
+  --bg: #fefefe;
+  --text: #111;
+  --accent: #555;
+  --border: #ddd;
+}
 
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+header {
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-heading {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  margin: 0;
+}
+
+.main-text {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-top: 0.4rem;
+}
+
+main {
+  padding: 2rem 1.5rem;
+}
+
+.experience-card {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+
+.experience-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.experience-desc {
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin: 0.5rem 0;
+}
+
+.experience-link {
+  font-size: 0.85rem;
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.experience-link:hover {
+  text-decoration: underline;
+}
+
+footer {
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
