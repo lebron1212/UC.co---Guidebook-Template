@@ -47,7 +47,7 @@
     div.innerHTML = `
       <h2 class="experience-title">${record.fields.Name}</h2>
       <p class="experience-desc">${record.fields.Description || ''}</p>
-      <a href="${record.fields.URL || '#'}" class="experience-link" target="_blank">Book Now</a>
+      <a href="${record.fields.URL}" class="experience-link" target="_blank">Book Now</a>
     `;
     container.appendChild(div);
   });
