@@ -24,10 +24,10 @@
 
   <script>
     const airtableApiKey = 'patY2FQOkg2QRignR.7a32ebeaa6a90af34117c81f478d7aeedc6316b5fd1aa84100b4b99604a27c51';
-    const baseId = 'tblqJHckdnfeucwHl';
+    const baseId = 'appka3xzQTMmxJBo5';
     const tableName = 'Experience Partners 2025';
 
-    fetch(`https://api.airtable.com/v0/${baseId}/${tableName}`, {
+    fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
       headers: {
         Authorization: `Bearer ${airtableApiKey}`
       }
@@ -35,6 +35,12 @@
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById('experience-list');
+
+      if (!data.records) {
+        console.error('No records found:', data);
+        return;
+      }
+
       data.records.forEach(record => {
         const div = document.createElement('div');
         div.className = 'experience-card fade-in';
