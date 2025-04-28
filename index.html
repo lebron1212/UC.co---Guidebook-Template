@@ -33,28 +33,25 @@
       }
     })
     .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById('experience-list');
+   .then(data => {
+  const container = document.getElementById('experience-list');
 
-      if (!data.records) {
-        console.error('No records found:', data);
-        return;
-      }
+  if (!data.records) {
+    console.error('No records found:', data);
+    return;
+  }
 
-      data.records.forEach(record => {
-        const div = document.createElement('div');
-        div.className = 'experience-card fade-in';
-        div.innerHTML = `
-          <h2 class="experience-title">${record.fields.Name}</h2>
-          <p class="experience-desc">${record.fields.Description || ''}</p>
-          <a href="${record.fields.Link}" class="experience-link" target="_blank">Book Now</a>
-        `;
-        container.appendChild(div);
-      });
-    })
-    .catch(err => {
-      console.error('Airtable fetch error:', err);
-    });
+  data.records.forEach(record => {
+    const div = document.createElement('div');
+    div.className = 'experience-card fade-in';
+    div.innerHTML = `
+      <h2 class="experience-title">${record.fields.Name}</h2>
+      <p class="experience-desc">${record.fields.Description || ''}</p>
+      <a href="${record.fields.URL || '#'}" class="experience-link" target="_blank">Book Now</a>
+    `;
+    container.appendChild(div);
+  });
+})
 
     // Fade-in on scroll
     const observer = new IntersectionObserver(entries => {
