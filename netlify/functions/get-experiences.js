@@ -1,7 +1,7 @@
 export async function handler(event, context) {
   const airtableApiKey = process.env.AIRTABLE_API_KEY;
-  const baseId = 'appka3xzQTMmxJBo5';
-  const tableName = 'Experience Partners 2025';
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const tableName = process.env.AIRTABLE_TABLE;
 
   try {
     const response = await fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
