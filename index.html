@@ -32,7 +32,7 @@
  <script>
   let allRecords = [];
 
- function renderCards(records) {
+function renderCards(records) {
   const container = document.getElementById('experience-list');
   container.innerHTML = '';
 
@@ -49,7 +49,7 @@
         : null;
 
     const div = document.createElement('div');
-    div.className = 'experience-card fade-in'; // ❌ NO visible yet
+    div.className = 'experience-card fade-in'; // <-- only 'fade-in'
 
     div.innerHTML = `
       ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
@@ -60,10 +60,10 @@
 
     container.appendChild(div);
 
-    // 🪄 THEN dynamically add 'visible' after appended
-    requestAnimationFrame(() => {
+    // ⭐ after small delay, allow fade-in to happen
+    setTimeout(() => {
       div.classList.add('visible');
-    });
+    }, 10);
   });
 }
 
