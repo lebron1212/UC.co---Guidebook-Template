@@ -23,59 +23,70 @@
   </footer>
 
   <script>
-    // Fetch data from Netlify Function
-    fetch('/.netlify/functions/get-experiences')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        const container = document.getElementById('experience-list');
+  console.log('Loading script...');
 
-        if (!data.records || data.records.length === 0) {
-          console.error('No records found:', data);
-          container.innerHTML = '<p class="error-text">No experiences found at this time.</p>';
-          return;
-        }
+  fetch('/.netlify/functions/get-experiences')
+    .then(res => {
+      console.log('Fetch response:', res);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(data => {
+      console.log('Data received:', data);
+      const container = document.getElementById('experience-list');
 
-        data.records.forEach(record => {
-          const fields = record.fields || {};
+      if (!data.records || data.records.length === 0) {
+        console.error('No records found.');
+        container.innerHTML = '<p style="color:red;">No experiences found.</p>';
+        return;
+      }
 
-          const name = fields.Name || 'Untitled Experience';
-          const description = fields.Description || 'No description available.';
-          const rawUrl = fields.URL || '#';
-          const url = rawUrl.startsWith('http') ? rawUrl : (rawUrl === '#' ? '#' : `https://${rawUrl}`);
+      // Clear any old content
+      container.innerHTML = '';
 
-          const div = document.createElement('div');
-          div.className = 'experience-card fade-in';
-          div.innerHTML = `
-            <h2 class="experience-title">${name}</h2>
-            <p class="experience-desc">${description}</p>
-            ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<p class="no-link">No booking link available.</p>'}
-          `;
+      data.records.forEach(record => {
+        const fields = record.fields || {};
 
-          container.appendChild(div);
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching experiences:', error);
-        const container = document.getElementById('experience-list');
-        container.innerHTML = `<p class="error-text">Failed to load experiences: ${error.message}</p>`;
+        const name = fields.Name || 'Untitled Experience';
+        const description = fields.Description || 'No description provided.';
+        const rawUrl = fields.URL || '#';
+        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+
+        const div = document.createElement('div');
+        div.className = 'experience-card fade-in';
+        div.style.border = '1px solid black';
+        div.style.margin = '10px';
+        div.style.padding = '10px';
+        div.style.backgroundColor = '#f8f8f8';
+
+        div.innerHTML = `
+          <h2 style="font-size:20px;">${name}</h2>
+          <p>${description}</p>
+          ${url !== '#' ? `<a href="${url}" target="_blank" style="color:blue;">Book Now</a>` : '<span>No booking link available.</span>'}
+        `;
+
+        container.appendChild(div);
       });
+    })
+    .catch(error => {
+      console.error('Error fetching experiences:', error);
+      const container = document.getElementById('experience-list');
+      container.innerHTML = `<p style="color:red;">Failed to load experiences: ${error.message}</p>`;
+    });
 
-    // Fade-in on scroll
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  </script>
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
