@@ -30,79 +30,73 @@
   </footer>
 
   <script>
-    let allRecords = [];
+  let allRecords = [];
 
-    function renderCards(records) {
-      const container = document.getElementById('experience-list');
-      container.innerHTML = '';
+  function renderCards(records) {
+    const container = document.getElementById('experience-list');
+    container.innerHTML = '';
 
-      records.forEach(record => {
-        const fields = record.fields || {};
-        const name = fields.Name || 'Untitled Experience';
-        const description = fields.Description || 'No description provided.';
-        const rawUrl = fields.URL || '#';
-        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-        const imageUrl =
-          fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
-            ? fields.Photo[0].thumbnails.small.url
-            : null;
+    records.forEach(record => {
+      const fields = record.fields;
 
-        const div = document.createElement('div');
-        div.className = 'experience-card fade-in visible';
-        div.innerHTML = `
-          ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
-          <h2 class="experience-title">${name}</h2>
-          <p class="experience-desc">${description}</p>
-          ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
-        `;
+      const name = fields.Name || 'Untitled Experience';
+      const description = fields.Description || 'No description provided.';
+      const rawUrl = fields.URL || '#';
+      const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+      const imageUrl =
+        fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
+          ? fields.Photo[0].thumbnails.small.url
+          : null;
 
-        container.appendChild(div);
-      });
-    }
+      const div = document.createElement('div');
+      div.className = 'experience-card fade-in visible';
 
-    function populateFilterOptions(records) {
-      const select = document.getElementById('tag-filter');
-      const tags = new Set();
+      div.innerHTML = `
+        ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
+        <h2 class="experience-title">${name}</h2>
+        <p class="experience-desc">${description}</p>
+        ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
+      `;
 
-      records.forEach(record => {
-        const tag = record.fields.CATEGORY;
-        if (tag) tags.add(tag);
-      });
+      container.appendChild(div);
+    });
+  }
 
-      tags.forEach(tag => {
-        const option = document.createElement('option');
-        option.value = tag;
-        option.textContent = tag;
-        select.appendChild(option);
-      });
-    }
+  function populateFilterOptions(records) {
+    const select = document.getElementById('tag-filter');
+    const tags = new Set(records.map(r => r.fields.CATEGORY));
+    [...tags].sort().forEach(tag => {
+      const option = document.createElement('option');
+      option.value = tag;
+      option.textContent = tag;
+      select.appendChild(option);
+    });
+  }
 
-    function setupFilter() {
-      const select = document.getElementById('tag-filter');
-      select.addEventListener('change', () => {
-        const selected = select.value;
-        if (selected === 'all') {
-          renderCards(allRecords);
-        } else {
-          const filtered = allRecords.filter(r => r.fields.CATEGORY === selected);
-          renderCards(filtered);
-        }
-      });
-    }
+  function setupFilter() {
+    const select = document.getElementById('tag-filter');
+    select.addEventListener('change', () => {
+      const selected = select.value;
+      const filtered = selected === 'all'
+        ? allRecords
+        : allRecords.filter(r => r.fields.CATEGORY === selected);
+      renderCards(filtered);
+    });
+  }
 
-    // Fetch and initialize everything
-    fetch('/.netlify/functions/get-experiences')
-      .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
-      .then(data => {
-        allRecords = data.records || [];
-        renderCards(allRecords);
-        populateFilterOptions(allRecords);
-        setupFilter();
-      })
-      .catch(err => {
-        console.error('Failed to load experiences:', err);
-        document.getElementById('experience-list').innerHTML = `<p style="color:red;">Failed to load experiences.</p>`;
-      });
-  </script>
+  fetch('/.netlify/functions/get-experiences')
+    .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
+    .then(data => {
+      allRecords = data.records || [];
+      renderCards(allRecords);
+      populateFilterOptions(allRecords);
+      setupFilter();
+    })
+    .catch(err => {
+      console.error('Failed to load experiences:', err);
+      document.getElementById('experience-list').innerHTML =
+        `<p style="color:red;">Failed to load experiences.</p>`;
+    });
+</script>
 </body>
 </html>
