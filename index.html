@@ -6,112 +6,562 @@
   <title>Welcome to 123 Main Street</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Additional styles that won't conflict with style.css */
+    .search-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .filter-label {
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+    
+    select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    
+    .sort-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .experience-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 8px 0;
+      font-size: 0.9rem;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+    
+    .badge-category {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    .badge-location {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+    
+    .badge-audience {
+      background-color: #e0e7ff;
+      color: #4338ca;
+    }
+    
+    .price-tag {
+      font-weight: 600;
+      color: #10b981;
+    }
+    
+    .duration-tag {
+      color: #6b7280;
+    }
+    
+    .loading-spinner {
+      display: none;
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #3b82f6;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 30px;
+      color: #6b7280;
+      font-style: italic;
+    }
+    
+    .experience-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .featured-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #f59e0b;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      z-index: 3;
+    }
+    
+    /* Responsive grid adjustments */
+    @media (min-width: 640px) {
+      #experience-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      #experience-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="fade-in">
     <h1 class="section-heading">01 Welcome</h1>
     <p class="main-text">Welcome to 123 Main Street</p>
-    <p class="sub-text">Let’s curate your dream vacation in [City Name]</p>
+    <p class="sub-text">Let's curate your dream vacation in Los Angeles</p>
   </header>
-
-  <section id="filter-controls" class="fade-in" style="padding: 1rem 1.5rem;">
-    <label for="tag-filter">Filter by Tag:</label>
-    <select id="tag-filter">
-      <option value="all">All</option>
-    </select>
+  
+  <section id="search-controls" class="fade-in" style="padding: 1rem 1.5rem;">
+    <div class="search-container">
+      <input 
+        type="text" 
+        id="search-input" 
+        class="search-input" 
+        placeholder="Search experiences..." 
+        aria-label="Search experiences"
+      >
+      
+      <div class="filter-group">
+        <label for="category-filter" class="filter-label">Category:</label>
+        <select id="category-filter">
+          <option value="all">All Categories</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="location-filter" class="filter-label">Location:</label>
+        <select id="location-filter">
+          <option value="all">All Locations</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="audience-filter" class="filter-label">Audience:</label>
+        <select id="audience-filter">
+          <option value="all">All Types</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="search-container">
+      <div class="filter-group">
+        <label for="price-filter" class="filter-label">Price Range:</label>
+        <select id="price-filter">
+          <option value="all">Any Price</option>
+          <option value="0-50">Under $50</option>
+          <option value="50-100">$50 - $100</option>
+          <option value="100-200">$100 - $200</option>
+          <option value="200+">$200+</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="duration-filter" class="filter-label">Duration:</label>
+        <select id="duration-filter">
+          <option value="all">Any Duration</option>
+          <option value="1">1 hour</option>
+          <option value="2">2 hours</option>
+          <option value="3">3 hours</option>
+          <option value="4+">4+ hours</option>
+        </select>
+      </div>
+      
+      <div class="sort-controls">
+        <label for="sort-by" class="filter-label">Sort by:</label>
+        <select id="sort-by">
+          <option value="name">Name (A-Z)</option>
+          <option value="name-desc">Name (Z-A)</option>
+          <option value="price-asc">Price (Low to High)</option>
+          <option value="price-desc">Price (High to Low)</option>
+          <option value="duration-asc">Duration (Short to Long)</option>
+          <option value="duration-desc">Duration (Long to Short)</option>
+        </select>
+      </div>
+    </div>
   </section>
-
+  
+  <div id="loading-spinner" class="loading-spinner"></div>
+  
   <main id="experience-list" class="fade-in">
     <!-- Dynamic Experiences will be injected here -->
   </main>
-
+  
   <footer class="fade-in">
     <p class="footer-note">Powered by Unified Content</p>
   </footer>
-
- <script>
-  let allRecords = [];
-
-function renderCards(records) {
-  const container = document.getElementById('experience-list');
-  container.innerHTML = '';
-
-  records.forEach(record => {
-    const fields = record.fields || {};
-
-    const name = fields.Name || 'Untitled Experience';
-    const description = fields.Description || 'No description provided.';
-    const rawUrl = fields.URL || '#';
-    const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-    const imageUrl =
-      fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
-        ? fields.Photo[0].thumbnails.small.url
-        : null;
-
-    const div = document.createElement('div');
-    div.className = 'experience-card fade-in'; // <-- only 'fade-in'
-
-    div.innerHTML = `
-      ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
-      <h2 class="experience-title">${name}</h2>
-      <p class="experience-desc">${description}</p>
-      ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
-    `;
-
-    container.appendChild(div);
-
-    // ⭐ after small delay, allow fade-in to happen
-    setTimeout(() => {
-      div.classList.add('visible');
-    }, 10);
-  });
-}
-
-  function populateFilterOptions(records) {
-    const select = document.getElementById('tag-filter');
-    const tags = new Set(records.map(r => r.fields && r.fields.CATEGORY).filter(Boolean));
-    [...tags].sort().forEach(tag => {
-      const option = document.createElement('option');
-      option.value = tag;
-      option.textContent = tag;
-      select.appendChild(option);
-    });
-  }
-
-  function setupFilter() {
-    const select = document.getElementById('tag-filter');
-    select.addEventListener('change', () => {
-      const selected = select.value;
-      const filtered = selected === 'all'
-        ? allRecords
-        : allRecords.filter(r => r.fields.CATEGORY === selected);
-      renderCards(filtered);
-    });
-  }
-
-  // 🚀 fetch immediately without wrapping inside DOMContentLoaded
-  fetch('/.netlify/functions/get-experiences')
-    .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
-    .then(data => {
-  console.log('✅ Data received:', data);
-
-  if (!data.records || data.records.length === 0) {
-    console.error('⚠️ No experiences found');
-    document.getElementById('experience-list').innerHTML =
-      `<p style="color:red;">No experiences found.</p>`;
-    return;
-  }
-
-  allRecords = data.records;
-  renderCards(allRecords);
-  populateFilterOptions(allRecords);
-  setupFilter();
-
-  // ✅ Animate everything
-  document.querySelectorAll('.fade-in').forEach(el => {
-    el.classList.add('visible');
-  });
-})
-</script>
+  
+  <script>
+    // Global variables
+    let allRecords = [];
+    let filteredRecords = [];
+    const searchDebounceDelay = 300;
+    let searchDebounceTimer;
+    
+    // DOM elements
+    const experienceList = document.getElementById('experience-list');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const locationFilter = document.getElementById('location-filter');
+    const audienceFilter = document.getElementById('audience-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const durationFilter = document.getElementById('duration-filter');
+    const sortBySelect = document.getElementById('sort-by');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    
+    // Initialize the app
+    function init() {
+      setupEventListeners();
+      fetchExperiences();
+    }
+    
+    // Set up event listeners for filters and search
+    function setupEventListeners() {
+      // Search input with debounce
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+          applyFilters();
+        }, searchDebounceDelay);
+      });
+      
+      // Filter selects
+      categoryFilter.addEventListener('change', applyFilters);
+      locationFilter.addEventListener('change', applyFilters);
+      audienceFilter.addEventListener('change', applyFilters);
+      priceFilter.addEventListener('change', applyFilters);
+      durationFilter.addEventListener('change', applyFilters);
+      sortBySelect.addEventListener('change', applyFilters);
+    }
+    
+    // Fetch experiences data from Netlify function
+    function fetchExperiences() {
+      showLoading(true);
+      
+      fetch('/.netlify/functions/get-experiences')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('✅ Data received:', data);
+          
+          if (!data.records || data.records.length === 0) {
+            showNoResults('No experiences found in the database.');
+            return;
+          }
+          
+          allRecords = data.records;
+          populateFilterOptions();
+          applyFilters();
+          
+          // Animate elements
+          document.querySelectorAll('.fade-in').forEach(el => {
+            el.classList.add('visible');
+          });
+        })
+        .catch(error => {
+          console.error('❌ Error fetching experiences:', error);
+          showNoResults(`Error loading experiences. Please try again later.`);
+        })
+        .finally(() => {
+          showLoading(false);
+        });
+    }
+    
+    // Populate filter dropdowns with options from data
+    function populateFilterOptions() {
+      // Extract unique values for each filter
+      const categories = new Set();
+      const locations = new Set();
+      const audienceTypes = new Set();
+      
+      allRecords.forEach(record => {
+        const fields = record.fields || {};
+        
+        // Add values to sets if they exist
+        if (fields.Category) categories.add(fields.Category);
+        if (fields.Location) locations.add(fields.Location);
+        if (fields['Audience Type']) audienceTypes.add(fields['Audience Type']);
+      });
+      
+      // Populate category filter
+      populateSelectOptions(categoryFilter, [...categories].sort());
+      
+      // Populate location filter
+      populateSelectOptions(locationFilter, [...locations].sort());
+      
+      // Populate audience filter
+      populateSelectOptions(audienceFilter, [...audienceTypes].sort());
+    }
+    
+    // Helper to populate select options
+    function populateSelectOptions(selectElement, options) {
+      options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.textContent = option;
+        selectElement.appendChild(optionElement);
+      });
+    }
+    
+    // Apply all filters and sorting
+    function applyFilters() {
+      // Get filter values
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      const selectedCategory = categoryFilter.value;
+      const selectedLocation = locationFilter.value;
+      const selectedAudience = audienceFilter.value;
+      const selectedPrice = priceFilter.value;
+      const selectedDuration = durationFilter.value;
+      const sortBy = sortBySelect.value;
+      
+      // Filter records
+      filteredRecords = allRecords.filter(record => {
+        const fields = record.fields || {};
+        const name = (fields.Name || '').toLowerCase();
+        const description = (fields.Description || '').toLowerCase();
+        const category = fields.Category || '';
+        const location = fields.Location || '';
+        const audience = fields['Audience Type'] || '';
+        const price = parseFloat(fields['Estimated Price'] || 0);
+        const duration = parseInt(fields.Duration || 0);
+        
+        // Text search
+        const matchesSearch = !searchTerm || 
+          name.includes(searchTerm) || 
+          description.includes(searchTerm);
+        
+        // Category filter
+        const matchesCategory = selectedCategory === 'all' || 
+          category === selectedCategory;
+        
+        // Location filter
+        const matchesLocation = selectedLocation === 'all' || 
+          location === selectedLocation;
+        
+        // Audience filter
+        const matchesAudience = selectedAudience === 'all' || 
+          audience === selectedAudience;
+        
+        // Price filter
+        let matchesPrice = true;
+        if (selectedPrice !== 'all') {
+          if (selectedPrice === '0-50') {
+            matchesPrice = price >= 0 && price <= 50;
+          } else if (selectedPrice === '50-100') {
+            matchesPrice = price > 50 && price <= 100;
+          } else if (selectedPrice === '100-200') {
+            matchesPrice = price > 100 && price <= 200;
+          } else if (selectedPrice === '200+') {
+            matchesPrice = price > 200;
+          }
+        }
+        
+        // Duration filter
+        let matchesDuration = true;
+        if (selectedDuration !== 'all') {
+          if (selectedDuration === '4+') {
+            matchesDuration = duration >= 4;
+          } else {
+            matchesDuration = duration === parseInt(selectedDuration);
+          }
+        }
+        
+        // Return true if it matches all filters
+        return matchesSearch && 
+               matchesCategory && 
+               matchesLocation && 
+               matchesAudience && 
+               matchesPrice && 
+               matchesDuration;
+      });
+      
+      // Sort filtered records
+      sortFilteredRecords(sortBy);
+      
+      // Render the filtered and sorted records
+      renderExperienceCards();
+    }
+    
+    // Sort the filtered records based on selected sort option
+    function sortFilteredRecords(sortBy) {
+      filteredRecords.sort((a, b) => {
+        const fieldsA = a.fields || {};
+        const fieldsB = b.fields || {};
+        
+        switch (sortBy) {
+          case 'name':
+            return (fieldsA.Name || '').localeCompare(fieldsB.Name || '');
+          case 'name-desc':
+            return (fieldsB.Name || '').localeCompare(fieldsA.Name || '');
+          case 'price-asc':
+            return parseFloat(fieldsA['Estimated Price'] || 0) - parseFloat(fieldsB['Estimated Price'] || 0);
+          case 'price-desc':
+            return parseFloat(fieldsB['Estimated Price'] || 0) - parseFloat(fieldsA['Estimated Price'] || 0);
+          case 'duration-asc':
+            return parseInt(fieldsA.Duration || 0) - parseInt(fieldsB.Duration || 0);
+          case 'duration-desc':
+            return parseInt(fieldsB.Duration || 0) - parseInt(fieldsA.Duration || 0);
+          default:
+            return 0;
+        }
+      });
+    }
+    
+    // Render experience cards
+    function renderExperienceCards() {
+      // Clear the container
+      experienceList.innerHTML = '';
+      
+      if (filteredRecords.length === 0) {
+        showNoResults('No experiences match your search criteria.');
+        return;
+      }
+      
+      // Add cards for each filtered record
+      filteredRecords.forEach((record, index) => {
+        const fields = record.fields || {};
+        
+        // Extract field values with fallbacks
+        const name = fields.Name || 'Untitled Experience';
+        const description = fields.Description || 'No description provided.';
+        const propertyType = fields.PROPERTY_TYPE || '';
+        const rawUrl = fields.URL || '#';
+        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+        const category = fields.Category || '';
+        const location = fields.Location || '';
+        const audienceType = fields['Audience Type'] || '';
+        const price = fields['Estimated Price'] 
+          ? `$${parseFloat(fields['Estimated Price']).toFixed(2)}` 
+          : 'Price not available';
+        const duration = fields.Duration 
+          ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
+          : '';
+        
+        // Get image URL if available
+        const imageUrl = fields.Photo && 
+                         fields.Photo.length > 0 && 
+                         fields.Photo[0].thumbnails
+          ? fields.Photo[0].thumbnails.large.url
+          : null;
+        
+        // Create card element
+        const card = document.createElement('div');
+        card.className = 'experience-card fade-in';
+        
+        // Build card HTML
+        let cardHTML = `
+          ${index < 3 ? '<div class="featured-tag">Featured</div>' : ''}
+          <div class="card-content">
+            ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
+            <h2 class="experience-title">${name}</h2>
+            
+            <div class="experience-meta">
+              ${category ? `<span class="badge badge-category">${category}</span>` : ''}
+              ${location ? `<span class="badge badge-location">${location}</span>` : ''}
+              ${audienceType ? `<span class="badge badge-audience">${audienceType}</span>` : ''}
+            </div>
+            
+            <div class="experience-meta">
+              ${price ? `<span class="meta-item price-tag">${price}</span>` : ''}
+              ${duration ? `<span class="meta-item duration-tag">${duration}</span>` : ''}
+            </div>
+            
+            <p class="experience-desc">${description}</p>
+            
+            ${url !== '#' 
+              ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` 
+              : '<span>No booking link available.</span>'
+            }
+          </div>
+        `;
+        
+        card.innerHTML = cardHTML;
+        experienceList.appendChild(card);
+        
+        // Add visible class after a small delay for animation
+        setTimeout(() => {
+          card.classList.add('visible');
+        }, 50 * (index + 1)); // Stagger the animations
+      });
+    }
+    
+    // Show loading spinner
+    function showLoading(isLoading) {
+      loadingSpinner.style.display = isLoading ? 'block' : 'none';
+    }
+    
+    // Show message when no results
+    function showNoResults(message) {
+      experienceList.innerHTML = `
+        <div class="no-results">
+          <p>${message}</p>
+        </div>
+      `;
+    }
+    
+    // Start the app when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', init);
+    // Backup init in case DOMContentLoaded already fired
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      init();
+    }
+  </script>
 </body>
 </html>
