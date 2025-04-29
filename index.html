@@ -27,11 +27,11 @@
     const baseId = 'appka3xzQTMmxJBo5';
     const tableName = 'Experience Partners 2025';
 
-    fetch(`https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
-      headers: {
-        Authorization: `Bearer ${airtableApiKey}`
-      }
-    })
+    fetch(`https://corsproxy.io/?https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
+  headers: {
+    Authorization: `Bearer ${airtableApiKey}`
+  }
+})
     .then(res => res.json())
    .then(data => {
   const container = document.getElementById('experience-list');
