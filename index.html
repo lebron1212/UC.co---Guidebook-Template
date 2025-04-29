@@ -64,7 +64,9 @@
 
   function populateFilterOptions(records) {
     const select = document.getElementById('tag-filter');
-    const tags = new Set(records.map(r => r.fields.CATEGORY));
+const tags = new Set(records
+  .map(r => r.fields && r.fields.CATEGORY)
+  .filter(Boolean));
     [...tags].sort().forEach(tag => {
       const option = document.createElement('option');
       option.value = tag;
