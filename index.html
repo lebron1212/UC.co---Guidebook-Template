@@ -93,27 +93,25 @@ function renderCards(records) {
   fetch('/.netlify/functions/get-experiences')
     .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
     .then(data => {
-      console.log('✅ Data received:', data);
+  console.log('✅ Data received:', data);
 
-      if (!data.records || data.records.length === 0) {
-        console.error('⚠️ No experiences found');
-        document.getElementById('experience-list').innerHTML =
-          `<p style="color:red;">No experiences found.</p>`;
-        return;
-      }
+  if (!data.records || data.records.length === 0) {
+    console.error('⚠️ No experiences found');
+    document.getElementById('experience-list').innerHTML =
+      `<p style="color:red;">No experiences found.</p>`;
+    return;
+  }
 
-      allRecords = data.records;
-      renderCards(allRecords);
-      populateFilterOptions(allRecords);
-      setupFilter();
+  allRecords = data.records;
+  renderCards(allRecords);
+  populateFilterOptions(allRecords);
+  setupFilter();
 
-      document.getElementById('experience-list').classList.add('visible');
-    })
-    .catch(err => {
-      console.error('❌ Failed to load experiences:', err);
-      document.getElementById('experience-list').innerHTML =
-        `<p style="color:red;">Failed to load experiences.</p>`;
-    });
+  // ✅ Animate everything
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.classList.add('visible');
+  });
+})
 </script>
 </body>
 </html>
