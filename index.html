@@ -106,6 +106,8 @@ function renderCards(records) {
       renderCards(allRecords);
       populateFilterOptions(allRecords);
       setupFilter();
+
+      document.getElementById('experience-list').classList.add('visible');
     })
     .catch(err => {
       console.error('❌ Failed to load experiences:', err);
