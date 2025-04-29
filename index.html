@@ -14,6 +14,13 @@
     <p class="sub-text">Let’s curate your dream vacation in [City Name]</p>
   </header>
 
+  <section id="filter-controls" class="fade-in" style="padding: 1rem 1.5rem;">
+    <label for="tag-filter">Filter by Tag:</label>
+    <select id="tag-filter">
+      <option value="all">All</option>
+    </select>
+  </section>
+
   <main id="experience-list" class="fade-in">
     <!-- Dynamic Experiences will be injected here -->
   </main>
@@ -23,76 +30,79 @@
   </footer>
 
   <script>
-  console.log('Loading script...');
+    let allRecords = [];
 
-  fetch('/.netlify/functions/get-experiences')
-    .then(res => {
-      console.log('Fetch response:', res);
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('Data received:', data);
+    function renderCards(records) {
       const container = document.getElementById('experience-list');
-
-      if (!data.records || data.records.length === 0) {
-        console.error('No records found.');
-        container.innerHTML = '<p style="color:red;">No experiences found.</p>';
-        return;
-      }
-
-      // Clear any old content
       container.innerHTML = '';
 
-      data.records.forEach(record => {
-  const fields = record.fields || {};
+      records.forEach(record => {
+        const fields = record.fields || {};
+        const name = fields.Name || 'Untitled Experience';
+        const description = fields.Description || 'No description provided.';
+        const rawUrl = fields.URL || '#';
+        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+        const imageUrl =
+          fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
+            ? fields.Photo[0].thumbnails.small.url
+            : null;
 
-  const name = fields.Name || 'Untitled Experience';
-  const description = fields.Description || 'No description provided.';
-  const rawUrl = fields.URL || '#';
-  const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-  const imageUrl =
-    fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
-      ? fields.Photo[0].thumbnails.small.url
-      : null;
+        const div = document.createElement('div');
+        div.className = 'experience-card fade-in visible';
+        div.innerHTML = `
+          ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
+          <h2 class="experience-title">${name}</h2>
+          <p class="experience-desc">${description}</p>
+          ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
+        `;
 
-  const div = document.createElement('div');
-  div.className = 'experience-card fade-in';
-  div.style.border = '1px solid black';
-  div.style.margin = '10px';
-  div.style.padding = '10px';
-  div.style.backgroundColor = '#f8f8f8';
+        container.appendChild(div);
+      });
+    }
 
-  div.innerHTML = `
-${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
-    <h2 style="font-size:20px;">${name}</h2>
-    <p>${description}</p>
-    ${url !== '#' ? `<a href="${url}" target="_blank" style="color:blue;">Book Now</a>` : '<span>No booking link available.</span>'}
-  `;
+    function populateFilterOptions(records) {
+      const select = document.getElementById('tag-filter');
+      const tags = new Set();
 
-  container.appendChild(div);
-  div.classList.add('visible'); // Skip IntersectionObserver, load on page load
-});
-    })
-    .catch(error => {
-      console.error('Error fetching experiences:', error);
-      const container = document.getElementById('experience-list');
-      container.innerHTML = `<p style="color:red;">Failed to load experiences: ${error.message}</p>`;
-    });
+      records.forEach(record => {
+        const tag = record.fields.CATEGORY;
+        if (tag) tags.add(tag);
+      });
 
-  // Fade-in on scroll
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+      tags.forEach(tag => {
+        const option = document.createElement('option');
+        option.value = tag;
+        option.textContent = tag;
+        select.appendChild(option);
+      });
+    }
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-</script>
+    function setupFilter() {
+      const select = document.getElementById('tag-filter');
+      select.addEventListener('change', () => {
+        const selected = select.value;
+        if (selected === 'all') {
+          renderCards(allRecords);
+        } else {
+          const filtered = allRecords.filter(r => r.fields.CATEGORY === selected);
+          renderCards(filtered);
+        }
+      });
+    }
+
+    // Fetch and initialize everything
+    fetch('/.netlify/functions/get-experiences')
+      .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
+      .then(data => {
+        allRecords = data.records || [];
+        renderCards(allRecords);
+        populateFilterOptions(allRecords);
+        setupFilter();
+      })
+      .catch(err => {
+        console.error('Failed to load experiences:', err);
+        document.getElementById('experience-list').innerHTML = `<p style="color:red;">Failed to load experiences.</p>`;
+      });
+  </script>
 </body>
 </html>
