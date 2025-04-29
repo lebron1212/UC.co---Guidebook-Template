@@ -32,35 +32,40 @@
  <script>
   let allRecords = [];
 
-  function renderCards(records) {
-    const container = document.getElementById('experience-list');
-    container.innerHTML = '';
+ function renderCards(records) {
+  const container = document.getElementById('experience-list');
+  container.innerHTML = '';
 
-    records.forEach(record => {
-      const fields = record.fields || {};
+  records.forEach(record => {
+    const fields = record.fields || {};
 
-      const name = fields.Name || 'Untitled Experience';
-      const description = fields.Description || 'No description provided.';
-      const rawUrl = fields.URL || '#';
-      const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-      const imageUrl =
-        fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
-          ? fields.Photo[0].thumbnails.small.url
-          : null;
+    const name = fields.Name || 'Untitled Experience';
+    const description = fields.Description || 'No description provided.';
+    const rawUrl = fields.URL || '#';
+    const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
+    const imageUrl =
+      fields.Photo && fields.Photo.length > 0 && fields.Photo[0].thumbnails
+        ? fields.Photo[0].thumbnails.small.url
+        : null;
 
-      const div = document.createElement('div');
-      div.className = 'experience-card fade-in visible';
+    const div = document.createElement('div');
+    div.className = 'experience-card fade-in'; // ❌ no visible yet
 
-      div.innerHTML = `
-        ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
-        <h2 class="experience-title">${name}</h2>
-        <p class="experience-desc">${description}</p>
-        ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
-      `;
+    div.innerHTML = `
+      ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
+      <h2 class="experience-title">${name}</h2>
+      <p class="experience-desc">${description}</p>
+      ${url !== '#' ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` : '<span>No booking link available.</span>'}
+    `;
 
-      container.appendChild(div);
+    container.appendChild(div);
+
+    // 🪄 This forces browser to animate the fade-in
+    requestAnimationFrame(() => {
+      div.classList.add('visible');
     });
-  }
+  });
+}
 
   function populateFilterOptions(records) {
     const select = document.getElementById('tag-filter');
