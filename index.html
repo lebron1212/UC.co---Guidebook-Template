@@ -29,7 +29,7 @@
     <p class="footer-note">Powered by Unified Content</p>
   </footer>
 
-  <script>
+ <script>
   let allRecords = [];
 
   function renderCards(records) {
@@ -37,7 +37,7 @@
     container.innerHTML = '';
 
     records.forEach(record => {
-      const fields = record.fields;
+      const fields = record.fields || {};
 
       const name = fields.Name || 'Untitled Experience';
       const description = fields.Description || 'No description provided.';
@@ -64,9 +64,7 @@
 
   function populateFilterOptions(records) {
     const select = document.getElementById('tag-filter');
-const tags = new Set(records
-  .map(r => r.fields && r.fields.CATEGORY)
-  .filter(Boolean));
+    const tags = new Set(records.map(r => r.fields && r.fields.CATEGORY).filter(Boolean));
     [...tags].sort().forEach(tag => {
       const option = document.createElement('option');
       option.value = tag;
@@ -86,7 +84,7 @@ const tags = new Set(records
     });
   }
 
- document.addEventListener('DOMContentLoaded', function() {
+  // 🚀 fetch immediately without wrapping inside DOMContentLoaded
   fetch('/.netlify/functions/get-experiences')
     .then(res => res.ok ? res.json() : Promise.reject(`HTTP ${res.status}`))
     .then(data => {
@@ -109,7 +107,6 @@ const tags = new Set(records
       document.getElementById('experience-list').innerHTML =
         `<p style="color:red;">Failed to load experiences.</p>`;
     });
-});
 </script>
 </body>
 </html>
