@@ -49,7 +49,7 @@
         : null;
 
     const div = document.createElement('div');
-    div.className = 'experience-card fade-in'; // ❌ no visible yet
+    div.className = 'experience-card fade-in'; // ❌ NO visible yet
 
     div.innerHTML = `
       ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
@@ -60,7 +60,7 @@
 
     container.appendChild(div);
 
-    // 🪄 This forces browser to animate the fade-in
+    // 🪄 THEN dynamically add 'visible' after appended
     requestAnimationFrame(() => {
       div.classList.add('visible');
     });
