@@ -23,35 +23,31 @@
   </footer>
 
   <script>
-    const airtableApiKey = 'patY2FQOkg2QRignR.7a32ebeaa6a90af34117c81f478d7aeedc6316b5fd1aa84100b4b99604a27c51';
-    const baseId = 'appka3xzQTMmxJBo5';
-    const tableName = 'Experience Partners 2025';
+    // NEW: Fetch from your Netlify Function instead of Airtable directly
+    fetch('/.netlify/functions/get-experiences')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('experience-list');
 
-    fetch(`https://corsproxy.io/?https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`, {
-  headers: {
-    Authorization: `Bearer ${airtableApiKey}`
-  }
-})
-    .then(res => res.json())
-   .then(data => {
-  const container = document.getElementById('experience-list');
+        if (!data.records) {
+          console.error('No records found:', data);
+          return;
+        }
 
-  if (!data.records) {
-    console.error('No records found:', data);
-    return;
-  }
-
-  data.records.forEach(record => {
-    const div = document.createElement('div');
-    div.className = 'experience-card fade-in';
-    div.innerHTML = `
-      <h2 class="experience-title">${record.fields.Name}</h2>
-      <p class="experience-desc">${record.fields.Description || ''}</p>
-      <a href="${record.fields.URL}" class="experience-link" target="_blank">Book Now</a>
-    `;
-    container.appendChild(div);
-  });
-})
+        data.records.forEach(record => {
+          const div = document.createElement('div');
+          div.className = 'experience-card fade-in';
+          div.innerHTML = `
+            <h2 class="experience-title">${record.fields.Name}</h2>
+            <p class="experience-desc">${record.fields.Description || ''}</p>
+            <a href="${record.fields.URL}" class="experience-link" target="_blank">Book Now</a>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching experiences:', error);
+      });
 
     // Fade-in on scroll
     const observer = new IntersectionObserver(entries => {
