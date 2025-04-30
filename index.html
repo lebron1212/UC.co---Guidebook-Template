@@ -3,41 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>123 Main Street | Los Angeles</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <title>Property Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
   <style>
     /* Core Variables */
     :root {
-      --black: #000000;
-      --white: #ffffff;
-      --gray-100: #f5f5f5;
-      --gray-200: #e5e5e5;
-      --gray-300: #d4d4d4;
-      --gray-900: #171717;
-      --accent: #007aff;
-      --accent-dark: #0055b3;
+      --primary: #1a1a1a;
+      --secondary: #f8f8f8;
+      --accent: #d4af37;
+      --text-primary: #1a1a1a;
+      --text-secondary: #787878;
+      --text-light: #f8f8f8;
       
       /* Typography */
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Jost', sans-serif;
+      --font-serif: 'DM Serif Display', serif;
       
       /* Spacing */
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 16px;
-      --space-lg: 24px;
-      --space-xl: 32px;
-      --space-2xl: 48px;
-      --space-3xl: 64px;
-      --space-4xl: 96px;
-      --space-5xl: 128px;
+      --space-xs: clamp(4px, 0.5vw, 8px);
+      --space-sm: clamp(8px, 1vw, 16px);
+      --space-md: clamp(16px, 2vw, 24px);
+      --space-lg: clamp(24px, 3vw, 48px);
+      --space-xl: clamp(48px, 5vw, 80px);
+      --space-2xl: clamp(80px, 8vw, 120px);
       
-      /* Animation */
-      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      /* Transitions */
+      --transition-fast: 0.3s cubic-bezier(0.76, 0, 0.24, 1);
+      --transition-medium: 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      --transition-slow: 0.8s cubic-bezier(0.76, 0, 0.24, 1);
+      
+      /* Dimensions */
+      --header-height: 80px;
+      --header-height-scrolled: 60px;
     }
 
     /* Reset & Base Styles */
@@ -52,13 +51,12 @@
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
+      background-color: var(--secondary);
     }
 
     body {
       font-family: var(--font-sans);
-      color: var(--black);
-      background-color: var(--white);
+      color: var(--text-primary);
       line-height: 1.5;
       overflow-x: hidden;
     }
@@ -73,47 +71,99 @@
       text-decoration: none;
     }
 
-    /* Typography */
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--secondary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: transform var(--transition-slow);
     }
-    
-    .overline {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: var(--accent);
-      margin-bottom: var(--space-sm);
-      display: block;
+
+    .loader.loaded {
+      transform: translateY(-100%);
     }
-    
-    .section-title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin-bottom: var(--space-xl);
+
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
     }
-    
-    .section-title span {
-      display: block;
+
+    .loader-bar {
+      width: 200px;
+      height: 2px;
+      background-color: rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      position: relative;
     }
-    
-    .section-title span span {
-      display: inline-block;
-      transform: translateY(100%);
-      opacity: 0;
+
+    .loader-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background-color: var(--accent);
+      transition: width 0.5s ease;
     }
-    
-    .centered .section-title {
+
+    .loader-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      letter-spacing: -0.02em;
       text-align: center;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      margin-bottom: var(--space-lg);
+    }
+    
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: var(--space-md);
+    }
+    
+    h3 {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      margin-bottom: var(--space-sm);
+    }
+    
+    h4 {
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      margin-bottom: var(--space-xs);
     }
     
     p {
-      margin-bottom: var(--space-lg);
-      max-width: 65ch;
+      margin-bottom: var(--space-md);
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      line-height: 1.6;
+    }
+
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: clamp(0.9rem, 1vw, 1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
     }
 
     /* Layout */
@@ -121,30 +171,34 @@
       width: 100%;
       max-width: 1400px;
       margin: 0 auto;
-      padding: 0 var(--space-lg);
-      position: relative;
+      padding: 0 var(--space-md);
     }
     
     .container-sm {
       max-width: 1000px;
     }
     
-    .centered {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
     section {
-      padding: var(--space-5xl) 0;
       position: relative;
+      padding: var(--space-xl) 0;
+      overflow: hidden;
     }
     
     .grid {
       display: grid;
+      gap: var(--space-lg);
+    }
+    
+    .grid-2 {
       grid-template-columns: 1fr;
-      gap: var(--space-xl);
+    }
+    
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+    
+    .grid-4 {
+      grid-template-columns: 1fr;
     }
     
     @media (min-width: 768px) {
@@ -153,7 +207,7 @@
       }
       
       .grid-3 {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
       
       .grid-4 {
@@ -162,55 +216,68 @@
     }
     
     @media (min-width: 1024px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
       .grid-4 {
         grid-template-columns: repeat(4, 1fr);
       }
     }
 
+    .text-center {
+      text-align: center;
+    }
+
     /* Navigation */
-    .nav-wrapper {
+    .header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 100;
-      transition: background-color var(--transition-medium);
-      mix-blend-mode: difference;
+      z-index: 1000;
+      transition: background-color var(--transition-medium), 
+                  box-shadow var(--transition-medium),
+                  height var(--transition-medium);
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
     }
     
-    .nav-wrapper.scrolled {
-      mix-blend-mode: normal;
-      background-color: rgba(0, 0, 0, 0.9);
+    .header.scrolled {
+      background-color: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      height: var(--header-height-scrolled);
     }
     
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 80px;
-      transition: height var(--transition-medium);
-    }
-    
-    .nav-wrapper.scrolled .navbar {
-      height: 60px;
+      width: 100%;
     }
     
     .logo {
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      font-size: 1.25rem;
-      color: var(--white);
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      transition: opacity var(--transition-fast);
+    }
+    
+    .logo:hover {
+      opacity: 0.8;
     }
     
     .nav-links {
       display: none;
     }
     
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
       .nav-links {
         display: flex;
-        gap: var(--space-xl);
+        gap: var(--space-lg);
       }
       
       .menu-button {
@@ -220,12 +287,11 @@
     
     .nav-link {
       font-size: 0.9rem;
-      letter-spacing: 0.05em;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
       position: relative;
       padding: var(--space-xs) 0;
-      color: var(--white);
-      font-weight: 500;
     }
     
     .nav-link::after {
@@ -233,40 +299,56 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 0;
+      width: 100%;
       height: 1px;
       background-color: var(--accent);
-      transition: width var(--transition-fast);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-fast);
     }
     
     .nav-link:hover::after,
     .nav-link.active::after {
-      width: 100%;
+      transform: scaleX(1);
+      transform-origin: left;
     }
     
     .menu-button {
       background: none;
       border: none;
       cursor: pointer;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      z-index: 101;
+      width: 30px;
+      height: 30px;
+      position: relative;
+      z-index: 1001;
     }
     
     .menu-line {
-      width: 24px;
+      width: 100%;
       height: 2px;
-      background-color: var(--white);
-      transition: transform var(--transition-fast), opacity var(--transition-fast);
+      background-color: var(--primary);
+      display: block;
+      position: absolute;
+      left: 0;
+      transition: transform var(--transition-fast),
+                  opacity var(--transition-fast);
+    }
+    
+    .menu-line:nth-child(1) {
+      top: 8px;
+    }
+    
+    .menu-line:nth-child(2) {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .menu-line:nth-child(3) {
+      bottom: 8px;
     }
     
     .menu-open .menu-line:nth-child(1) {
-      transform: translateY(8px) rotate(45deg);
+      transform: translateY(7px) rotate(45deg);
     }
     
     .menu-open .menu-line:nth-child(2) {
@@ -274,7 +356,7 @@
     }
     
     .menu-open .menu-line:nth-child(3) {
-      transform: translateY(-8px) rotate(-45deg);
+      transform: translateY(-7px) rotate(-45deg);
     }
     
     .mobile-menu {
@@ -282,45 +364,42 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 0;
-      background-color: var(--black);
-      overflow: hidden;
-      transition: height var(--transition-medium);
-      z-index: 99;
+      height: 100%;
+      background-color: var(--secondary);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium);
+      opacity: 0;
+      visibility: hidden;
     }
     
     .mobile-menu.open {
-      height: 100vh;
+      opacity: 1;
+      visibility: visible;
     }
     
-    .mobile-menu-links {
+    .mobile-nav-links {
       display: flex;
       flex-direction: column;
-      padding: var(--space-5xl) var(--space-xl) var(--space-xl);
-      gap: var(--space-xl);
+      gap: var(--space-lg);
+      text-align: center;
     }
     
-    .mobile-link {
-      font-size: 2rem;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
-      color: var(--white);
-      font-weight: 700;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium);
+    .mobile-nav-link {
+      font-size: 1.5rem;
+      font-family: var(--font-serif);
+      position: relative;
+      display: inline-block;
+      transition: transform var(--transition-fast);
     }
     
-    .mobile-menu.open .mobile-link {
-      opacity: 1;
-      transform: translateY(0);
+    .mobile-nav-link:hover {
+      transform: translateX(5px);
     }
-    
-    .mobile-menu.open .mobile-link:nth-child(1) { transition-delay: 0.1s; }
-    .mobile-menu.open .mobile-link:nth-child(2) { transition-delay: 0.15s; }
-    .mobile-menu.open .mobile-link:nth-child(3) { transition-delay: 0.2s; }
-    .mobile-menu.open .mobile-link:nth-child(4) { transition-delay: 0.25s; }
-    .mobile-menu.open .mobile-link:nth-child(5) { transition-delay: 0.3s; }
 
     /* Hero Section */
     .hero {
@@ -328,9 +407,7 @@
       display: flex;
       align-items: center;
       position: relative;
-      overflow: hidden;
-      background-color: var(--black);
-      color: var(--white);
+      padding: 0;
     }
     
     .hero-bg {
@@ -340,44 +417,36 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.7;
-      filter: grayscale(100%) contrast(120%);
-      transform: scale(1.1);
-      transition: transform 2s cubic-bezier(0.215, 0.61, 0.355, 1), 
-                  opacity 2s cubic-bezier(0.215, 0.61, 0.355, 1);
+      z-index: -1;
     }
     
     .hero-content {
-      position: relative;
-      z-index: 2;
       max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s var(--transition-medium) forwards;
+      animation-delay: 0.5s;
+    }
+    
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     .hero-title {
-      font-size: clamp(2.5rem, 10vw, 6rem);
-      line-height: 0.9;
-      margin-bottom: var(--space-xl);
-      font-weight: 900;
-      overflow: hidden;
-    }
-    
-    .hero-title span {
-      display: block;
-      transform: translateY(100%);
-      opacity: 0;
-      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                  opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-bottom: var(--space-md);
     }
     
     .hero-description {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      max-width: 500px;
-      margin-bottom: var(--space-xl);
-      transform: translateY(40px);
-      opacity: 0;
-      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                  opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: 0.4s;
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      max-width: 600px;
+      margin: 0 auto var(--space-lg);
+      opacity: 0.8;
     }
     
     .scroll-indicator {
@@ -388,89 +457,67 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      color: var(--white);
       opacity: 0;
-      transition: opacity 1s ease;
-      transition-delay: 1.2s;
+      animation: fadeIn 0.5s ease forwards;
+      animation-delay: 1.5s;
     }
     
-    .scroll-indicator span {
-      font-size: 0.7rem;
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .scroll-text {
+      font-size: 0.8rem;
+      text-transform: uppercase;
       letter-spacing: 0.2em;
       margin-bottom: var(--space-sm);
-      text-transform: uppercase;
     }
     
-    .scroll-arrow {
-      width: 20px;
-      height: 20px;
-      border-right: 2px solid var(--white);
-      border-bottom: 2px solid var(--white);
-      transform: rotate(45deg);
-      animation: bounce 2s infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0) rotate(45deg);
-      }
-      40% {
-        transform: translateY(-10px) rotate(45deg);
-      }
-      60% {
-        transform: translateY(-5px) rotate(45deg);
-      }
-    }
-
-    .loaded .hero-bg {
-      transform: scale(1);
-      opacity: 0.7;
-    }
-    
-    .loaded .hero-title span {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .loaded .hero-title span:nth-child(1) { transition-delay: 0.1s; }
-    .loaded .hero-title span:nth-child(2) { transition-delay: 0.2s; }
-    
-    .loaded .hero-description {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .loaded .scroll-indicator {
-      opacity: 0.8;
-    }
-
-    /* Quick Info Section */
-    .quick-info {
-      background-color: var(--black);
-      color: var(--white);
-      padding: var(--space-xl) 0;
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background-color: var(--primary);
       position: relative;
       overflow: hidden;
     }
     
-    .quick-info::before {
+    .scroll-line::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at center, rgba(0, 122, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
-      pointer-events: none;
+      background-color: var(--accent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    
+    @keyframes scrollLine {
+      0% {
+        transform: translateY(-100%);
+      }
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    /* Quick Info Section */
+    .quick-info {
+      background-color: var(--primary);
+      color: var(--text-light);
+      padding: var(--space-lg) 0;
+      position: relative;
+      z-index: 2;
     }
     
     .info-card {
       display: flex;
       gap: var(--space-md);
-      padding: var(--space-lg);
-      transition: transform var(--transition-medium);
+      padding: var(--space-md);
+      transition: all var(--transition-medium);
       position: relative;
-      z-index: 1;
       overflow: hidden;
     }
     
@@ -481,252 +528,88 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 255, 255, 0.03);
-      transform: translateY(100%);
-      transition: transform var(--transition-medium);
+      background-color: var(--accent);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
       z-index: -1;
     }
     
     .info-card:hover::before {
-      transform: translateY(0);
+      opacity: 0.1;
     }
     
     .info-icon {
-      font-size: 1.5rem;
       color: var(--accent);
+      font-size: 1.5rem;
       width: 40px;
       flex-shrink: 0;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
     
     .info-content h3 {
-      font-size: 0.9rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: var(--space-sm);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
       font-weight: 600;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-xs);
+      color: var(--accent);
     }
     
     .info-content p {
       font-size: 0.9rem;
       margin-bottom: var(--space-xs);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium);
+      opacity: 0.9;
+    }
+
+    /* Section Styles */
+    .section-header {
+      margin-bottom: var(--space-xl);
+      position: relative;
     }
     
-    .info-card.reveal .info-icon {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.1s;
+    .section-header.text-center {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     
-    .info-card.reveal .info-content h3 {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.2s;
+    .section-divider {
+      width: 40px;
+      height: 2px;
+      background-color: var(--accent);
+      margin: var(--space-md) 0 var(--space-lg);
     }
     
-    .info-card.reveal .info-content p {
-      opacity: 1;
-      transform: translateY(0);
+    .section-header.text-center .section-divider {
+      margin-left: auto;
+      margin-right: auto;
     }
-    
-    .info-card.reveal .info-content p:nth-of-type(1) { transition-delay: 0.3s; }
-    .info-card.reveal .info-content p:nth-of-type(2) { transition-delay: 0.4s; }
-    .info-card.reveal .info-content p:nth-of-type(3) { transition-delay: 0.5s; }
 
     /* Experiences Section */
     .experiences {
+      background-color: var(--secondary);
       position: relative;
-      overflow: hidden;
-    }
-    
-    .experiences::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40%;
-      height: 100%;
-      background: var(--gray-100);
-      clip-path: polygon(100% 0, 100% 100%, 0 100%, 100% 0);
-      z-index: -1;
-    }
-    
-    .experiences-intro {
-      margin-bottom: var(--space-3xl);
-      max-width: 800px;
-    }
-    
-    .search-container {
-      margin-bottom: var(--space-2xl);
-    }
-    
-    .search-wrapper {
-      display: flex;
-      gap: var(--space-md);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .search-bar {
-      flex: 1;
-      position: relative;
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: var(--space-md);
-      top: 50%;
-      transform: translateY(-50%);
-      color: rgba(0, 0, 0, 0.3);
-    }
-    
-    .search-input {
-      width: 100%;
-      padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) * 2 + 16px);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 0;
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
-    }
-    
-    .toggle-filters-btn {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      padding: var(--space-md) var(--space-lg);
-      background-color: var(--black);
-      color: var(--white);
-      border: none;
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background-color var(--transition-fast);
-    }
-    
-    .toggle-filters-btn:hover {
-      background-color: var(--accent);
-    }
-    
-    .filters-panel {
-      background-color: var(--gray-100);
-      padding: var(--space-xl);
-      margin-bottom: var(--space-xl);
-      display: none;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium);
-    }
-    
-    .filters-panel.active {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .filters-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-lg);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-xs);
-      min-width: 160px;
-    }
-    
-    .filter-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: var(--space-xs);
-      font-weight: 600;
-    }
-    
-    select {
-      padding: var(--space-sm) var(--space-md);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 0;
-      font-family: var(--font-sans);
-      font-size: 0.8rem;
-      background-color: var(--white);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-    
-    select:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
-    }
-    
-    .results-count {
-      font-size: 0.8rem;
-      margin-bottom: var(--space-lg);
-      opacity: 0.6;
-    }
-    
-    .experience-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--space-xl);
-    }
-    
-    @media (min-width: 640px) {
-      .experience-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      .experience-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
     }
     
     .experience-card {
-      position: relative;
-      display: block;
-      background-color: var(--white);
+      background-color: #fff;
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(60px);
-      transition: transform var(--transition-slow), 
-                  opacity var(--transition-slow), 
+      position: relative;
+      transition: transform var(--transition-medium),
                   box-shadow var(--transition-medium);
-    }
-    
-    .experience-card.visible {
-      transform: translateY(0);
-      opacity: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     
     .experience-card:hover {
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
     
     .card-image {
-      height: 280px;
       position: relative;
+      height: 250px;
       overflow: hidden;
     }
     
@@ -735,62 +618,31 @@
       height: 100%;
       object-fit: cover;
       transition: transform var(--transition-slow);
-      filter: grayscale(100%) contrast(120%);
     }
     
     .experience-card:hover .card-image img {
       transform: scale(1.05);
-      filter: grayscale(0%) contrast(110%);
-    }
-    
-    .category-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3rem;
-      color: rgba(0, 0, 0, 0.2);
-    }
-    
-    .featured-tag {
-      position: absolute;
-      top: var(--space-md);
-      left: var(--space-md);
-      background-color: var(--accent);
-      color: var(--white);
-      padding: var(--space-xs) var(--space-md);
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      font-weight: 500;
-      z-index: 2;
     }
     
     .card-content {
       padding: var(--space-lg);
-      background-color: var(--white);
-      position: relative;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
     }
     
-    .card-meta {
-      margin-bottom: var(--space-md);
-    }
-    
-    .badge {
-      display: inline-block;
-      font-size: 0.6rem;
-      letter-spacing: 0.05em;
+    .card-category {
+      font-size: 0.75rem;
       text-transform: uppercase;
-      padding: 3px var(--space-sm);
-      margin-right: var(--space-xs);
-      background-color: rgba(0, 122, 255, 0.1);
+      letter-spacing: 0.1em;
+      font-weight: 600;
       color: var(--accent);
-      font-weight: 500;
+      margin-bottom: var(--space-sm);
     }
     
     .card-title {
-      font-size: 1.2rem;
-      margin-bottom: var(--space-md);
+      font-size: 1.5rem;
+      margin-bottom: var(--space-sm);
       transition: color var(--transition-fast);
     }
     
@@ -798,150 +650,90 @@
       color: var(--accent);
     }
     
-    .card-details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      font-size: 0.8rem;
-      color: rgba(0, 0, 0, 0.6);
+    .card-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-md);
+      flex-grow: 1;
     }
     
-    .card-location, .card-duration {
+    .card-details {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    
+    .card-location {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
     }
     
     .card-price {
-      font-weight: 700;
+      font-weight: 600;
       color: var(--accent);
     }
-    
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      padding: var(--space-2xl) 0;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .loading-spinner.hidden {
-      display: none;
-    }
-    
-    .no-results {
-      text-align: center;
-      padding: var(--space-3xl) 0;
-    }
-    
-    .no-results.hidden {
-      display: none;
-    }
-    
-    .no-results-icon {
-      font-size: 3rem;
-      color: rgba(0, 0, 0, 0.2);
-      margin-bottom: var(--space-lg);
-    }
-    
-    .no-results h3 {
-      margin-bottom: var(--space-md);
-    }
-    
-    .no-results p {
-      color: rgba(0, 0, 0, 0.6);
-      max-width: 400px;
-      margin: 0 auto;
-    }
 
-    /* House Guide Section */
-    .house-guide {
-      background-color: var(--gray-100);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .house-guide::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      opacity: 0.5;
-      z-index: 0;
+    /* Guide Section */
+    .guide {
+      background-color: #fff;
     }
     
     .guide-card {
-      background-color: var(--white);
-      padding: var(--space-xl);
+      background-color: var(--secondary);
+      padding: var(--space-lg);
       height: 100%;
+      transition: transform var(--transition-medium),
+                  box-shadow var(--transition-medium);
       position: relative;
       overflow: hidden;
-      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
-      z-index: 1;
-      opacity: 0;
-      transform: translateY(60px);
     }
     
-    .guide-card.reveal {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .guide-card::before {
+    .guide-card::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 3px;
+      width: 4px;
       height: 0;
       background-color: var(--accent);
       transition: height var(--transition-medium);
-      z-index: 1;
     }
     
     .guide-card:hover {
       transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
     
-    .guide-card:hover::before {
+    .guide-card:hover::after {
       height: 100%;
     }
     
     .guide-icon {
-      display: inline-flex;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #fff;
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: rgba(0, 122, 255, 0.1);
-      color: var(--accent);
-      font-size: 1.2rem;
-      margin-bottom: var(--space-lg);
-    }
-    
-    .guide-card h3 {
       font-size: 1.5rem;
-      margin-bottom: var(--space-lg);
-      transition: color var(--transition-medium);
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+      transition: transform var(--transition-fast);
     }
     
-    .guide-card:hover h3 {
+    .guide-card:hover .guide-icon {
+      transform: scale(1.1);
+    }
+    
+    .guide-title {
+      margin-bottom: var(--space-md);
+      transition: color var(--transition-fast);
+    }
+    
+    .guide-card:hover .guide-title {
       color: var(--accent);
     }
     
@@ -952,84 +744,74 @@
     
     .guide-list li {
       padding: var(--space-sm) 0;
-      border-bottom: 1px solid var(--gray-200);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
       padding-left: var(--space-lg);
     }
     
     .guide-list li::before {
-      content: '•';
+      content: '';
       position: absolute;
       left: 0;
-      color: var(--accent);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
     }
     
     .guide-list li:last-child {
       border-bottom: none;
     }
     
-    .guide-expand-btn {
+    .guide-button {
       display: inline-block;
-      padding: var(--space-sm) var(--space-lg);
-      background-color: var(--black);
-      color: var(--white);
-      border: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
+      padding: var(--space-sm) var(--space-md);
+      background-color: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-size: 0.8rem;
       text-transform: uppercase;
+      letter-spacing: 0.1em;
       cursor: pointer;
-      transition: background-color var(--transition-fast);
+      transition: background-color var(--transition-fast),
+                  color var(--transition-fast);
     }
     
-    .guide-expand-btn:hover {
+    .guide-button:hover {
       background-color: var(--accent);
+      color: #fff;
     }
     
     .guide-details {
-      height: 0;
+      max-height: 0;
       overflow: hidden;
-      opacity: 0;
-      transition: height var(--transition-medium), opacity var(--transition-medium);
-      margin-top: var(--space-lg);
+      transition: max-height var(--transition-medium);
+      margin-top: var(--space-md);
     }
     
     .guide-details.active {
-      height: auto;
-      opacity: 1;
-      padding: var(--space-lg);
-      background-color: var(--gray-100);
-    }
-
-    /* Local Tips Section */
-    .local-tips {
-      position: relative;
-      overflow: hidden;
+      max-height: 500px;
     }
     
-    .local-tips::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 30%;
-      height: 100%;
-      background: var(--gray-100);
-      clip-path: polygon(0 0, 100% 0, 0 100%, 0 0);
-      z-index: -1;
+    .guide-details-content {
+      padding: var(--space-md);
+      background-color: rgba(255, 255, 255, 0.5);
+      border-left: 2px solid var(--accent);
+    }
+
+    /* Tips Section */
+    .tips {
+      background-color: var(--secondary);
     }
     
     .tip-card {
-      height: 100%;
+      background-color: #fff;
       overflow: hidden;
-      position: relative;
-      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
-      opacity: 0;
-      transform: translateY(60px);
-    }
-    
-    .tip-card.reveal {
-      opacity: 1;
-      transform: translateY(0);
+      height: 100%;
+      transition: transform var(--transition-medium),
+                  box-shadow var(--transition-medium);
     }
     
     .tip-card:hover {
@@ -1038,7 +820,7 @@
     }
     
     .tip-image {
-      height: 280px;
+      height: 250px;
       overflow: hidden;
     }
     
@@ -1047,28 +829,24 @@
       height: 100%;
       object-fit: cover;
       transition: transform var(--transition-slow);
-      filter: grayscale(100%) contrast(120%);
     }
     
     .tip-card:hover .tip-image img {
       transform: scale(1.05);
-      filter: grayscale(0%) contrast(110%);
     }
     
     .tip-content {
-      padding: var(--space-xl);
-      background-color: var(--white);
+      padding: var(--space-lg);
     }
     
-    .tip-content h3 {
-      font-size: 1.5rem;
-      margin-bottom: var(--space-lg);
-      padding-bottom: var(--space-sm);
+    .tip-title {
+      margin-bottom: var(--space-md);
+      transition: color var(--transition-fast);
       position: relative;
-      transition: color var(--transition-medium);
+      padding-bottom: var(--space-sm);
     }
     
-    .tip-content h3::after {
+    .tip-title::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -1079,115 +857,71 @@
       transition: width var(--transition-medium);
     }
     
-    .tip-card:hover h3 {
+    .tip-card:hover .tip-title {
       color: var(--accent);
     }
     
-    .tip-card:hover h3::after {
+    .tip-card:hover .tip-title::after {
       width: 80px;
     }
     
     .tip-list {
       list-style: none;
-      margin-bottom: var(--space-lg);
     }
     
     .tip-list li {
       padding: var(--space-md) 0;
-      border-bottom: 1px solid var(--gray-200);
-      position: relative;
-      padding-left: var(--space-lg);
-    }
-    
-    .tip-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
     .tip-list li:last-child {
       border-bottom: none;
     }
     
-    .tip-list li strong {
-      font-weight: 700;
+    .tip-list-title {
+      font-weight: 600;
+      margin-bottom: 5px;
     }
     
-    .tip-link {
-      display: inline-block;
-      color: var(--accent);
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      position: relative;
-      font-weight: 500;
-    }
-    
-    .tip-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background-color: var(--accent);
-      transition: width var(--transition-fast);
-    }
-    
-    .tip-link:hover::after {
-      width: 100%;
+    .tip-list-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
     }
 
-    /* Other Sections Styling */
+    /* Amenities Section */
     .amenities {
-      background-color: var(--gray-100);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .amenities::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 40%;
-      height: 60%;
-      background-color: rgba(0, 0, 0, 0.03);
-      clip-path: polygon(100% 0, 100% 100%, 0 100%, 100% 0);
-      z-index: 0;
+      background-color: #fff;
     }
     
     .amenity-category {
-      background-color: var(--white);
       height: 100%;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
-      opacity: 0;
-      transform: translateY(60px);
-    }
-    
-    .amenity-category.reveal {
-      opacity: 1;
-      transform: translateY(0);
+      background-color: var(--secondary);
+      transition: transform var(--transition-medium),
+                  box-shadow var(--transition-medium);
     }
     
     .amenity-category:hover {
       transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
     
-    .category-title {
+    .category-header {
+      background-color: var(--primary);
+      color: #fff;
+      padding: var(--space-md);
       display: flex;
       align-items: center;
       gap: var(--space-sm);
-      padding: var(--space-lg);
-      background-color: var(--black);
-      color: var(--white);
-      font-family: var(--font-sans);
+    }
+    
+    .category-icon {
+      color: var(--accent);
       font-size: 1.2rem;
-      font-weight: 700;
+    }
+    
+    .category-title {
+      font-size: 1.2rem;
+      margin-bottom: 0;
     }
     
     .amenity-list {
@@ -1197,7 +931,6 @@
     
     .amenity-list li {
       padding: var(--space-sm) 0;
-      border-bottom: 1px solid var(--gray-200);
       position: relative;
       padding-left: var(--space-lg);
     }
@@ -1207,70 +940,74 @@
       position: absolute;
       left: 0;
       color: var(--accent);
-    }
-    
-    .amenity-list li:last-child {
-      border-bottom: none;
+      font-weight: bold;
     }
 
     /* FAQ Section */
     .faq {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .faq-accordion {
-      max-width: 800px;
-      margin: 0 auto;
+      background-color: var(--secondary);
     }
     
     .faq-item {
+      background-color: #fff;
       margin-bottom: var(--space-md);
-      background-color: var(--white);
       overflow: hidden;
       transition: box-shadow var(--transition-medium);
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    
-    .faq-item.reveal {
-      opacity: 1;
-      transform: translateY(0);
     }
     
     .faq-item:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     }
     
-    .faq-item.active {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
     .faq-question {
-      padding: var(--space-lg);
+      padding: var(--space-md) var(--space-lg);
+      cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: pointer;
-      transition: background-color var(--transition-medium), color var(--transition-medium);
+      position: relative;
+      z-index: 1;
     }
     
-    .faq-item.active .faq-question {
-      background-color: var(--black);
-      color: var(--white);
-    }
-    
-    .faq-question h3 {
+    .faq-question-text {
       font-size: 1.2rem;
-      font-weight: 700;
+      font-weight: 500;
+      margin-bottom: 0;
     }
     
-    .faq-question i {
-      transition: transform var(--transition-medium);
+    .faq-icon {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      transition: transform var(--transition-fast);
     }
     
-    .faq-item.active .faq-question i {
-      transform: rotate(180deg);
+    .faq-icon::before,
+    .faq-icon::after {
+      content: '';
+      position: absolute;
+      background-color: var(--accent);
+      transition: transform var(--transition-fast);
+    }
+    
+    .faq-icon::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      transform: translateY(-50%);
+    }
+    
+    .faq-icon::after {
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 100%;
+      transform: translateX(-50%);
+    }
+    
+    .faq-item.active .faq-icon::after {
+      transform: translateX(-50%) rotate(90deg);
     }
     
     .faq-answer {
@@ -1283,156 +1020,142 @@
       max-height: 500px;
     }
     
-    .faq-answer p {
-      padding: var(--space-lg);
-      color: rgba(0, 0, 0, 0.7);
+    .faq-answer-content {
+      padding: 0 var(--space-lg) var(--space-lg);
+      color: var(--text-secondary);
     }
 
     /* Contact Section */
     .contact {
-      background-color: var(--black);
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .contact::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(135deg, transparent 0%, rgba(0, 122, 255, 0.05) 100%);
-      z-index: 0;
+      background-color: var(--primary);
+      color: var(--text-light);
     }
     
     .contact-card {
-      background-color: rgba(255, 255, 255, 0.03);
+      background-color: rgba(255, 255, 255, 0.05);
       padding: var(--space-xl);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transform: translateY(40px);
+      border-radius: 2px;
     }
     
-    .contact-card.reveal {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .contact-profile {
+    .contact-header {
       display: flex;
       align-items: center;
       gap: var(--space-lg);
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-lg);
     }
     
-    .contact-profile img {
+    .contact-avatar {
       width: 80px;
       height: 80px;
       border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .contact-avatar img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border: 3px solid var(--accent);
-      filter: grayscale(100%) contrast(120%);
-      transition: filter var(--transition-medium);
     }
     
-    .contact-card:hover .contact-profile img {
-      filter: grayscale(0%) contrast(110%);
+    .contact-avatar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      opacity: 0.5;
     }
     
-    .contact-info h3 {
-      font-size: 1.8rem;
+    .contact-title {
       margin-bottom: var(--space-xs);
     }
     
-    .contact-info p {
-      opacity: 0.7;
+    .contact-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 0;
     }
     
-    .contact-methods {
+    .contact-buttons {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
       gap: var(--space-md);
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-lg);
     }
     
     @media (min-width: 640px) {
-      .contact-methods {
+      .contact-buttons {
         grid-template-columns: repeat(2, 1fr);
       }
     }
     
-    @media (min-width: 768px) {
-      .contact-methods {
+    @media (min-width: 992px) {
+      .contact-buttons {
         grid-template-columns: repeat(4, 1fr);
       }
     }
     
-    .contact-method {
+    .contact-button {
       display: flex;
       align-items: center;
-      gap: var(--space-md);
-      padding: var(--space-md);
-      background-color: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background-color var(--transition-fast), transform var(--transition-fast);
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: background-color var(--transition-fast),
+                  transform var(--transition-fast);
     }
     
-    .contact-method:hover {
+    .contact-button:hover {
       background-color: var(--accent);
       transform: translateY(-5px);
     }
     
-    .contact-method i {
-      font-size: 1.25rem;
+    .contact-button i {
+      font-size: 1.2rem;
     }
     
-    .contact-notes {
+    .contact-note {
+      padding: var(--space-lg);
+      background-color: rgba(255, 255, 255, 0.05);
       position: relative;
-      padding: var(--space-xl);
-      background-color: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
-    .contact-notes::before {
+    .contact-note::before {
       content: '"';
       position: absolute;
-      top: -20px;
-      left: 20px;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-serif);
       font-size: 5rem;
-      font-family: Georgia, serif;
       color: var(--accent);
-      opacity: 0.5;
-      line-height: 1;
+      opacity: 0.3;
+      line-height: 0;
+    }
+    
+    .contact-note p {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0;
     }
 
     /* Footer */
     footer {
-      background-color: var(--black);
-      color: var(--white);
-      padding: var(--space-2xl) 0 var(--space-lg);
+      background-color: var(--primary);
+      color: var(--text-light);
+      padding: var(--space-lg) 0;
       position: relative;
-      overflow: hidden;
-    }
-    
-    footer::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     }
     
     .footer-content {
       display: flex;
       flex-direction: column;
-      gap: var(--space-xl);
-      margin-bottom: var(--space-xl);
+      gap: var(--space-lg);
+      padding-bottom: var(--space-lg);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     @media (min-width: 768px) {
@@ -1442,35 +1165,33 @@
       }
     }
     
-    .footer-logo h3 {
-      letter-spacing: 0.05em;
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
       margin-bottom: var(--space-xs);
-      font-weight: 700;
     }
     
-    .footer-logo p {
-      opacity: 0.6;
+    .footer-address {
       font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 0;
     }
     
-    .footer-links {
+    .footer-nav {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-lg);
     }
     
     .footer-link {
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      font-size: 0.9rem;
       position: relative;
-      font-weight: 500;
     }
     
     .footer-link::after {
       content: '';
       position: absolute;
-      bottom: -4px;
+      bottom: -5px;
       left: 0;
       width: 0;
       height: 1px;
@@ -1488,14 +1209,15 @@
     }
     
     .social-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.05);
-      transition: background-color var(--transition-fast), transform var(--transition-fast);
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition-fast),
+                  transform var(--transition-fast);
     }
     
     .social-link:hover {
@@ -1506,7 +1228,6 @@
     .footer-note {
       text-align: center;
       padding-top: var(--space-lg);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
       font-size: 0.8rem;
       opacity: 0.5;
     }
@@ -1518,260 +1239,182 @@
       right: 30px;
       width: 50px;
       height: 50px;
-      background-color: var(--black);
-      color: var(--white);
+      background-color: var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
+      border-radius: 50%;
+      z-index: 99;
       cursor: pointer;
       opacity: 0;
+      visibility: hidden;
       transform: translateY(20px);
-      transition: opacity var(--transition-medium), transform var(--transition-medium), background-color var(--transition-fast);
-      z-index: 90;
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium),
+                  transform var(--transition-medium),
+                  background-color var(--transition-fast);
     }
     
     .back-to-top.visible {
       opacity: 1;
+      visibility: visible;
       transform: translateY(0);
     }
     
     .back-to-top:hover {
       background-color: var(--accent);
     }
+    
+    .back-to-top i {
+      color: #fff;
+      font-size: 1.2rem;
+    }
 
-    /* Animations */
-    .reveal-section {
-      opacity: 0;
-      transform: translateY(60px);
-      transition: opacity var(--transition-slow), transform var(--transition-slow);
-    }
-    
-    .reveal-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .fade-in {
+    /* Animation Classes */
+    .animate-fade-up {
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity var(--transition-slow), transform var(--transition-slow);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    .fade-in.visible {
+    .animate-fade-up.in-view {
       opacity: 1;
       transform: translateY(0);
     }
     
-    .reveal-title span {
-      display: block;
-      overflow: hidden;
-    }
-    
-    .reveal-title span span {
-      display: inline-block;
-      transform: translateY(100%);
+    .animate-fade-in {
       opacity: 0;
-      transition: transform var(--transition-medium), opacity var(--transition-medium);
+      transition: opacity var(--transition-slow);
     }
     
-    .reveal-title.visible span span {
-      transform: translateY(0);
+    .animate-fade-in.in-view {
       opacity: 1;
     }
     
-    .reveal-title.visible span:nth-child(1) span { transition-delay: 0.1s; }
-    .reveal-title.visible span:nth-child(2) span { transition-delay: 0.2s; }
-    
-    .floating {
-      animation: floating 6s ease-in-out infinite;
+    .animate-scale {
+      transform: scale(0.95);
+      opacity: 0;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow);
     }
     
-    @keyframes floating {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-
-    /* Animated Background Element */
-    .animated-bg {
-      position: absolute;
-      background-color: var(--accent);
-      opacity: 0.03;
-      border-radius: 50%;
-      z-index: -1;
-      transform: scale(0);
-      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .animated-bg.visible {
+    .animate-scale.in-view {
       transform: scale(1);
+      opacity: 1;
     }
     
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
-    
-    .parallax-element {
-      transition: transform 0.1s ease-out;
+    .animate-slide-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    /* Custom Cursor */
-    .custom-cursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      border: 1px solid rgba(0, 122, 255, 0.5);
-      transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.1s;
-      transform: translate(-50%, -50%);
-      display: none;
+    .animate-slide-left.in-view {
+      opacity: 1;
+      transform: translateX(0);
     }
     
-    .custom-cursor::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 4px;
-      height: 4px;
-      background-color: var(--accent);
-      border-radius: 50%;
+    .animate-slide-right {
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    .custom-cursor.active {
-      width: 60px;
-      height: 60px;
-      border-color: rgba(0, 122, 255, 0.8);
+    .animate-slide-right.in-view {
+      opacity: 1;
+      transform: translateX(0);
     }
     
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .section-title {
-        font-size: 2rem;
-      }
-      
-      .guide-card, .tip-card, .amenity-category {
-        padding: var(--space-md);
-      }
-      
-      .hero-title {
-        font-size: 3rem;
-      }
-      
-      .contact-profile {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-    
-    /* Utility Classes */
-    .text-accent {
-      color: var(--accent);
-    }
-    
-    .mt-sm { margin-top: var(--space-sm); }
-    .mt-md { margin-top: var(--space-md); }
-    .mt-lg { margin-top: var(--space-lg); }
-    .mt-xl { margin-top: var(--space-xl); }
-    
-    .mb-sm { margin-bottom: var(--space-sm); }
-    .mb-md { margin-bottom: var(--space-md); }
-    .mb-lg { margin-bottom: var(--space-lg); }
-    .mb-xl { margin-bottom: var(--space-xl); }
-    
-    .pt-sm { padding-top: var(--space-sm); }
-    .pt-md { padding-top: var(--space-md); }
-    .pt-lg { padding-top: var(--space-lg); }
-    .pt-xl { padding-top: var(--space-xl); }
-    
-    .pb-sm { padding-bottom: var(--space-sm); }
-    .pb-md { padding-bottom: var(--space-md); }
-    .pb-lg { padding-bottom: var(--space-lg); }
-    .pb-xl { padding-bottom: var(--space-xl); }
+    .delay-100 { transition-delay: 0.1s; }
+    .delay-200 { transition-delay: 0.2s; }
+    .delay-300 { transition-delay: 0.3s; }
+    .delay-400 { transition-delay: 0.4s; }
+    .delay-500 { transition-delay: 0.5s; }
+    .delay-600 { transition-delay: 0.6s; }
+    .delay-700 { transition-delay: 0.7s; }
+    .delay-800 { transition-delay: 0.8s; }
   </style>
 </head>
 <body>
-  <!-- Custom Cursor -->
-  <div class="custom-cursor"></div>
-  
-  <!-- Navigation -->
-  <div class="nav-wrapper">
+  <!-- Loader -->
+  <div class="loader">
+    <div class="loader-content">
+      <h2 class="loader-title">Property Guide</h2>
+      <div class="loader-bar">
+        <div class="loader-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
     <div class="container">
       <nav class="navbar">
-        <a href="#" class="logo">123 MAIN STREET</a>
+        <a href="#" class="logo">Property Guide</a>
+        
         <ul class="nav-links">
           <li><a href="#experiences" class="nav-link">Experiences</a></li>
-          <li><a href="#house-guide" class="nav-link">House Guide</a></li>
-          <li><a href="#local-tips" class="nav-link">Local Tips</a></li>
+          <li><a href="#guide" class="nav-link">House Guide</a></li>
+          <li><a href="#tips" class="nav-link">Local Tips</a></li>
           <li><a href="#amenities" class="nav-link">Amenities</a></li>
           <li><a href="#contact" class="nav-link">Contact</a></li>
         </ul>
-        <button class="menu-button">
+        
+        <button class="menu-button" aria-label="Toggle menu">
           <span class="menu-line"></span>
           <span class="menu-line"></span>
           <span class="menu-line"></span>
         </button>
       </nav>
     </div>
-  </div>
+  </header>
   
   <!-- Mobile Menu -->
   <div class="mobile-menu">
-    <ul class="mobile-menu-links">
-      <li><a href="#experiences" class="mobile-link">Experiences</a></li>
-      <li><a href="#house-guide" class="mobile-link">House Guide</a></li>
-      <li><a href="#local-tips" class="mobile-link">Local Tips</a></li>
-      <li><a href="#amenities" class="mobile-link">Amenities</a></li>
-      <li><a href="#contact" class="mobile-link">Contact</a></li>
+    <ul class="mobile-nav-links">
+      <li><a href="#experiences" class="mobile-nav-link">Experiences</a></li>
+      <li><a href="#guide" class="mobile-nav-link">House Guide</a></li>
+      <li><a href="#tips" class="mobile-nav-link">Local Tips</a></li>
+      <li><a href="#amenities" class="mobile-nav-link">Amenities</a></li>
+      <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
     </ul>
   </div>
   
   <!-- Hero Section -->
   <section class="hero" id="home">
-    <div class="animated-bg" style="top: 20%; left: 5%; width: 400px; height: 400px;"></div>
-    <div class="animated-bg" style="bottom: 10%; right: 10%; width: 300px; height: 300px;"></div>
-    
-    <img src="https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80" alt="Los Angeles" class="hero-bg parallax-element" data-depth="0.1">
+    <img src="https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80" alt="Property Hero Image" class="hero-bg">
     <div class="container">
       <div class="hero-content">
-        <p class="overline">Welcome Guide</p>
-        <h1 class="hero-title">
-          <span>123</span>
-          <span>Main Street</span>
-        </h1>
-        <p class="hero-description">Your personal guide to experiencing Los Angeles like a local. Discover hidden gems, navigate the city, and make unforgettable memories.</p>
+        <p class="subtitle">Welcome Guide</p>
+        <h1 class="hero-title">Property Guide</h1>
+        <p class="hero-description">Your personal guide to experiencing the area like a local. Discover hidden gems, navigate the surroundings, and make unforgettable memories.</p>
       </div>
     </div>
-    <a href="#quick-info" class="scroll-indicator">
-      <span>SCROLL</span>
-      <div class="scroll-arrow"></div>
-    </a>
+    <div class="scroll-indicator">
+      <span class="scroll-text">Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
   </section>
   
   <!-- Quick Info Section -->
-  <section class="quick-info" id="quick-info">
-    <div class="animated-bg" style="top: 30%; right: 5%; width: 200px; height: 200px;"></div>
+  <section class="quick-info" id="info">
     <div class="container">
       <div class="grid grid-4">
-        <div class="info-card">
+        <div class="info-card animate-fade-up">
           <div class="info-icon">
             <i class="fas fa-wifi"></i>
           </div>
           <div class="info-content">
             <h3>WIFI</h3>
-            <p>Network: LA_Guest</p>
+            <p>Network: Guest_Network</p>
             <p>Password: sunshine2025</p>
           </div>
         </div>
         
-        <div class="info-card">
+        <div class="info-card animate-fade-up delay-200">
           <div class="info-icon">
             <i class="fas fa-key"></i>
           </div>
@@ -1783,18 +1426,18 @@
           </div>
         </div>
         
-        <div class="info-card">
+        <div class="info-card animate-fade-up delay-400">
           <div class="info-icon">
             <i class="fas fa-phone"></i>
           </div>
           <div class="info-content">
             <h3>CONTACT</h3>
-            <p>Host: (310) 555-1234</p>
+            <p>Host: (123) 456-7890</p>
             <p>Emergency: 911</p>
           </div>
         </div>
         
-        <div class="info-card">
+        <div class="info-card animate-fade-up delay-600">
           <div class="info-icon">
             <i class="fas fa-car"></i>
           </div>
@@ -1810,146 +1453,136 @@
   
   <!-- Experiences Section -->
   <section class="experiences" id="experiences">
-    <div class="animated-bg" style="bottom: 20%; left: 10%; width: 300px; height: 300px;"></div>
     <div class="container">
-      <div class="experiences-intro centered reveal-section">
-        <p class="overline">Curated for You</p>
-        <h2 class="section-title reveal-title">
-          <span><span>Discover Local</span></span>
-          <span><span>Experiences</span></span>
-        </h2>
-        <p>Explore the best Los Angeles has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">Curated For You</p>
+        <h2 class="animate-fade-up delay-100">Discover Local Experiences</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Explore the best the area has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
       </div>
       
-      <div class="search-container reveal-section reveal-delay-1">
-        <div class="search-wrapper">
-          <div class="search-bar">
-            <i class="fas fa-search search-icon"></i>
-            <input 
-              type="text" 
-              id="search-input" 
-              class="search-input" 
-              placeholder="SEARCH EXPERIENCES..." 
-              aria-label="Search experiences">
+      <div class="grid grid-3">
+        <div class="experience-card animate-fade-up">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=800&auto=format&fit=crop" alt="Hiking Experience">
           </div>
-          
-          <button id="toggle-filters" class="toggle-filters-btn">
-            <i class="fas fa-sliders-h"></i> FILTERS
-          </button>
+          <div class="card-content">
+            <div class="card-category">Outdoor</div>
+            <h3 class="card-title">Scenic Trail Hike</h3>
+            <p class="card-description">Experience breathtaking views with this guided hike through stunning natural landscapes.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 2 miles away
+              </div>
+              <div class="card-price">$25</div>
+            </div>
+          </div>
         </div>
         
-        <div id="filters-panel" class="filters-panel">
-          <div class="filters-row">
-            <div class="filter-group">
-              <label for="category-filter" class="filter-label">
-                <i class="fas fa-tag"></i> CATEGORY
-              </label>
-              <select id="category-filter">
-                <option value="all">All Categories</option>
-              </select>
-            </div>
-            
-            <div class="filter-group">
-              <label for="location-filter" class="filter-label">
-                <i class="fas fa-map-marker-alt"></i> LOCATION
-              </label>
-              <select id="location-filter">
-                <option value="all">All Locations</option>
-              </select>
-            </div>
-            
-            <div class="filter-group">
-              <label for="audience-filter" class="filter-label">
-                <i class="fas fa-users"></i> AUDIENCE
-              </label>
-              <select id="audience-filter">
-                <option value="all">All Types</option>
-              </select>
-            </div>
+        <div class="experience-card animate-fade-up delay-200">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&auto=format&fit=crop" alt="Museum Tour">
           </div>
-          
-          <div class="filters-row">
-            <div class="filter-group">
-              <label for="price-filter" class="filter-label">
-                <i class="fas fa-dollar-sign"></i> PRICE
-              </label>
-                              <select id="price-filter">
-                <option value="all">Any Price</option>
-                <option value="0-50">Under $50</option>
-                <option value="50-100">$50 - $100</option>
-                <option value="100-200">$100 - $200</option>
-                <option value="200+">$200+</option>
-              </select>
-            </div>
-            
-            <div class="filter-group">
-              <label for="duration-filter" class="filter-label">
-                <i class="fas fa-clock"></i> DURATION
-              </label>
-              <select id="duration-filter">
-                <option value="all">Any Duration</option>
-                <option value="1">1 hour</option>
-                <option value="2">2 hours</option>
-                <option value="3">3 hours</option>
-                <option value="4+">4+ hours</option>
-              </select>
-            </div>
-            
-            <div class="filter-group">
-              <label for="sort-by" class="filter-label">
-                <i class="fas fa-sort"></i> SORT BY
-              </label>
-              <select id="sort-by">
-                <option value="name">Name (A-Z)</option>
-                <option value="name-desc">Name (Z-A)</option>
-                <option value="price-asc">Price (Low to High)</option>
-                <option value="price-desc">Price (High to Low)</option>
-                <option value="duration-asc">Duration (Short to Long)</option>
-                <option value="duration-desc">Duration (Long to Short)</option>
-              </select>
+          <div class="card-content">
+            <div class="card-category">Arts & Culture</div>
+            <h3 class="card-title">Museum Tour</h3>
+            <p class="card-description">Explore the extensive collection at the local museum with an expert guide providing context and insights.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 5 miles away
+              </div>
+              <div class="card-price">$35</div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <p id="results-count" class="results-count">Showing all experiences</p>
-      
-      <div id="loading-spinner" class="loading-spinner">
-        <div class="spinner"></div>
-      </div>
-      
-      <div id="experience-list" class="experience-grid">
-        <!-- Experiences will be dynamically populated here -->
-      </div>
-      
-      <div id="no-results" class="no-results hidden">
-        <div class="no-results-icon">
-          <i class="fas fa-search"></i>
+        
+        <div class="experience-card animate-fade-up delay-400">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop" alt="Fine Dining">
+          </div>
+          <div class="card-content">
+            <div class="card-category">Food & Drink</div>
+            <h3 class="card-title">Fine Dining Experience</h3>
+            <p class="card-description">Indulge in a multi-course tasting menu at one of the area's finest restaurants with locally sourced ingredients.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 3 miles away
+              </div>
+              <div class="card-price">$120</div>
+            </div>
+          </div>
         </div>
-        <h3>No experiences found</h3>
-        <p>Try adjusting your filters or search terms</p>
+        
+        <div class="experience-card animate-fade-up">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1530053969600-caed2596d242?w=800&auto=format&fit=crop" alt="Bike Tour">
+          </div>
+          <div class="card-content">
+            <div class="card-category">Outdoor</div>
+            <h3 class="card-title">Sunset Bike Tour</h3>
+            <p class="card-description">Cycle along scenic routes as the sun sets over the horizon, creating unforgettable photo opportunities.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 1 mile away
+              </div>
+              <div class="card-price">$45</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="experience-card animate-fade-up delay-200">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&auto=format&fit=crop" alt="Studio Tour">
+          </div>
+          <div class="card-content">
+            <div class="card-category">Entertainment</div>
+            <h3 class="card-title">Studio Tour</h3>
+            <p class="card-description">Go behind the scenes of your favorite shows with this exclusive studio tour guided by industry professionals.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 8 miles away
+              </div>
+              <div class="card-price">$75</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="experience-card animate-fade-up delay-400">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=800&auto=format&fit=crop" alt="Skateboard Lesson">
+          </div>
+          <div class="card-content">
+            <div class="card-category">Sport</div>
+            <h3 class="card-title">Skateboarding Lesson</h3>
+            <p class="card-description">Learn to skateboard from the pros at the local skatepark with all equipment provided for beginners.</p>
+            <div class="card-details">
+              <div class="card-location">
+                <i class="fas fa-map-marker-alt"></i> 3 miles away
+              </div>
+              <div class="card-price">$60</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   
-  <!-- House Guide Section -->
-  <section class="house-guide" id="house-guide">
-    <div class="animated-bg" style="top: 40%; right: 15%; width: 250px; height: 250px;"></div>
+  <!-- Guide Section -->
+  <section class="guide" id="guide">
     <div class="container">
-      <div class="section-header centered reveal-section">
-        <p class="overline">Stay Information</p>
-        <h2 class="section-title reveal-title">
-          <span><span>House Guide</span></span>
-        </h2>
-        <p>Everything you need to know to make your stay comfortable and hassle-free.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">Stay Information</p>
+        <h2 class="animate-fade-up delay-100">House Guide</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Everything you need to know to make your stay comfortable and hassle-free.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="guide-card">
+        <div class="guide-card animate-fade-up">
           <div class="guide-icon">
             <i class="fas fa-door-open"></i>
           </div>
-          <h3>Checking In & Out</h3>
+          <h3 class="guide-title">Checking In & Out</h3>
           <ul class="guide-list">
             <li>Check-in time: After 3:00 PM</li>
             <li>Self check-in with keypad (code: 2580)</li>
@@ -1957,18 +1590,20 @@
             <li>Just close the door behind you when leaving</li>
             <li>No need to clean, but please tidy up</li>
           </ul>
-          <button class="guide-expand-btn" data-target="checkin-details">VIEW DETAILS</button>
+          <button class="guide-button" data-target="checkin-details">View Details</button>
           <div id="checkin-details" class="guide-details">
-            <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call me immediately.</p>
-            <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
+            <div class="guide-details-content">
+              <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call immediately.</p>
+              <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
+            </div>
           </div>
         </div>
         
-        <div class="guide-card">
+        <div class="guide-card animate-fade-up delay-200">
           <div class="guide-icon">
             <i class="fas fa-scroll"></i>
           </div>
-          <h3>House Rules</h3>
+          <h3 class="guide-title">House Rules</h3>
           <ul class="guide-list">
             <li>No smoking anywhere on the property</li>
             <li>No parties or events</li>
@@ -1976,18 +1611,20 @@
             <li>No pets allowed</li>
             <li>Maximum 4 guests at any time</li>
           </ul>
-          <button class="guide-expand-btn" data-target="rules-details">VIEW DETAILS</button>
+          <button class="guide-button" data-target="rules-details">View Details</button>
           <div id="rules-details" class="guide-details">
-            <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
-            <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
+            <div class="guide-details-content">
+              <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
+              <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
+            </div>
           </div>
         </div>
         
-        <div class="guide-card">
+        <div class="guide-card animate-fade-up delay-400">
           <div class="guide-icon">
             <i class="fas fa-temperature-low"></i>
           </div>
-          <h3>A/C & Heating</h3>
+          <h3 class="guide-title">A/C & Heating</h3>
           <ul class="guide-list">
             <li>Thermostat located in the hallway</li>
             <li>Set between 68-78°F for comfort</li>
@@ -1995,60 +1632,88 @@
             <li>Heat: Press "Heat" button</li>
             <li>Please turn off when leaving</li>
           </ul>
-          <button class="guide-expand-btn" data-target="ac-details">VIEW DETAILS</button>
+          <button class="guide-button" data-target="ac-details">View Details</button>
           <div id="ac-details" class="guide-details">
-            <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
-            <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
+            <div class="guide-details-content">
+              <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
+              <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
   
-  <!-- Local Tips Section -->
-  <section class="local-tips" id="local-tips">
-    <div class="animated-bg" style="bottom: 15%; left: 20%; width: 200px; height: 200px;"></div>
+  <!-- Tips Section -->
+  <section class="tips" id="tips">
     <div class="container">
-      <div class="section-header centered reveal-section">
-        <p class="overline">Insider Knowledge</p>
-        <h2 class="section-title reveal-title">
-          <span><span>Local Tips</span></span>
-        </h2>
-        <p>Discover Los Angeles like a local with our insider recommendations.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">Insider Knowledge</p>
+        <h2 class="animate-fade-up delay-100">Local Tips</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Discover the area like a local with our insider recommendations.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="tip-card">
+        <div class="tip-card animate-fade-up">
           <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant Tip">
           </div>
           <div class="tip-content">
-            <h3>Best Restaurants</h3>
+            <h3 class="tip-title">Best Restaurants</h3>
             <ul class="tip-list">
-              <li><strong>Bestia</strong> - Amazing Italian, reserve weeks ahead</li>
-              <li><strong>El Cholo</strong> - Classic Mexican, great margaritas</li>
-              <li><strong>Grand Central Market</strong> - Food hall with options for everyone</li>
-              <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
-              <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
+              <li>
+                <div class="tip-list-title">Bistro Verde</div>
+                <div class="tip-list-description">Amazing farm-to-table, reserve weeks ahead</div>
+              </li>
+              <li>
+                <div class="tip-list-title">La Casa</div>
+                <div class="tip-list-description">Classic Mexican, great margaritas</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Market Square</div>
+                <div class="tip-list-description">Food hall with options for everyone</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Giovanni's</div>
+                <div class="tip-list-description">Pizza spot loved by locals</div>
+              </li>
+              <li>
+                <div class="tip-list-title">The Reserve</div>
+                <div class="tip-list-description">Fine dining, perfect for special occasions</div>
+              </li>
             </ul>
-            <a href="#" class="tip-link">VIEW ALL RECOMMENDATIONS</a>
           </div>
         </div>
         
-        <div class="tip-card">
+        <div class="tip-card animate-fade-up delay-200">
           <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
+            <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems Tip">
           </div>
           <div class="tip-content">
-            <h3>Hidden Gems</h3>
+            <h3 class="tip-title">Hidden Gems</h3>
             <ul class="tip-list">
-              <li><strong>The Last Bookstore</strong> - Unique bookstore with art installations</li>
-              <li><strong>Hollywood Forever Cemetery</strong> - Movie screenings in summer</li>
-              <li><strong>The Museum of Jurassic Technology</strong> - Wonderfully weird collection</li>
-              <li><strong>Watts Towers</strong> - Impressive folk art structures</li>
-              <li><strong>The Bradbury Building</strong> - Historic landmark with gorgeous interior</li>
+              <li>
+                <div class="tip-list-title">Vintage Bookstore</div>
+                <div class="tip-list-description">Unique bookstore with art installations</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Moonlight Cinema</div>
+                <div class="tip-list-description">Outdoor movie screenings in summer</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Museum of Curiosities</div>
+                <div class="tip-list-description">Wonderfully weird collection</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Sculpture Garden</div>
+                <div class="tip-list-description">Impressive outdoor art structures</div>
+              </li>
+              <li>
+                <div class="tip-list-title">Heritage Building</div>
+                <div class="tip-list-description">Historic landmark with gorgeous interior</div>
+              </li>
             </ul>
-            <a href="#" class="tip-link">VIEW ALL HIDDEN GEMS</a>
           </div>
         </div>
       </div>
@@ -2057,19 +1722,22 @@
   
   <!-- Amenities Section -->
   <section class="amenities" id="amenities">
-    <div class="animated-bg" style="top: 30%; left: 10%; width: 200px; height: 200px;"></div>
     <div class="container">
-      <div class="section-header centered reveal-section">
-        <p class="overline">For Your Comfort</p>
-        <h2 class="section-title reveal-title">
-          <span><span>Amenities</span></span>
-        </h2>
-        <p>Everything available to make your stay comfortable and enjoyable.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">For Your Comfort</p>
+        <h2 class="animate-fade-up delay-100">Amenities</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Everything available to make your stay comfortable and enjoyable.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
+        <div class="amenity-category animate-fade-up">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <h3 class="category-title">Kitchen</h3>
+          </div>
           <ul class="amenity-list">
             <li>Full-size refrigerator</li>
             <li>Microwave & toaster oven</li>
@@ -2082,8 +1750,13 @@
           </ul>
         </div>
         
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
+        <div class="amenity-category animate-fade-up delay-200">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-bed"></i>
+            </div>
+            <h3 class="category-title">Bedroom</h3>
+          </div>
           <ul class="amenity-list">
             <li>Queen-size mattress</li>
             <li>Extra pillows in closet</li>
@@ -2096,8 +1769,13 @@
           </ul>
         </div>
         
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
+        <div class="amenity-category animate-fade-up delay-400">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <h3 class="category-title">Technology</h3>
+          </div>
           <ul class="amenity-list">
             <li>High-speed WiFi</li>
             <li>55" Smart TV</li>
@@ -2105,7 +1783,7 @@
             <li>Bluetooth speaker</li>
             <li>USB charging ports</li>
             <li>Smart thermostat</li>
-            <li>Ring doorbell</li>
+            <li>Doorbell camera</li>
             <li>Printer/scanner</li>
           </ul>
         </div>
@@ -2115,44 +1793,36 @@
   
   <!-- FAQ Section -->
   <section class="faq" id="faq">
-    <div class="animated-bg" style="bottom: 20%; right: 10%; width: 150px; height: 150px;"></div>
     <div class="container container-sm">
-      <div class="section-header centered reveal-section">
-        <p class="overline">Answers</p>
-        <h2 class="section-title reveal-title">
-          <span><span>Frequently Asked Questions</span></span>
-        </h2>
-        <p>Quick answers to common questions about your stay.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">Answers</p>
+        <h2 class="animate-fade-up delay-100">Frequently Asked Questions</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Quick answers to common questions about your stay.</p>
       </div>
       
-      <div class="faq-accordion">
+      <div class="animate-fade-up delay-400">
         <div class="faq-item">
           <div class="faq-question">
-            <h3>Is parking included with my stay?</h3>
-            <i class="fas fa-chevron-down"></i>
+            <h4 class="faq-question-text">How do I access the building?</h4>
+            <div class="faq-icon"></div>
           </div>
           <div class="faq-answer">
-            <p>Yes, one dedicated parking spot (#42) is included with your stay. You'll need the garage code (3791) to access the parking area. If you have additional vehicles, street parking is available but may require a permit or payment depending on the time of day.</p>
+            <div class="faq-answer-content">
+              <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call the host immediately.</p>
+            </div>
           </div>
         </div>
         
         <div class="faq-item">
           <div class="faq-question">
-            <h3>How do I access the building?</h3>
-            <i class="fas fa-chevron-down"></i>
+            <h4 class="faq-question-text">What is the best way to get around?</h4>
+            <div class="faq-icon"></div>
           </div>
           <div class="faq-answer">
-            <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call me immediately.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>What is the best way to get around?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
+            <div class="faq-answer-content">
+              <p>While having a car is convenient, there are many options. Rideshare services like Uber and Lyft are widely available. Public transportation includes buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through various rental apps.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -2161,46 +1831,46 @@
   
   <!-- Contact Section -->
   <section class="contact" id="contact">
-    <div class="animated-bg" style="top: 20%; right: 10%; width: 300px; height: 300px;"></div>
     <div class="container container-sm">
-      <div class="section-header centered reveal-section">
-        <p class="overline">Get in Touch</p>
-        <h2 class="section-title reveal-title">
-          <span><span>Contact</span></span>
-        </h2>
-        <p>Reach out anytime for assistance during your stay.</p>
+      <div class="section-header text-center">
+        <p class="subtitle animate-fade-up">Get in Touch</p>
+        <h2 class="animate-fade-up delay-100">Contact</h2>
+        <div class="section-divider animate-fade-up delay-200"></div>
+        <p class="animate-fade-up delay-300">Reach out anytime for assistance during your stay.</p>
       </div>
       
-      <div class="contact-card">
-        <div class="contact-profile">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
-          <div class="contact-info">
-            <h3>Alex</h3>
-            <p>Available 24/7 for emergencies</p>
+      <div class="contact-card animate-fade-up delay-400">
+        <div class="contact-header">
+          <div class="contact-avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Host Avatar">
+          </div>
+          <div>
+            <h3 class="contact-title">Your Host</h3>
+            <p class="contact-subtitle">Available 24/7 for emergencies</p>
           </div>
         </div>
         
-        <div class="contact-methods">
-          <a href="tel:3105551234" class="contact-method">
+        <div class="contact-buttons">
+          <a href="tel:1234567890" class="contact-button">
             <i class="fas fa-phone"></i>
-            <span>(310) 555-1234</span>
+            <span>Call</span>
           </a>
-          <a href="sms:3105551234" class="contact-method">
+          <a href="sms:1234567890" class="contact-button">
             <i class="fas fa-comment"></i>
-            <span>Text Message</span>
+            <span>Text</span>
           </a>
-          <a href="mailto:alex@example.com" class="contact-method">
+          <a href="mailto:host@example.com" class="contact-button">
             <i class="fas fa-envelope"></i>
-            <span>alex@example.com</span>
+            <span>Email</span>
           </a>
-          <a href="https://airbnb.com/messaging" class="contact-method">
-            <i class="fab fa-airbnb"></i>
-            <span>Airbnb Message</span>
+          <a href="#" class="contact-button">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
           </a>
         </div>
         
-        <div class="contact-notes">
-          <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message through Airbnb and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
+        <div class="contact-note">
+          <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
         </div>
       </div>
     </div>
@@ -2210,376 +1880,154 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <div class="footer-logo">
-          <h3>123 MAIN STREET</h3>
-          <p>Los Angeles, CA 90012</p>
+        <div>
+          <div class="footer-logo">Property Guide</div>
+          <p class="footer-address">123 Main Street</p>
         </div>
         
-        <div class="footer-links">
-          <a href="#experiences" class="footer-link">EXPERIENCES</a>
-          <a href="#house-guide" class="footer-link">HOUSE GUIDE</a>
-          <a href="#local-tips" class="footer-link">LOCAL TIPS</a>
-          <a href="#amenities" class="footer-link">AMENITIES</a>
-          <a href="#contact" class="footer-link">CONTACT</a>
+        <div class="footer-nav">
+          <a href="#experiences" class="footer-link">Experiences</a>
+          <a href="#guide" class="footer-link">House Guide</a>
+          <a href="#tips" class="footer-link">Local Tips</a>
+          <a href="#amenities" class="footer-link">Amenities</a>
+          <a href="#contact" class="footer-link">Contact</a>
         </div>
         
         <div class="footer-social">
-          <a href="https://instagram.com" class="social-link" target="_blank">
+          <a href="#" class="social-link" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
           </a>
-          <a href="https://twitter.com" class="social-link" target="_blank">
+          <a href="#" class="social-link" aria-label="Twitter">
             <i class="fab fa-twitter"></i>
           </a>
-          <a href="https://facebook.com" class="social-link" target="_blank">
-            <i class="fab fa-facebook"></i>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
           </a>
         </div>
       </div>
       
-      <p class="footer-note">© 2025 123 Main Street | Los Angeles</p>
+      <p class="footer-note">© 2025 Property Guide. All rights reserved.</p>
     </div>
   </footer>
   
   <!-- Back to Top Button -->
-  <div class="back-to-top" id="back-to-top">
+  <div class="back-to-top" id="back-to-top" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
   </div>
   
   <!-- JavaScript -->
   <script>
-    // Global variables
-    let allRecords = [];
-    let filteredRecords = [];
-    const searchDebounceDelay = 300;
-    let searchDebounceTimer;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize page loader
+      initLoader();
+      
+      // Initialize navigation
+      initNavigation();
+      
+      // Initialize scroll animations
+      initScrollAnimations();
+      
+      // Initialize guide expand buttons
+      initGuideButtons();
+      
+      // Initialize FAQ accordion
+      initFaqAccordion();
+      
+      // Initialize back to top button
+      initBackToTop();
+      
+      // Add active class to first nav link
+      document.querySelector('.nav-link').classList.add('active');
+    });
     
-    // DOM elements
-    const experienceList = document.getElementById('experience-list');
-    const searchInput = document.getElementById('search-input');
-    const categoryFilter = document.getElementById('category-filter');
-    const locationFilter = document.getElementById('location-filter');
-    const audienceFilter = document.getElementById('audience-filter');
-    const priceFilter = document.getElementById('price-filter');
-    const durationFilter = document.getElementById('duration-filter');
-    const sortBySelect = document.getElementById('sort-by');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const resultsCount = document.getElementById('results-count');
-    const noResultsDiv = document.getElementById('no-results');
-    const toggleFiltersBtn = document.getElementById('toggle-filters');
-    const filtersPanel = document.getElementById('filters-panel');
-    const backToTopBtn = document.getElementById('back-to-top');
-    const menuButton = document.querySelector('.menu-button');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const navWrapper = document.querySelector('.nav-wrapper');
-    
-    // Initialize the app
-    function init() {
-      initPageAnimation();
-      setupEventListeners();
-      fetchExperiences();
-      setupScrollAnimations();
-      setupFAQAccordion();
-      setupExpandButtons();
-      setupBackToTop();
-      setupCustomCursor();
-      setupParallax();
-    }
-    
-    // Initialize page animations
-    function initPageAnimation() {
-      // Add loaded class to body after a slight delay
-      setTimeout(() => {
-        document.body.classList.add('loaded');
-        
-        // Animated background elements
-        document.querySelectorAll('.animated-bg').forEach((el, index) => {
+    // Page Loader
+    function initLoader() {
+      const loader = document.querySelector('.loader');
+      const progress = document.querySelector('.loader-progress');
+      
+      // Simulate loading progress
+      let width = 0;
+      const interval = setInterval(() => {
+        if (width >= 100) {
+          clearInterval(interval);
           setTimeout(() => {
-            el.classList.add('visible');
-          }, 300 + (index * 150));
-        });
-        
-        // Show initial animations for elements in viewport
-        animateElementsInViewport();
-      }, 300);
-    }
-    
-    // Set up GSAP ScrollTrigger for scroll animations
-    function setupScrollAnimations() {
-      // Register ScrollTrigger plugin
-      gsap.registerPlugin(ScrollTrigger);
-      
-      // Section title animations
-      document.querySelectorAll('.reveal-section').forEach(section => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top 80%",
-          onEnter: () => section.classList.add('visible'),
-          once: true
-        });
-      });
-      
-      // Info cards animation
-      document.querySelectorAll('.info-card').forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 85%",
-          onEnter: () => {
-            setTimeout(() => {
-              card.classList.add('reveal');
-            }, index * 100);
-          },
-          once: true
-        });
-      });
-      
-      // Guide cards animation
-      document.querySelectorAll('.guide-card').forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 85%",
-          onEnter: () => {
-            setTimeout(() => {
-              card.classList.add('reveal');
-            }, index * 150);
-          },
-          once: true
-        });
-      });
-      
-      // Tip cards animation
-      document.querySelectorAll('.tip-card').forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 85%",
-          onEnter: () => {
-            setTimeout(() => {
-              card.classList.add('reveal');
-            }, index * 200);
-          },
-          once: true
-        });
-      });
-      
-      // Amenity cards animation
-      document.querySelectorAll('.amenity-category').forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 85%",
-          onEnter: () => {
-            setTimeout(() => {
-              card.classList.add('reveal');
-            }, index * 150);
-          },
-          once: true
-        });
-      });
-      
-      // FAQ items animation
-      document.querySelectorAll('.faq-item').forEach((item, index) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top 85%",
-          onEnter: () => {
-            setTimeout(() => {
-              item.classList.add('reveal');
-            }, index * 150);
-          },
-          once: true
-        });
-      });
-      
-      // Contact card animation
-      document.querySelectorAll('.contact-card').forEach(card => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 85%",
-          onEnter: () => card.classList.add('reveal'),
-          once: true
-        });
-      });
-      
-      // Title reveal animations
-      document.querySelectorAll('.reveal-title').forEach(title => {
-        ScrollTrigger.create({
-          trigger: title,
-          start: "top 85%",
-          onEnter: () => title.classList.add('visible'),
-          once: true
-        });
-      });
-    }
-    
-    // Setup parallax effect
-    function setupParallax() {
-      const parallaxElements = document.querySelectorAll('.parallax-element');
-      
-      window.addEventListener('mousemove', (e) => {
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        parallaxElements.forEach(el => {
-          const depth = parseFloat(el.getAttribute('data-depth')) || 0.1;
-          const moveX = (mouseX - 0.5) * depth * 100;
-          const moveY = (mouseY - 0.5) * depth * 100;
-          
-          gsap.to(el, {
-            x: moveX,
-            y: moveY,
-            duration: 1,
-            ease: "power2.out"
-          });
-        });
-      });
-    }
-    
-    // Setup custom cursor
-    function setupCustomCursor() {
-      const cursor = document.querySelector('.custom-cursor');
-      
-      // Only enable custom cursor on desktop
-      if (window.innerWidth > 768) {
-        cursor.style.display = 'block';
-        
-        document.addEventListener('mousemove', (e) => {
-          gsap.to(cursor, {
-            x: e.clientX,
-            y: e.clientY,
-            duration: 0.1,
-            ease: "power2.out"
-          });
-        });
-        
-        // Add active class to cursor over interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .experience-card, .guide-card, .tip-card, .amenity-category, .faq-item, .contact-method');
-        
-        interactiveElements.forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            cursor.classList.add('active');
-          });
-          
-          el.addEventListener('mouseleave', () => {
-            cursor.classList.remove('active');
-          });
-        });
-      }
-    }
-    
-    // Animate elements in viewport on page load
-    function animateElementsInViewport() {
-      document.querySelectorAll('.fade-in').forEach(element => {
-        if (isElementInViewport(element)) {
-          element.classList.add('visible');
+            loader.classList.add('loaded');
+          }, 500);
+        } else {
+          width += Math.random() * 10;
+          if (width > 100) width = 100;
+          progress.style.width = width + '%';
         }
-      });
+      }, 200);
     }
     
-    // Set up event listeners
-    function setupEventListeners() {
-      // Mobile menu toggle
+    // Navigation
+    function initNavigation() {
+      const header = document.querySelector('.header');
+      const menuButton = document.querySelector('.menu-button');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+      
+      // Toggle mobile menu
       menuButton.addEventListener('click', () => {
         menuButton.classList.toggle('menu-open');
         mobileMenu.classList.toggle('open');
+        document.body.classList.toggle('menu-active');
       });
       
-      // Close mobile menu when clicking a link
-      document.querySelectorAll('.mobile-link').forEach(link => {
-        link.addEventListener('click', () => {
+      // Handle navigation link clicks
+      [...navLinks, ...mobileNavLinks].forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // Close mobile menu if open
           menuButton.classList.remove('menu-open');
           mobileMenu.classList.remove('open');
+          document.body.classList.remove('menu-active');
+          
+          // Get target section
+          const targetId = link.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          
+          if (targetSection) {
+            const offsetTop = targetSection.offsetTop - header.offsetHeight + 1;
+            
+            // Smooth scroll to section
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
         });
       });
       
-      // Search input with debounce
-      searchInput.addEventListener('input', () => {
-        clearTimeout(searchDebounceTimer);
-        searchDebounceTimer = setTimeout(() => {
-          applyFilters();
-        }, searchDebounceDelay);
-      });
-      
-      // Filter selects
-      categoryFilter.addEventListener('change', applyFilters);
-      locationFilter.addEventListener('change', applyFilters);
-      audienceFilter.addEventListener('change', applyFilters);
-      priceFilter.addEventListener('change', applyFilters);
-      durationFilter.addEventListener('change', applyFilters);
-      sortBySelect.addEventListener('change', applyFilters);
-      
-      // Toggle filters panel
-      toggleFiltersBtn.addEventListener('click', () => {
-        filtersPanel.classList.toggle('active');
-      });
-      
-      // Scroll animations
+      // Header scroll effect
       window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;
-        
-        // Add class to header when scrolled
-        if (scrollPosition > 50) {
-          navWrapper.classList.add('scrolled');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
         } else {
-          navWrapper.classList.remove('scrolled');
+          header.classList.remove('scrolled');
         }
         
-        // Show or hide back to top button
-        if (scrollPosition > 500) {
-          backToTopBtn.classList.add('visible');
-        } else {
-          backToTopBtn.classList.remove('visible');
-        }
-        
-        // Highlight active nav link based on scroll position
-        highlightActiveNavLink();
+        // Update active nav link
+        updateActiveNavLink();
       });
-      
-      // Smooth scroll for navigation links
-      document.querySelectorAll('.nav-link, .mobile-link, .footer-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-          
-          if (targetElement) {
-            gsap.to(window, {
-              duration: 1,
-              scrollTo: { y: targetElement, offsetY: 60 },
-              ease: "power2.inOut"
-            });
-          }
-        });
-      });
-      
-      // Scroll down button in hero section
-      const scrollIndicator = document.querySelector('.scroll-indicator');
-      if (scrollIndicator) {
-        scrollIndicator.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = scrollIndicator.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-          
-          if (targetElement) {
-            gsap.to(window, {
-              duration: 1,
-              scrollTo: { y: targetElement },
-              ease: "power2.inOut"
-            });
-          }
-        });
-      }
     }
     
-    // Highlight active nav link based on scroll position
-    function highlightActiveNavLink() {
+    // Update active navigation link based on scroll position
+    function updateActiveNavLink() {
       const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
       const scrollPosition = window.scrollY + 100;
       
       sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 120;
+        const sectionBottom = sectionTop + section.offsetHeight;
         const sectionId = section.getAttribute('id');
         
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-          document.querySelectorAll('.nav-link').forEach(link => {
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+          navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${sectionId}`) {
               link.classList.add('active');
@@ -2589,17 +2037,51 @@
       });
     }
     
-    // Check if element is in viewport
-    function isElementInViewport(el) {
-      const rect = el.getBoundingClientRect();
-      return (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
-        rect.bottom >= 0
+    // Scroll animations
+    function initScrollAnimations() {
+      const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-scale, .animate-slide-left, .animate-slide-right');
+      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -10% 0px'
+        }
       );
+      
+      animatedElements.forEach(element => {
+        observer.observe(element);
+      });
     }
     
-    // Setup FAQ accordion functionality
-    function setupFAQAccordion() {
+    // Guide expand buttons
+    function initGuideButtons() {
+      const guideButtons = document.querySelectorAll('.guide-button');
+      
+      guideButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const targetDetails = document.getElementById(targetId);
+          
+          if (targetDetails.classList.contains('active')) {
+            targetDetails.classList.remove('active');
+            button.textContent = 'View Details';
+          } else {
+            targetDetails.classList.add('active');
+            button.textContent = 'Hide Details';
+          }
+        });
+      });
+    }
+    
+    // FAQ accordion
+    function initFaqAccordion() {
       const faqItems = document.querySelectorAll('.faq-item');
       
       faqItems.forEach(item => {
@@ -2621,491 +2103,99 @@
       });
     }
     
-    // Setup expand buttons for guide cards
-    function setupExpandButtons() {
-      const expandButtons = document.querySelectorAll('.guide-expand-btn');
+    // Back to top button
+    function initBackToTop() {
+      const backToTopButton = document.getElementById('back-to-top');
       
-      expandButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const targetId = button.getAttribute('data-target');
-          const targetDetails = document.getElementById(targetId);
-          
-          if (targetDetails.classList.contains('active')) {
-            targetDetails.classList.remove('active');
-            button.textContent = 'VIEW DETAILS';
-          } else {
-            targetDetails.classList.add('active');
-            button.textContent = 'HIDE DETAILS';
-          }
-        });
-      });
-    }
-    
-    // Setup back to top button
-    function setupBackToTop() {
-      backToTopBtn.addEventListener('click', () => {
-        gsap.to(window, {
-          duration: 1,
-          scrollTo: { y: 0 },
-          ease: "power2.inOut"
-        });
-      });
-    }
-    
-    // Fetch experiences data 
-    function fetchExperiences() {
-      showLoading(true);
-      
-      // For demonstration purposes, using sample data
-      // In production, you would fetch from an API
-      setTimeout(() => {
-        loadSampleData();
-        showLoading(false);
-      }, 1000);
-    }
-    
-    // Load sample data
-    function loadSampleData() {
-      const sampleData = {
-        records: [
-          {
-            id: '1',
-            fields: {
-              Name: 'Hollywood Sign Hike',
-              Description: 'Experience the iconic Hollywood Sign up close with this guided hike through Griffith Park.',
-              Category: 'Outdoor',
-              Location: 'Hollywood Hills',
-              'Audience Type': 'Active',
-              'Estimated Price': '25',
-              Duration: '2',
-              URL: 'https://example.com/hike',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '2',
-            fields: {
-              Name: 'LACMA Art Tour',
-              Description: 'Explore the extensive collection at the Los Angeles County Museum of Art with an expert guide.',
-              Category: 'Arts & Culture',
-              Location: 'Mid-Wilshire',
-              'Audience Type': 'Art Lovers',
-              'Estimated Price': '35',
-              Duration: '3',
-              URL: 'https://example.com/lacma',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '3',
-            fields: {
-              Name: 'Santa Monica Sunset Bike Tour',
-              Description: 'Cycle along the famous Santa Monica beach as the sun sets over the Pacific.',
-              Category: 'Outdoor',
-              Location: 'Santa Monica',
-              'Audience Type': 'Active',
-              'Estimated Price': '45',
-              Duration: '2',
-              URL: 'https://example.com/bike',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1530053969600-caed2596d242?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '4',
-            fields: {
-              Name: 'Michelin Star Dining Experience',
-              Description: 'Indulge in a multi-course tasting menu at one of LA\'s finest restaurants.',
-              Category: 'Food & Drink',
-              Location: 'Downtown LA',
-              'Audience Type': 'Foodies',
-              'Estimated Price': '250',
-              Duration: '3',
-              URL: 'https://example.com/dining',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '5',
-            fields: {
-              Name: 'Warner Bros. Studio Tour',
-              Description: 'Go behind the scenes of your favorite movies and TV shows with this exclusive studio tour.',
-              Category: 'Entertainment',
-              Location: 'Burbank',
-              'Audience Type': 'All Ages',
-              'Estimated Price': '75',
-              Duration: '3',
-              URL: 'https://example.com/studio',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '6',
-            fields: {
-              Name: 'Venice Beach Skateboarding Lesson',
-              Description: 'Learn to skateboard from the pros at the famous Venice Beach Skatepark.',
-              Category: 'Sport',
-              Location: 'Venice',
-              'Audience Type': 'Active',
-              'Estimated Price': '60',
-              Duration: '1',
-              URL: 'https://example.com/skate',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      };
-      
-      allRecords = sampleData.records;
-      populateFilterOptions();
-      applyFilters();
-    }
-    
-    // Populate filter dropdowns with options from data
-    function populateFilterOptions() {
-      // Extract unique values for each filter
-      const categories = new Set();
-      const locations = new Set();
-      const audienceTypes = new Set();
-      
-      allRecords.forEach(record => {
-        const fields = record.fields || {};
-        
-        // Add values to sets if they exist
-        if (fields.Category) categories.add(fields.Category);
-        if (fields.Location) locations.add(fields.Location);
-        if (fields['Audience Type']) audienceTypes.add(fields['Audience Type']);
-      });
-      
-      // Populate category filter
-      populateSelectOptions(categoryFilter, [...categories].sort());
-      
-      // Populate location filter
-      populateSelectOptions(locationFilter, [...locations].sort());
-      
-      // Populate audience filter
-      populateSelectOptions(audienceFilter, [...audienceTypes].sort());
-    }
-    
-    // Helper to populate select options
-    function populateSelectOptions(selectElement, options) {
-      options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        optionElement.textContent = option;
-        selectElement.appendChild(optionElement);
-      });
-    }
-    
-    // Apply all filters and sorting
-    function applyFilters() {
-      // Get filter values
-      const searchTerm = searchInput.value.toLowerCase().trim();
-      const selectedCategory = categoryFilter.value;
-      const selectedLocation = locationFilter.value;
-      const selectedAudience = audienceFilter.value;
-      const selectedPrice = priceFilter.value;
-      const selectedDuration = durationFilter.value;
-      const sortBy = sortBySelect.value;
-      
-      // Filter records
-      filteredRecords = allRecords.filter(record => {
-        const fields = record.fields || {};
-        const name = (fields.Name || '').toLowerCase();
-        const description = (fields.Description || '').toLowerCase();
-        const category = fields.Category || '';
-        const location = fields.Location || '';
-        const audience = fields['Audience Type'] || '';
-        const price = parseFloat(fields['Estimated Price'] || 0);
-        const duration = parseInt(fields.Duration || 0);
-        
-        // Text search
-        const matchesSearch = !searchTerm || 
-          name.includes(searchTerm) || 
-          description.includes(searchTerm);
-        
-        // Category filter
-        const matchesCategory = selectedCategory === 'all' || 
-          category === selectedCategory;
-        
-        // Location filter
-        const matchesLocation = selectedLocation === 'all' || 
-          location === selectedLocation;
-        
-        // Audience filter
-        const matchesAudience = selectedAudience === 'all' || 
-          audience === selectedAudience;
-        
-        // Price filter
-        let matchesPrice = true;
-        if (selectedPrice !== 'all') {
-          if (selectedPrice === '0-50') {
-            matchesPrice = price >= 0 && price <= 50;
-          } else if (selectedPrice === '50-100') {
-            matchesPrice = price > 50 && price <= 100;
-          } else if (selectedPrice === '100-200') {
-            matchesPrice = price > 100 && price <= 200;
-          } else if (selectedPrice === '200+') {
-            matchesPrice = price > 200;
-          }
-        }
-        
-        // Duration filter
-        let matchesDuration = true;
-        if (selectedDuration !== 'all') {
-          if (selectedDuration === '4+') {
-            matchesDuration = duration >= 4;
-          } else {
-            matchesDuration = duration === parseInt(selectedDuration);
-          }
-        }
-        
-        // Return true if it matches all filters
-        return matchesSearch && 
-               matchesCategory && 
-               matchesLocation && 
-               matchesAudience && 
-               matchesPrice && 
-               matchesDuration;
-      });
-      
-      // Sort filtered records
-      sortFilteredRecords(sortBy);
-      
-      // Update results count
-      updateResultsCount();
-      
-      // Render the filtered and sorted records
-      renderExperienceCards();
-    }
-    
-    // Update the results count display
-    function updateResultsCount() {
-      let countText = '';
-      
-      if (filteredRecords.length === 0) {
-        countText = 'No experiences found';
-      } else if (filteredRecords.length === 1) {
-        countText = '1 experience found';
-      } else {
-        countText = `${filteredRecords.length} experiences found`;
-      }
-      
-      // Check if filters are applied
-      const hasSearch = searchInput.value.trim() !== '';
-      const hasCategory = categoryFilter.value !== 'all';
-      const hasLocation = locationFilter.value !== 'all';
-      const hasAudience = audienceFilter.value !== 'all';
-      const hasPrice = priceFilter.value !== 'all';
-      const hasDuration = durationFilter.value !== 'all';
-      
-      const filtersApplied = hasSearch || hasCategory || hasLocation || 
-                            hasAudience || hasPrice || hasDuration;
-      
-      if (filtersApplied) {
-        countText += ' with current filters';
-      }
-      
-      resultsCount.textContent = countText;
-    }
-    
-    // Sort the filtered records based on selected sort option
-    function sortFilteredRecords(sortBy) {
-      filteredRecords.sort((a, b) => {
-        const fieldsA = a.fields || {};
-        const fieldsB = b.fields || {};
-        
-        switch (sortBy) {
-          case 'name':
-            return (fieldsA.Name || '').localeCompare(fieldsB.Name || '');
-          case 'name-desc':
-            return (fieldsB.Name || '').localeCompare(fieldsA.Name || '');
-          case 'price-asc':
-            return parseFloat(fieldsA['Estimated Price'] || 0) - parseFloat(fieldsB['Estimated Price'] || 0);
-          case 'price-desc':
-            return parseFloat(fieldsB['Estimated Price'] || 0) - parseFloat(fieldsA['Estimated Price'] || 0);
-          case 'duration-asc':
-            return parseInt(fieldsA.Duration || 0) - parseInt(fieldsB.Duration || 0);
-          case 'duration-desc':
-            return parseInt(fieldsB.Duration || 0) - parseInt(fieldsA.Duration || 0);
-          default:
-            return 0;
-        }
-      });
-    }
-    
-    // Render experience cards
-    function renderExperienceCards() {
-      // Clear the container
-      experienceList.innerHTML = '';
-      
-      if (filteredRecords.length === 0) {
-        noResultsDiv.classList.remove('hidden');
-        experienceList.classList.add('hidden');
-        return;
-      } else {
-        noResultsDiv.classList.add('hidden');
-        experienceList.classList.remove('hidden');
-      }
-      
-      // Add cards for each filtered record
-      filteredRecords.forEach((record, index) => {
-        const fields = record.fields || {};
-        
-        // Extract field values with fallbacks
-        const name = fields.Name || 'Untitled Experience';
-        const description = fields.Description || 'No description provided.';
-        const rawUrl = fields.URL || '#';
-        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-        const category = fields.Category || '';
-        const location = fields.Location || '';
-        const audienceType = fields['Audience Type'] || '';
-        const price = fields['Estimated Price'] 
-          ? `${parseFloat(fields['Estimated Price']).toFixed(0)}` 
-          : 'Price not available';
-        const duration = fields.Duration 
-          ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
-          : '';
-        
-        // Get image URL if available
-        const imageUrl = fields.Photo && 
-                         fields.Photo.length > 0 && 
-                         fields.Photo[0].thumbnails
-          ? fields.Photo[0].thumbnails.large.url
-          : null;
-        
-        // Create card element
-        const card = document.createElement('a');
-        card.href = url;
-        card.target = "_blank";
-        card.className = 'experience-card';
-        
-        // Generate a placeholder icon based on category
-        let categoryIcon = 'fa-ticket';
-        if (category === 'Food & Drink') categoryIcon = 'fa-utensils';
-        if (category === 'Outdoor') categoryIcon = 'fa-mountain';
-        if (category === 'Arts & Culture') categoryIcon = 'fa-palette';
-        if (category === 'Entertainment') categoryIcon = 'fa-film';
-        if (category === 'Sport') categoryIcon = 'fa-basketball';
-        
-        // Create card image element
-        let cardImageHtml = '';
-        if (imageUrl) {
-          // Use actual image if available
-          cardImageHtml = `
-            <div class="card-image">
-              ${index < 3 ? '<span class="featured-tag">FEATURED</span>' : ''}
-              <img src="${imageUrl}" alt="${name}">
-            </div>
-          `;
+      // Show button when scrolled down
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('visible');
         } else {
-          // Create placeholder with icon if no image
-          cardImageHtml = `
-            <div class="card-image">
-              ${index < 3 ? '<span class="featured-tag">FEATURED</span>' : ''}
-              <i class="fas ${categoryIcon} category-icon"></i>
-            </div>
-          `;
+          backToTopButton.classList.remove('visible');
         }
-        
-        // Build card HTML
-        let cardHTML = `
-          ${cardImageHtml}
-          <div class="card-content">
-            <div class="card-meta">
-              ${category ? `<span class="badge">${category}</span>` : ''}
-            </div>
-            <h3 class="card-title">${name}</h3>
-            <div class="card-details">
-              ${location ? `<span class="card-location"><i class="fas fa-map-marker-alt"></i> ${location}</span>` : ''}
-              ${price ? `<span class="card-price">${price}</span>` : ''}
-              ${duration ? `<span class="card-duration"><i class="fas fa-clock"></i> ${duration}</span>` : ''}
-            </div>
-          </div>
-        `;
-        
-        card.innerHTML = cardHTML;
-        experienceList.appendChild(card);
-        
-        // Animate cards as they are added
-        gsap.fromTo(
-          card,
-          { 
-            opacity: 0,
-            y: 60
-          },
-          { 
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            delay: 0.1 * index,
-            onComplete: () => card.classList.add('visible')
-          }
-        );
+      });
+      
+      // Scroll to top when clicked
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       });
     }
     
-    // Show loading spinner
-    function showLoading(isLoading) {
-      if (isLoading) {
-        loadingSpinner.classList.remove('hidden');
-      } else {
-        loadingSpinner.classList.add('hidden');
+    // Parallax effect for the hero section
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const heroImage = document.querySelector('.hero-bg');
+      
+      if (heroImage) {
+        heroImage.style.transform = `translateY(${scrollY * 0.4}px)`;
       }
-    }
-    
-    // Initialize on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-      init();
     });
+
+    // Advanced scroll-based animations
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const cards = document.querySelectorAll('.experience-card, .guide-card, .tip-card, .amenity-category');
+      
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top + scrollY;
+        const cardHeight = card.offsetHeight;
+        
+        // Calculate the card's position relative to the viewport
+        const cardPosition = (scrollY + windowHeight - cardTop) / (windowHeight + cardHeight);
+        
+        if (cardPosition > 0 && cardPosition < 1) {
+          // Apply a subtle rotation effect based on scroll position
+          const rotateX = (cardPosition - 0.5) * 5;
+          const translateY = (1 - cardPosition) * 20;
+          const opacity = 0.7 + cardPosition * 0.3;
+          
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) translateY(${translateY}px)`;
+          card.style.opacity = opacity;
+        }
+      });
+      
+      // Parallax effect for section backgrounds
+      document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionPosition = (scrollY - sectionTop + windowHeight) / (sectionHeight + windowHeight);
+        
+        if (sectionPosition > 0 && sectionPosition < 1) {
+          const bgElements = section.querySelectorAll('.section-bg');
+          
+          bgElements.forEach(bg => {
+            const speed = bg.getAttribute('data-speed') || 0.2;
+            const yPos = (sectionPosition - 0.5) * speed * 100;
+            bg.style.transform = `translateY(${yPos}px)`;
+          });
+        }
+      });
+    });
+    
+    // Smooth reveal animation for images when they enter viewport
+    const revealImages = () => {
+      const images = document.querySelectorAll('.card-image, .tip-image');
+      
+      images.forEach(image => {
+        const rect = image.getBoundingClientRect();
+        const isInViewport = rect.top <= window.innerHeight * 0.8 && rect.bottom >= 0;
+        
+        if (isInViewport) {
+          image.classList.add('revealed');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', revealImages);
+    window.addEventListener('resize', revealImages);
+    
+    // Call it once on load
+    setTimeout(revealImages, 500);
   </script>
 </body>
 </html>
