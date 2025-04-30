@@ -1,229 +1,1177 @@
-<div class="section-header">
-        <h2 class="section-title">Emergency Information</h2>
-        <p class="section-subtitle">Important contacts and procedures for emergencies</p>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to 123 Main Street</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* Search Container */
+    .search-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .filter-label {
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+    
+    select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    
+    .sort-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .experience-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 8px 0;
+      font-size: 0.9rem;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+    
+    .badge-category {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    .badge-location {
+      background-color: #e0f2fe;
+      color: #0369a1;
+    }
+    
+    .badge-audience {
+      background-color: #e0e7ff;
+      color: #4338ca;
+    }
+    
+    .price-tag {
+      font-weight: 600;
+      color: #10b981;
+    }
+    
+    .duration-tag {
+      color: #6b7280;
+    }
+    
+    .loading-spinner {
+      display: none;
+      margin: 20px auto;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #3b82f6;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 30px;
+      color: #6b7280;
+      font-style: italic;
+    }
+    
+    .card-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .featured-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #f59e0b;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      z-index: 3;
+    }
+
+    /* Additional styles for the new design */
+    .filters-panel {
+      display: none;
+      margin-top: 15px;
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .filters-panel.active {
+      display: block;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .filters-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .toggle-filters-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-filters-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    .toggle-filters-btn.active {
+      background-color: #000;
+      color: white;
+      border-color: #000;
+    }
+
+    .search-bar {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .search-input {
+      width: 100%;
+      padding-left: 35px;
+      transition: all 0.2s ease;
+    }
+
+    .search-bar.focused .search-input {
+      border-color: #000;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-wrapper {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .results-count {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .results-summary {
+      margin-bottom: 20px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: #000;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      padding: 30px 0;
+    }
+
+    .loading-spinner.hidden {
+      display: none;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 50px 0;
+    }
+
+    .no-results.hidden {
+      display: none;
+    }
+
+    .no-results-icon {
+      font-size: 2.5rem;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .no-results h3 {
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+    }
+
+    .no-results p {
+      color: #666;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .experience-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .experience-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .experience-card {
+      display: block;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .experience-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .experience-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-image {
+      height: 200px;
+      position: relative;
+    }
+
+    .category-icon {
+      font-size: 2rem;
+      color: #888;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-meta {
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .card-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .card-location {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-price {
+      font-weight: 700;
+      color: #10b981;
+    }
+
+    .card-duration {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition-delay: var(--delay, 0s);
+    }
+
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-container">
+    <!-- Section 1: Header and Intro -->
+    <section class="scroll-section" id="intro">
+      <header>
+        <div class="container">
+          <div class="header-content">
+            <h1 class="title-prefix">01 <span class="title-separator"></span> WELCOME GUIDE</h1>
+            <h2 class="main-title">Welcome to 123 Main Street</h2>
+            <p class="subtitle">Your ultimate guide to enjoying Los Angeles like a local</p>
+          </div>
+        </div>
+      </header>
       
-      <div class="emergency-cards">
-        <div class="emergency-card">
-          <div class="emergency-icon emergency-icon-red">
-            <i class="fas fa-ambulance"></i>
-          </div>
-          <h3>Medical Emergency</h3>
-          <p class="emergency-number">Call 911</p>
-          <div class="emergency-details">
-            <p><strong>Nearest Hospital:</strong><br>Cedars-Sinai Medical Center<br>8700 Beverly Blvd<br>Los Angeles, CA 90048</p>
-            <p><strong>Urgent Care:</strong><br>CityMD Urgent Care<br>450 N La Cienega Blvd<br>Los Angeles, CA 90048</p>
-            <p>Open 8am-8pm daily</p>
-          </div>
+      <nav class="category-nav">
+        <div class="container">
+          <ul class="category-list">
+            <li class="category-item active">
+              <a href="#experiences" class="category-link">
+                <i class="fas fa-compass"></i>
+                <span>Experiences</span>
+              </a>
+            </li>
+            <li class="category-item">
+              <a href="#house-guide" class="category-link">
+                <i class="fas fa-home"></i>
+                <span>House Guide</span>
+              </a>
+            </li>
+            <li class="category-item">
+              <a href="#local-tips" class="category-link">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Local Tips</span>
+              </a>
+            </li>
+            <li class="category-item">
+              <a href="#amenities" class="category-link">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Amenities</span>
+              </a>
+            </li>
+            <li class="category-item">
+              <a href="#faq" class="category-link">
+                <i class="fas fa-question-circle"></i>
+                <span>FAQ</span>
+              </a>
+            </li>
+          </ul>
         </div>
-        
-        <div class="emergency-card">
-          <div class="emergency-icon emergency-icon-orange">
-            <i class="fas fa-fire"></i>
-          </div>
-          <h3>Fire Emergency</h3>
-          <p class="emergency-number">Call 911</p>
-          <div class="emergency-details">
-            <p><strong>Fire Extinguisher Location:</strong><br>Under the kitchen sink</p>
-            <p><strong>Fire Alarm:</strong><br>Located in hallway and bedroom</p>
-            <p><strong>Emergency Exit:</strong><br>Main door and balcony emergency ladder in bedroom closet</p>
-          </div>
-        </div>
-        
-        <div class="emergency-card">
-          <div class="emergency-icon emergency-icon-blue">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-          <h3>Police / Security</h3>
-          <p class="emergency-number">Call 911</p>
-          <div class="emergency-details">
-            <p><strong>Local Police (non-emergency):</strong><br>(213) 555-6789</p>
-            <p><strong>Building Security:</strong><br>(310) 555-7890</p>
-            <p><strong>Neighborhood Watch:</strong><br>(323) 555-9012</p>
-          </div>
-        </div>
-        
-        <div class="emergency-card">
-          <div class="emergency-icon emergency-icon-teal">
-            <i class="fas fa-home"></i>
-          </div>
-          <h3>Property Issues</h3>
-          <p class="emergency-number">Call Host: (310) 555-1234</p>
-          <div class="emergency-details">
-            <p><strong>Water Shut-off:</strong><br>Under the kitchen sink</p>
-            <p><strong>Circuit Breaker:</strong><br>In the hallway closet</p>
-            <p><strong>Gas Shut-off:</strong><br>Outside, east side of building</p>
-            <p><strong>Plumber (Emergency):</strong><br>(213) 555-8765</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section class="transportation-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Getting Around</h2>
-        <p class="section-subtitle">Transportation options and tips</p>
-      </div>
+      </nav>
       
-      <div class="transport-grid">
-        <div class="transport-card">
-          <div class="transport-icon">
-            <i class="fas fa-car"></i>
-          </div>
-          <div class="transport-content">
-            <h3>Driving & Parking</h3>
-            <ul class="transport-list">
-              <li>Your dedicated parking space is #42 in the garage</li>
-              <li>Garage entry code: 3791</li>
-              <li>Street parking is metered from 8am-8pm</li>
-              <li>Avoid parking on the north side during street cleaning (Tuesdays 10am-12pm)</li>
-              <li>Traffic is heaviest from 7-10am and 4-7pm weekdays</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="transport-card">
-          <div class="transport-icon">
-            <i class="fas fa-bus"></i>
-          </div>
-          <div class="transport-content">
-            <h3>Public Transit</h3>
-            <ul class="transport-list">
-              <li>Metro Gold Line station is 3 blocks east</li>
-              <li>Bus lines 30, 45, and 81 stop at the corner</li>
-              <li>Download the LA Metro app for real-time schedules</li>
-              <li>TAP cards available at any station ($2 + fare)</li>
-              <li>Day passes are $7 for unlimited rides</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="transport-card">
-          <div class="transport-icon">
-            <i class="fas fa-taxi"></i>
-          </div>
-          <div class="transport-content">
-            <h3>Rideshare & Taxis</h3>
-            <ul class="transport-list">
-              <li>Uber and Lyft are widely available</li>
-              <li>Typical wait time is 3-5 minutes</li>
-              <li>Set pickup point as "Main Entrance" for easiest access</li>
-              <li>Yellow Cab: (213) 555-5555</li>
-              <li>Airport shuttle services available by reservation</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="transport-card">
-          <div class="transport-icon">
-            <i class="fas fa-bicycle"></i>
-          </div>
-          <div class="transport-content">
-            <h3>Biking & Walking</h3>
-            <ul class="transport-list">
-              <li>Metro Bike Share station one block south</li>
-              <li>Electric scooters (Bird, Lime) can be found nearby</li>
-              <li>Walk Score: 85 - Most errands can be done on foot</li>
-              <li>Bike Score: 75 - Bike lanes on main streets</li>
-              <li>Pedestrian-friendly neighborhood with good sidewalks</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section class="contact-section">
-    <div class="container">
-      <div class="contact-card">
-        <div class="contact-profile">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
-          <div class="contact-info">
-            <h3>Your Host, Alex</h3>
-            <p>Available 24/7 for emergencies</p>
-          </div>
-        </div>
-        
-        <div class="contact-methods">
-          <a href="tel:3105551234" class="contact-method">
-            <i class="fas fa-phone"></i>
-            <span>(310) 555-1234</span>
-          </a>
-          <a href="sms:3105551234" class="contact-method">
-            <i class="fas fa-comment"></i>
-            <span>Text Message</span>
-          </a>
-          <a href="mailto:alex@example.com" class="contact-method">
-            <i class="fas fa-envelope"></i>
-            <span>alex@example.com</span>
-          </a>
-          <a href="https://airbnb.com/messaging" class="contact-method">
-            <i class="fab fa-airbnb"></i>
-            <span>Airbnb Message</span>
-          </a>
-        </div>
-        
-        <div class="contact-notes">
-          <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message through Airbnb and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section class="feedback-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Your Feedback Matters</h2>
-        <p class="section-subtitle">Help us improve and share your experience</p>
-      </div>
-      
-      <div class="feedback-content">
-        <p>I strive to provide the best possible experience for my guests. If you're enjoying your stay or have suggestions for improvement, I'd love to hear from you!</p>
-        
-        <div class="feedback-buttons">
-          <a href="#" class="feedback-button">
-            <i class="fas fa-comment-alt"></i>
-            <span>Send Feedback</span>
-          </a>
-          
-          <a href="https://airbnb.com/reviews" class="feedback-button">
-            <i class="fas fa-star"></i>
-            <span>Leave a Review</span>
-          </a>
-        </div>
-        
-        <div class="feedback-testimonials">
-          <h3>What Previous Guests Said:</h3>
-          
-          <div class="testimonial">
-            <div class="testimonial-stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
+      <div class="hero-banner">
+        <div class="container">
+          <div class="personal-message">
+            <div class="host-image">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
             </div>
-            <p>"Alex's place was perfect! Great location, clean, and had everything we needed. The guide book was super helpful for exploring LA. Would definitely stay again!"</p>
-            <p class="testimonial-author">- Sarah, August 2024</p>
-          </div>
-          
-          <div class="testimonial">
-            <div class="testimonial-stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
+            <div class="host-message">
+              <h3>Hello from your host!</h3>
+              <p>Welcome to 123 Main Street! I'm thrilled you've chosen my place for your stay in Los Angeles. I've put together this guide to help you have an amazing experience. Feel free to reach out if you need anything!</p>
+              <p class="host-name">- Alex</p>
             </div>
-            <p>"Loved staying here! The recommendations in the local tips section led us to some amazing spots we would have never found otherwise. Alex was responsive and helpful throughout our stay."</p>
-            <p class="testimonial-author">- Michael, July 2024</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+    
+    <!-- Section 2: Quick Info -->
+    <section id="quick-info" class="quick-info-section scroll-section">
+      <div class="container">
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-wifi"></i>
+            </div>
+            <div class="info-content">
+              <h4>WiFi</h4>
+              <p>Network: LA_Guest</p>
+              <p>Password: sunshine2025</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <div class="info-content">
+              <h4>Access</h4>
+              <p>Door code: 2580</p>
+              <p>Check-in: After 3 PM</p>
+              <p>Check-out: Before 11 AM</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="info-content">
+              <h4>Contact</h4>
+              <p>Host: (310) 555-1234</p>
+              <p>Emergency: 911</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="info-content">
+              <h4>Parking</h4>
+              <p>Use space #42 in the garage</p>
+              <p>Gate code: 3791</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 3: Experiences with Airtable Functionality -->
+    <section id="experiences" class="scroll-section">
+      <div class="search-hero">
+        <div class="container search-container">
+          <div class="section-header">
+            <h2 class="section-title">Discover Local Experiences</h2>
+            <p class="section-subtitle">Find the perfect activities for your stay</p>
+          </div>
+          
+          <div class="search-wrapper">
+            <div class="search-bar">
+              <i class="fas fa-search search-icon"></i>
+              <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="Search experiences..." 
+                aria-label="Search experiences"
+              >
+            </div>
+            
+            <button id="toggle-filters" class="toggle-filters-btn">
+              <i class="fas fa-sliders-h"></i> Filters
+            </button>
+          </div>
+          
+          <div id="filters-panel" class="filters-panel">
+            <div class="filters-row">
+              <div class="filter-group">
+                <label for="category-filter" class="filter-label">
+                  <i class="fas fa-tag"></i> Category
+                </label>
+                <select id="category-filter">
+                  <option value="all">All Categories</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label for="location-filter" class="filter-label">
+                  <i class="fas fa-map-marker-alt"></i> Location
+                </label>
+                <select id="location-filter">
+                  <option value="all">All Locations</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label for="audience-filter" class="filter-label">
+                  <i class="fas fa-users"></i> Audience
+                </label>
+                <select id="audience-filter">
+                  <option value="all">All Types</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="filters-row">
+              <div class="filter-group">
+                <label for="price-filter" class="filter-label">
+                  <i class="fas fa-dollar-sign"></i> Price
+                </label>
+                <select id="price-filter">
+                  <option value="all">Any Price</option>
+                  <option value="0-50">Under $50</option>
+                  <option value="50-100">$50 - $100</option>
+                  <option value="100-200">$100 - $200</option>
+                  <option value="200+">$200+</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label for="duration-filter" class="filter-label">
+                  <i class="fas fa-clock"></i> Duration
+                </label>
+                <select id="duration-filter">
+                  <option value="all">Any Duration</option>
+                  <option value="1">1 hour</option>
+                  <option value="2">2 hours</option>
+                  <option value="3">3 hours</option>
+                  <option value="4+">4+ hours</option>
+                </select>
+              </div>
+              
+              <div class="filter-group">
+                <label for="sort-by" class="filter-label">
+                  <i class="fas fa-sort"></i> Sort by
+                </label>
+                <select id="sort-by">
+                  <option value="name">Name (A-Z)</option>
+                  <option value="name-desc">Name (Z-A)</option>
+                  <option value="price-asc">Price (Low to High)</option>
+                  <option value="price-desc">Price (High to Low)</option>
+                  <option value="duration-asc">Duration (Short to Long)</option>
+                  <option value="duration-desc">Duration (Long to Short)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="results-summary container">
+        <p id="results-count" class="results-count">Showing all experiences</p>
+      </div>
+      
+      <div id="loading-spinner" class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      
+      <main>
+        <div class="container">
+          <div id="experience-list" class="experience-grid">
+            <!-- Dynamic Experiences will be injected here -->
+          </div>
+          
+          <div id="no-results" class="no-results hidden">
+            <div class="no-results-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3>No experiences found</h3>
+            <p>Try adjusting your filters or search terms</p>
+          </div>
+        </div>
+      </main>
+    </section>
+    
+    <!-- Section 4: House Guide -->
+    <section id="house-guide" class="guide-section scroll-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">House Guide</h2>
+          <p class="section-subtitle">Everything you need to know about your stay</p>
+        </div>
+        
+        <div class="guide-grid">
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-door-open"></i>
+            </div>
+            <h3>Checking In & Out</h3>
+            <ul class="guide-list">
+              <li>Check-in time: After 3:00 PM</li>
+              <li>Self check-in with keypad (code: 2580)</li>
+              <li>Check-out time: Before 11:00 AM</li>
+              <li>Just close the door behind you when leaving</li>
+              <li>No need to clean, but please tidy up</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="checkin-details">View Details</button>
+            <div id="checkin-details" class="guide-details">
+              <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call me immediately.</p>
+              <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-scroll"></i>
+            </div>
+            <h3>House Rules</h3>
+            <ul class="guide-list">
+              <li>No smoking anywhere on the property</li>
+              <li>No parties or events</li>
+              <li>Quiet hours: 10 PM - 8 AM</li>
+              <li>No pets allowed</li>
+              <li>Maximum 4 guests at any time</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="rules-details">View Details</button>
+            <div id="rules-details" class="guide-details">
+              <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
+              <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-trash"></i>
+            </div>
+            <h3>Trash & Recycling</h3>
+            <ul class="guide-list">
+              <li>Trash bins located in the side yard</li>
+              <li>Blue bin: Recycling</li>
+              <li>Black bin: General waste</li>
+              <li>Green bin: Yard waste</li>
+              <li>Trash pickup: Tuesday mornings</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="trash-details">View Details</button>
+            <div id="trash-details" class="guide-details">
+              <p>Please sort your recycling appropriately. Plastic containers, paper, and clean aluminum can go in the blue bin. Food waste and non-recyclables go in the black bin.</p>
+              <p>If you're staying during trash day (Tuesday), feel free to roll the bins to the curb the night before.</p>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-temperature-low"></i>
+            </div>
+            <h3>A/C & Heating</h3>
+            <ul class="guide-list">
+              <li>Thermostat located in the hallway</li>
+              <li>Set between 68-78°F for comfort</li>
+              <li>A/C: Press "Cool" button</li>
+              <li>Heat: Press "Heat" button</li>
+              <li>Please turn off when leaving</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="ac-details">View Details</button>
+            <div id="ac-details" class="guide-details">
+              <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
+              <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-tv"></i>
+            </div>
+            <h3>TV & Entertainment</h3>
+            <ul class="guide-list">
+              <li>Smart TV with Netflix, Hulu, Disney+</li>
+              <li>Use the Samsung remote to power on</li>
+              <li>Press "Source" to switch inputs</li>
+              <li>Login credentials in the drawer</li>
+              <li>Board games in the living room cabinet</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="tv-details">View Details</button>
+            <div id="tv-details" class="guide-details">
+              <p>The main TV is a 55" Samsung smart TV. You can access streaming services by pressing the Home button on the remote and selecting the app you want to use. Netflix, Hulu, and Disney+ are already logged in with guest accounts.</p>
+              <p>If you want to connect your own device, HDMI cables are in the TV cabinet. Use HDMI 1 for best quality.</p>
+            </div>
+          </div>
+          
+          <div class="guide-card">
+            <div class="guide-icon">
+              <i class="fas fa-shower"></i>
+            </div>
+            <h3>Bathroom</h3>
+            <ul class="guide-list">
+              <li>Extra towels in the linen closet</li>
+              <li>Pull shower knob to activate water</li>
+              <li>Turn left handle for hot water</li>
+              <li>Hair dryer under the sink</li>
+              <li>Please conserve water when possible</li>
+            </ul>
+            <button class="guide-expand-btn" data-target="bathroom-details">View Details</button>
+            <div id="bathroom-details" class="guide-details">
+              <p>The shower can be a bit tricky. Pull the knob out to start water flow, then turn counter-clockwise for hotter water. The sweet spot is usually around the 2 o'clock position.</p>
+              <p>We've provided basic toiletries including shampoo, conditioner, body wash, and hand soap. If you need anything else, there's a convenience store just two blocks away.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 5: Local Tips -->
+    <section id="local-tips" class="tips-section scroll-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Local Tips</h2>
+          <p class="section-subtitle">Insider recommendations to experience LA like a local</p>
+        </div>
+        
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-image">
+              <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
+            </div>
+            <div class="tip-content">
+              <h3>Best Restaurants</h3>
+              <ul class="tip-list">
+                <li><strong>Bestia</strong> - Amazing Italian, reserve weeks ahead</li>
+                <li><strong>El Cholo</strong> - Classic Mexican, great margaritas</li>
+                <li><strong>Grand Central Market</strong> - Food hall with options for everyone</li>
+                <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
+                <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
+              </ul>
+              <a href="#" class="tip-link">View All Beach Recommendations</a>
+            </div>
+          </div>
+          
+          <div class="tip-card">
+            <div class="tip-image">
+              <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
+            </div>
+            <div class="tip-content">
+              <h3>Hidden Gems</h3>
+              <ul class="tip-list">
+                <li><strong>The Last Bookstore</strong> - Unique bookstore with art installations</li>
+                <li><strong>Hollywood Forever Cemetery</strong> - Movie screenings in summer</li>
+                <li><strong>The Museum of Jurassic Technology</strong> - Wonderfully weird collection</li>
+                <li><strong>Watts Towers</strong> - Impressive folk art structures</li>
+                <li><strong>The Bradbury Building</strong> - Historic landmark with gorgeous interior</li>
+              </ul>
+              <a href="#" class="tip-link">View All Hidden Gems</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 6: Amenities -->
+    <section id="amenities" class="amenities-section scroll-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Home Amenities</h2>
+          <p class="section-subtitle">Everything available to make your stay comfortable</p>
+        </div>
+        
+        <div class="amenities-grid">
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
+            <ul class="amenity-list">
+              <li>Full-size refrigerator</li>
+              <li>Microwave & toaster oven</li>
+              <li>Coffee maker with pods</li>
+              <li>Dishwasher</li>
+              <li>Basic spices & cooking oil</li>
+              <li>Pots, pans & cooking utensils</li>
+              <li>Dishes, glasses & flatware</li>
+              <li>Wine opener & glasses</li>
+            </ul>
+          </div>
+          
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
+            <ul class="amenity-list">
+              <li>Queen-size mattress</li>
+              <li>Extra pillows in closet</li>
+              <li>Memory foam topper</li>
+              <li>Blackout curtains</li>
+              <li>Reading lamps</li>
+              <li>Extra blankets</li>
+              <li>Alarm clock</li>
+              <li>Hangers & iron</li>
+            </ul>
+          </div>
+          
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-shower"></i> Bathroom</h3>
+            <ul class="amenity-list">
+              <li>Towels & washcloths</li>
+              <li>Shampoo & conditioner</li>
+              <li>Body wash & hand soap</li>
+              <li>Hair dryer</li>
+              <li>First aid kit</li>
+              <li>Extra toilet paper</li>
+              <li>Shower caddy</li>
+              <li>Makeup remover wipes</li>
+            </ul>
+          </div>
+          
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
+            <ul class="amenity-list">
+              <li>High-speed WiFi</li>
+              <li>55" Smart TV</li>
+              <li>Netflix, Hulu, Disney+</li>
+              <li>Bluetooth speaker</li>
+              <li>USB charging ports</li>
+              <li>Smart thermostat</li>
+              <li>Ring doorbell</li>
+              <li>Printer/scanner</li>
+            </ul>
+          </div>
+          
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-swimming-pool"></i> Outdoor</h3>
+            <ul class="amenity-list">
+              <li>Balcony with seating</li>
+              <li>BBQ grill (propane)</li>
+              <li>Shared swimming pool</li>
+              <li>Pool towels</li>
+              <li>Outdoor dining table</li>
+              <li>String lights</li>
+              <li>Fire pit</li>
+              <li>Secure parking spot</li>
+            </ul>
+          </div>
+          
+          <div class="amenity-category">
+            <h3 class="category-title"><i class="fas fa-plus"></i> Extras</h3>
+            <ul class="amenity-list">
+              <li>Yoga mat</li>
+              <li>Board games</li>
+              <li>Books & magazines</li>
+              <li>Beach chairs & umbrella</li>
+              <li>Picnic basket</li>
+              <li>Reusable shopping bags</li>
+              <li>Laundry supplies</li>
+              <li>Basic cleaning supplies</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 7: FAQ -->
+    <section id="faq" class="faq-section scroll-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Quick answers to common questions</p>
+        </div>
+        
+        <div class="faq-accordion">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>Is parking included with my stay?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Early check-in and late check-out may be possible depending on our cleaning schedule and other bookings. Please message me at least 24 hours in advance to inquire about availability. A fee may apply for significantly extended hours.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>How do I access the building?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call me immediately.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3>What is the best way to get around?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 8: Emergency -->
+    <section class="emergency-section scroll-section" id="emergency">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Emergency Information</h2>
+          <p class="section-subtitle">Important contacts and procedures for emergencies</p>
+        </div>
+        
+        <div class="emergency-cards">
+          <div class="emergency-card">
+            <div class="emergency-icon emergency-icon-red">
+              <i class="fas fa-ambulance"></i>
+            </div>
+            <h3>Medical Emergency</h3>
+            <p class="emergency-number">Call 911</p>
+            <div class="emergency-details">
+              <p><strong>Nearest Hospital:</strong><br>Cedars-Sinai Medical Center<br>8700 Beverly Blvd<br>Los Angeles, CA 90048</p>
+              <p><strong>Urgent Care:</strong><br>CityMD Urgent Care<br>450 N La Cienega Blvd<br>Los Angeles, CA 90048</p>
+              <p>Open 8am-8pm daily</p>
+            </div>
+          </div>
+          
+          <div class="emergency-card">
+            <div class="emergency-icon emergency-icon-orange">
+              <i class="fas fa-fire"></i>
+            </div>
+            <h3>Fire Emergency</h3>
+            <p class="emergency-number">Call 911</p>
+            <div class="emergency-details">
+              <p><strong>Fire Extinguisher Location:</strong><br>Under the kitchen sink</p>
+              <p><strong>Fire Alarm:</strong><br>Located in hallway and bedroom</p>
+              <p><strong>Emergency Exit:</strong><br>Main door and balcony emergency ladder in bedroom closet</p>
+            </div>
+          </div>
+          
+          <div class="emergency-card">
+            <div class="emergency-icon emergency-icon-blue">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Police / Security</h3>
+            <p class="emergency-number">Call 911</p>
+            <div class="emergency-details">
+              <p><strong>Local Police (non-emergency):</strong><br>(213) 555-6789</p>
+              <p><strong>Building Security:</strong><br>(310) 555-7890</p>
+              <p><strong>Neighborhood Watch:</strong><br>(323) 555-9012</p>
+            </div>
+          </div>
+          
+          <div class="emergency-card">
+            <div class="emergency-icon emergency-icon-teal">
+              <i class="fas fa-home"></i>
+            </div>
+            <h3>Property Issues</h3>
+            <p class="emergency-number">Call Host: (310) 555-1234</p>
+            <div class="emergency-details">
+              <p><strong>Water Shut-off:</strong><br>Under the kitchen sink</p>
+              <p><strong>Circuit Breaker:</strong><br>In the hallway closet</p>
+              <p><strong>Gas Shut-off:</strong><br>Outside, east side of building</p>
+              <p><strong>Plumber (Emergency):</strong><br>(213) 555-8765</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 9: Transportation -->
+    <section class="transportation-section scroll-section" id="transportation">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Getting Around</h2>
+          <p class="section-subtitle">Transportation options and tips</p>
+        </div>
+        
+        <div class="transport-grid">
+          <div class="transport-card">
+            <div class="transport-icon">
+              <i class="fas fa-car"></i>
+            </div>
+            <div class="transport-content">
+              <h3>Driving & Parking</h3>
+              <ul class="transport-list">
+                <li>Your dedicated parking space is #42 in the garage</li>
+                <li>Garage entry code: 3791</li>
+                <li>Street parking is metered from 8am-8pm</li>
+                <li>Avoid parking on the north side during street cleaning (Tuesdays 10am-12pm)</li>
+                <li>Traffic is heaviest from 7-10am and 4-7pm weekdays</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="transport-card">
+            <div class="transport-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <div class="transport-content">
+              <h3>Public Transit</h3>
+              <ul class="transport-list">
+                <li>Metro Gold Line station is 3 blocks east</li>
+                <li>Bus lines 30, 45, and 81 stop at the corner</li>
+                <li>Download the LA Metro app for real-time schedules</li>
+                <li>TAP cards available at any station ($2 + fare)</li>
+                <li>Day passes are $7 for unlimited rides</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="transport-card">
+            <div class="transport-icon">
+              <i class="fas fa-taxi"></i>
+            </div>
+            <div class="transport-content">
+              <h3>Rideshare & Taxis</h3>
+              <ul class="transport-list">
+                <li>Uber and Lyft are widely available</li>
+                <li>Typical wait time is 3-5 minutes</li>
+                <li>Set pickup point as "Main Entrance" for easiest access</li>
+                <li>Yellow Cab: (213) 555-5555</li>
+                <li>Airport shuttle services available by reservation</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="transport-card">
+            <div class="transport-icon">
+              <i class="fas fa-bicycle"></i>
+            </div>
+            <div class="transport-content">
+              <h3>Biking & Walking</h3>
+              <ul class="transport-list">
+                <li>Metro Bike Share station one block south</li>
+                <li>Electric scooters (Bird, Lime) can be found nearby</li>
+                <li>Walk Score: 85 - Most errands can be done on foot</li>
+                <li>Bike Score: 75 - Bike lanes on main streets</li>
+                <li>Pedestrian-friendly neighborhood with good sidewalks</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 10: Contact -->
+    <section class="contact-section scroll-section" id="contact">
+      <div class="container">
+        <div class="contact-card">
+          <div class="contact-profile">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
+            <div class="contact-info">
+              <h3>Your Host, Alex</h3>
+              <p>Available 24/7 for emergencies</p>
+            </div>
+          </div>
+          
+          <div class="contact-methods">
+            <a href="tel:3105551234" class="contact-method">
+              <i class="fas fa-phone"></i>
+              <span>(310) 555-1234</span>
+            </a>
+            <a href="sms:3105551234" class="contact-method">
+              <i class="fas fa-comment"></i>
+              <span>Text Message</span>
+            </a>
+            <a href="mailto:alex@example.com" class="contact-method">
+              <i class="fas fa-envelope"></i>
+              <span>alex@example.com</span>
+            </a>
+            <a href="https://airbnb.com/messaging" class="contact-method">
+              <i class="fab fa-airbnb"></i>
+              <span>Airbnb Message</span>
+            </a>
+          </div>
+          
+          <div class="contact-notes">
+            <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message through Airbnb and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Section 11: Feedback -->
+    <section class="feedback-section scroll-section" id="feedback">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Your Feedback Matters</h2>
+          <p class="section-subtitle">Help us improve and share your experience</p>
+        </div>
+        
+        <div class="feedback-content">
+          <p>I strive to provide the best possible experience for my guests. If you're enjoying your stay or have suggestions for improvement, I'd love to hear from you!</p>
+          
+          <div class="feedback-buttons">
+            <a href="#" class="feedback-button">
+              <i class="fas fa-comment-alt"></i>
+              <span>Send Feedback</span>
+            </a>
+            
+            <a href="https://airbnb.com/reviews" class="feedback-button">
+              <i class="fas fa-star"></i>
+              <span>Leave a Review</span>
+            </a>
+          </div>
+          
+          <div class="feedback-testimonials">
+            <h3>What Previous Guests Said:</h3>
+            
+            <div class="testimonial">
+              <div class="testimonial-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p>"Alex's place was perfect! Great location, clean, and had everything we needed. The guide book was super helpful for exploring LA. Would definitely stay again!"</p>
+              <p class="testimonial-author">- Sarah, August 2024</p>
+            </div>
+            
+            <div class="testimonial">
+              <div class="testimonial-stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+              <p>"Loved staying here! The recommendations in the local tips section led us to some amazing spots we would have never found otherwise. Alex was responsive and helpful throughout our stay."</p>
+              <p class="testimonial-author">- Michael, July 2024</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
   
   <footer>
     <div class="container">
@@ -258,6 +1206,7 @@
     </div>
   </footer>
   
+  <!-- Airtable Integration JavaScript -->
   <script>
     // Global variables
     let allRecords = [];
@@ -431,7 +1380,7 @@
           console.log('✅ Data received:', data);
           
           if (!data.records || data.records.length === 0) {
-            showNoResults('No experiences found in the database.');
+            showNoResults(true);
             return;
           }
           
@@ -444,1266 +1393,7 @@
         })
         .catch(error => {
           console.error('❌ Error fetching experiences:', error);
-          showNoResults(`Error loading experiences. Please try again later.`);
-          
-          // Fallback to sample data for development/preview
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            console.log('Loading sample data for development...');
-            loadSampleData();
-          }
-        })
-        .finally(() => {
-          showLoading(false);
-        });
-    }
-    
-    // Load sample data for development/preview purposes
-    function loadSampleData() {
-      const sampleData = {
-        records: [
-          {
-            id: '1',
-            fields: {
-              Name: 'Hollywood Sign Hike',
-              Description: 'Experience the iconic Hollywood Sign up close with this guided hike through Griffith Park.',
-              Category: 'Outdoor',
-              Location: 'Hollywood Hills',
-              'Audience Type': 'Active',
-              'Estimated Price': '25',
-              Duration: '2',
-              URL: 'https://example.com/hike',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '2',
-            fields: {
-              Name: 'LACMA Art Tour',
-              Description: 'Explore the extensive collection at the Los Angeles County Museum of Art with an expert guide.',
-              Category: 'Arts & Culture',
-              Location: 'Mid-Wilshire',
-              'Audience Type': 'Art Lovers',
-              'Estimated Price': '35',
-              Duration: '3',
-              URL: 'https://example.com/lacma'
-            }
-          },
-          {
-            id: '3',
-            fields: {
-              Name: 'Santa Monica Sunset Bike Tour',
-              Description: 'Cycle along the famous Santa Monica beach as the sun sets over the Pacific.',
-              Category: 'Outdoor',
-              Location: 'Santa Monica',
-              'Audience Type': 'Active',
-              'Estimated Price': '45',
-              Duration: '2',
-              URL: 'https://example.com/bike',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1530053969600-caed2596d242?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '4',
-            fields: {
-              Name: 'Michelin Star Dining Experience',
-              Description: 'Indulge in a multi-course tasting menu at one of LA\'s finest restaurants.',
-              Category: 'Food & Drink',
-              Location: 'Downtown LA',
-              'Audience Type': 'Foodies',
-              'Estimated Price': '250',
-              Duration: '3',
-              URL: 'https://example.com/dining'
-            }
-          },
-          {
-            id: '5',
-            fields: {
-              Name: 'Warner Bros. Studio Tour',
-              Description: 'Go behind the scenes of your favorite movies and TV shows with this exclusive studio tour.',
-              Category: 'Entertainment',
-              Location: 'Burbank',
-              'Audience Type': 'All Ages',
-              'Estimated Price': '75',
-              Duration: '3',
-              URL: 'https://example.com/studio',
-              Photo: [
-                {
-                  thumbnails: {
-                    large: {
-                      url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&auto=format&fit=crop'
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          {
-            id: '6',
-            fields: {
-              Name: 'Venice Beach Skateboarding Lesson',
-              Description: 'Learn to skateboard from the pros at the famous Venice Beach Skatepark.',
-              Category: 'Sport',
-              Location: 'Venice',
-              'Audience Type': 'Active',
-              'Estimated Price': '60',
-              Duration: '1',
-              URL: 'https://example.com/skate'
-            }
-          }
-        ]
-      };
-      
-      console.log('✅ Sample data loaded:', sampleData);
-      
-      allRecords = sampleData.records;
-      populateFilterOptions();
-      applyFilters();
-      
-      // Initial animation
-      animateElements();
-    }
-    
-    // Populate filter dropdowns with options from data
-    function populateFilterOptions() {
-      // Extract unique values for each filter
-      const categories = new Set();
-      const locations = new Set();
-      const audienceTypes = new Set();
-      
-      allRecords.forEach(record => {
-        const fields = record.fields || {};
-        
-        // Add values to sets if they exist
-        if (fields.Category) categories.add(fields.Category);
-        if (fields.Location) locations.add(fields.Location);
-        if (fields['Audience Type']) audienceTypes.add(fields['Audience Type']);
-      });
-      
-      // Populate category filter
-      populateSelectOptions(categoryFilter, [...categories].sort());
-      
-      // Populate location filter
-      populateSelectOptions(locationFilter, [...locations].sort());
-      
-      // Populate audience filter
-      populateSelectOptions(audienceFilter, [...audienceTypes].sort());
-    }
-    
-    // Helper to populate select options
-    function populateSelectOptions(selectElement, options) {
-      options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        optionElement.textContent = option;
-        selectElement.appendChild(optionElement);
-      });
-    }
-    
-    // Apply all filters and sorting
-    function applyFilters() {
-      // Get filter values
-      const searchTerm = searchInput.value.toLowerCase().trim();
-      const selectedCategory = categoryFilter.value;
-      const selectedLocation = locationFilter.value;
-      const selectedAudience = audienceFilter.value;
-      const selectedPrice = priceFilter.value;
-      const selectedDuration = durationFilter.value;
-      const sortBy = sortBySelect.value;
-      
-      // Filter records
-      filteredRecords = allRecords.filter(record => {
-        const fields = record.fields || {};
-        const name = (fields.Name || '').toLowerCase();
-        const description = (fields.Description || '').toLowerCase();
-        const category = fields.Category || '';
-        const location = fields.Location || '';
-        const audience = fields['Audience Type'] || '';
-        const price = parseFloat(fields['Estimated Price'] || 0);
-        const duration = parseInt(fields.Duration || 0);
-        
-        // Text search
-        const matchesSearch = !searchTerm || 
-          name.includes(searchTerm) || 
-          description.includes(searchTerm);
-        
-        // Category filter
-        const matchesCategory = selectedCategory === 'all' || 
-          category === selectedCategory;
-        
-        // Location filter
-        const matchesLocation = selectedLocation === 'all' || 
-          location === selectedLocation;
-        
-        // Audience filter
-        const matchesAudience = selectedAudience === 'all' || 
-          audience === selectedAudience;
-        
-        // Price filter
-        let matchesPrice = true;
-        if (selectedPrice !== 'all') {
-          if (selectedPrice === '0-50') {
-            matchesPrice = price >= 0 && price <= 50;
-          } else if (selectedPrice === '50-100') {
-            matchesPrice = price > 50 && price <= 100;
-          } else if (selectedPrice === '100-200') {
-            matchesPrice = price > 100 && price <= 200;
-          } else if (selectedPrice === '200+') {
-            matchesPrice = price > 200;
-          }
-        }
-        
-        // Duration filter
-        let matchesDuration = true;
-        if (selectedDuration !== 'all') {
-          if (selectedDuration === '4+') {
-            matchesDuration = duration >= 4;
-          } else {
-            matchesDuration = duration === parseInt(selectedDuration);
-          }
-        }
-        
-        // Return true if it matches all filters
-        return matchesSearch && 
-               matchesCategory && 
-               matchesLocation && 
-               matchesAudience && 
-               matchesPrice && 
-               matchesDuration;
-      });
-      
-      // Sort filtered records
-      sortFilteredRecords(sortBy);
-      
-      // Update results count
-      updateResultsCount();
-      
-      // Render the filtered and sorted records
-      renderExperienceCards();
-    }
-    
-    // Update the results count display
-    function updateResultsCount() {
-      let countText = '';
-      
-      if (filteredRecords.length === 0) {
-        countText = 'No experiences found';
-      } else if (filteredRecords.length === 1) {
-        countText = '1 experience found';
-      } else {
-        countText = `${filteredRecords.length} experiences found`;
-      }
-      
-      // Check if filters are applied
-      const hasSearch = searchInput.value.trim() !== '';
-      const hasCategory = categoryFilter.value !== 'all';
-      const hasLocation = locationFilter.value !== 'all';
-      const hasAudience = audienceFilter.value !== 'all';
-      const hasPrice = priceFilter.value !== 'all';
-      const hasDuration = durationFilter.value !== 'all';
-      
-      const filtersApplied = hasSearch || hasCategory || hasLocation || 
-                            hasAudience || hasPrice || hasDuration;
-      
-      if (filtersApplied) {
-        countText += ' with current filters';
-      }
-      
-      resultsCount.textContent = countText;
-    }
-    
-    // Sort the filtered records based on selected sort option
-    function sortFilteredRecords(sortBy) {
-      filteredRecords.sort((a, b) => {
-        const fieldsA = a.fields || {};
-        const fieldsB = b.fields || {};
-        
-        switch (sortBy) {
-          case 'name':
-            return (fieldsA.Name || '').localeCompare(fieldsB.Name || '');
-          case 'name-desc':
-            return (fieldsB.Name || '').localeCompare(fieldsA.Name || '');
-          case 'price-asc':
-            return parseFloat(fieldsA['Estimated Price'] || 0) - parseFloat(fieldsB['Estimated Price'] || 0);
-          case 'price-desc':
-            return parseFloat(fieldsB['Estimated Price'] || 0) - parseFloat(fieldsA['Estimated Price'] || 0);
-          case 'duration-asc':
-            return parseInt(fieldsA.Duration || 0) - parseInt(fieldsB.Duration || 0);
-          case 'duration-desc':
-            return parseInt(fieldsB.Duration || 0) - parseInt(fieldsA.Duration || 0);
-          default:
-            return 0;
-        }
-      });
-    }
-    
-    // Render experience cards
-    function renderExperienceCards() {
-      // Clear the container
-      experienceList.innerHTML = '';
-      
-      if (filteredRecords.length === 0) {
-        noResultsDiv.classList.remove('hidden');
-        experienceList.classList.add('hidden');
-        return;
-      } else {
-        noResultsDiv.classList.add('hidden');
-        experienceList.classList.remove('hidden');
-      }
-      
-      // Add cards for each filtered record
-      filteredRecords.forEach((record, index) => {
-        const fields = record.fields || {};
-        
-        // Extract field values with fallbacks
-        const name = fields.Name || 'Untitled Experience';
-        const description = fields.Description || 'No description provided.';
-        const rawUrl = fields.URL || '#';
-        const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
-        const category = fields.Category || '';
-        const location = fields.Location || '';
-        const audienceType = fields['Audience Type'] || '';
-        const price = fields['Estimated Price'] 
-          ? `${parseFloat(fields['Estimated Price']).toFixed(0)}` 
-          : 'Price not available';
-        const duration = fields.Duration 
-          ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
-          : '';
-        
-        // Get image URL if available
-        const imageUrl = fields.Photo && 
-                         fields.Photo.length > 0 && 
-                         fields.Photo[0].thumbnails
-          ? fields.Photo[0].thumbnails.large.url
-          : null;
-        
-        // Create card element
-        const card = document.createElement('a');
-        card.href = url;
-        card.target = "_blank";
-        card.className = 'experience-card animate-in';
-        card.style.setProperty('--delay', `${index * 0.05}s`);
-        
-        // Generate a placeholder icon based on category
-        let categoryIcon = 'fa-ticket';
-        if (category === 'Food &<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to 123 Main Street</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-</head>
-<body>
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <h1 class="title-prefix">01 <span class="title-separator"></span> WELCOME GUIDE</h1>
-        <h2 class="main-title">Welcome to 123 Main Street</h2>
-        <p class="subtitle">Your ultimate guide to enjoying Los Angeles like a local</p>
-      </div>
-    </div>
-  </header>
-  
-  <nav class="category-nav">
-    <div class="container">
-      <ul class="category-list">
-        <li class="category-item active">
-          <a href="#experiences" class="category-link">
-            <i class="fas fa-compass"></i>
-            <span>Experiences</span>
-          </a>
-        </li>
-        <li class="category-item">
-          <a href="#house-guide" class="category-link">
-            <i class="fas fa-home"></i>
-            <span>House Guide</span>
-          </a>
-        </li>
-        <li class="category-item">
-          <a href="#local-tips" class="category-link">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Local Tips</span>
-          </a>
-        </li>
-        <li class="category-item">
-          <a href="#amenities" class="category-link">
-            <i class="fas fa-concierge-bell"></i>
-            <span>Amenities</span>
-          </a>
-        </li>
-        <li class="category-item">
-          <a href="#faq" class="category-link">
-            <i class="fas fa-question-circle"></i>
-            <span>FAQ</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  
-  <div class="hero-banner">
-    <div class="container">
-      <div class="personal-message">
-        <div class="host-image">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
-        </div>
-        <div class="host-message">
-          <h3>Hello from your host!</h3>
-          <p>Welcome to 123 Main Street! I'm thrilled you've chosen my place for your stay in Los Angeles. I've put together this guide to help you have an amazing experience. Feel free to reach out if you need anything!</p>
-          <p class="host-name">- Alex</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <section id="quick-info" class="quick-info-section">
-    <div class="container">
-      <div class="info-cards">
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fas fa-wifi"></i>
-          </div>
-          <div class="info-content">
-            <h4>WiFi</h4>
-            <p>Network: LA_Guest</p>
-            <p>Password: sunshine2025</p>
-          </div>
-        </div>
-        
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fas fa-key"></i>
-          </div>
-          <div class="info-content">
-            <h4>Access</h4>
-            <p>Door code: 2580</p>
-            <p>Check-in: After 3 PM</p>
-            <p>Check-out: Before 11 AM</p>
-          </div>
-        </div>
-        
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fas fa-phone"></i>
-          </div>
-          <div class="info-content">
-            <h4>Contact</h4>
-            <p>Host: (310) 555-1234</p>
-            <p>Emergency: 911</p>
-          </div>
-        </div>
-        
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fas fa-car"></i>
-          </div>
-          <div class="info-content">
-            <h4>Parking</h4>
-            <p>Use space #42 in the garage</p>
-            <p>Gate code: 3791</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <div class="search-hero" id="experiences">
-    <div class="container search-container">
-      <div class="section-header">
-        <h2 class="section-title">Discover Local Experiences</h2>
-        <p class="section-subtitle">Find the perfect activities for your stay</p>
-      </div>
-      
-      <div class="search-wrapper">
-        <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
-          <input 
-            type="text" 
-            id="search-input" 
-            class="search-input" 
-            placeholder="Search experiences..." 
-            aria-label="Search experiences"
-          >
-        </div>
-        
-        <button id="toggle-filters" class="toggle-filters-btn">
-          <i class="fas fa-sliders-h"></i> Filters
-        </button>
-      </div>
-      
-      <div id="filters-panel" class="filters-panel">
-        <div class="filters-row">
-          <div class="filter-group">
-            <label for="category-filter" class="filter-label">
-              <i class="fas fa-tag"></i> Category
-            </label>
-            <select id="category-filter">
-              <option value="all">All Categories</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="location-filter" class="filter-label">
-              <i class="fas fa-map-marker-alt"></i> Location
-            </label>
-            <select id="location-filter">
-              <option value="all">All Locations</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="audience-filter" class="filter-label">
-              <i class="fas fa-users"></i> Audience
-            </label>
-            <select id="audience-filter">
-              <option value="all">All Types</option>
-            </select>
-          </div>
-        </div>
-        
-        <div class="filters-row">
-          <div class="filter-group">
-            <label for="price-filter" class="filter-label">
-              <i class="fas fa-dollar-sign"></i> Price
-            </label>
-            <select id="price-filter">
-              <option value="all">Any Price</option>
-              <option value="0-50">Under $50</option>
-              <option value="50-100">$50 - $100</option>
-              <option value="100-200">$100 - $200</option>
-              <option value="200+">$200+</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="duration-filter" class="filter-label">
-              <i class="fas fa-clock"></i> Duration
-            </label>
-            <select id="duration-filter">
-              <option value="all">Any Duration</option>
-              <option value="1">1 hour</option>
-              <option value="2">2 hours</option>
-              <option value="3">3 hours</option>
-              <option value="4+">4+ hours</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="sort-by" class="filter-label">
-              <i class="fas fa-sort"></i> Sort by
-            </label>
-            <select id="sort-by">
-              <option value="name">Name (A-Z)</option>
-              <option value="name-desc">Name (Z-A)</option>
-              <option value="price-asc">Price (Low to High)</option>
-              <option value="price-desc">Price (High to Low)</option>
-              <option value="duration-asc">Duration (Short to Long)</option>
-              <option value="duration-desc">Duration (Long to Short)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="results-summary container">
-    <p id="results-count" class="results-count">Showing all experiences</p>
-  </div>
-  
-  <div id="loading-spinner" class="loading-spinner">
-    <div class="spinner"></div>
-  </div>
-  
-  <main>
-    <div class="container">
-      <div id="experience-list" class="experience-grid">
-        <!-- Dynamic Experiences will be injected here -->
-      </div>
-      
-      <div id="no-results" class="no-results hidden">
-        <div class="no-results-icon">
-          <i class="fas fa-search"></i>
-        </div>
-        <h3>No experiences found</h3>
-        <p>Try adjusting your filters or search terms</p>
-      </div>
-    </div>
-  </main>
-  
-  <section id="house-guide" class="guide-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">House Guide</h2>
-        <p class="section-subtitle">Everything you need to know about your stay</p>
-      </div>
-      
-      <div class="guide-grid">
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-door-open"></i>
-          </div>
-          <h3>Checking In & Out</h3>
-          <ul class="guide-list">
-            <li>Check-in time: After 3:00 PM</li>
-            <li>Self check-in with keypad (code: 2580)</li>
-            <li>Check-out time: Before 11:00 AM</li>
-            <li>Just close the door behind you when leaving</li>
-            <li>No need to clean, but please tidy up</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="checkin-details">View Details</button>
-          <div id="checkin-details" class="guide-details">
-            <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call me immediately.</p>
-            <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
-          </div>
-        </div>
-        
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-scroll"></i>
-          </div>
-          <h3>House Rules</h3>
-          <ul class="guide-list">
-            <li>No smoking anywhere on the property</li>
-            <li>No parties or events</li>
-            <li>Quiet hours: 10 PM - 8 AM</li>
-            <li>No pets allowed</li>
-            <li>Maximum 4 guests at any time</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="rules-details">View Details</button>
-          <div id="rules-details" class="guide-details">
-            <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
-            <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
-          </div>
-        </div>
-        
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-trash"></i>
-          </div>
-          <h3>Trash & Recycling</h3>
-          <ul class="guide-list">
-            <li>Trash bins located in the side yard</li>
-            <li>Blue bin: Recycling</li>
-            <li>Black bin: General waste</li>
-            <li>Green bin: Yard waste</li>
-            <li>Trash pickup: Tuesday mornings</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="trash-details">View Details</button>
-          <div id="trash-details" class="guide-details">
-            <p>Please sort your recycling appropriately. Plastic containers, paper, and clean aluminum can go in the blue bin. Food waste and non-recyclables go in the black bin.</p>
-            <p>If you're staying during trash day (Tuesday), feel free to roll the bins to the curb the night before.</p>
-          </div>
-        </div>
-        
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-temperature-low"></i>
-          </div>
-          <h3>A/C & Heating</h3>
-          <ul class="guide-list">
-            <li>Thermostat located in the hallway</li>
-            <li>Set between 68-78°F for comfort</li>
-            <li>A/C: Press "Cool" button</li>
-            <li>Heat: Press "Heat" button</li>
-            <li>Please turn off when leaving</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="ac-details">View Details</button>
-          <div id="ac-details" class="guide-details">
-            <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
-            <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
-          </div>
-        </div>
-        
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-tv"></i>
-          </div>
-          <h3>TV & Entertainment</h3>
-          <ul class="guide-list">
-            <li>Smart TV with Netflix, Hulu, Disney+</li>
-            <li>Use the Samsung remote to power on</li>
-            <li>Press "Source" to switch inputs</li>
-            <li>Login credentials in the drawer</li>
-            <li>Board games in the living room cabinet</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="tv-details">View Details</button>
-          <div id="tv-details" class="guide-details">
-            <p>The main TV is a 55" Samsung smart TV. You can access streaming services by pressing the Home button on the remote and selecting the app you want to use. Netflix, Hulu, and Disney+ are already logged in with guest accounts.</p>
-            <p>If you want to connect your own device, HDMI cables are in the TV cabinet. Use HDMI 1 for best quality.</p>
-          </div>
-        </div>
-        
-        <div class="guide-card">
-          <div class="guide-icon">
-            <i class="fas fa-shower"></i>
-          </div>
-          <h3>Bathroom</h3>
-          <ul class="guide-list">
-            <li>Extra towels in the linen closet</li>
-            <li>Pull shower knob to activate water</li>
-            <li>Turn left handle for hot water</li>
-            <li>Hair dryer under the sink</li>
-            <li>Please conserve water when possible</li>
-          </ul>
-          <button class="guide-expand-btn" data-target="bathroom-details">View Details</button>
-          <div id="bathroom-details" class="guide-details">
-            <p>The shower can be a bit tricky. Pull the knob out to start water flow, then turn counter-clockwise for hotter water. The sweet spot is usually around the 2 o'clock position.</p>
-            <p>We've provided basic toiletries including shampoo, conditioner, body wash, and hand soap. If you need anything else, there's a convenience store just two blocks away.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section id="local-tips" class="tips-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Local Tips</h2>
-        <p class="section-subtitle">Insider recommendations to experience LA like a local</p>
-      </div>
-      
-      <div class="tips-grid">
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
-          </div>
-          <div class="tip-content">
-            <h3>Best Restaurants</h3>
-            <ul class="tip-list">
-              <li><strong>Bestia</strong> - Amazing Italian, reserve weeks ahead</li>
-              <li><strong>El Cholo</strong> - Classic Mexican, great margaritas</li>
-              <li><strong>Grand Central Market</strong> - Food hall with options for everyone</li>
-              <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
-              <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
-            </ul>
-            <a href="#" class="tip-link">View All Restaurant Recommendations</a>
-          </div>
-        </div>
-        
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop" alt="Nightlife" />
-          </div>
-          <div class="tip-content">
-            <h3>Nightlife Spots</h3>
-            <ul class="tip-list">
-              <li><strong>The Varnish</strong> - Hidden speakeasy with craft cocktails</li>
-              <li><strong>Good Times at Davey Wayne's</strong> - 70's themed bar with a fun vibe</li>
-              <li><strong>Perch</strong> - Rooftop bar with amazing city views</li>
-              <li><strong>The Edison</strong> - Industrial gothic lounge in a historic building</li>
-              <li><strong>The Spare Room</strong> - Vintage bowling and games while you drink</li>
-            </ul>
-            <a href="#" class="tip-link">View All Nightlife Recommendations</a>
-          </div>
-        </div>
-        
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&auto=format&fit=crop" alt="Beaches" />
-          </div>
-          <div class="tip-content">
-            <h3>Best Beaches</h3>
-            <ul class="tip-list">
-              <li><strong>El Matador</strong> - Scenic beach with sea caves and rock formations</li>
-              <li><strong>Manhattan Beach</strong> - Clean and not too crowded</li>
-              <li><strong>Venice Beach</strong> - Great for people watching</li>
-              <li><strong>Leo Carrillo</strong> - Dog-friendly with tide pools</li>
-              <li><strong>Zuma Beach</strong> - Wide beach with great swimming</li>
-            </ul>
-            <a href="#" class="tip-link">View All Beach Recommendations</a>
-          </div>
-        </div>
-        
-        <div class="tip-card">
-          <div class="tip-image">
-            <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
-          </div>
-          <div class="tip-content">
-            <h3>Hidden Gems</h3>
-            <ul class="tip-list">
-              <li><strong>The Last Bookstore</strong> - Unique bookstore with art installations</li>
-              <li><strong>Hollywood Forever Cemetery</strong> - Movie screenings in summer</li>
-              <li><strong>The Museum of Jurassic Technology</strong> - Wonderfully weird collection</li>
-              <li><strong>Watts Towers</strong> - Impressive folk art structures</li>
-              <li><strong>The Bradbury Building</strong> - Historic landmark with gorgeous interior</li>
-            </ul>
-            <a href="#" class="tip-link">View All Hidden Gems</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section id="amenities" class="amenities-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Home Amenities</h2>
-        <p class="section-subtitle">Everything available to make your stay comfortable</p>
-      </div>
-      
-      <div class="amenities-grid">
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
-          <ul class="amenity-list">
-            <li>Full-size refrigerator</li>
-            <li>Microwave & toaster oven</li>
-            <li>Coffee maker with pods</li>
-            <li>Dishwasher</li>
-            <li>Basic spices & cooking oil</li>
-            <li>Pots, pans & cooking utensils</li>
-            <li>Dishes, glasses & flatware</li>
-            <li>Wine opener & glasses</li>
-          </ul>
-        </div>
-        
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
-          <ul class="amenity-list">
-            <li>Queen-size mattress</li>
-            <li>Extra pillows in closet</li>
-            <li>Memory foam topper</li>
-            <li>Blackout curtains</li>
-            <li>Reading lamps</li>
-            <li>Extra blankets</li>
-            <li>Alarm clock</li>
-            <li>Hangers & iron</li>
-          </ul>
-        </div>
-        
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-shower"></i> Bathroom</h3>
-          <ul class="amenity-list">
-            <li>Towels & washcloths</li>
-            <li>Shampoo & conditioner</li>
-            <li>Body wash & hand soap</li>
-            <li>Hair dryer</li>
-            <li>First aid kit</li>
-            <li>Extra toilet paper</li>
-            <li>Shower caddy</li>
-            <li>Makeup remover wipes</li>
-          </ul>
-        </div>
-        
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
-          <ul class="amenity-list">
-            <li>High-speed WiFi</li>
-            <li>55" Smart TV</li>
-            <li>Netflix, Hulu, Disney+</li>
-            <li>Bluetooth speaker</li>
-            <li>USB charging ports</li>
-            <li>Smart thermostat</li>
-            <li>Ring doorbell</li>
-            <li>Printer/scanner</li>
-          </ul>
-        </div>
-        
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-swimming-pool"></i> Outdoor</h3>
-          <ul class="amenity-list">
-            <li>Balcony with seating</li>
-            <li>BBQ grill (propane)</li>
-            <li>Shared swimming pool</li>
-            <li>Pool towels</li>
-            <li>Outdoor dining table</li>
-            <li>String lights</li>
-            <li>Fire pit</li>
-            <li>Secure parking spot</li>
-          </ul>
-        </div>
-        
-        <div class="amenity-category">
-          <h3 class="category-title"><i class="fas fa-plus"></i> Extras</h3>
-          <ul class="amenity-list">
-            <li>Yoga mat</li>
-            <li>Board games</li>
-            <li>Books & magazines</li>
-            <li>Beach chairs & umbrella</li>
-            <li>Picnic basket</li>
-            <li>Reusable shopping bags</li>
-            <li>Laundry supplies</li>
-            <li>Basic cleaning supplies</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section id="faq" class="faq-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-subtitle">Quick answers to common questions</p>
-      </div>
-      
-      <div class="faq-accordion">
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>Is parking included with my stay?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Yes, one dedicated parking space (#42) is included with your stay. The garage is accessed through the south entrance, and you'll need to use the garage code: 3791. Additional street parking is available but may require permits during certain hours.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>How do I connect to the WiFi?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>The WiFi network name is "LA_Guest" and the password is "sunshine2025". The connection works throughout the property, but is strongest in the living room and bedroom areas.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>Is the pool heated?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Yes, the shared pool is heated year-round to approximately 82°F (28°C). Pool hours are from 8 AM to 10 PM daily. Please be respectful of other residents when using the pool area.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>How do I operate the smart TV?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Use the Samsung remote to power on the TV. Press the Home button to access apps like Netflix, Hulu, and Disney+, which are already logged in with guest accounts. If you want to connect your own device, HDMI cables are in the TV cabinet.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>What should I do with the trash?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Trash and recycling bins are located in the side yard. The blue bin is for recycling (plastic, paper, aluminum), the black bin is for general waste, and the green bin is for yard waste. Trash pickup is on Tuesday mornings.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>Is early check-in or late check-out possible?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>Early check-in and late check-out may be possible depending on our cleaning schedule and other bookings. Please message me at least 24 hours in advance to inquire about availability. A fee may apply for significantly extended hours.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>How do I access the building?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call me immediately.</p>
-          </div>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <h3>What is the best way to get around?</h3>
-            <i class="fas fa-chevron-down"></i>
-          </div>
-          <div class="faq-answer">
-            <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <section class="emergency-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Emergency Information</h2>
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to 123 Main Street</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700;900&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-</head>
-<body>
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <h1 class="title-prefix">01 <span class="title-separator"></span> EXPERIENCES</h1>
-        <h2 class="main-title">Welcome to 123 Main Street</h2>
-        <p class="subtitle">Let's curate your dream vacation in Los Angeles</p>
-      </div>
-    </div>
-  </header>
-  
-  <div class="search-hero">
-    <div class="container search-container">
-      <div class="search-wrapper">
-        <div class="search-bar">
-          <i class="fas fa-search search-icon"></i>
-          <input 
-            type="text" 
-            id="search-input" 
-            class="search-input" 
-            placeholder="Search experiences..." 
-            aria-label="Search experiences"
-          >
-        </div>
-        
-        <button id="toggle-filters" class="toggle-filters-btn">
-          <i class="fas fa-sliders-h"></i> Filters
-        </button>
-      </div>
-      
-      <div id="filters-panel" class="filters-panel">
-        <div class="filters-row">
-          <div class="filter-group">
-            <label for="category-filter" class="filter-label">
-              <i class="fas fa-tag"></i> Category
-            </label>
-            <select id="category-filter">
-              <option value="all">All Categories</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="location-filter" class="filter-label">
-              <i class="fas fa-map-marker-alt"></i> Location
-            </label>
-            <select id="location-filter">
-              <option value="all">All Locations</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="audience-filter" class="filter-label">
-              <i class="fas fa-users"></i> Audience
-            </label>
-            <select id="audience-filter">
-              <option value="all">All Types</option>
-            </select>
-          </div>
-        </div>
-        
-        <div class="filters-row">
-          <div class="filter-group">
-            <label for="price-filter" class="filter-label">
-              <i class="fas fa-dollar-sign"></i> Price
-            </label>
-            <select id="price-filter">
-              <option value="all">Any Price</option>
-              <option value="0-50">Under $50</option>
-              <option value="50-100">$50 - $100</option>
-              <option value="100-200">$100 - $200</option>
-              <option value="200+">$200+</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="duration-filter" class="filter-label">
-              <i class="fas fa-clock"></i> Duration
-            </label>
-            <select id="duration-filter">
-              <option value="all">Any Duration</option>
-              <option value="1">1 hour</option>
-              <option value="2">2 hours</option>
-              <option value="3">3 hours</option>
-              <option value="4+">4+ hours</option>
-            </select>
-          </div>
-          
-          <div class="filter-group">
-            <label for="sort-by" class="filter-label">
-              <i class="fas fa-sort"></i> Sort by
-            </label>
-            <select id="sort-by">
-              <option value="name">Name (A-Z)</option>
-              <option value="name-desc">Name (Z-A)</option>
-              <option value="price-asc">Price (Low to High)</option>
-              <option value="price-desc">Price (High to Low)</option>
-              <option value="duration-asc">Duration (Short to Long)</option>
-              <option value="duration-desc">Duration (Long to Short)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="results-summary container">
-    <p id="results-count" class="results-count">Showing all experiences</p>
-  </div>
-  
-  <div id="loading-spinner" class="loading-spinner">
-    <div class="spinner"></div>
-  </div>
-  
-  <main>
-    <div class="container">
-      <div id="experience-list" class="experience-grid">
-        <!-- Dynamic Experiences will be injected here -->
-      </div>
-      
-      <div id="no-results" class="no-results hidden">
-        <div class="no-results-icon">
-          <i class="fas fa-search"></i>
-        </div>
-        <h3>No experiences found</h3>
-        <p>Try adjusting your filters or search terms</p>
-      </div>
-    </div>
-  </main>
-  
-  <footer>
-    <div class="container">
-      <p class="footer-note">Powered by Unified Content</p>
-    </div>
-  </footer>
-  
-  <script>
-    // Global variables
-    let allRecords = [];
-    let filteredRecords = [];
-    const searchDebounceDelay = 300;
-    let searchDebounceTimer;
-    
-    // DOM elements
-    const experienceList = document.getElementById('experience-list');
-    const searchInput = document.getElementById('search-input');
-    const categoryFilter = document.getElementById('category-filter');
-    const locationFilter = document.getElementById('location-filter');
-    const audienceFilter = document.getElementById('audience-filter');
-    const priceFilter = document.getElementById('price-filter');
-    const durationFilter = document.getElementById('duration-filter');
-    const sortBySelect = document.getElementById('sort-by');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const resultsCount = document.getElementById('results-count');
-    const noResultsDiv = document.getElementById('no-results');
-    const toggleFiltersBtn = document.getElementById('toggle-filters');
-    const filtersPanel = document.getElementById('filters-panel');
-    
-    // Initialize the app
-    function init() {
-      setupEventListeners();
-      fetchExperiences();
-      animateElements();
-    }
-    
-    // Set up event listeners for filters and search
-    function setupEventListeners() {
-      // Search input with debounce
-      searchInput.addEventListener('input', () => {
-        clearTimeout(searchDebounceTimer);
-        searchDebounceTimer = setTimeout(() => {
-          applyFilters();
-        }, searchDebounceDelay);
-      });
-      
-      // Filter selects
-      categoryFilter.addEventListener('change', applyFilters);
-      locationFilter.addEventListener('change', applyFilters);
-      audienceFilter.addEventListener('change', applyFilters);
-      priceFilter.addEventListener('change', applyFilters);
-      durationFilter.addEventListener('change', applyFilters);
-      sortBySelect.addEventListener('change', applyFilters);
-      
-      // Toggle filters panel
-      toggleFiltersBtn.addEventListener('click', () => {
-        filtersPanel.classList.toggle('active');
-        toggleFiltersBtn.classList.toggle('active');
-      });
-      
-      // Focus animation for search input
-      searchInput.addEventListener('focus', () => {
-        document.querySelector('.search-bar').classList.add('focused');
-      });
-      
-      searchInput.addEventListener('blur', () => {
-        document.querySelector('.search-bar').classList.remove('focused');
-      });
-      
-      // Scroll animations
-      window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;
-        const header = document.querySelector('header');
-        
-        if (scrollPosition > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      });
-    }
-    
-    // Animate elements on page load
-    function animateElements() {
-      const elementsToAnimate = document.querySelectorAll('.animate-in');
-      
-      elementsToAnimate.forEach((element, index) => {
-        setTimeout(() => {
-          element.classList.add('visible');
-        }, index * 100);
-      });
-    }
-    
-    // Fetch experiences data from Netlify function
-    function fetchExperiences() {
-      showLoading(true);
-      
-      fetch('/.netlify/functions/get-experiences')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('✅ Data received:', data);
-          
-          if (!data.records || data.records.length === 0) {
-            showNoResults('No experiences found in the database.');
-            return;
-          }
-          
-          allRecords = data.records;
-          populateFilterOptions();
-          applyFilters();
-          
-          // Initial animation
-          animateElements();
-        })
-        .catch(error => {
-          console.error('❌ Error fetching experiences:', error);
-          showNoResults(`Error loading experiences. Please try again later.`);
+          showNoResults(true);
           
           // Fallback to sample data for development/preview
           if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -2141,6 +1831,139 @@
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
       init();
     }
+  </script>
+  
+  <!-- Scroll Functionality JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrollContainer = document.querySelector('.scroll-container');
+      const sections = document.querySelectorAll('.scroll-section');
+      let currentSection = 0;
+      let isScrolling = false;
+      let touchStartY = 0;
+      let touchEndY = 0;
+      
+      // Create scroll indicator if it doesn't exist
+      const scrollIndicator = document.querySelector('.scroll-indicator') || createScrollIndicator();
+      const dots = scrollIndicator.querySelectorAll('.scroll-dot');
+      
+      // Initialize
+      updateActiveSection(0);
+      
+      // Create scroll indicator
+      function createScrollIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-indicator';
+        
+        sections.forEach((section, index) => {
+          const dot = document.createElement('div');
+          dot.className = 'scroll-dot';
+          if (index === 0) dot.classList.add('active');
+          
+          dot.addEventListener('click', () => {
+            navigateToSection(index);
+          });
+          
+          indicator.appendChild(dot);
+        });
+        
+        document.body.appendChild(indicator);
+        return indicator;
+      }
+      
+      // Update active section
+      function updateActiveSection(index) {
+        sections.forEach((section, i) => {
+          if (i === index) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+        
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+        
+        currentSection = index;
+      }
+      
+      // Handle scroll
+      function handleScroll(event) {
+        if (isScrolling) return;
+        isScrolling = true;
+        
+        const delta = event.deltaY;
+        
+        if (delta > 0 && currentSection < sections.length - 1) {
+          // Scroll down
+          navigateToSection(currentSection + 1);
+        } else if (delta < 0 && currentSection > 0) {
+          // Scroll up
+          navigateToSection(currentSection - 1);
+        } else {
+          isScrolling = false;
+        }
+      }
+      
+      // Navigate to section
+      function navigateToSection(index) {
+        updateActiveSection(index);
+        
+        // Smooth scroll to section
+        sections[index].scrollIntoView({
+          behavior: 'smooth'
+        });
+        
+        // Reset scrolling state after animation
+        setTimeout(() => {
+          isScrolling = false;
+        }, 1000);
+      }
+      
+      // Touch events for mobile
+      function handleTouchStart(event) {
+        touchStartY = event.touches[0].clientY;
+      }
+      
+      function handleTouchEnd(event) {
+        touchEndY = event.changedTouches[0].clientY;
+        handleSwipe();
+      }
+      
+      function handleSwipe() {
+        if (isScrolling) return;
+        
+        const swipeDistance = touchStartY - touchEndY;
+        const threshold = 50; // Minimum distance to register as swipe
+        
+        if (swipeDistance > threshold && currentSection < sections.length - 1) {
+          // Swipe up (navigate down)
+          navigateToSection(currentSection + 1);
+        } else if (swipeDistance < -threshold && currentSection > 0) {
+          // Swipe down (navigate up)
+          navigateToSection(currentSection - 1);
+        }
+      }
+      
+      // Event listeners
+      scrollContainer.addEventListener('wheel', handleScroll, { passive: false });
+      scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+      scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' && currentSection < sections.length - 1) {
+          navigateToSection(currentSection + 1);
+        } else if (event.key === 'ArrowUp' && currentSection > 0) {
+          navigateToSection(currentSection - 1);
+        }
+      });
+    });
   </script>
 </body>
 </html>
