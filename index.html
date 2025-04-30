@@ -4,23 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>123 Main Street | Los Angeles</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
   <style>
     /* Core Variables */
     :root {
       --black: #000000;
       --white: #ffffff;
-      --gold: #AC7A2A;
-      --gold-light: rgba(172, 122, 42, 0.1);
-      --gray-100: #f8f8f8;
-      --gray-200: #eeeeee;
-      --gray-900: #111111;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+      --gray-300: #d4d4d4;
+      --gray-900: #171717;
+      --accent: #007aff;
+      --accent-dark: #0055b3;
       
       /* Typography */
-      --font-mono: 'IBM Plex Mono', monospace;
-      --font-sans: 'Helvetica Neue', sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       
       /* Spacing */
       --space-xs: 4px;
@@ -31,11 +32,12 @@
       --space-2xl: 48px;
       --space-3xl: 64px;
       --space-4xl: 96px;
+      --space-5xl: 128px;
       
       /* Animation */
-      --transition-fast: 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
-      --transition-medium: 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
-      --transition-slow: 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Reset & Base Styles */
@@ -50,6 +52,7 @@
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
 
     body {
@@ -73,51 +76,39 @@
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
       font-family: var(--font-sans);
-      font-weight: 900;
+      font-weight: 700;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
     
-    .mono {
-      font-family: var(--font-mono);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-    
-    .mono-title {
-      font-family: var(--font-mono);
+    .overline {
+      font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      font-size: 0.8rem;
       font-weight: 500;
-      color: var(--gold);
-    }
-    
-    .page-title {
-      font-size: clamp(2.5rem, 8vw, 4.5rem);
-      line-height: 1;
-      margin-bottom: var(--space-lg);
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+      display: block;
     }
     
     .section-title {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      margin-bottom: var(--space-lg);
-      position: relative;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: var(--space-xl);
     }
     
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 60px;
-      height: 3px;
-      background-color: var(--gold);
+    .section-title span {
+      display: block;
+      overflow: hidden;
     }
     
-    .centered .section-title::after {
-      left: 50%;
-      transform: translateX(-50%);
+    .section-title span span {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    
+    .centered .section-title {
+      text-align: center;
     }
     
     p {
@@ -131,6 +122,7 @@
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 var(--space-lg);
+      position: relative;
     }
     
     .container-sm {
@@ -139,10 +131,13 @@
     
     .centered {
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     
     section {
-      padding: var(--space-4xl) 0;
+      padding: var(--space-5xl) 0;
       position: relative;
     }
     
@@ -180,12 +175,13 @@
       width: 100%;
       z-index: 100;
       transition: background-color var(--transition-medium);
+      mix-blend-mode: difference;
     }
     
     .nav-wrapper.scrolled {
-      background-color: rgba(255, 255, 255, 0.95);
+      mix-blend-mode: normal;
+      background-color: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(10px);
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
     }
     
     .navbar {
@@ -201,10 +197,10 @@
     }
     
     .logo {
-      font-family: var(--font-mono);
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-size: 1.25rem;
+      color: var(--white);
     }
     
     .nav-links {
@@ -223,12 +219,13 @@
     }
     
     .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.1em;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       position: relative;
       padding: var(--space-xs) 0;
+      color: var(--white);
+      font-weight: 500;
     }
     
     .nav-link::after {
@@ -238,7 +235,7 @@
       left: 0;
       width: 0;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--accent);
       transition: width var(--transition-fast);
     }
     
@@ -258,12 +255,13 @@
       justify-content: center;
       align-items: center;
       gap: 6px;
+      z-index: 101;
     }
     
     .menu-line {
       width: 24px;
       height: 2px;
-      background-color: var(--black);
+      background-color: var(--white);
       transition: transform var(--transition-fast), opacity var(--transition-fast);
     }
     
@@ -281,33 +279,48 @@
     
     .mobile-menu {
       position: fixed;
-      top: 80px;
+      top: 0;
       left: 0;
       width: 100%;
       height: 0;
-      background-color: var(--white);
+      background-color: var(--black);
       overflow: hidden;
       transition: height var(--transition-medium);
       z-index: 99;
     }
     
     .mobile-menu.open {
-      height: calc(100vh - 80px);
+      height: 100vh;
     }
     
     .mobile-menu-links {
       display: flex;
       flex-direction: column;
-      padding: var(--space-xl);
+      padding: var(--space-5xl) var(--space-xl) var(--space-xl);
       gap: var(--space-xl);
     }
     
     .mobile-link {
-      font-family: var(--font-mono);
-      font-size: 1.2rem;
-      letter-spacing: 0.1em;
+      font-size: 2rem;
+      letter-spacing: -0.02em;
       text-transform: uppercase;
+      color: var(--white);
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
+    
+    .mobile-menu.open .mobile-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .mobile-menu.open .mobile-link:nth-child(1) { transition-delay: 0.1s; }
+    .mobile-menu.open .mobile-link:nth-child(2) { transition-delay: 0.15s; }
+    .mobile-menu.open .mobile-link:nth-child(3) { transition-delay: 0.2s; }
+    .mobile-menu.open .mobile-link:nth-child(4) { transition-delay: 0.25s; }
+    .mobile-menu.open .mobile-link:nth-child(5) { transition-delay: 0.3s; }
 
     /* Hero Section */
     .hero {
@@ -327,7 +340,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.6;
+      opacity: 0.7;
+      filter: grayscale(100%) contrast(120%);
+      transform: scale(1.1);
+      transition: transform 2s cubic-bezier(0.215, 0.61, 0.355, 1), 
+                  opacity 2s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
     
     .hero-content {
@@ -336,20 +353,31 @@
       max-width: 800px;
     }
     
-    .hero-subtitle {
-      margin-bottom: var(--space-md);
-    }
-    
     .hero-title {
-      font-size: clamp(3rem, 10vw, 6rem);
+      font-size: clamp(2.5rem, 10vw, 6rem);
       line-height: 0.9;
       margin-bottom: var(--space-xl);
+      font-weight: 900;
+      overflow: hidden;
+    }
+    
+    .hero-title span {
+      display: block;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .hero-description {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 2vw, 1.25rem);
       max-width: 500px;
       margin-bottom: var(--space-xl);
+      transform: translateY(40px);
+      opacity: 0;
+      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                  opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: 0.4s;
     }
     
     .scroll-indicator {
@@ -361,19 +389,16 @@
       flex-direction: column;
       align-items: center;
       color: var(--white);
-      opacity: 0.8;
-      transition: opacity var(--transition-fast);
-    }
-    
-    .scroll-indicator:hover {
-      opacity: 1;
+      opacity: 0;
+      transition: opacity 1s ease;
+      transition-delay: 1.2s;
     }
     
     .scroll-indicator span {
-      font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       margin-bottom: var(--space-sm);
+      text-transform: uppercase;
     }
     
     .scroll-arrow {
@@ -397,11 +422,46 @@
       }
     }
 
-    /* Quick Info */
+    .loaded .hero-bg {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    
+    .loaded .hero-title span {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .loaded .hero-title span:nth-child(1) { transition-delay: 0.1s; }
+    .loaded .hero-title span:nth-child(2) { transition-delay: 0.2s; }
+    
+    .loaded .hero-description {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .loaded .scroll-indicator {
+      opacity: 0.8;
+    }
+
+    /* Quick Info Section */
     .quick-info {
       background-color: var(--black);
       color: var(--white);
       padding: var(--space-xl) 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .quick-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(0, 122, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
     }
     
     .info-card {
@@ -409,41 +469,99 @@
       gap: var(--space-md);
       padding: var(--space-lg);
       transition: transform var(--transition-medium);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
     }
     
-    .info-card:hover {
-      transform: translateY(-5px);
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.03);
+      transform: translateY(100%);
+      transition: transform var(--transition-medium);
+      z-index: -1;
+    }
+    
+    .info-card:hover::before {
+      transform: translateY(0);
     }
     
     .info-icon {
       font-size: 1.5rem;
-      color: var(--gold);
+      color: var(--accent);
       width: 40px;
       flex-shrink: 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
     
     .info-content h3 {
-      font-family: var(--font-mono);
       font-size: 0.9rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       margin-bottom: var(--space-sm);
-      font-weight: 500;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
     
     .info-content p {
       font-size: 0.9rem;
       margin-bottom: var(--space-xs);
-      opacity: 0.8;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
+    
+    .info-card.reveal .info-icon {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.1s;
+    }
+    
+    .info-card.reveal .info-content h3 {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+    
+    .info-card.reveal .info-content p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .info-card.reveal .info-content p:nth-of-type(1) { transition-delay: 0.3s; }
+    .info-card.reveal .info-content p:nth-of-type(2) { transition-delay: 0.4s; }
+    .info-card.reveal .info-content p:nth-of-type(3) { transition-delay: 0.5s; }
 
     /* Experiences Section */
     .experiences {
+      position: relative;
       overflow: hidden;
     }
     
+    .experiences::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40%;
+      height: 100%;
+      background: var(--gray-100);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%, 100% 0);
+      z-index: -1;
+    }
+    
     .experiences-intro {
-      margin-bottom: var(--space-2xl);
+      margin-bottom: var(--space-3xl);
+      max-width: 800px;
     }
     
     .search-container {
@@ -474,15 +592,15 @@
       padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) * 2 + 16px);
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 0;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      transition: border-color var(--transition-fast);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     }
     
     .search-input:focus {
       outline: none;
-      border-color: var(--gold);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
     }
     
     .toggle-filters-btn {
@@ -493,16 +611,16 @@
       background-color: var(--black);
       color: var(--white);
       border: none;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       cursor: pointer;
       transition: background-color var(--transition-fast);
     }
     
     .toggle-filters-btn:hover {
-      background-color: var(--gold);
+      background-color: var(--accent);
     }
     
     .filters-panel {
@@ -510,10 +628,15 @@
       padding: var(--space-xl);
       margin-bottom: var(--space-xl);
       display: none;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity var(--transition-medium), transform var(--transition-medium);
     }
     
     .filters-panel.active {
       display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .filters-row {
@@ -531,32 +654,32 @@
     }
     
     .filter-label {
-      font-family: var(--font-mono);
       font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       display: flex;
       align-items: center;
       gap: var(--space-xs);
+      font-weight: 600;
     }
     
     select {
       padding: var(--space-sm) var(--space-md);
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 0;
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-size: 0.8rem;
       background-color: var(--white);
-      transition: border-color var(--transition-fast);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     }
     
     select:focus {
       outline: none;
-      border-color: var(--gold);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
     }
     
     .results-count {
-      font-family: var(--font-mono);
       font-size: 0.8rem;
       margin-bottom: var(--space-lg);
       opacity: 0.6;
@@ -585,9 +708,11 @@
       display: block;
       background-color: var(--white);
       overflow: hidden;
-      transform: translateY(40px);
       opacity: 0;
-      transition: transform var(--transition-slow), opacity var(--transition-slow), box-shadow var(--transition-medium);
+      transform: translateY(60px);
+      transition: transform var(--transition-slow), 
+                  opacity var(--transition-slow), 
+                  box-shadow var(--transition-medium);
     }
     
     .experience-card.visible {
@@ -596,7 +721,7 @@
     }
     
     .experience-card:hover {
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
     }
     
     .card-image {
@@ -610,10 +735,12 @@
       height: 100%;
       object-fit: cover;
       transition: transform var(--transition-slow);
+      filter: grayscale(100%) contrast(120%);
     }
     
     .experience-card:hover .card-image img {
       transform: scale(1.05);
+      filter: grayscale(0%) contrast(110%);
     }
     
     .category-icon {
@@ -629,13 +756,13 @@
       position: absolute;
       top: var(--space-md);
       left: var(--space-md);
-      background-color: var(--gold);
+      background-color: var(--accent);
       color: var(--white);
       padding: var(--space-xs) var(--space-md);
-      font-family: var(--font-mono);
       font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
+      font-weight: 500;
       z-index: 2;
     }
     
@@ -651,14 +778,14 @@
     
     .badge {
       display: inline-block;
-      font-family: var(--font-mono);
       font-size: 0.6rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       padding: 3px var(--space-sm);
       margin-right: var(--space-xs);
-      background-color: var(--gold-light);
-      color: var(--gold);
+      background-color: rgba(0, 122, 255, 0.1);
+      color: var(--accent);
+      font-weight: 500;
     }
     
     .card-title {
@@ -668,7 +795,7 @@
     }
     
     .experience-card:hover .card-title {
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .card-details {
@@ -687,7 +814,7 @@
     
     .card-price {
       font-weight: 700;
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .loading-spinner {
@@ -700,7 +827,7 @@
       width: 40px;
       height: 40px;
       border: 2px solid rgba(0, 0, 0, 0.1);
-      border-top-color: var(--gold);
+      border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -734,11 +861,27 @@
     
     .no-results p {
       color: rgba(0, 0, 0, 0.6);
+      max-width: 400px;
+      margin: 0 auto;
     }
 
     /* House Guide Section */
     .house-guide {
       background-color: var(--gray-100);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .house-guide::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+      z-index: 0;
     }
     
     .guide-card {
@@ -748,6 +891,14 @@
       position: relative;
       overflow: hidden;
       transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    
+    .guide-card.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .guide-card::before {
@@ -757,8 +908,9 @@
       left: 0;
       width: 3px;
       height: 0;
-      background-color: var(--gold);
+      background-color: var(--accent);
       transition: height var(--transition-medium);
+      z-index: 1;
     }
     
     .guide-card:hover {
@@ -777,8 +929,8 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      background-color: var(--gold-light);
-      color: var(--gold);
+      background-color: rgba(0, 122, 255, 0.1);
+      color: var(--accent);
       font-size: 1.2rem;
       margin-bottom: var(--space-lg);
     }
@@ -790,7 +942,7 @@
     }
     
     .guide-card:hover h3 {
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .guide-list {
@@ -809,7 +961,7 @@
       content: '•';
       position: absolute;
       left: 0;
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .guide-list li:last-child {
@@ -822,16 +974,15 @@
       background-color: var(--black);
       color: var(--white);
       border: none;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       cursor: pointer;
       transition: background-color var(--transition-fast);
     }
     
     .guide-expand-btn:hover {
-      background-color: var(--gold);
+      background-color: var(--accent);
     }
     
     .guide-details {
@@ -850,11 +1001,35 @@
     }
 
     /* Local Tips Section */
+    .local-tips {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .local-tips::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30%;
+      height: 100%;
+      background: var(--gray-100);
+      clip-path: polygon(0 0, 100% 0, 0 100%, 0 0);
+      z-index: -1;
+    }
+    
     .tip-card {
       height: 100%;
       overflow: hidden;
       position: relative;
       transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    
+    .tip-card.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .tip-card:hover {
@@ -872,10 +1047,12 @@
       height: 100%;
       object-fit: cover;
       transition: transform var(--transition-slow);
+      filter: grayscale(100%) contrast(120%);
     }
     
     .tip-card:hover .tip-image img {
       transform: scale(1.05);
+      filter: grayscale(0%) contrast(110%);
     }
     
     .tip-content {
@@ -887,12 +1064,27 @@
       font-size: 1.5rem;
       margin-bottom: var(--space-lg);
       padding-bottom: var(--space-sm);
-      border-bottom: 2px solid var(--gold);
+      position: relative;
       transition: color var(--transition-medium);
     }
     
+    .tip-content h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--accent);
+      transition: width var(--transition-medium);
+    }
+    
     .tip-card:hover h3 {
-      color: var(--gold);
+      color: var(--accent);
+    }
+    
+    .tip-card:hover h3::after {
+      width: 80px;
     }
     
     .tip-list {
@@ -911,7 +1103,7 @@
       content: '→';
       position: absolute;
       left: 0;
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .tip-list li:last-child {
@@ -923,12 +1115,12 @@
     }
     
     .tip-link {
-      font-family: var(--font-mono);
       display: inline-block;
-      color: var(--gold);
+      color: var(--accent);
       font-size: 0.8rem;
       letter-spacing: 0.05em;
       position: relative;
+      font-weight: 500;
     }
     
     .tip-link::after {
@@ -938,7 +1130,7 @@
       left: 0;
       width: 0;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--accent);
       transition: width var(--transition-fast);
     }
     
@@ -949,13 +1141,36 @@
     /* Other Sections Styling */
     .amenities {
       background-color: var(--gray-100);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .amenities::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 40%;
+      height: 60%;
+      background-color: rgba(0, 0, 0, 0.03);
+      clip-path: polygon(100% 0, 100% 100%, 0 100%, 100% 0);
+      z-index: 0;
     }
     
     .amenity-category {
       background-color: var(--white);
       height: 100%;
       overflow: hidden;
+      position: relative;
+      z-index: 1;
       transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    
+    .amenity-category.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .amenity-category:hover {
@@ -991,7 +1206,7 @@
       content: '✓';
       position: absolute;
       left: 0;
-      color: var(--gold);
+      color: var(--accent);
     }
     
     .amenity-list li:last-child {
@@ -999,6 +1214,11 @@
     }
 
     /* FAQ Section */
+    .faq {
+      position: relative;
+      overflow: hidden;
+    }
+    
     .faq-accordion {
       max-width: 800px;
       margin: 0 auto;
@@ -1009,6 +1229,13 @@
       background-color: var(--white);
       overflow: hidden;
       transition: box-shadow var(--transition-medium);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    
+    .faq-item.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .faq-item:hover {
@@ -1065,12 +1292,34 @@
     .contact {
       background-color: var(--black);
       color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .contact::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(0, 122, 255, 0.05) 100%);
+      z-index: 0;
     }
     
     .contact-card {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: rgba(255, 255, 255, 0.03);
       padding: var(--space-xl);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    
+    .contact-card.reveal {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .contact-profile {
@@ -1085,7 +1334,13 @@
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--gold);
+      border: 3px solid var(--accent);
+      filter: grayscale(100%) contrast(120%);
+      transition: filter var(--transition-medium);
+    }
+    
+    .contact-card:hover .contact-profile img {
+      filter: grayscale(0%) contrast(110%);
     }
     
     .contact-info h3 {
@@ -1121,13 +1376,13 @@
       align-items: center;
       gap: var(--space-md);
       padding: var(--space-md);
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: background-color var(--transition-fast), transform var(--transition-fast);
     }
     
     .contact-method:hover {
-      background-color: var(--gold);
+      background-color: var(--accent);
       transform: translateY(-5px);
     }
     
@@ -1138,8 +1393,8 @@
     .contact-notes {
       position: relative;
       padding: var(--space-xl);
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     .contact-notes::before {
@@ -1149,7 +1404,7 @@
       left: 20px;
       font-size: 5rem;
       font-family: Georgia, serif;
-      color: var(--gold);
+      color: var(--accent);
       opacity: 0.5;
       line-height: 1;
     }
@@ -1159,6 +1414,18 @@
       background-color: var(--black);
       color: var(--white);
       padding: var(--space-2xl) 0 var(--space-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    footer::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     }
     
     .footer-content {
@@ -1176,9 +1443,9 @@
     }
     
     .footer-logo h3 {
-      font-family: var(--font-mono);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       margin-bottom: var(--space-xs);
+      font-weight: 700;
     }
     
     .footer-logo p {
@@ -1193,11 +1460,11 @@
     }
     
     .footer-link {
-      font-family: var(--font-mono);
       font-size: 0.8rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       position: relative;
+      font-weight: 500;
     }
     
     .footer-link::after {
@@ -1207,7 +1474,7 @@
       left: 0;
       width: 0;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--accent);
       transition: width var(--transition-fast);
     }
     
@@ -1227,19 +1494,19 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.05);
       transition: background-color var(--transition-fast), transform var(--transition-fast);
     }
     
     .social-link:hover {
-      background-color: var(--gold);
+      background-color: var(--accent);
       transform: translateY(-5px);
     }
     
     .footer-note {
       text-align: center;
       padding-top: var(--space-lg);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       font-size: 0.8rem;
       opacity: 0.5;
     }
@@ -1269,10 +1536,21 @@
     }
     
     .back-to-top:hover {
-      background-color: var(--gold);
+      background-color: var(--accent);
     }
 
     /* Animations */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity var(--transition-slow), transform var(--transition-slow);
+    }
+    
+    .reveal-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
     .fade-in {
       opacity: 0;
       transform: translateY(30px);
@@ -1284,43 +1562,118 @@
       transform: translateY(0);
     }
     
-    .fade-in-delay-1 {
-      transition-delay: 0.1s;
+    .reveal-title span {
+      display: block;
+      overflow: hidden;
     }
     
-    .fade-in-delay-2 {
-      transition-delay: 0.2s;
+    .reveal-title span span {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+      transition: transform var(--transition-medium), opacity var(--transition-medium);
     }
     
-    .fade-in-delay-3 {
-      transition-delay: 0.3s;
+    .reveal-title.visible span span {
+      transform: translateY(0);
+      opacity: 1;
     }
     
-    .fade-in-delay-4 {
-      transition-delay: 0.4s;
+    .reveal-title.visible span:nth-child(1) span { transition-delay: 0.1s; }
+    .reveal-title.visible span:nth-child(2) span { transition-delay: 0.2s; }
+    
+    .floating {
+      animation: floating 6s ease-in-out infinite;
     }
     
-    .fade-in-delay-5 {
-      transition-delay: 0.5s;
+    @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    /* Animated Background Element */
+    .animated-bg {
+      position: absolute;
+      background-color: var(--accent);
+      opacity: 0.03;
+      border-radius: 50%;
+      z-index: -1;
+      transform: scale(0);
+      transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .animated-bg.visible {
+      transform: scale(1);
+    }
+    
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    
+    .parallax-element {
+      transition: transform 0.1s ease-out;
+    }
+    
+    /* Custom Cursor */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      border: 1px solid rgba(0, 122, 255, 0.5);
+      transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.1s;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    
+    .custom-cursor::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background-color: var(--accent);
+      border-radius: 50%;
+    }
+    
+    .custom-cursor.active {
+      width: 60px;
+      height: 60px;
+      border-color: rgba(0, 122, 255, 0.8);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .guide-card, .tip-card, .amenity-category {
+        padding: var(--space-md);
+      }
+      
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .contact-profile {
+        flex-direction: column;
+        text-align: center;
+      }
     }
     
     /* Utility Classes */
-    .bg-black {
-      background-color: var(--black);
-      color: var(--white);
-    }
-    
-    .bg-white {
-      background-color: var(--white);
-      color: var(--black);
-    }
-    
-    .bg-gray {
-      background-color: var(--gray-100);
-    }
-    
-    .text-gold {
-      color: var(--gold);
+    .text-accent {
+      color: var(--accent);
     }
     
     .mt-sm { margin-top: var(--space-sm); }
@@ -1332,9 +1685,22 @@
     .mb-md { margin-bottom: var(--space-md); }
     .mb-lg { margin-bottom: var(--space-lg); }
     .mb-xl { margin-bottom: var(--space-xl); }
+    
+    .pt-sm { padding-top: var(--space-sm); }
+    .pt-md { padding-top: var(--space-md); }
+    .pt-lg { padding-top: var(--space-lg); }
+    .pt-xl { padding-top: var(--space-xl); }
+    
+    .pb-sm { padding-bottom: var(--space-sm); }
+    .pb-md { padding-bottom: var(--space-md); }
+    .pb-lg { padding-bottom: var(--space-lg); }
+    .pb-xl { padding-bottom: var(--space-xl); }
   </style>
 </head>
 <body>
+  <!-- Custom Cursor -->
+  <div class="custom-cursor"></div>
+  
   <!-- Navigation -->
   <div class="nav-wrapper">
     <div class="container">
@@ -1369,12 +1735,18 @@
   
   <!-- Hero Section -->
   <section class="hero" id="home">
-    <img src="https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80" alt="Los Angeles" class="hero-bg">
+    <div class="animated-bg" style="top: 20%; left: 5%; width: 400px; height: 400px;"></div>
+    <div class="animated-bg" style="bottom: 10%; right: 10%; width: 300px; height: 300px;"></div>
+    
+    <img src="https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80" alt="Los Angeles" class="hero-bg parallax-element" data-depth="0.1">
     <div class="container">
       <div class="hero-content">
-        <h3 class="mono-title hero-subtitle fade-in">Welcome Guide</h3>
-        <h1 class="hero-title fade-in fade-in-delay-1">123 Main Street</h1>
-        <p class="hero-description fade-in fade-in-delay-2">Your personal guide to experiencing Los Angeles like a local. Discover hidden gems, navigate the city, and make unforgettable memories.</p>
+        <p class="overline">Welcome Guide</p>
+        <h1 class="hero-title">
+          <span>123</span>
+          <span>Main Street</span>
+        </h1>
+        <p class="hero-description">Your personal guide to experiencing Los Angeles like a local. Discover hidden gems, navigate the city, and make unforgettable memories.</p>
       </div>
     </div>
     <a href="#quick-info" class="scroll-indicator">
@@ -1385,9 +1757,10 @@
   
   <!-- Quick Info Section -->
   <section class="quick-info" id="quick-info">
+    <div class="animated-bg" style="top: 30%; right: 5%; width: 200px; height: 200px;"></div>
     <div class="container">
       <div class="grid grid-4">
-        <div class="info-card fade-in">
+        <div class="info-card">
           <div class="info-icon">
             <i class="fas fa-wifi"></i>
           </div>
@@ -1398,7 +1771,7 @@
           </div>
         </div>
         
-        <div class="info-card fade-in fade-in-delay-1">
+        <div class="info-card">
           <div class="info-icon">
             <i class="fas fa-key"></i>
           </div>
@@ -1410,7 +1783,7 @@
           </div>
         </div>
         
-        <div class="info-card fade-in fade-in-delay-2">
+        <div class="info-card">
           <div class="info-icon">
             <i class="fas fa-phone"></i>
           </div>
@@ -1421,7 +1794,7 @@
           </div>
         </div>
         
-        <div class="info-card fade-in fade-in-delay-3">
+        <div class="info-card">
           <div class="info-icon">
             <i class="fas fa-car"></i>
           </div>
@@ -1437,14 +1810,18 @@
   
   <!-- Experiences Section -->
   <section class="experiences" id="experiences">
+    <div class="animated-bg" style="bottom: 20%; left: 10%; width: 300px; height: 300px;"></div>
     <div class="container">
-      <div class="experiences-intro centered">
-        <h1 class="mono-title fade-in">Curated for You</h1>
-        <h2 class="section-title fade-in fade-in-delay-1">Discover Local Experiences</h2>
-        <p class="fade-in fade-in-delay-2">Explore the best Los Angeles has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
+      <div class="experiences-intro centered reveal-section">
+        <p class="overline">Curated for You</p>
+        <h2 class="section-title reveal-title">
+          <span><span>Discover Local</span></span>
+          <span><span>Experiences</span></span>
+        </h2>
+        <p>Explore the best Los Angeles has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
       </div>
       
-      <div class="search-container fade-in fade-in-delay-3">
+      <div class="search-container reveal-section reveal-delay-1">
         <div class="search-wrapper">
           <div class="search-bar">
             <i class="fas fa-search search-icon"></i>
@@ -1496,7 +1873,7 @@
               <label for="price-filter" class="filter-label">
                 <i class="fas fa-dollar-sign"></i> PRICE
               </label>
-              <select id="price-filter">
+                              <select id="price-filter">
                 <option value="all">Any Price</option>
                 <option value="0-50">Under $50</option>
                 <option value="50-100">$50 - $100</option>
@@ -1557,15 +1934,18 @@
   
   <!-- House Guide Section -->
   <section class="house-guide" id="house-guide">
+    <div class="animated-bg" style="top: 40%; right: 15%; width: 250px; height: 250px;"></div>
     <div class="container">
-      <div class="section-header centered fade-in">
-        <h1 class="mono-title">Stay Information</h1>
-        <h2 class="section-title">House Guide</h2>
+      <div class="section-header centered reveal-section">
+        <p class="overline">Stay Information</p>
+        <h2 class="section-title reveal-title">
+          <span><span>House Guide</span></span>
+        </h2>
         <p>Everything you need to know to make your stay comfortable and hassle-free.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="guide-card fade-in fade-in-delay-1">
+        <div class="guide-card">
           <div class="guide-icon">
             <i class="fas fa-door-open"></i>
           </div>
@@ -1584,7 +1964,7 @@
           </div>
         </div>
         
-        <div class="guide-card fade-in fade-in-delay-2">
+        <div class="guide-card">
           <div class="guide-icon">
             <i class="fas fa-scroll"></i>
           </div>
@@ -1603,7 +1983,7 @@
           </div>
         </div>
         
-        <div class="guide-card fade-in fade-in-delay-3">
+        <div class="guide-card">
           <div class="guide-icon">
             <i class="fas fa-temperature-low"></i>
           </div>
@@ -1627,15 +2007,18 @@
   
   <!-- Local Tips Section -->
   <section class="local-tips" id="local-tips">
+    <div class="animated-bg" style="bottom: 15%; left: 20%; width: 200px; height: 200px;"></div>
     <div class="container">
-      <div class="section-header centered fade-in">
-        <h1 class="mono-title">Insider Knowledge</h1>
-        <h2 class="section-title">Local Tips</h2>
+      <div class="section-header centered reveal-section">
+        <p class="overline">Insider Knowledge</p>
+        <h2 class="section-title reveal-title">
+          <span><span>Local Tips</span></span>
+        </h2>
         <p>Discover Los Angeles like a local with our insider recommendations.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="tip-card fade-in fade-in-delay-1">
+        <div class="tip-card">
           <div class="tip-image">
             <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
           </div>
@@ -1652,7 +2035,7 @@
           </div>
         </div>
         
-        <div class="tip-card fade-in fade-in-delay-2">
+        <div class="tip-card">
           <div class="tip-image">
             <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
           </div>
@@ -1674,15 +2057,18 @@
   
   <!-- Amenities Section -->
   <section class="amenities" id="amenities">
+    <div class="animated-bg" style="top: 30%; left: 10%; width: 200px; height: 200px;"></div>
     <div class="container">
-      <div class="section-header centered fade-in">
-        <h1 class="mono-title">For Your Comfort</h1>
-        <h2 class="section-title">Amenities</h2>
+      <div class="section-header centered reveal-section">
+        <p class="overline">For Your Comfort</p>
+        <h2 class="section-title reveal-title">
+          <span><span>Amenities</span></span>
+        </h2>
         <p>Everything available to make your stay comfortable and enjoyable.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="amenity-category fade-in fade-in-delay-1">
+        <div class="amenity-category">
           <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
           <ul class="amenity-list">
             <li>Full-size refrigerator</li>
@@ -1696,7 +2082,7 @@
           </ul>
         </div>
         
-        <div class="amenity-category fade-in fade-in-delay-2">
+        <div class="amenity-category">
           <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
           <ul class="amenity-list">
             <li>Queen-size mattress</li>
@@ -1710,7 +2096,7 @@
           </ul>
         </div>
         
-        <div class="amenity-category fade-in fade-in-delay-3">
+        <div class="amenity-category">
           <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
           <ul class="amenity-list">
             <li>High-speed WiFi</li>
@@ -1729,15 +2115,18 @@
   
   <!-- FAQ Section -->
   <section class="faq" id="faq">
+    <div class="animated-bg" style="bottom: 20%; right: 10%; width: 150px; height: 150px;"></div>
     <div class="container container-sm">
-      <div class="section-header centered fade-in">
-        <h1 class="mono-title">Answers</h1>
-        <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="section-header centered reveal-section">
+        <p class="overline">Answers</p>
+        <h2 class="section-title reveal-title">
+          <span><span>Frequently Asked Questions</span></span>
+        </h2>
         <p>Quick answers to common questions about your stay.</p>
       </div>
       
       <div class="faq-accordion">
-        <div class="faq-item fade-in fade-in-delay-1">
+        <div class="faq-item">
           <div class="faq-question">
             <h3>Is parking included with my stay?</h3>
             <i class="fas fa-chevron-down"></i>
@@ -1747,7 +2136,7 @@
           </div>
         </div>
         
-        <div class="faq-item fade-in fade-in-delay-2">
+        <div class="faq-item">
           <div class="faq-question">
             <h3>How do I access the building?</h3>
             <i class="fas fa-chevron-down"></i>
@@ -1757,7 +2146,7 @@
           </div>
         </div>
         
-        <div class="faq-item fade-in fade-in-delay-3">
+        <div class="faq-item">
           <div class="faq-question">
             <h3>What is the best way to get around?</h3>
             <i class="fas fa-chevron-down"></i>
@@ -1772,14 +2161,17 @@
   
   <!-- Contact Section -->
   <section class="contact" id="contact">
+    <div class="animated-bg" style="top: 20%; right: 10%; width: 300px; height: 300px;"></div>
     <div class="container container-sm">
-      <div class="section-header centered fade-in">
-        <h1 class="mono-title">Get in Touch</h1>
-        <h2 class="section-title">Contact</h2>
+      <div class="section-header centered reveal-section">
+        <p class="overline">Get in Touch</p>
+        <h2 class="section-title reveal-title">
+          <span><span>Contact</span></span>
+        </h2>
         <p>Reach out anytime for assistance during your stay.</p>
       </div>
       
-      <div class="contact-card fade-in fade-in-delay-1">
+      <div class="contact-card">
         <div class="contact-profile">
           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
           <div class="contact-info">
@@ -1882,12 +2274,203 @@
     
     // Initialize the app
     function init() {
+      initPageAnimation();
       setupEventListeners();
       fetchExperiences();
-      animateElements();
+      setupScrollAnimations();
       setupFAQAccordion();
       setupExpandButtons();
       setupBackToTop();
+      setupCustomCursor();
+      setupParallax();
+    }
+    
+    // Initialize page animations
+    function initPageAnimation() {
+      // Add loaded class to body after a slight delay
+      setTimeout(() => {
+        document.body.classList.add('loaded');
+        
+        // Animated background elements
+        document.querySelectorAll('.animated-bg').forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add('visible');
+          }, 300 + (index * 150));
+        });
+        
+        // Show initial animations for elements in viewport
+        animateElementsInViewport();
+      }, 300);
+    }
+    
+    // Set up GSAP ScrollTrigger for scroll animations
+    function setupScrollAnimations() {
+      // Register ScrollTrigger plugin
+      gsap.registerPlugin(ScrollTrigger);
+      
+      // Section title animations
+      document.querySelectorAll('.reveal-section').forEach(section => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 80%",
+          onEnter: () => section.classList.add('visible'),
+          once: true
+        });
+      });
+      
+      // Info cards animation
+      document.querySelectorAll('.info-card').forEach((card, index) => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 85%",
+          onEnter: () => {
+            setTimeout(() => {
+              card.classList.add('reveal');
+            }, index * 100);
+          },
+          once: true
+        });
+      });
+      
+      // Guide cards animation
+      document.querySelectorAll('.guide-card').forEach((card, index) => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 85%",
+          onEnter: () => {
+            setTimeout(() => {
+              card.classList.add('reveal');
+            }, index * 150);
+          },
+          once: true
+        });
+      });
+      
+      // Tip cards animation
+      document.querySelectorAll('.tip-card').forEach((card, index) => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 85%",
+          onEnter: () => {
+            setTimeout(() => {
+              card.classList.add('reveal');
+            }, index * 200);
+          },
+          once: true
+        });
+      });
+      
+      // Amenity cards animation
+      document.querySelectorAll('.amenity-category').forEach((card, index) => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 85%",
+          onEnter: () => {
+            setTimeout(() => {
+              card.classList.add('reveal');
+            }, index * 150);
+          },
+          once: true
+        });
+      });
+      
+      // FAQ items animation
+      document.querySelectorAll('.faq-item').forEach((item, index) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 85%",
+          onEnter: () => {
+            setTimeout(() => {
+              item.classList.add('reveal');
+            }, index * 150);
+          },
+          once: true
+        });
+      });
+      
+      // Contact card animation
+      document.querySelectorAll('.contact-card').forEach(card => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 85%",
+          onEnter: () => card.classList.add('reveal'),
+          once: true
+        });
+      });
+      
+      // Title reveal animations
+      document.querySelectorAll('.reveal-title').forEach(title => {
+        ScrollTrigger.create({
+          trigger: title,
+          start: "top 85%",
+          onEnter: () => title.classList.add('visible'),
+          once: true
+        });
+      });
+    }
+    
+    // Setup parallax effect
+    function setupParallax() {
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      
+      window.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
+        
+        parallaxElements.forEach(el => {
+          const depth = parseFloat(el.getAttribute('data-depth')) || 0.1;
+          const moveX = (mouseX - 0.5) * depth * 100;
+          const moveY = (mouseY - 0.5) * depth * 100;
+          
+          gsap.to(el, {
+            x: moveX,
+            y: moveY,
+            duration: 1,
+            ease: "power2.out"
+          });
+        });
+      });
+    }
+    
+    // Setup custom cursor
+    function setupCustomCursor() {
+      const cursor = document.querySelector('.custom-cursor');
+      
+      // Only enable custom cursor on desktop
+      if (window.innerWidth > 768) {
+        cursor.style.display = 'block';
+        
+        document.addEventListener('mousemove', (e) => {
+          gsap.to(cursor, {
+            x: e.clientX,
+            y: e.clientY,
+            duration: 0.1,
+            ease: "power2.out"
+          });
+        });
+        
+        // Add active class to cursor over interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .experience-card, .guide-card, .tip-card, .amenity-category, .faq-item, .contact-method');
+        
+        interactiveElements.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+            cursor.classList.add('active');
+          });
+          
+          el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('active');
+          });
+        });
+      }
+    }
+    
+    // Animate elements in viewport on page load
+    function animateElementsInViewport() {
+      document.querySelectorAll('.fade-in').forEach(element => {
+        if (isElementInViewport(element)) {
+          element.classList.add('visible');
+        }
+      });
     }
     
     // Set up event listeners
@@ -1945,13 +2528,6 @@
           backToTopBtn.classList.remove('visible');
         }
         
-        // Animate elements when they enter viewport
-        document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
-          if (isElementInViewport(el)) {
-            el.classList.add('visible');
-          }
-        });
-        
         // Highlight active nav link based on scroll position
         highlightActiveNavLink();
       });
@@ -1964,13 +2540,32 @@
           const targetElement = document.querySelector(targetId);
           
           if (targetElement) {
-            window.scrollTo({
-              top: targetElement.offsetTop - 60,
-              behavior: 'smooth'
+            gsap.to(window, {
+              duration: 1,
+              scrollTo: { y: targetElement, offsetY: 60 },
+              ease: "power2.inOut"
             });
           }
         });
       });
+      
+      // Scroll down button in hero section
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = scrollIndicator.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            gsap.to(window, {
+              duration: 1,
+              scrollTo: { y: targetElement },
+              ease: "power2.inOut"
+            });
+          }
+        });
+      }
     }
     
     // Highlight active nav link based on scroll position
@@ -2049,22 +2644,12 @@
     // Setup back to top button
     function setupBackToTop() {
       backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: { y: 0 },
+          ease: "power2.inOut"
         });
       });
-    }
-    
-    // Animate elements on page load
-    function animateElements() {
-      setTimeout(() => {
-        document.querySelectorAll('.fade-in').forEach(element => {
-          if (isElementInViewport(element)) {
-            element.classList.add('visible');
-          }
-        });
-      }, 200);
     }
     
     // Fetch experiences data 
@@ -2423,7 +3008,7 @@
         const location = fields.Location || '';
         const audienceType = fields['Audience Type'] || '';
         const price = fields['Estimated Price'] 
-          ? `$${parseFloat(fields['Estimated Price']).toFixed(0)}` 
+          ? `${parseFloat(fields['Estimated Price']).toFixed(0)}` 
           : 'Price not available';
         const duration = fields.Duration 
           ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
@@ -2489,10 +3074,22 @@
         card.innerHTML = cardHTML;
         experienceList.appendChild(card);
         
-        // Add visible class for animation after a short delay
-        setTimeout(() => {
-          card.classList.add('visible');
-        }, 50 + index * 100);
+        // Animate cards as they are added
+        gsap.fromTo(
+          card,
+          { 
+            opacity: 0,
+            y: 60
+          },
+          { 
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.1 * index,
+            onComplete: () => card.classList.add('visible')
+          }
+        );
       });
     }
     
@@ -2505,21 +3102,10 @@
       }
     }
     
-    // Trigger initial animations when page loads
+    // Initialize on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize elements
       init();
-      
-      // Trigger initial scroll event to check for visible elements
-      setTimeout(() => {
-        window.dispatchEvent(new Event('scroll'));
-      }, 300);
     });
-    
-    // Backup init in case DOMContentLoaded already fired
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      init();
-    }
   </script>
 </body>
 </html>
