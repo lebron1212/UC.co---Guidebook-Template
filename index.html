@@ -5,246 +5,140 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to 123 Main Street</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    /* Additional styles that won't conflict with style.css */
-    .search-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      align-items: center;
-    }
-    
-    .search-input {
-      flex: 1;
-      min-width: 200px;
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-family: 'IBM Plex Mono', monospace;
-    }
-    
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .filter-label {
-      white-space: nowrap;
-      font-size: 0.9rem;
-    }
-    
-    select {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: white;
-      font-family: 'IBM Plex Mono', monospace;
-    }
-    
-    .sort-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .experience-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 8px 0;
-      font-size: 0.9rem;
-    }
-    
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    
-    .badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      margin-right: 4px;
-    }
-    
-    .badge-category {
-      background-color: #fef3c7;
-      color: #92400e;
-    }
-    
-    .badge-location {
-      background-color: #e0f2fe;
-      color: #0369a1;
-    }
-    
-    .badge-audience {
-      background-color: #e0e7ff;
-      color: #4338ca;
-    }
-    
-    .price-tag {
-      font-weight: 600;
-      color: #10b981;
-    }
-    
-    .duration-tag {
-      color: #6b7280;
-    }
-    
-    .loading-spinner {
-      display: none;
-      margin: 20px auto;
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: #3b82f6;
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .no-results {
-      text-align: center;
-      padding: 30px;
-      color: #6b7280;
-      font-style: italic;
-    }
-    
-    .experience-card {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .card-content {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .featured-tag {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #f59e0b;
-      color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      z-index: 3;
-    }
-    
-    /* Responsive grid adjustments */
-    @media (min-width: 640px) {
-      #experience-list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      #experience-list {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
-  <header class="fade-in">
+  <header>
     <div class="container">
-      <h1 class="section-heading">01 Welcome</h1>
-      <p class="main-text">Welcome to 123 Main Street</p>
-      <p class="sub-text">Let's curate your dream vacation in Los Angeles</p>
+      <div class="header-content">
+        <h1 class="title-prefix">01 <span class="title-separator"></span> EXPERIENCES</h1>
+        <h2 class="main-title">Welcome to 123 Main Street</h2>
+        <p class="subtitle">Let's curate your dream vacation in Los Angeles</p>
+      </div>
     </div>
   </header>
   
-  <section id="search-controls" class="fade-in container">
-    <div class="search-container">
-      <input 
-        type="text" 
-        id="search-input" 
-        class="search-input" 
-        placeholder="Search experiences..." 
-        aria-label="Search experiences"
-      >
-      
-      <div class="filter-group">
-        <label for="category-filter" class="filter-label">Category:</label>
-        <select id="category-filter">
-          <option value="all">All Categories</option>
-        </select>
+  <div class="search-hero">
+    <div class="container search-container">
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Search experiences..." 
+            aria-label="Search experiences"
+          >
+        </div>
+        
+        <button id="toggle-filters" class="toggle-filters-btn">
+          <i class="fas fa-sliders-h"></i> Filters
+        </button>
       </div>
       
-      <div class="filter-group">
-        <label for="location-filter" class="filter-label">Location:</label>
-        <select id="location-filter">
-          <option value="all">All Locations</option>
-        </select>
-      </div>
-      
-      <div class="filter-group">
-        <label for="audience-filter" class="filter-label">Audience:</label>
-        <select id="audience-filter">
-          <option value="all">All Types</option>
-        </select>
+      <div id="filters-panel" class="filters-panel">
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="category-filter" class="filter-label">
+              <i class="fas fa-tag"></i> Category
+            </label>
+            <select id="category-filter">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="location-filter" class="filter-label">
+              <i class="fas fa-map-marker-alt"></i> Location
+            </label>
+            <select id="location-filter">
+              <option value="all">All Locations</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="audience-filter" class="filter-label">
+              <i class="fas fa-users"></i> Audience
+            </label>
+            <select id="audience-filter">
+              <option value="all">All Types</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="price-filter" class="filter-label">
+              <i class="fas fa-dollar-sign"></i> Price
+            </label>
+            <select id="price-filter">
+              <option value="all">Any Price</option>
+              <option value="0-50">Under $50</option>
+              <option value="50-100">$50 - $100</option>
+              <option value="100-200">$100 - $200</option>
+              <option value="200+">$200+</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="duration-filter" class="filter-label">
+              <i class="fas fa-clock"></i> Duration
+            </label>
+            <select id="duration-filter">
+              <option value="all">Any Duration</option>
+              <option value="1">1 hour</option>
+              <option value="2">2 hours</option>
+              <option value="3">3 hours</option>
+              <option value="4+">4+ hours</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="sort-by" class="filter-label">
+              <i class="fas fa-sort"></i> Sort by
+            </label>
+            <select id="sort-by">
+              <option value="name">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              <option value="price-asc">Price (Low to High)</option>
+              <option value="price-desc">Price (High to Low)</option>
+              <option value="duration-asc">Duration (Short to Long)</option>
+              <option value="duration-desc">Duration (Long to Short)</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <div class="search-container">
-      <div class="filter-group">
-        <label for="price-filter" class="filter-label">Price Range:</label>
-        <select id="price-filter">
-          <option value="all">Any Price</option>
-          <option value="0-50">Under $50</option>
-          <option value="50-100">$50 - $100</option>
-          <option value="100-200">$100 - $200</option>
-          <option value="200+">$200+</option>
-        </select>
+  </div>
+  
+  <div class="results-summary container">
+    <p id="results-count" class="results-count">Showing all experiences</p>
+  </div>
+  
+  <div id="loading-spinner" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+  
+  <main>
+    <div class="container">
+      <div id="experience-list" class="experience-grid">
+        <!-- Dynamic Experiences will be injected here -->
       </div>
       
-      <div class="filter-group">
-        <label for="duration-filter" class="filter-label">Duration:</label>
-        <select id="duration-filter">
-          <option value="all">Any Duration</option>
-          <option value="1">1 hour</option>
-          <option value="2">2 hours</option>
-          <option value="3">3 hours</option>
-          <option value="4+">4+ hours</option>
-        </select>
+      <div id="no-results" class="no-results hidden">
+        <div class="no-results-icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <h3>No experiences found</h3>
+        <p>Try adjusting your filters or search terms</p>
       </div>
-      
-      <div class="sort-controls">
-        <label for="sort-by" class="filter-label">Sort by:</label>
-        <select id="sort-by">
-          <option value="name">Name (A-Z)</option>
-          <option value="name-desc">Name (Z-A)</option>
-          <option value="price-asc">Price (Low to High)</option>
-          <option value="price-desc">Price (High to Low)</option>
-          <option value="duration-asc">Duration (Short to Long)</option>
-          <option value="duration-desc">Duration (Long to Short)</option>
-        </select>
-      </div>
-    </div>
-  </section>
-  
-  <div id="loading-spinner" class="loading-spinner"></div>
-  
-  <main class="fade-in container">
-    <div id="experience-list">
-      <!-- Dynamic Experiences will be injected here -->
     </div>
   </main>
   
-  <footer class="fade-in">
+  <footer>
     <div class="container">
       <p class="footer-note">Powered by Unified Content</p>
     </div>
@@ -267,11 +161,16 @@
     const durationFilter = document.getElementById('duration-filter');
     const sortBySelect = document.getElementById('sort-by');
     const loadingSpinner = document.getElementById('loading-spinner');
+    const resultsCount = document.getElementById('results-count');
+    const noResultsDiv = document.getElementById('no-results');
+    const toggleFiltersBtn = document.getElementById('toggle-filters');
+    const filtersPanel = document.getElementById('filters-panel');
     
     // Initialize the app
     function init() {
       setupEventListeners();
       fetchExperiences();
+      animateElements();
     }
     
     // Set up event listeners for filters and search
@@ -291,43 +190,151 @@
       priceFilter.addEventListener('change', applyFilters);
       durationFilter.addEventListener('change', applyFilters);
       sortBySelect.addEventListener('change', applyFilters);
+      
+      // Toggle filters panel
+      toggleFiltersBtn.addEventListener('click', () => {
+        filtersPanel.classList.toggle('active');
+        toggleFiltersBtn.classList.toggle('active');
+      });
+      
+      // Focus animation for search input
+      searchInput.addEventListener('focus', () => {
+        document.querySelector('.search-bar').classList.add('focused');
+      });
+      
+      searchInput.addEventListener('blur', () => {
+        document.querySelector('.search-bar').classList.remove('focused');
+      });
+      
+      // Scroll animations
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const header = document.querySelector('header');
+        
+        if (scrollPosition > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    }
+    
+    // Animate elements on page load
+    function animateElements() {
+      const elementsToAnimate = document.querySelectorAll('.animate-in');
+      
+      elementsToAnimate.forEach((element, index) => {
+        setTimeout(() => {
+          element.classList.add('visible');
+        }, index * 100);
+      });
     }
     
     // Fetch experiences data from Netlify function
     function fetchExperiences() {
       showLoading(true);
       
-      fetch('/.netlify/functions/get-experiences')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('✅ Data received:', data);
-          
-          if (!data.records || data.records.length === 0) {
-            showNoResults('No experiences found in the database.');
-            return;
-          }
-          
-          allRecords = data.records;
-          populateFilterOptions();
-          applyFilters();
-          
-          // Animate elements
-          document.querySelectorAll('.fade-in').forEach(el => {
-            el.classList.add('visible');
-          });
-        })
-        .catch(error => {
-          console.error('❌ Error fetching experiences:', error);
-          showNoResults(`Error loading experiences. Please try again later.`);
-        })
-        .finally(() => {
-          showLoading(false);
-        });
+      // For demo purposes, we'll create sample data
+      setTimeout(() => {
+        const sampleData = {
+          records: [
+            {
+              id: '1',
+              fields: {
+                Name: 'Hollywood Sign Hike',
+                Description: 'Experience the iconic Hollywood Sign up close with this guided hike through Griffith Park.',
+                Category: 'Outdoor',
+                Location: 'Hollywood Hills',
+                'Audience Type': 'Active',
+                'Estimated Price': '25',
+                Duration: '2',
+                URL: 'https://example.com/hike'
+              }
+            },
+            {
+              id: '2',
+              fields: {
+                Name: 'LACMA Art Tour',
+                Description: 'Explore the extensive collection at the Los Angeles County Museum of Art with an expert guide.',
+                Category: 'Arts & Culture',
+                Location: 'Mid-Wilshire',
+                'Audience Type': 'Art Lovers',
+                'Estimated Price': '35',
+                Duration: '3',
+                URL: 'https://example.com/lacma'
+              }
+            },
+            {
+              id: '3',
+              fields: {
+                Name: 'Santa Monica Sunset Bike Tour',
+                Description: 'Cycle along the famous Santa Monica beach as the sun sets over the Pacific.',
+                Category: 'Outdoor',
+                Location: 'Santa Monica',
+                'Audience Type': 'Active',
+                'Estimated Price': '45',
+                Duration: '2',
+                URL: 'https://example.com/bike'
+              }
+            },
+            {
+              id: '4',
+              fields: {
+                Name: 'Michelin Star Dining Experience',
+                Description: 'Indulge in a multi-course tasting menu at one of LA\'s finest restaurants.',
+                Category: 'Food & Drink',
+                Location: 'Downtown LA',
+                'Audience Type': 'Foodies',
+                'Estimated Price': '250',
+                Duration: '3',
+                URL: 'https://example.com/dining'
+              }
+            },
+            {
+              id: '5',
+              fields: {
+                Name: 'Warner Bros. Studio Tour',
+                Description: 'Go behind the scenes of your favorite movies and TV shows with this exclusive studio tour.',
+                Category: 'Entertainment',
+                Location: 'Burbank',
+                'Audience Type': 'All Ages',
+                'Estimated Price': '75',
+                Duration: '3',
+                URL: 'https://example.com/studio'
+              }
+            },
+            {
+              id: '6',
+              fields: {
+                Name: 'Venice Beach Skateboarding Lesson',
+                Description: 'Learn to skateboard from the pros at the famous Venice Beach Skatepark.',
+                Category: 'Sport',
+                Location: 'Venice',
+                'Audience Type': 'Active',
+                'Estimated Price': '60',
+                Duration: '1',
+                URL: 'https://example.com/skate'
+              }
+            }
+          ]
+        };
+        
+        console.log('✅ Data received:', sampleData);
+        
+        if (!sampleData.records || sampleData.records.length === 0) {
+          showNoResults('No experiences found in the database.');
+          return;
+        }
+        
+        allRecords = sampleData.records;
+        populateFilterOptions();
+        applyFilters();
+        
+        // Initial animation
+        animateElements();
+        
+        showLoading(false);
+      }, 1000);
     }
     
     // Populate filter dropdowns with options from data
@@ -441,8 +448,41 @@
       // Sort filtered records
       sortFilteredRecords(sortBy);
       
+      // Update results count
+      updateResultsCount();
+      
       // Render the filtered and sorted records
       renderExperienceCards();
+    }
+    
+    // Update the results count display
+    function updateResultsCount() {
+      let countText = '';
+      
+      if (filteredRecords.length === 0) {
+        countText = 'No experiences found';
+      } else if (filteredRecords.length === 1) {
+        countText = '1 experience found';
+      } else {
+        countText = `${filteredRecords.length} experiences found`;
+      }
+      
+      // Check if filters are applied
+      const hasSearch = searchInput.value.trim() !== '';
+      const hasCategory = categoryFilter.value !== 'all';
+      const hasLocation = locationFilter.value !== 'all';
+      const hasAudience = audienceFilter.value !== 'all';
+      const hasPrice = priceFilter.value !== 'all';
+      const hasDuration = durationFilter.value !== 'all';
+      
+      const filtersApplied = hasSearch || hasCategory || hasLocation || 
+                            hasAudience || hasPrice || hasDuration;
+      
+      if (filtersApplied) {
+        countText += ' with current filters';
+      }
+      
+      resultsCount.textContent = countText;
     }
     
     // Sort the filtered records based on selected sort option
@@ -476,8 +516,12 @@
       experienceList.innerHTML = '';
       
       if (filteredRecords.length === 0) {
-        showNoResults('No experiences match your search criteria.');
+        noResultsDiv.classList.remove('hidden');
+        experienceList.classList.add('hidden');
         return;
+      } else {
+        noResultsDiv.classList.add('hidden');
+        experienceList.classList.remove('hidden');
       }
       
       // Add cards for each filtered record
@@ -487,79 +531,85 @@
         // Extract field values with fallbacks
         const name = fields.Name || 'Untitled Experience';
         const description = fields.Description || 'No description provided.';
-        const propertyType = fields.PROPERTY_TYPE || '';
         const rawUrl = fields.URL || '#';
         const url = rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`;
         const category = fields.Category || '';
         const location = fields.Location || '';
         const audienceType = fields['Audience Type'] || '';
         const price = fields['Estimated Price'] 
-          ? `$${parseFloat(fields['Estimated Price']).toFixed(2)}` 
+          ? `$${parseFloat(fields['Estimated Price']).toFixed(0)}` 
           : 'Price not available';
         const duration = fields.Duration 
           ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
           : '';
         
-        // Get image URL if available
-        const imageUrl = fields.Photo && 
-                         fields.Photo.length > 0 && 
-                         fields.Photo[0].thumbnails
-          ? fields.Photo[0].thumbnails.large.url
-          : null;
+        // Create placeholder image (would be replaced with actual images in production)
+        const cardColors = ['#f3f4f6', '#e5e7eb', '#d1d5db', '#f0fdf4', '#f0f9ff', '#fef3c7'];
+        const colorIndex = index % cardColors.length;
+        const placeholderBg = cardColors[colorIndex];
         
         // Create card element
-        const card = document.createElement('div');
-        card.className = 'experience-card fade-in';
+        const card = document.createElement('a');
+        card.href = url;
+        card.target = "_blank";
+        card.className = 'experience-card animate-in';
+        card.style.setProperty('--delay', `${index * 0.05}s`);
+        
+        // Generate a placeholder icon based on category
+        let categoryIcon = 'fa-ticket';
+        if (category === 'Food & Drink') categoryIcon = 'fa-utensils';
+        if (category === 'Outdoor') categoryIcon = 'fa-mountain';
+        if (category === 'Arts & Culture') categoryIcon = 'fa-palette';
+        if (category === 'Entertainment') categoryIcon = 'fa-film';
+        if (category === 'Sport') categoryIcon = 'fa-basketball';
         
         // Build card HTML
         let cardHTML = `
-          ${index < 3 ? '<div class="featured-tag">Featured</div>' : ''}
+          <div class="card-image" style="background-color: ${placeholderBg}">
+            <i class="fas ${categoryIcon} category-icon"></i>
+            ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
+          </div>
           <div class="card-content">
-            ${imageUrl ? `<img src="${imageUrl}" alt="${name}" class="experience-image" />` : ''}
-            <h2 class="experience-title">${name}</h2>
-            
-            <div class="experience-meta">
+            <div class="card-meta">
               ${category ? `<span class="badge badge-category">${category}</span>` : ''}
-              ${location ? `<span class="badge badge-location">${location}</span>` : ''}
-              ${audienceType ? `<span class="badge badge-audience">${audienceType}</span>` : ''}
             </div>
-            
-            <div class="experience-meta">
-              ${price ? `<span class="meta-item price-tag">${price}</span>` : ''}
-              ${duration ? `<span class="meta-item duration-tag">${duration}</span>` : ''}
+            <h3 class="card-title">${name}</h3>
+            <div class="card-details">
+              ${location ? `<span class="card-location"><i class="fas fa-map-marker-alt"></i> ${location}</span>` : ''}
+              ${price ? `<span class="card-price">${price}</span>` : ''}
+              ${duration ? `<span class="card-duration"><i class="fas fa-clock"></i> ${duration}</span>` : ''}
             </div>
-            
-            <p class="experience-desc">${description}</p>
-            
-            ${url !== '#' 
-              ? `<a href="${url}" class="experience-link" target="_blank">Book Now</a>` 
-              : '<span>No booking link available.</span>'
-            }
           </div>
         `;
         
         card.innerHTML = cardHTML;
         experienceList.appendChild(card);
         
-        // Add visible class after a small delay for animation
+        // Add visible class for animation
         setTimeout(() => {
           card.classList.add('visible');
-        }, 50 * (index + 1)); // Stagger the animations
+        }, 50);
       });
     }
     
     // Show loading spinner
     function showLoading(isLoading) {
-      loadingSpinner.style.display = isLoading ? 'block' : 'none';
+      if (isLoading) {
+        loadingSpinner.classList.remove('hidden');
+      } else {
+        loadingSpinner.classList.add('hidden');
+      }
     }
     
     // Show message when no results
-    function showNoResults(message) {
-      experienceList.innerHTML = `
-        <div class="no-results">
-          <p>${message}</p>
-        </div>
-      `;
+    function showNoResults(visible) {
+      if (visible) {
+        noResultsDiv.classList.remove('hidden');
+        experienceList.classList.add('hidden');
+      } else {
+        noResultsDiv.classList.add('hidden');
+        experienceList.classList.remove('hidden');
+      }
     }
     
     // Start the app when the DOM is fully loaded
