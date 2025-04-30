@@ -3,21 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Property Guide</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>Luxury Property Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     /* Core Variables */
     :root {
       --black: #000000;
       --white: #FFFFFF;
-      --gold: #AC7A2A;
-      --dark-gold: #8A6215;
-      --light-gold: #D4AF37;
+      --gold: #D4AF37;
+      --dark-gold: #B8860B;
+      --light-gold: #F5E5A9;
+      --charcoal: #222222;
+      --light-charcoal: #333333;
+      --cream: #F8F6F0;
       
       /* Typography */
-      --font-mono: 'IBM Plex Mono', monospace;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Montserrat', sans-serif;
       
       /* Spacing */
       --space-xs: 8px;
@@ -29,6 +32,8 @@
       /* Transitions */
       --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       --transition-medium: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition-slow: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+      --transition-extra-slow: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     /* Reset & Base Styles */
@@ -48,34 +53,33 @@
     }
 
     body {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       line-height: 1.6;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.02em;
       overflow-x: hidden;
     }
 
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-sans);
-      font-weight: 800;
-      line-height: 1.1;
+      font-family: var(--font-serif);
+      font-weight: 400;
+      line-height: 1.2;
       margin-bottom: var(--space-md);
-      text-transform: uppercase;
     }
     
     h1 {
-      font-size: clamp(3.5rem, 10vw, 6rem);
-      letter-spacing: -0.03em;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      letter-spacing: -0.02em;
+      font-weight: 700;
     }
     
     h2 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      letter-spacing: -0.02em;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: -0.01em;
     }
     
     h3 {
       font-size: clamp(1.8rem, 4vw, 2.5rem);
-      letter-spacing: -0.01em;
     }
     
     h4 {
@@ -83,26 +87,28 @@
     }
     
     p {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      letter-spacing: 0.05em;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      letter-spacing: 0.02em;
       margin-bottom: var(--space-md);
       max-width: 760px;
+      line-height: 1.8;
+      font-weight: 300;
     }
 
     .subtitle {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
       text-transform: uppercase;
       letter-spacing: 0.25em;
       color: var(--gold);
       margin-bottom: var(--space-sm);
-      font-weight: 400;
+      font-weight: 500;
     }
 
     .number-indicator {
-      font-family: var(--font-mono);
-      font-size: 1rem;
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
       color: var(--gold);
       margin-right: var(--space-sm);
     }
@@ -117,8 +123,9 @@
     
     section {
       position: relative;
-      padding: var(--space-lg) 0;
+      padding: var(--space-xl) 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
     }
     
     .grid {
@@ -165,11 +172,20 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      background-color: var(--black);
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       height: 80px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color var(--transition-medium),
+                  height var(--transition-medium);
+    }
+    
+    .header.scrolled {
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.95);
     }
     
     .navbar {
@@ -180,12 +196,34 @@
     }
     
     .logo {
-      font-family: var(--font-sans);
+      font-family: var(--font-serif);
       font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
+      font-weight: 600;
+      letter-spacing: 0.05em;
       color: var(--white);
       text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      padding: 5px 0;
+    }
+    
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-medium);
+    }
+    
+    .logo:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
     
     .nav-links {
@@ -204,14 +242,16 @@
     }
     
     .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       color: var(--white);
       text-decoration: none;
       padding: var(--space-xs) 0;
       position: relative;
+      font-weight: 400;
+      transition: color var(--transition-fast);
     }
     
     .nav-link::after {
@@ -224,7 +264,11 @@
       background-color: var(--gold);
       transform: scaleX(0);
       transform-origin: right;
-      transition: transform var(--transition-fast);
+      transition: transform var(--transition-medium);
+    }
+    
+    .nav-link:hover {
+      color: var(--gold);
     }
     
     .nav-link:hover::after,
@@ -250,8 +294,13 @@
       display: block;
       position: absolute;
       left: 0;
-      transition: transform var(--transition-fast),
-                  opacity var(--transition-fast);
+      transition: transform var(--transition-medium),
+                  opacity var(--transition-medium),
+                  background-color var(--transition-fast);
+    }
+    
+    .menu-button:hover .menu-line {
+      background-color: var(--gold);
     }
     
     .menu-line:nth-child(1) {
@@ -269,6 +318,7 @@
     
     .menu-open .menu-line:nth-child(1) {
       transform: translateY(9px) rotate(45deg);
+      background-color: var(--gold);
     }
     
     .menu-open .menu-line:nth-child(2) {
@@ -277,6 +327,7 @@
     
     .menu-open .menu-line:nth-child(3) {
       transform: translateY(-9px) rotate(-45deg);
+      background-color: var(--gold);
     }
     
     .mobile-menu {
@@ -285,14 +336,16 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--black);
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       z-index: 999;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity var(--transition-medium),
-                  visibility var(--transition-medium);
+      transition: opacity var(--transition-slow),
+                  visibility var(--transition-slow);
       opacity: 0;
       visibility: hidden;
     }
@@ -305,25 +358,54 @@
     .mobile-nav-links {
       display: flex;
       flex-direction: column;
-      gap: var(--space-md);
+      gap: var(--space-lg);
       text-align: center;
       list-style: none;
     }
     
     .mobile-nav-link {
-      font-family: var(--font-sans);
-      font-size: 2rem;
-      font-weight: 800;
-      text-transform: uppercase;
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 600;
       color: var(--white);
       text-decoration: none;
       position: relative;
       display: inline-block;
-      transition: color var(--transition-fast);
+      overflow: hidden;
+      padding: 10px 0;
+      transform: translateY(50px);
+      opacity: 0;
+      transition: color var(--transition-fast),
+                  transform var(--transition-slow),
+                  opacity var(--transition-slow);
+      transition-delay: calc(var(--index) * 0.1s);
+    }
+    
+    .mobile-menu.open .mobile-nav-link {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-medium);
     }
     
     .mobile-nav-link:hover {
       color: var(--gold);
+    }
+    
+    .mobile-nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
 
     /* Get Excited Section */
@@ -342,38 +424,104 @@
       position: relative;
       z-index: 2;
     }
+    
+    .get-excited-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15), rgba(0, 0, 0, 0) 70%);
+      z-index: 1;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .get-excited-bg.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
 
     .get-excited-title {
       font-size: clamp(3.5rem, 15vw, 12rem);
       line-height: 0.9;
       margin-bottom: var(--space-lg);
       color: var(--white);
-      text-transform: uppercase;
-      font-weight: 900;
+      font-weight: 700;
+      overflow: hidden;
+    }
+    
+    .excited-text-wrapper {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
     }
     
     .excited-text {
       color: var(--gold);
       display: inline-block;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: textCycle 8s infinite;
     }
     
-    .excited-text::after {
-      content: '';
-      position: absolute;
-      bottom: 0.1em;
-      left: 0;
-      width: 100%;
-      height: 0.05em;
-      background-color: var(--gold);
+    .excited-text:nth-child(1) {
+      position: relative;
+      opacity: 1;
+      transform: translateY(0);
+      animation-delay: 0s;
+    }
+    
+    .excited-text:nth-child(2) {
+      animation-delay: 2s;
+    }
+    
+    .excited-text:nth-child(3) {
+      animation-delay: 4s;
+    }
+    
+    .excited-text:nth-child(4) {
+      animation-delay: 6s;
+    }
+    
+    @keyframes textCycle {
+      0%, 20%, 100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      25%, 45% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      50% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
     }
     
     .question-text {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-size: clamp(1rem, 3vw, 1.5rem);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       margin-bottom: var(--space-lg);
+      font-weight: 300;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.3s;
+    }
+    
+    .question-text.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .section-navigation {
@@ -385,24 +533,37 @@
     
     .section-nav-item {
       font-family: var(--font-sans);
-      font-weight: 800;
-      font-size: clamp(1rem, 3vw, 1.5rem);
+      font-weight: 500;
+      font-size: clamp(0.85rem, 2vw, 1rem);
       text-transform: uppercase;
+      letter-spacing: 0.1em;
       background-color: transparent;
       color: var(--white);
-      border: 2px solid var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       padding: var(--space-sm) var(--space-md);
       cursor: pointer;
-      transition: background-color var(--transition-fast),
-                  color var(--transition-fast);
+      transition: background-color var(--transition-medium),
+                  color var(--transition-medium),
+                  border-color var(--transition-medium),
+                  transform var(--transition-medium),
+                  opacity var(--transition-slow);
       text-decoration: none;
       display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+      transition-delay: calc(0.4s + var(--index) * 0.1s);
+    }
+    
+    .section-nav-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .section-nav-item:hover {
       background-color: var(--gold);
       border-color: var(--gold);
       color: var(--black);
+      transform: translateY(-5px);
     }
 
     /* Hero Section */
@@ -422,11 +583,30 @@
     
     .hero-title {
       margin-bottom: var(--space-md);
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow);
+    }
+    
+    .hero-title.visible {
+      transform: translateY(0);
+      opacity: 1;
     }
     
     .hero-description {
       font-size: clamp(1rem, 1.5vw, 1.2rem);
       margin-bottom: var(--space-lg);
+      transform: translateY(50px);
+      opacity: 0;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow);
+      transition-delay: 0.2s;
+    }
+    
+    .hero-description.visible {
+      transform: translateY(0);
+      opacity: 1;
     }
     
     .hero-bg {
@@ -435,11 +615,20 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80');
+      background-image: url('/api/placeholder/1920/1080');
       background-size: cover;
       background-position: center;
       filter: grayscale(100%) brightness(0.3);
       z-index: 0;
+      transform: scale(1.1);
+      opacity: 0;
+      transition: transform var(--transition-extra-slow),
+                  opacity var(--transition-extra-slow);
+    }
+    
+    .hero-bg.visible {
+      transform: scale(1);
+      opacity: 1;
     }
     
     .hero-overlay {
@@ -457,36 +646,90 @@
       background-color: var(--black);
       border-top: 1px solid var(--gold);
       border-bottom: 1px solid var(--gold);
+      position: relative;
+    }
+    
+    .quick-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: 0;
     }
     
     .info-card {
       background-color: rgba(255, 255, 255, 0.03);
       padding: var(--space-md);
       border-left: 2px solid var(--gold);
-      transition: transform var(--transition-medium);
+      transition: transform var(--transition-medium),
+                  box-shadow var(--transition-medium);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    
+    .info-card.visible {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow),
+                  box-shadow var(--transition-medium);
+      transition-delay: calc(var(--index) * 0.1s);
     }
     
     .info-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+    }
+    
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(212, 175, 55, 0.05), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .info-card:hover::before {
+      opacity: 1;
     }
     
     .info-icon {
       color: var(--gold);
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       margin-bottom: var(--space-sm);
+      transform: translateY(0);
+      transition: transform var(--transition-medium);
+    }
+    
+    .info-card:hover .info-icon {
+      transform: translateY(-5px);
     }
     
     .info-content h3 {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
       letter-spacing: 0.2em;
       margin-bottom: var(--space-xs);
       color: var(--gold);
+      text-transform: uppercase;
+      font-weight: 500;
     }
     
     .info-content p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin-bottom: var(--space-xs);
+      font-weight: 300;
     }
 
     /* Section Styles */
@@ -496,32 +739,69 @@
     }
     
     .section-number {
-      font-family: var(--font-mono);
+      font-family: var(--font-serif);
       font-size: clamp(4rem, 15vw, 10rem);
       color: rgba(255, 255, 255, 0.03);
       position: absolute;
       top: -80px;
       left: -20px;
       z-index: -1;
-      font-weight: 800;
+      font-weight: 700;
       line-height: 1;
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .section-number.visible {
+      opacity: 1;
+      transform: translateX(0);
     }
     
     .section-title {
-      font-family: var(--font-sans);
-      font-weight: 800;
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      letter-spacing: 0;
       margin-bottom: var(--space-md);
       position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.1s;
+    }
+    
+    .section-title.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     .section-divider {
-      width: 60px;
-      height: 4px;
+      width: 0;
+      height: 3px;
       background-color: var(--gold);
       margin-bottom: var(--space-md);
+      transition: width var(--transition-slow);
+      transition-delay: 0.3s;
+    }
+    
+    .section-divider.visible {
+      width: 80px;
+    }
+    
+    .section-description {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.4s;
+    }
+    
+    .section-description.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Card Styles */
@@ -530,26 +810,152 @@
       border-left: 2px solid var(--gold);
       padding: var(--space-md);
       height: 100%;
-      transition: transform var(--transition-medium);
+      transition: transform var(--transition-slow),
+                  box-shadow var(--transition-medium),
+                  opacity var(--transition-slow);
       position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--index) * 0.1s);
     }
     
     .card:hover {
-      transform: translateY(-10px);
+      transform: translateY(-15px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5),
+                  0 5px 15px rgba(212, 175, 55, 0.1);
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(212, 175, 55, 0.05), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .card:hover::before {
+      opacity: 1;
     }
     
     .card-title {
-      font-family: var(--font-sans);
-      font-weight: 800;
+      font-family: var(--font-serif);
+      font-weight: 600;
       font-size: 1.5rem;
       margin-bottom: var(--space-sm);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding-bottom: var(--space-sm);
+      position: relative;
+    }
+    
+    .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--gold);
+      transition: width var(--transition-medium);
+    }
+    
+    .card:hover .card-title::after {
+      width: 100%;
     }
     
     .card-content {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+    
+    /* Search & Filter */
+    .search-filter-container {
+      margin-bottom: var(--space-lg);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.5s;
+    }
+    
+    .search-filter-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .search-bar {
+      display: flex;
+      margin-bottom: var(--space-md);
+    }
+    
+    .search-input {
+      flex: 1;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      padding: var(--space-sm) var(--space-md);
+      font-family: var(--font-sans);
       font-size: 0.9rem;
+      transition: border-color var(--transition-fast),
+                  background-color var(--transition-fast);
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    
+    .search-button {
+      background-color: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 0 var(--space-md);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+    }
+    
+    .search-button:hover {
+      background-color: var(--dark-gold);
+    }
+    
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+    
+    .filter-tag {
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--white);
+      padding: 5px 15px;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background-color var(--transition-fast),
+                  color var(--transition-fast),
+                  border-color var(--transition-fast);
+    }
+    
+    .filter-tag:hover,
+    .filter-tag.active {
+      background-color: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
     }
     
     /* Footer */
@@ -557,12 +963,27 @@
       background-color: var(--black);
       padding: var(--space-lg) 0;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: 0;
     }
     
     .footer-content {
       display: flex;
       flex-direction: column;
       gap: var(--space-md);
+      position: relative;
+      z-index: 1;
     }
     
     @media (min-width: 768px) {
@@ -574,10 +995,10 @@
     }
     
     .footer-logo {
-      font-family: var(--font-sans);
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: -0.02em;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.8rem;
+      letter-spacing: 0.02em;
     }
     
     .footer-nav {
@@ -587,25 +1008,47 @@
     }
     
     .footer-link {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
       text-transform: uppercase;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.1em;
       color: var(--white);
       text-decoration: none;
       transition: color var(--transition-fast);
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-medium);
     }
     
     .footer-link:hover {
       color: var(--gold);
     }
     
+    .footer-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    
     .copyright {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-size: 0.8rem;
       color: rgba(255, 255, 255, 0.5);
       margin-top: var(--space-lg);
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
     
     /* Side Navigation */
@@ -632,47 +1075,68 @@
       background-color: rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       cursor: pointer;
-      transition: transform var(--transition-fast),
-                  background-color var(--transition-fast);
+      transition: transform var(--transition-medium),
+                  background-color var(--transition-medium);
       position: relative;
+    }
+    
+    .side-nav-item::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 6px;
+      height: 6px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      transition: transform var(--transition-medium);
     }
     
     .side-nav-item:hover,
     .side-nav-item.active {
-      background-color: var(--gold);
+      background-color: rgba(255, 255, 255, 0.5);
       transform: scale(1.2);
+    }
+    
+    .side-nav-item:hover::before,
+    .side-nav-item.active::before {
+      transform: translate(-50%, -50%) scale(1);
     }
     
     .side-nav-label {
       position: absolute;
-      right: 20px;
+      right: 25px;
       top: 50%;
       transform: translateY(-50%);
-      background-color: var(--black);
-      padding: 4px 8px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 5px 10px;
       border-left: 2px solid var(--gold);
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       white-space: nowrap;
       opacity: 0;
       visibility: hidden;
-      transition: opacity var(--transition-fast),
-                  visibility var(--transition-fast);
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium),
+                  transform var(--transition-medium);
+      transform: translateX(10px) translateY(-50%);
     }
     
     .side-nav-item:hover .side-nav-label {
       opacity: 1;
       visibility: visible;
+      transform: translateX(0) translateY(-50%);
     }
     
     /* Animation Classes */
     .animate-in {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-medium),
-                  transform var(--transition-medium);
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
     .animate-in.visible {
@@ -680,11 +1144,50 @@
       transform: translateY(0);
     }
     
-    .delay-1 { transition-delay: 0.1s; }
-    .delay-2 { transition-delay: 0.2s; }
-    .delay-3 { transition-delay: 0.3s; }
-    .delay-4 { transition-delay: 0.4s; }
-    .delay-5 { transition-delay: 0.5s; }
+    .fade-in {
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+    }
+    
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
     
     /* Progress Bar */
     .progress-container {
@@ -692,16 +1195,18 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
+      height: 3px;
       background-color: transparent;
       z-index: 1001;
+      overflow: hidden;
     }
     
     .progress-bar {
       height: 100%;
-      background-color: var(--gold);
+      background: linear-gradient(to right, var(--dark-gold), var(--gold), var(--light-gold));
       width: 0;
       transition: width var(--transition-fast);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
     }
     
     /* Back to Top Button */
@@ -722,7 +1227,8 @@
       visibility: hidden;
       transition: opacity var(--transition-medium),
                   visibility var(--transition-medium),
-                  background-color var(--transition-fast);
+                  background-color var(--transition-fast),
+                  transform var(--transition-medium);
     }
     
     .back-to-top.visible {
@@ -732,11 +1238,18 @@
     
     .back-to-top:hover {
       background-color: var(--gold);
+      transform: translateY(-5px);
     }
     
     .back-to-top i {
       color: var(--white);
       font-size: 1.2rem;
+      transition: transform var(--transition-medium);
+    }
+    
+    .back-to-top:hover i {
+      color: var(--black);
+      transform: translateY(-3px);
     }
     
     /* Additional Features */
@@ -753,7 +1266,7 @@
     .text-reveal-content {
       display: block;
       transform: translateY(100%);
-      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     }
     
     .text-reveal.visible .text-reveal-content {
@@ -762,7 +1275,7 @@
     
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
     
     ::-webkit-scrollbar-track {
@@ -770,15 +1283,79 @@
     }
     
     ::-webkit-scrollbar-thumb {
-      background: var(--gold);
+      background: var(--dark-gold);
+      border-radius: 4px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--light-gold);
+      background: var(--gold);
+    }
+    
+    /* Parallax Effect */
+    .parallax-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background-size: cover;
+      background-position: center;
+      transform: translateY(0);
+      z-index: -1;
+    }
+    
+    /* Cursor Effects */
+    .custom-cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+      opacity: 0;
+    }
+    
+    .custom-cursor-follower {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--gold);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      transition: width 0.3s, height 0.3s, background-color 0.3s, opacity 0.3s;
+      opacity: 0;
+    }
+    
+    body:hover .custom-cursor,
+    body:hover .custom-cursor-follower {
+      opacity: 1;
+    }
+    
+    a:hover ~ .custom-cursor,
+    button:hover ~ .custom-cursor {
+      width: 40px;
+      height: 40px;
+      border-color: var(--light-gold);
+    }
+    
+    a:hover ~ .custom-cursor-follower,
+    button:hover ~ .custom-cursor-follower {
+      width: 0;
+      height: 0;
+      opacity: 0;
     }
   </style>
 </head>
 <body>
+  <!-- Custom Cursor -->
+  <div class="custom-cursor"></div>
+  <div class="custom-cursor-follower"></div>
+
   <!-- Progress Bar -->
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
@@ -788,7 +1365,7 @@
   <header class="header">
     <div class="container">
       <nav class="navbar">
-        <a href="#" class="logo">PROPERTY GUIDE</a>
+        <a href="#" class="logo">LUXURY PROPERTY</a>
         
         <ul class="nav-links">
           <li><a href="#get-excited" class="nav-link active">HOME</a></li>
@@ -811,12 +1388,12 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu">
     <ul class="mobile-nav-links">
-      <li><a href="#get-excited" class="mobile-nav-link">HOME</a></li>
-      <li><a href="#experiences" class="mobile-nav-link">EXPERIENCES</a></li>
-      <li><a href="#guide" class="mobile-nav-link">HOUSE GUIDE</a></li>
-      <li><a href="#tips" class="mobile-nav-link">LOCAL TIPS</a></li>
-      <li><a href="#amenities" class="mobile-nav-link">AMENITIES</a></li>
-      <li><a href="#contact" class="mobile-nav-link">CONTACT</a></li>
+      <li><a href="#get-excited" class="mobile-nav-link" style="--index: 0;">HOME</a></li>
+      <li><a href="#experiences" class="mobile-nav-link" style="--index: 1;">EXPERIENCES</a></li>
+      <li><a href="#guide" class="mobile-nav-link" style="--index: 2;">HOUSE GUIDE</a></li>
+      <li><a href="#tips" class="mobile-nav-link" style="--index: 3;">LOCAL TIPS</a></li>
+      <li><a href="#amenities" class="mobile-nav-link" style="--index: 4;">AMENITIES</a></li>
+      <li><a href="#contact" class="mobile-nav-link" style="--index: 5;">CONTACT</a></li>
     </ul>
   </div>
   
@@ -847,23 +1424,30 @@
   
   <!-- Get Excited Section -->
   <section class="get-excited-section" id="get-excited">
+    <div class="get-excited-bg"></div>
     <div class="container get-excited-container">
       <h1 class="get-excited-title">
         <span class="text-reveal">
           <span class="text-reveal-content">[GET</span>
         </span>
+        <span class="excited-text-wrapper">
+          <span class="excited-text">EXCITED</span>
+          <span class="excited-text">INSPIRED</span>
+          <span class="excited-text">LUXURIOUS</span>
+          <span class="excited-text">PAMPERED</span>
+        </span>
         <span class="text-reveal">
-          <span class="text-reveal-content"><span class="excited-text">EXCITED</span>]</span>
+          <span class="text-reveal-content">]</span>
         </span>
       </h1>
-      <p class="question-text animate-in">WHAT WOULD YOU LIKE TO DO?</p>
+      <p class="question-text">WELCOME TO YOUR LUXURY EXPERIENCE</p>
       
       <div class="section-navigation">
-        <a href="#experiences" class="section-nav-item animate-in delay-1">EXPERIENCES</a>
-        <a href="#guide" class="section-nav-item animate-in delay-2">HOUSE GUIDE</a>
-        <a href="#tips" class="section-nav-item animate-in delay-3">LOCAL TIPS</a>
-        <a href="#amenities" class="section-nav-item animate-in delay-4">AMENITIES</a>
-        <a href="#contact" class="section-nav-item animate-in delay-5">CONTACT</a>
+        <a href="#experiences" class="section-nav-item" style="--index: 0;">EXPERIENCES</a>
+        <a href="#guide" class="section-nav-item" style="--index: 1;">HOUSE GUIDE</a>
+        <a href="#tips" class="section-nav-item" style="--index: 2;">LOCAL TIPS</a>
+        <a href="#amenities" class="section-nav-item" style="--index: 3;">AMENITIES</a>
+        <a href="#contact" class="section-nav-item" style="--index: 4;">CONTACT</a>
       </div>
     </div>
   </section>
@@ -874,12 +1458,12 @@
       <div class="section-header">
         <div class="section-number">01</div>
         <p class="subtitle animate-in">ESSENTIAL INFORMATION</p>
-        <h2 class="section-title animate-in delay-1">QUICK INFO</h2>
-        <div class="section-divider animate-in delay-2"></div>
+        <h2 class="section-title animate-in">QUICK INFO</h2>
+        <div class="section-divider animate-in"></div>
       </div>
       
       <div class="grid grid-4">
-        <div class="info-card animate-in delay-1">
+        <div class="info-card" style="--index: 0;">
           <div class="info-icon">
             <i class="fas fa-wifi"></i>
           </div>
@@ -890,7 +1474,7 @@
           </div>
         </div>
         
-        <div class="info-card animate-in delay-2">
+        <div class="info-card" style="--index: 1;">
           <div class="info-icon">
             <i class="fas fa-key"></i>
           </div>
@@ -902,7 +1486,7 @@
           </div>
         </div>
         
-        <div class="info-card animate-in delay-3">
+        <div class="info-card" style="--index: 2;">
           <div class="info-icon">
             <i class="fas fa-phone"></i>
           </div>
@@ -913,7 +1497,7 @@
           </div>
         </div>
         
-        <div class="info-card animate-in delay-4">
+        <div class="info-card" style="--index: 3;">
           <div class="info-icon">
             <i class="fas fa-car"></i>
           </div>
@@ -933,36 +1517,80 @@
       <div class="section-header">
         <div class="section-number">02</div>
         <p class="subtitle animate-in">CURATED FOR YOU</p>
-        <h2 class="section-title animate-in delay-1">EXPERIENCES</h2>
-        <div class="section-divider animate-in delay-2"></div>
-        <p class="animate-in delay-3">Explore the best the area has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
+        <h2 class="section-title animate-in">EXPERIENCES</h2>
+        <div class="section-divider animate-in"></div>
+        <p class="section-description animate-in">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
       </div>
       
-      <div class="grid grid-3">
-        <div class="card animate-in">
-          <h3 class="card-title">SCENIC TRAIL HIKE</h3>
+      <!-- Search & Filter -->
+      <div class="search-filter-container animate-in">
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="Search experiences..." id="experienceSearch">
+          <button class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="filter-tags">
+          <button class="filter-tag active" data-filter="all">All</button>
+          <button class="filter-tag" data-filter="adventure">Adventure</button>
+          <button class="filter-tag" data-filter="culinary">Culinary</button>
+          <button class="filter-tag" data-filter="cultural">Cultural</button>
+          <button class="filter-tag" data-filter="wellness">Wellness</button>
+        </div>
+      </div>
+      
+      <div class="grid grid-3" id="experiencesGrid">
+        <div class="card" style="--index: 0;" data-category="adventure">
+          <h3 class="card-title">PRIVATE YACHT TOUR</h3>
           <div class="card-content">
-            <p>Experience breathtaking views with this guided hike through stunning natural landscapes.</p>
-            <p><span class="accent-text">Location:</span> 2 miles away</p>
-            <p><span class="accent-text">Price:</span> $25</p>
+            <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
+            <p><span class="accent-text">Duration:</span> 4 hours</p>
+            <p><span class="accent-text">Price:</span> $750 per group</p>
           </div>
         </div>
         
-        <div class="card animate-in delay-1">
-          <h3 class="card-title">MUSEUM TOUR</h3>
+        <div class="card" style="--index: 1;" data-category="culinary">
+          <h3 class="card-title">CHEF'S TABLE DINNER</h3>
           <div class="card-content">
-            <p>Explore the extensive collection at the local museum with an expert guide providing context and insights.</p>
-            <p><span class="accent-text">Location:</span> 5 miles away</p>
-            <p><span class="accent-text">Price:</span> $35</p>
+            <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
+            <p><span class="accent-text">Duration:</span> 3 hours</p>
+            <p><span class="accent-text">Price:</span> $350 per person</p>
           </div>
         </div>
         
-        <div class="card animate-in delay-2">
-          <h3 class="card-title">FINE DINING</h3>
+        <div class="card" style="--index: 2;" data-category="cultural">
+          <h3 class="card-title">PRIVATE ART GALLERY TOUR</h3>
           <div class="card-content">
-            <p>Indulge in a multi-course tasting menu at one of the area's finest restaurants with locally sourced ingredients.</p>
-            <p><span class="accent-text">Location:</span> 3 miles away</p>
-            <p><span class="accent-text">Price:</span> $120</p>
+            <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
+            <p><span class="accent-text">Duration:</span> 2 hours</p>
+            <p><span class="accent-text">Price:</span> $200 per person</p>
+          </div>
+        </div>
+        
+        <div class="card" style="--index: 3;" data-category="wellness">
+          <h3 class="card-title">MOUNTAINTOP YOGA</h3>
+          <div class="card-content">
+            <p>Private helicopter transport to a scenic mountaintop for a guided sunrise yoga session followed by champagne breakfast.</p>
+            <p><span class="accent-text">Duration:</span> 4 hours</p>
+            <p><span class="accent-text">Price:</span> $500 per person</p>
+          </div>
+        </div>
+        
+        <div class="card" style="--index: 4;" data-category="adventure">
+          <h3 class="card-title">DESERT STARGAZING</h3>
+          <div class="card-content">
+            <p>Chauffeured journey into the desert with an astronomer guide, high-powered telescopes, and premium picnic dinner.</p>
+            <p><span class="accent-text">Duration:</span> 5 hours</p>
+            <p><span class="accent-text">Price:</span> $375 per person</p>
+          </div>
+        </div>
+        
+        <div class="card" style="--index: 5;" data-category="culinary">
+          <h3 class="card-title">PRIVATE WINE TASTING</h3>
+          <div class="card-content">
+            <p>Exclusive cellar tour and tasting of rare vintages with a master sommelier in a historic vineyard estate.</p>
+            <p><span class="accent-text">Duration:</span> 3 hours</p>
+            <p><span class="accent-text">Price:</span> $250 per person</p>
           </div>
         </div>
       </div>
@@ -975,47 +1603,47 @@
       <div class="section-header">
         <div class="section-number">03</div>
         <p class="subtitle animate-in">STAY INFORMATION</p>
-        <h2 class="section-title animate-in delay-1">HOUSE GUIDE</h2>
-        <div class="section-divider animate-in delay-2"></div>
-        <p class="animate-in delay-3">Everything you need to know to make your stay comfortable and hassle-free.</p>
+        <h2 class="section-title animate-in">HOUSE GUIDE</h2>
+        <div class="section-divider animate-in"></div>
+        <p class="section-description animate-in">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="card animate-in">
+        <div class="card" style="--index: 0;">
           <h3 class="card-title">CHECKING IN & OUT</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
               <li style="margin-bottom: var(--space-xs);">• Check-in time: After 3:00 PM</li>
               <li style="margin-bottom: var(--space-xs);">• Self check-in with keypad (code: 2580)</li>
               <li style="margin-bottom: var(--space-xs);">• Check-out time: Before 11:00 AM</li>
-              <li style="margin-bottom: var(--space-xs);">• Just close the door behind you when leaving</li>
-              <li>• No need to clean, but please tidy up</li>
+              <li style="margin-bottom: var(--space-xs);">• Personal concierge available 24/7</li>
+              <li>• Housekeeping service included daily</li>
             </ul>
           </div>
         </div>
         
-        <div class="card animate-in delay-1">
-          <h3 class="card-title">HOUSE RULES</h3>
+        <div class="card" style="--index: 1;">
+          <h3 class="card-title">HOUSE FEATURES</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• No smoking anywhere on the property</li>
-              <li style="margin-bottom: var(--space-xs);">• No parties or events</li>
-              <li style="margin-bottom: var(--space-xs);">• Quiet hours: 10 PM - 8 AM</li>
-              <li style="margin-bottom: var(--space-xs);">• No pets allowed</li>
-              <li>• Maximum 4 guests at any time</li>
+              <li style="margin-bottom: var(--space-xs);">• Smart home system controls lighting, climate, music</li>
+              <li style="margin-bottom: var(--space-xs);">• Heated infinity pool with panoramic views</li>
+              <li style="margin-bottom: var(--space-xs);">• Private screening room with 4K projector</li>
+              <li style="margin-bottom: var(--space-xs);">• Private spa with sauna and steam room</li>
+              <li>• Wine cellar with curated selection</li>
             </ul>
           </div>
         </div>
         
-        <div class="card animate-in delay-2">
-          <h3 class="card-title">A/C & HEATING</h3>
+        <div class="card" style="--index: 2;">
+          <h3 class="card-title">PRIVATE SERVICES</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Thermostat located in the hallway</li>
-              <li style="margin-bottom: var(--space-xs);">• Set between 68-78°F for comfort</li>
-              <li style="margin-bottom: var(--space-xs);">• A/C: Press "Cool" button</li>
-              <li style="margin-bottom: var(--space-xs);">• Heat: Press "Heat" button</li>
-              <li>• Please turn off when leaving</li>
+              <li style="margin-bottom: var(--space-xs);">• Private chef available upon request</li>
+              <li style="margin-bottom: var(--space-xs);">• In-home massage and spa treatments</li>
+              <li style="margin-bottom: var(--space-xs);">• Chauffeur service with luxury vehicles</li>
+              <li style="margin-bottom: var(--space-xs);">• Personal shopping assistance</li>
+              <li>• Yacht and helicopter bookings</li>
             </ul>
           </div>
         </div>
@@ -1029,44 +1657,44 @@
       <div class="section-header">
         <div class="section-number">04</div>
         <p class="subtitle animate-in">INSIDER KNOWLEDGE</p>
-        <h2 class="section-title animate-in delay-1">LOCAL TIPS</h2>
-        <div class="section-divider animate-in delay-2"></div>
-        <p class="animate-in delay-3">Discover the area like a local with our insider recommendations.</p>
+        <h2 class="section-title animate-in">LOCAL TIPS</h2>
+        <div class="section-divider animate-in"></div>
+        <p class="section-description animate-in">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="card animate-in">
-          <h3 class="card-title">BEST RESTAURANTS</h3>
+        <div class="card" style="--index: 0;">
+          <h3 class="card-title">EXCLUSIVE DINING</h3>
           <div class="card-content">
             <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 600; margin-bottom: 4px;">BISTRO VERDE</p>
-              <p style="margin-bottom: var(--space-xs);">Amazing farm-to-table, reserve weeks ahead</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">LA MAISON DORÉE</p>
+              <p style="margin-bottom: var(--space-xs);">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
             </div>
             <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 600; margin-bottom: 4px;">LA CASA</p>
-              <p style="margin-bottom: var(--space-xs);">Classic Mexican, great margaritas</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">OCEAN & VINE</p>
+              <p style="margin-bottom: var(--space-xs);">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
             </div>
             <div>
-              <p style="font-weight: 600; margin-bottom: 4px;">MARKET SQUARE</p>
-              <p>Food hall with options for everyone</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">THE GARDEN ROOM</p>
+              <p>Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
             </div>
           </div>
         </div>
         
-        <div class="card animate-in delay-1">
-          <h3 class="card-title">HIDDEN GEMS</h3>
+        <div class="card" style="--index: 1;">
+          <h3 class="card-title">HIDDEN TREASURES</h3>
           <div class="card-content">
             <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 600; margin-bottom: 4px;">VINTAGE BOOKSTORE</p>
-              <p style="margin-bottom: var(--space-xs);">Unique bookstore with art installations</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">PRIVATE BEACH COVE</p>
+              <p style="margin-bottom: var(--space-xs);">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
             </div>
             <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 600; margin-bottom: 4px;">MOONLIGHT CINEMA</p>
-              <p style="margin-bottom: var(--space-xs);">Outdoor movie screenings in summer</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">ARTISAN ATELIER</p>
+              <p style="margin-bottom: var(--space-xs);">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
             </div>
             <div>
-              <p style="font-weight: 600; margin-bottom: 4px;">MUSEUM OF CURIOSITIES</p>
-              <p>Wonderfully weird collection</p>
+              <p style="font-weight: 600; margin-bottom: 4px;">THE CURATOR'S GALLERY</p>
+              <p>Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
             </div>
           </div>
         </div>
@@ -1079,51 +1707,51 @@
     <div class="container">
       <div class="section-header">
         <div class="section-number">05</div>
-        <p class="subtitle animate-in">FOR YOUR COMFORT</p>
-        <h2 class="section-title animate-in delay-1">AMENITIES</h2>
-        <div class="section-divider animate-in delay-2"></div>
-        <p class="animate-in delay-3">Everything available to make your stay comfortable and enjoyable.</p>
+        <p class="subtitle animate-in">FOR YOUR PLEASURE</p>
+        <h2 class="section-title animate-in">AMENITIES</h2>
+        <div class="section-divider animate-in"></div>
+        <p class="section-description animate-in">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="card animate-in">
-          <h3 class="card-title">KITCHEN</h3>
+        <div class="card" style="--index: 0;">
+          <h3 class="card-title">CULINARY</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Full-size refrigerator</li>
-              <li style="margin-bottom: var(--space-xs);">• Microwave & toaster oven</li>
-              <li style="margin-bottom: var(--space-xs);">• Coffee maker with pods</li>
-              <li style="margin-bottom: var(--space-xs);">• Dishwasher</li>
-              <li style="margin-bottom: var(--space-xs);">• Basic spices & cooking oil</li>
-              <li>• Dishes, glasses & flatware</li>
+              <li style="margin-bottom: var(--space-xs);">• Full chef's kitchen with premium appliances</li>
+              <li style="margin-bottom: var(--space-xs);">• Wine refrigerator stocked with curated selection</li>
+              <li style="margin-bottom: var(--space-xs);">• Gourmet coffee and espresso bar</li>
+              <li style="margin-bottom: var(--space-xs);">• Crystal glassware and fine china</li>
+              <li style="margin-bottom: var(--space-xs);">• Refrigerator pre-stocked with essentials</li>
+              <li>• Private chef available on request</li>
             </ul>
           </div>
         </div>
         
-        <div class="card animate-in delay-1">
-          <h3 class="card-title">BEDROOM</h3>
+        <div class="card" style="--index: 1;">
+          <h3 class="card-title">BEDROOM & SPA</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Queen-size mattress</li>
-              <li style="margin-bottom: var(--space-xs);">• Extra pillows in closet</li>
-              <li style="margin-bottom: var(--space-xs);">• Memory foam topper</li>
-              <li style="margin-bottom: var(--space-xs);">• Blackout curtains</li>
-              <li style="margin-bottom: var(--space-xs);">• Reading lamps</li>
-              <li>• Extra blankets</li>
+              <li style="margin-bottom: var(--space-xs);">• Custom king-size mattress with Italian linens</li>
+              <li style="margin-bottom: var(--space-xs);">• Pillow menu with 8 luxury options</li>
+              <li style="margin-bottom: var(--space-xs);">• Marble bathroom with heated floors</li>
+              <li style="margin-bottom: var(--space-xs);">• Soaking tub with panoramic views</li>
+              <li style="margin-bottom: var(--space-xs);">• Premium bath amenities by Diptyque</li>
+              <li>• In-room massage services available</li>
             </ul>
           </div>
         </div>
         
-        <div class="card animate-in delay-2">
-          <h3 class="card-title">TECHNOLOGY</h3>
+        <div class="card" style="--index: 2;">
+          <h3 class="card-title">TECHNOLOGY & ENTERTAINMENT</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• High-speed WiFi</li>
-              <li style="margin-bottom: var(--space-xs);">• 55" Smart TV</li>
-              <li style="margin-bottom: var(--space-xs);">• Netflix, Hulu, Disney+</li>
-              <li style="margin-bottom: var(--space-xs);">• Bluetooth speaker</li>
-              <li style="margin-bottom: var(--space-xs);">• USB charging ports</li>
-              <li>• Smart thermostat</li>
+              <li style="margin-bottom: var(--space-xs);">• Ultra-high-speed WiFi throughout</li>
+              <li style="margin-bottom: var(--space-xs);">• 85" OLED Smart TV with surround sound</li>
+              <li style="margin-bottom: var(--space-xs);">• All premium streaming services included</li>
+              <li style="margin-bottom: var(--space-xs);">• Smart home controls via tablet or voice</li>
+              <li style="margin-bottom: var(--space-xs);">• Private cinema room with leather recliners</li>
+              <li>• Ambient sound system throughout property</li>
             </ul>
           </div>
         </div>
@@ -1136,27 +1764,37 @@
     <div class="container">
       <div class="section-header">
         <div class="section-number">06</div>
-        <p class="subtitle animate-in">GET IN TOUCH</p>
-        <h2 class="section-title animate-in delay-1">CONTACT</h2>
-        <div class="section-divider animate-in delay-2"></div>
-        <p class="animate-in delay-3">Reach out anytime for assistance during your stay.</p>
+        <p class="subtitle animate-in">AT YOUR SERVICE</p>
+        <h2 class="section-title animate-in">PERSONAL CONCIERGE</h2>
+        <div class="section-divider animate-in"></div>
+        <p class="section-description animate-in">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="card animate-in">
-          <h3 class="card-title">YOUR HOST</h3>
+        <div class="card" style="--index: 0;">
+          <h3 class="card-title">YOUR PERSONAL TEAM</h3>
           <div class="card-content">
-            <p>Available 24/7 for emergencies</p>
-            <p><span class="accent-text">Call:</span> (123) 456-7890</p>
-            <p><span class="accent-text">Text:</span> (123) 456-7890</p>
-            <p><span class="accent-text">Email:</span> host@example.com</p>
+            <p>Our team of hospitality experts is entirely at your disposal throughout your stay.</p>
+            <p><span class="accent-text">Concierge:</span> (123) 456-7890 (Available 24/7)</p>
+            <p><span class="accent-text">Private Chef:</span> (123) 456-7891</p>
+            <p><span class="accent-text">Chauffeur:</span> (123) 456-7892</p>
+            <p><span class="accent-text">Wellness Expert:</span> (123) 456-7893</p>
+            <p><span class="accent-text">Email:</span> concierge@luxuryproperty.com</p>
           </div>
         </div>
         
-        <div class="card animate-in delay-1">
-          <h3 class="card-title">HOST NOTE</h3>
+        <div class="card" style="--index: 1;">
+          <h3 class="card-title">ADDITIONAL SERVICES</h3>
           <div class="card-content">
-            <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
+            <p>Simply contact your concierge to arrange any of these premium services:</p>
+            <ul style="list-style: none; padding: 0;">
+              <li style="margin-bottom: var(--space-xs);">• Private yacht or helicopter charter</li>
+              <li style="margin-bottom: var(--space-xs);">• VIP restaurant reservations</li>
+              <li style="margin-bottom: var(--space-xs);">• After-hours shopping at luxury boutiques</li>
+              <li style="margin-bottom: var(--space-xs);">• Priority access to exclusive events</li>
+              <li style="margin-bottom: var(--space-xs);">• In-home spa and wellness treatments</li>
+              <li>• Custom itinerary planning for your stay</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1167,7 +1805,7 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <div class="footer-logo">PROPERTY GUIDE</div>
+        <div class="footer-logo">LUXURY PROPERTY</div>
         
         <div class="footer-nav">
           <a href="#get-excited" class="footer-link">HOME</a>
@@ -1179,7 +1817,7 @@
         </div>
       </div>
       
-      <p class="copyright">© 2025 PROPERTY GUIDE. ALL RIGHTS RESERVED.</p>
+      <p class="copyright">© 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.</p>
     </div>
   </footer>
   
@@ -1191,14 +1829,22 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize animations
-      initAnimations();
+      // Initialize all animations and effects
+      initializeWebsite();
+    });
+    
+    function initializeWebsite() {
+      // Initialize homepage dynamic elements
+      initHomepage();
       
-      // Initialize navigation
-      initNavigation();
+      // Initialize custom cursor
+      initCustomCursor();
       
       // Initialize scroll animations
       initScrollAnimations();
+      
+      // Initialize navigation
+      initNavigation();
       
       // Initialize progress bar
       initProgressBar();
@@ -1206,24 +1852,115 @@
       // Initialize back to top button
       initBackToTop();
       
-      // Initialize dynamic text for [get excited]
-      initDynamicText();
-    });
+      // Initialize experiences search and filter
+      initExperiencesFilter();
+    }
     
-    // Animations
-    function initAnimations() {
-      // Reveal text animations
+    // Homepage animations
+    function initHomepage() {
+      // Show background radial gradient
+      setTimeout(() => {
+        document.querySelector('.get-excited-bg').classList.add('visible');
+      }, 300);
+      
+      // Reveal main title animations
       setTimeout(() => {
         document.querySelectorAll('.text-reveal').forEach((el, index) => {
           setTimeout(() => {
             el.classList.add('visible');
-          }, index * 300);
+          }, index * 400);
         });
       }, 500);
       
-      // Fade in animations
-      document.querySelectorAll('.animate-in').forEach(el => {
-        el.classList.add('visible');
+      // Show the question text
+      setTimeout(() => {
+        document.querySelector('.question-text').classList.add('visible');
+      }, 1300);
+      
+      // Show navigation buttons with stagger
+      setTimeout(() => {
+        document.querySelectorAll('.section-nav-item').forEach(el => {
+          el.classList.add('visible');
+        });
+      }, 1500);
+    }
+    
+    // Custom cursor
+    function initCustomCursor() {
+      const cursor = document.querySelector('.custom-cursor');
+      const follower = document.querySelector('.custom-cursor-follower');
+      
+      document.addEventListener('mousemove', (e) => {
+        // Primary cursor follows immediately
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        
+        // Secondary cursor follows with delay
+        setTimeout(() => {
+          follower.style.left = e.clientX + 'px';
+          follower.style.top = e.clientY + 'px';
+        }, 70);
+      });
+      
+      // Modify cursor on interactive elements
+      const interactiveElements = document.querySelectorAll('a, button, .card, .section-nav-item, .filter-tag');
+      
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('hovering');
+          follower.classList.add('hovering');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hovering');
+          follower.classList.remove('hovering');
+        });
+      });
+    }
+    
+    // Scroll animations
+    function initScrollAnimations() {
+      // Show elements when they enter viewport
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const handleIntersect = (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // Stop observing once visible
+          }
+        });
+      };
+      
+      // Create observers for different element types
+      const generalObserver = new IntersectionObserver(handleIntersect, observerOptions);
+      const cardObserver = new IntersectionObserver(handleIntersect, {
+        threshold: 0.05,
+        rootMargin: '0px 0px -10% 0px'
+      });
+      
+      // Observe section elements
+      document.querySelectorAll('.section-number, .section-title, .section-divider, .section-description, .search-filter-container').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe cards and info cards with staggered delay
+      document.querySelectorAll('.card, .info-card').forEach(el => {
+        cardObserver.observe(el);
+      });
+      
+      // Animate section backgrounds
+      document.querySelectorAll('.hero-bg').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe other animate-in elements
+      document.querySelectorAll('.animate-in:not(.visible)').forEach(el => {
+        generalObserver.observe(el);
       });
     }
     
@@ -1236,10 +1973,25 @@
       const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
       const sideNavItems = document.querySelectorAll('.side-nav-item');
       
-      // Toggle mobile menu
+      // Shrink header on scroll
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Toggle mobile menu with animation
       menuButton.addEventListener('click', () => {
         menuButton.classList.toggle('menu-open');
         mobileMenu.classList.toggle('open');
+        
+        if (mobileMenu.classList.contains('open')) {
+          document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        } else {
+          document.body.style.overflow = ''; // Re-enable scrolling
+        }
       });
       
       // Handle navigation link clicks
@@ -1250,13 +2002,16 @@
           // Close mobile menu if open
           menuButton.classList.remove('menu-open');
           mobileMenu.classList.remove('open');
+          document.body.style.overflow = '';
           
           // Get target section
           const targetId = link.getAttribute('href');
           const targetSection = document.querySelector(targetId);
           
           if (targetSection) {
-            const offsetTop = targetSection.offsetTop - header.offsetHeight;
+            // Calculate offset considering header height
+            const headerHeight = header.offsetHeight;
+            const offsetTop = targetSection.offsetTop - headerHeight;
             
             // Smooth scroll to section
             window.scrollTo({
@@ -1269,13 +2024,13 @@
       
       // Update active nav link on scroll
       window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;
+        const scrollPosition = window.scrollY + header.offsetHeight + 50;
         
         // Get all sections
         const sections = document.querySelectorAll('section[id]');
         
         sections.forEach(section => {
-          const sectionTop = section.offsetTop - header.offsetHeight - 100;
+          const sectionTop = section.offsetTop;
           const sectionBottom = sectionTop + section.offsetHeight;
           const sectionId = section.getAttribute('id');
           
@@ -1297,23 +2052,6 @@
             });
           }
         });
-      });
-    }
-    
-    // Scroll animations
-    function initScrollAnimations() {
-      const animateElements = document.querySelectorAll('.animate-in:not(.visible)');
-      
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, { threshold: 0.1 });
-      
-      animateElements.forEach(element => {
-        observer.observe(element);
       });
     }
     
@@ -1350,29 +2088,71 @@
       });
     }
     
-    // Dynamic text for [get excited]
-    function initDynamicText() {
-      const excitedTexts = [
-        'EXCITED',
-        'INSPIRED',
-        'RELAXED',
-        'ENERGIZED',
-        'ADVENTUROUS'
-      ];
+    // Experiences search and filter functionality
+    function initExperiencesFilter() {
+      const searchInput = document.getElementById('experienceSearch');
+      const filterTags = document.querySelectorAll('.filter-tag');
+      const experienceCards = document.querySelectorAll('#experiencesGrid .card');
       
-      const excitedElement = document.querySelector('.excited-text');
-      let currentIndex = 0;
+      // Search functionality
+      searchInput.addEventListener('input', filterExperiences);
       
-      setInterval(() => {
-        currentIndex = (currentIndex + 1) % excitedTexts.length;
-        excitedElement.style.opacity = '0';
+      // Filter tag functionality
+      filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          // Update active state
+          filterTags.forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          
+          // Filter experiences
+          filterExperiences();
+        });
+      });
+      
+      function filterExperiences() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const activeFilter = document.querySelector('.filter-tag.active').getAttribute('data-filter');
         
-        setTimeout(() => {
-          excitedElement.textContent = excitedTexts[currentIndex];
-          excitedElement.style.opacity = '1';
-        }, 500);
-      }, 3000);
+        experienceCards.forEach(card => {
+          const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+          const cardContent = card.querySelector('.card-content').textContent.toLowerCase();
+          const cardCategory = card.getAttribute('data-category');
+          
+          const matchesSearch = cardTitle.includes(searchTerm) || cardContent.includes(searchTerm);
+          const matchesFilter = activeFilter === 'all' || cardCategory === activeFilter;
+          
+          if (matchesSearch && matchesFilter) {
+            card.style.display = '';
+            setTimeout(() => {
+              card.classList.add('visible');
+            }, 100);
+          } else {
+            card.classList.remove('visible');
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 300);
+          }
+        });
+      }
     }
+    
+    // Add smooth parallax effect on scroll
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY;
+      
+      // Parallax for sections
+      document.querySelectorAll('section').forEach(section => {
+        const offset = section.offsetTop;
+        const distance = scrollPosition - offset;
+        
+        if (Math.abs(distance) < window.innerHeight) {
+          const sectionNumber = section.querySelector('.section-number');
+          if (sectionNumber) {
+            sectionNumber.style.transform = `translateY(${distance * 0.1}px)`;
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
