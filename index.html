@@ -4,11 +4,432 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to 123 Main Street</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --text-secondary: #545454;
+      --text-muted: #888888;
+      --border: #e0e0e0;
+      --border-light: #f0f0f0;
+      --card-bg: #ffffff;
+      --card-hover: #f9f9f9;
+      --primary: #0f172a;
+      --primary-light: #1e293b;
+      --accent: #f97316;
+      --accent-light: #fff0eb;
+      --emergency-red: #ef4444;
+      --emergency-orange: #f59e0b;
+      --emergency-blue: #3b82f6;
+      --emergency-teal: #14b8a6;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.08);
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --spacing-2xl: 48px;
+      --spacing-3xl: 64px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --font-sans: 'Montserrat', -apple-system, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+      --transition-slow: 0.35s ease;
+      --section-transition: 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      font-family: var(--font-sans);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+
+    button {
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-lg);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 0 var(--spacing-md) 0;
+    }
+
+    /* Header */
+    header {
+      padding: var(--spacing-2xl) 0;
+      position: relative;
+      z-index: 10;
+      transition: padding var(--transition-normal);
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+    }
+
+    header.scrolled {
+      padding: var(--spacing-lg) 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .title-prefix {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-md);
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .title-separator {
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background-color: var(--text-secondary);
+    }
+
+    .main-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--spacing-md);
+      max-width: 800px;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+
+    /* Navigation */
+    .category-nav {
+      background-color: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: var(--spacing-md) 0;
+      transition: all var(--transition-normal);
+      z-index: 9;
+    }
+
+    .category-nav.sticky {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      box-shadow: var(--shadow-sm);
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+    }
+
+    .category-list {
+      display: flex;
+      list-style: none;
+      gap: var(--spacing-lg);
+      overflow-x: auto;
+      padding-bottom: var(--spacing-sm);
+      scrollbar-width: thin;
+    }
+
+    .category-list::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .category-list::-webkit-scrollbar-track {
+      background: var(--border-light);
+    }
+
+    .category-list::-webkit-scrollbar-thumb {
+      background-color: var(--text-muted);
+      border-radius: 10px;
+    }
+
+    .category-item {
+      white-space: nowrap;
+    }
+
+    .category-link {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) 0;
+      position: relative;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color var(--transition-fast);
+    }
+
+    .category-link i {
+      font-size: 0.875rem;
+    }
+
+    .category-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent);
+      transition: width var(--transition-normal);
+    }
+
+    .category-item.active .category-link {
+      color: var(--text);
+    }
+
+    .category-item.active .category-link::after {
+      width: 100%;
+    }
+
+    .category-link:hover {
+      color: var(--accent);
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      padding: var(--spacing-2xl) 0;
+      background-color: var(--accent-light);
+      margin-bottom: var(--spacing-3xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+      z-index: 1;
+    }
+
+    .personal-message {
+      display: flex;
+      gap: var(--spacing-xl);
+      align-items: center;
+      background-color: var(--bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 2;
+      transform: translateY(0);
+      transition: transform var(--transition-slow);
+    }
+
+    .personal-message:hover {
+      transform: translateY(-5px);
+    }
+
+    .host-image {
+      flex-shrink: 0;
+    }
+
+    .host-image img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--bg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .host-message h3 {
+      margin-bottom: var(--spacing-sm);
+      font-size: 1.5rem;
+    }
+
+    .host-name {
+      font-weight: 600;
+      margin-top: var(--spacing-md);
+      font-style: italic;
+    }
+
+    /* Quick Info Section */
+    .quick-info-section {
+      margin-bottom: var(--spacing-3xl);
+      padding: var(--spacing-xl) 0;
+    }
+
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-lg);
+    }
+
+    @media (min-width: 640px) {
+      .info-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .info-cards {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .info-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      display: flex;
+      gap: var(--spacing-md);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background-color: var(--accent);
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .info-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .info-card:hover::before {
+      opacity: 1;
+    }
+
+    .info-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--accent-light);
+      color: var(--accent);
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .info-content h4 {
+      margin-bottom: var(--spacing-sm);
+      font-size: 1.125rem;
+    }
+
+    .info-content p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .info-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Section Styling */
+    .section-header {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-sm);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent);
+      border-radius: 2px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+    }
+
     /* Search Container */
     .search-container {
       display: flex;
@@ -21,10 +442,17 @@
     .search-input {
       flex: 1;
       min-width: 200px;
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-family: 'IBM Plex Mono', monospace;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      transition: all var(--transition-normal);
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
     }
     
     .filter-group {
@@ -36,20 +464,22 @@
     .filter-label {
       white-space: nowrap;
       font-size: 0.9rem;
+      font-weight: 500;
     }
     
     select {
-      padding: 8px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background-color: white;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--font-mono);
+      transition: all var(--transition-normal);
     }
     
-    .sort-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
     }
     
     .experience-meta {
@@ -68,10 +498,10 @@
     
     .badge {
       display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
       font-size: 0.8rem;
-      font-weight: 500;
+      font-weight: 600;
       margin-right: 4px;
     }
     
@@ -106,7 +536,7 @@
       height: 50px;
       border: 5px solid rgba(0, 0, 0, 0.1);
       border-radius: 50%;
-      border-top-color: #3b82f6;
+      border-top-color: var(--accent);
       animation: spin 1s ease-in-out infinite;
     }
     
@@ -130,10 +560,10 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background: #f59e0b;
+      background: var(--accent);
       color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
       font-size: 0.75rem;
       font-weight: 600;
       z-index: 3;
@@ -144,9 +574,9 @@
       display: none;
       margin-top: 15px;
       background-color: #f8f9fa;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
     }
 
     .filters-panel.active {
@@ -168,11 +598,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 12px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
       background-color: white;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -182,9 +612,9 @@
     }
 
     .toggle-filters-btn.active {
-      background-color: #000;
+      background-color: var(--primary);
       color: white;
-      border-color: #000;
+      border-color: var(--primary);
     }
 
     .search-bar {
@@ -195,21 +625,21 @@
 
     .search-icon {
       position: absolute;
-      left: 12px;
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: #888;
+      color: var(--text-muted);
     }
 
     .search-input {
       width: 100%;
-      padding-left: 35px;
+      padding-left: 45px;
       transition: all 0.2s ease;
     }
 
     .search-bar.focused .search-input {
-      border-color: #000;
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
     }
 
     .search-wrapper {
@@ -219,9 +649,16 @@
       margin-bottom: 15px;
     }
 
+    .search-hero {
+      background-color: #f8f9fa;
+      padding: 40px 0;
+      margin-bottom: 30px;
+      border-radius: var(--radius-lg);
+    }
+
     .results-count {
       font-size: 0.9rem;
-      color: #666;
+      color: var(--text-secondary);
       margin-bottom: 20px;
     }
 
@@ -234,7 +671,7 @@
       height: 40px;
       border: 4px solid rgba(0, 0, 0, 0.1);
       border-radius: 50%;
-      border-top-color: #000;
+      border-top-color: var(--accent);
       animation: spin 1s ease-in-out infinite;
     }
 
@@ -269,13 +706,13 @@
     }
 
     .no-results p {
-      color: #666;
+      color: var(--text-secondary);
     }
 
     .experience-grid {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
-      gap: 20px;
+      gap: 30px;
     }
 
     @media (min-width: 640px) {
@@ -293,10 +730,10 @@
     .experience-card {
       display: block;
       background-color: white;
-      border-radius: 8px;
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: all 0.3s ease;
+      box-shadow: var(--shadow-md);
+      transition: all 0.4s ease;
       height: 100%;
       text-decoration: none;
       color: inherit;
@@ -310,18 +747,18 @@
     }
 
     .experience-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-lg);
     }
 
     .card-image {
-      height: 200px;
+      height: 220px;
       position: relative;
     }
 
     .category-icon {
-      font-size: 2rem;
-      color: #888;
+      font-size: 2.5rem;
+      color: var(--text-muted);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -329,25 +766,26 @@
     }
 
     .card-content {
-      padding: 20px;
+      padding: 25px;
     }
 
     .card-meta {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .card-title {
       font-size: 1.25rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-weight: 700;
+      line-height: 1.3;
     }
 
     .card-details {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      color: #666;
-      font-size: 0.9rem;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
     }
 
     .card-location {
@@ -373,7 +811,7 @@
 
     .animate-in {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       transition: opacity 0.5s ease, transform 0.5s ease;
       transition-delay: var(--delay, 0s);
     }
@@ -381,6 +819,916 @@
     .animate-in.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* Guide Section */
+    .guide-section {
+      padding: var(--spacing-3xl) 0;
+      background-color: var(--border-light);
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-xl);
+    }
+
+    @media (min-width: 640px) {
+      .guide-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .guide-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .guide-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .guide-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-5px);
+    }
+
+    .guide-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: var(--accent-light);
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .guide-card h3 {
+      margin-bottom: var(--spacing-md);
+      font-size: 1.25rem;
+    }
+
+    .guide-list {
+      list-style: none;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .guide-list li {
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.875rem;
+      position: relative;
+      padding-left: var(--spacing-lg);
+    }
+
+    .guide-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .guide-list li:last-child {
+      border-bottom: none;
+    }
+
+    .guide-expand-btn {
+      display: inline-block;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background-color: var(--primary);
+      color: white;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all var(--transition-normal);
+    }
+
+    .guide-expand-btn:hover {
+      background-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .guide-details {
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all var(--transition-normal);
+      margin-top: var(--spacing-md);
+    }
+
+    .guide-details.active {
+      height: auto;
+      opacity: 1;
+      padding: var(--spacing-md);
+      background-color: var(--border-light);
+      border-radius: var(--radius-sm);
+    }
+
+    /* Tips Section */
+    .tips-section {
+      padding: var(--spacing-3xl) 0;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-xl);
+    }
+
+    @media (min-width: 768px) {
+      .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .tip-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+    }
+
+    .tip-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .tip-image {
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .tip-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-slow);
+    }
+
+    .tip-card:hover .tip-image img {
+      transform: scale(1.05);
+    }
+
+    .tip-content {
+      padding: var(--spacing-xl);
+    }
+
+    .tip-content h3 {
+      margin-bottom: var(--spacing-lg);
+      font-size: 1.5rem;
+      position: relative;
+      padding-bottom: var(--spacing-sm);
+    }
+
+    .tip-content h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--accent);
+    }
+
+    .tip-list {
+      list-style: none;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .tip-list li {
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--border-light);
+      position: relative;
+      padding-left: var(--spacing-lg);
+    }
+
+    .tip-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+
+    .tip-list li:last-child {
+      border-bottom: none;
+    }
+
+    .tip-list li strong {
+      display: inline-block;
+      margin-right: var(--spacing-xs);
+    }
+
+    .tip-link {
+      display: inline-block;
+      color: var(--accent);
+      font-weight: 600;
+      position: relative;
+    }
+
+    .tip-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transition: width var(--transition-normal);
+    }
+
+    .tip-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Amenities Section */
+    .amenities-section {
+      padding: var(--spacing-3xl) 0;
+      background-color: var(--border-light);
+    }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-xl);
+    }
+
+    @media (min-width: 640px) {
+      .amenities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .amenities-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .amenity-category {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+      height: 100%;
+    }
+
+    .amenity-category:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-5px);
+    }
+
+    .category-title {
+      padding: var(--spacing-lg);
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .category-title i {
+      font-size: 1.125rem;
+    }
+
+    .amenity-list {
+      list-style: none;
+      padding: var(--spacing-lg);
+    }
+
+    .amenity-list li {
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.875rem;
+      position: relative;
+      padding-left: var(--spacing-lg);
+    }
+
+    .amenity-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .amenity-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: var(--spacing-3xl) 0;
+    }
+
+    .faq-accordion {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      margin-bottom: var(--spacing-md);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      background-color: var(--card-bg);
+      transition: all var(--transition-normal);
+    }
+
+    .faq-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .faq-item.active {
+      box-shadow: var(--shadow-md);
+    }
+
+    .faq-question {
+      padding: var(--spacing-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background-color: var(--bg);
+      transition: background-color var(--transition-normal);
+    }
+
+    .faq-item.active .faq-question {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .faq-question h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .faq-question i {
+      font-size: 0.875rem;
+      transition: transform var(--transition-normal);
+    }
+
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+      color: white;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-normal);
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-answer p {
+      padding: var(--spacing-lg);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* Emergency Cards */
+    .emergency-section {
+      padding: var(--spacing-3xl) 0;
+      background-color: var(--border-light);
+    }
+
+    .emergency-cards {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-lg);
+    }
+
+    @media (min-width: 640px) {
+      .emergency-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .emergency-cards {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .emergency-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+      height: 100%;
+    }
+
+    .emergency-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .emergency-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      font-size: 2rem;
+      color: white;
+    }
+
+    .emergency-icon-red {
+      background-color: var(--emergency-red);
+    }
+
+    .emergency-icon-orange {
+      background-color: var(--emergency-orange);
+    }
+
+    .emergency-icon-blue {
+      background-color: var(--emergency-blue);
+    }
+
+    .emergency-icon-teal {
+      background-color: var(--emergency-teal);
+    }
+
+    .emergency-card h3 {
+      padding: var(--spacing-md);
+      text-align: center;
+      font-size: 1.25rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .emergency-number {
+      padding: var(--spacing-md);
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .emergency-details {
+      padding: var(--spacing-md);
+    }
+
+    .emergency-details p {
+      margin-bottom: var(--spacing-md);
+      font-size: 0.875rem;
+    }
+
+    .emergency-details p:last-child {
+      margin-bottom: 0;
+    }
+
+    .emergency-details strong {
+      color: var(--primary);
+    }
+
+    /* Transportation Section */
+    .transportation-section {
+      padding: var(--spacing-3xl) 0;
+    }
+
+    .transport-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-xl);
+    }
+
+    @media (min-width: 640px) {
+      .transport-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .transport-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .transport-card {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--card-bg);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-normal);
+      height: 100%;
+    }
+
+    .transport-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-5px);
+    }
+
+    .transport-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100px;
+      background-color: var(--primary);
+      color: white;
+      font-size: 2.5rem;
+    }
+
+    .transport-content {
+      padding: var(--spacing-lg);
+      flex-grow: 1;
+    }
+
+    .transport-content h3 {
+      margin-bottom: var(--spacing-md);
+      font-size: 1.25rem;
+      position: relative;
+      padding-bottom: var(--spacing-sm);
+    }
+
+    .transport-content h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: var(--accent);
+    }
+
+    .transport-list {
+      list-style: none;
+    }
+
+    .transport-list li {
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.875rem;
+      position: relative;
+      padding-left: var(--spacing-lg);
+    }
+
+    .transport-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .transport-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: var(--spacing-3xl) 0;
+      background-color: var(--accent-light);
+    }
+
+    .contact-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact-profile {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .contact-profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-info h3 {
+      margin-bottom: var(--spacing-xs);
+      font-size: 1.5rem;
+    }
+
+    .contact-info p {
+      color: var(--text-secondary);
+    }
+
+    .contact-methods {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    @media (min-width: 640px) {
+      .contact-methods {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .contact-methods {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background-color: var(--bg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-normal);
+    }
+
+    .contact-method:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-method i {
+      font-size: 1.25rem;
+    }
+
+    .contact-notes {
+      padding: var(--spacing-lg);
+      background-color: var(--border-light);
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+
+    .contact-notes::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      font-size: 4rem;
+      color: var(--accent);
+      line-height: 1;
+      font-family: Georgia, serif;
+      opacity: 0.3;
+    }
+
+    /* Feedback Section */
+    .feedback-section {
+      padding: var(--spacing-3xl) 0;
+    }
+
+    .feedback-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .feedback-content > p {
+      margin-bottom: var(--spacing-xl);
+      font-size: 1.125rem;
+    }
+
+    .feedback-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
+      flex-wrap: wrap;
+    }
+
+    .feedback-button {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-xl);
+      background-color: var(--primary);
+      color: white;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      transition: all var(--transition-normal);
+    }
+
+    .feedback-button:hover {
+      background-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      color: white;
+    }
+
+    .feedback-testimonials {
+      margin-top: var(--spacing-2xl);
+    }
+
+    .feedback-testimonials h3 {
+      margin-bottom: var(--spacing-xl);
+      font-size: 1.5rem;
+    }
+
+    .testimonial {
+      background-color: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-md);
+      margin-bottom: var(--spacing-xl);
+      text-align: left;
+      position: relative;
+      transition: transform var(--transition-normal);
+    }
+
+    .testimonial:hover {
+      transform: translateY(-5px);
+    }
+
+    .testimonial::before {
+      content: '"';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      font-size: 4rem;
+      color: var(--accent);
+      line-height: 1;
+      font-family: Georgia, serif;
+      opacity: 0.3;
+    }
+
+    .testimonial-stars {
+      margin-bottom: var(--spacing-md);
+      color: gold;
+    }
+
+    .testimonial p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .testimonial-author {
+      margin-top: var(--spacing-md);
+      font-style: italic;
+      text-align: right;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      padding: var(--spacing-3xl) 0 var(--spacing-xl);
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-logo h3 {
+      margin-bottom: var(--spacing-xs);
+      font-size: 1.25rem;
+    }
+
+    .footer-logo p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-lg);
+    }
+
+    .footer-link {
+      color: white;
+      position: relative;
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: white;
+      transition: width var(--transition-normal);
+    }
+
+    .footer-link:hover::after {
+      width: 100%;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: var(--spacing-md);
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all var(--transition-normal);
+    }
+
+    .social-link:hover {
+      background-color: white;
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .scroll-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+    }
+
+    .scroll-dot.active {
+      background-color: var(--accent);
+      transform: scale(1.3);
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-md);
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background-color: var(--accent);
     }
   </style>
 </head>
@@ -437,7 +1785,7 @@
       
       <div class="hero-banner">
         <div class="container">
-          <div class="personal-message">
+          <div class="personal-message animate-in">
             <div class="host-image">
               <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
             </div>
@@ -455,7 +1803,7 @@
     <section id="quick-info" class="quick-info-section scroll-section">
       <div class="container">
         <div class="info-cards">
-          <div class="info-card">
+          <div class="info-card animate-in" style="--delay: 0.1s;">
             <div class="info-icon">
               <i class="fas fa-wifi"></i>
             </div>
@@ -466,7 +1814,7 @@
             </div>
           </div>
           
-          <div class="info-card">
+          <div class="info-card animate-in" style="--delay: 0.2s;">
             <div class="info-icon">
               <i class="fas fa-key"></i>
             </div>
@@ -478,7 +1826,7 @@
             </div>
           </div>
           
-          <div class="info-card">
+          <div class="info-card animate-in" style="--delay: 0.3s;">
             <div class="info-icon">
               <i class="fas fa-phone"></i>
             </div>
@@ -489,7 +1837,7 @@
             </div>
           </div>
           
-          <div class="info-card">
+          <div class="info-card animate-in" style="--delay: 0.4s;">
             <div class="info-icon">
               <i class="fas fa-car"></i>
             </div>
@@ -507,12 +1855,12 @@
     <section id="experiences" class="scroll-section">
       <div class="search-hero">
         <div class="container search-container">
-          <div class="section-header">
+          <div class="section-header animate-in">
             <h2 class="section-title">Discover Local Experiences</h2>
             <p class="section-subtitle">Find the perfect activities for your stay</p>
           </div>
           
-          <div class="search-wrapper">
+          <div class="search-wrapper animate-in" style="--delay: 0.2s;">
             <div class="search-bar">
               <i class="fas fa-search search-icon"></i>
               <input 
@@ -632,13 +1980,13 @@
     <!-- Section 4: House Guide -->
     <section id="house-guide" class="guide-section scroll-section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">House Guide</h2>
           <p class="section-subtitle">Everything you need to know about your stay</p>
         </div>
         
         <div class="guide-grid">
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.1s;">
             <div class="guide-icon">
               <i class="fas fa-door-open"></i>
             </div>
@@ -657,7 +2005,7 @@
             </div>
           </div>
           
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.2s;">
             <div class="guide-icon">
               <i class="fas fa-scroll"></i>
             </div>
@@ -676,7 +2024,7 @@
             </div>
           </div>
           
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.3s;">
             <div class="guide-icon">
               <i class="fas fa-trash"></i>
             </div>
@@ -695,7 +2043,7 @@
             </div>
           </div>
           
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.4s;">
             <div class="guide-icon">
               <i class="fas fa-temperature-low"></i>
             </div>
@@ -714,7 +2062,7 @@
             </div>
           </div>
           
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.5s;">
             <div class="guide-icon">
               <i class="fas fa-tv"></i>
             </div>
@@ -733,7 +2081,7 @@
             </div>
           </div>
           
-          <div class="guide-card">
+          <div class="guide-card animate-in" style="--delay: 0.6s;">
             <div class="guide-icon">
               <i class="fas fa-shower"></i>
             </div>
@@ -758,13 +2106,13 @@
     <!-- Section 5: Local Tips -->
     <section id="local-tips" class="tips-section scroll-section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Local Tips</h2>
           <p class="section-subtitle">Insider recommendations to experience LA like a local</p>
         </div>
         
         <div class="tips-grid">
-          <div class="tip-card">
+          <div class="tip-card animate-in" style="--delay: 0.2s;">
             <div class="tip-image">
               <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
             </div>
@@ -777,11 +2125,11 @@
                 <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
                 <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
               </ul>
-              <a href="#" class="tip-link">View All Beach Recommendations</a>
+              <a href="#" class="tip-link">View All Restaurant Recommendations</a>
             </div>
           </div>
           
-          <div class="tip-card">
+          <div class="tip-card animate-in" style="--delay: 0.4s;">
             <div class="tip-image">
               <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
             </div>
@@ -804,13 +2152,13 @@
     <!-- Section 6: Amenities -->
     <section id="amenities" class="amenities-section scroll-section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Home Amenities</h2>
           <p class="section-subtitle">Everything available to make your stay comfortable</p>
         </div>
         
         <div class="amenities-grid">
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.1s;">
             <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
             <ul class="amenity-list">
               <li>Full-size refrigerator</li>
@@ -824,7 +2172,7 @@
             </ul>
           </div>
           
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.2s;">
             <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
             <ul class="amenity-list">
               <li>Queen-size mattress</li>
@@ -838,7 +2186,7 @@
             </ul>
           </div>
           
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.3s;">
             <h3 class="category-title"><i class="fas fa-shower"></i> Bathroom</h3>
             <ul class="amenity-list">
               <li>Towels & washcloths</li>
@@ -852,7 +2200,7 @@
             </ul>
           </div>
           
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.4s;">
             <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
             <ul class="amenity-list">
               <li>High-speed WiFi</li>
@@ -866,7 +2214,7 @@
             </ul>
           </div>
           
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.5s;">
             <h3 class="category-title"><i class="fas fa-swimming-pool"></i> Outdoor</h3>
             <ul class="amenity-list">
               <li>Balcony with seating</li>
@@ -880,7 +2228,7 @@
             </ul>
           </div>
           
-          <div class="amenity-category">
+          <div class="amenity-category animate-in" style="--delay: 0.6s;">
             <h3 class="category-title"><i class="fas fa-plus"></i> Extras</h3>
             <ul class="amenity-list">
               <li>Yoga mat</li>
@@ -900,23 +2248,23 @@
     <!-- Section 7: FAQ -->
     <section id="faq" class="faq-section scroll-section">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Frequently Asked Questions</h2>
           <p class="section-subtitle">Quick answers to common questions</p>
         </div>
         
         <div class="faq-accordion">
-          <div class="faq-item">
+          <div class="faq-item animate-in" style="--delay: 0.1s;">
             <div class="faq-question">
               <h3>Is parking included with my stay?</h3>
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              <p>Early check-in and late check-out may be possible depending on our cleaning schedule and other bookings. Please message me at least 24 hours in advance to inquire about availability. A fee may apply for significantly extended hours.</p>
+              <p>Yes, one dedicated parking spot (#42) is included with your stay. You'll need the garage code (3791) to access the parking area. If you have additional vehicles, street parking is available but may require a permit or payment depending on the time of day.</p>
             </div>
           </div>
           
-          <div class="faq-item">
+          <div class="faq-item animate-in" style="--delay: 0.2s;">
             <div class="faq-question">
               <h3>How do I access the building?</h3>
               <i class="fas fa-chevron-down"></i>
@@ -926,13 +2274,33 @@
             </div>
           </div>
           
-          <div class="faq-item">
+          <div class="faq-item animate-in" style="--delay: 0.3s;">
             <div class="faq-question">
               <h3>What is the best way to get around?</h3>
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
               <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item animate-in" style="--delay: 0.4s;">
+            <div class="faq-question">
+              <h3>Is early check-in or late check-out possible?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Early check-in and late check-out may be possible depending on our cleaning schedule and other bookings. Please message me at least 24 hours in advance to inquire about availability. A fee may apply for significantly extended hours.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item animate-in" style="--delay: 0.5s;">
+            <div class="faq-question">
+              <h3>Is the property suitable for children?</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Yes, the property is family-friendly, but please note there are some areas that require supervision such as the balcony and pool. We provide a pack-n-play upon request, and the sofa in the living room converts to a comfortable bed suitable for older children.</p>
             </div>
           </div>
         </div>
@@ -942,13 +2310,13 @@
     <!-- Section 8: Emergency -->
     <section class="emergency-section scroll-section" id="emergency">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Emergency Information</h2>
           <p class="section-subtitle">Important contacts and procedures for emergencies</p>
         </div>
         
         <div class="emergency-cards">
-          <div class="emergency-card">
+          <div class="emergency-card animate-in" style="--delay: 0.1s;">
             <div class="emergency-icon emergency-icon-red">
               <i class="fas fa-ambulance"></i>
             </div>
@@ -961,7 +2329,7 @@
             </div>
           </div>
           
-          <div class="emergency-card">
+          <div class="emergency-card animate-in" style="--delay: 0.2s;">
             <div class="emergency-icon emergency-icon-orange">
               <i class="fas fa-fire"></i>
             </div>
@@ -974,7 +2342,7 @@
             </div>
           </div>
           
-          <div class="emergency-card">
+          <div class="emergency-card animate-in" style="--delay: 0.3s;">
             <div class="emergency-icon emergency-icon-blue">
               <i class="fas fa-shield-alt"></i>
             </div>
@@ -987,7 +2355,7 @@
             </div>
           </div>
           
-          <div class="emergency-card">
+          <div class="emergency-card animate-in" style="--delay: 0.4s;">
             <div class="emergency-icon emergency-icon-teal">
               <i class="fas fa-home"></i>
             </div>
@@ -1007,13 +2375,13 @@
     <!-- Section 9: Transportation -->
     <section class="transportation-section scroll-section" id="transportation">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Getting Around</h2>
           <p class="section-subtitle">Transportation options and tips</p>
         </div>
         
         <div class="transport-grid">
-          <div class="transport-card">
+          <div class="transport-card animate-in" style="--delay: 0.1s;">
             <div class="transport-icon">
               <i class="fas fa-car"></i>
             </div>
@@ -1029,7 +2397,7 @@
             </div>
           </div>
           
-          <div class="transport-card">
+          <div class="transport-card animate-in" style="--delay: 0.2s;">
             <div class="transport-icon">
               <i class="fas fa-bus"></i>
             </div>
@@ -1045,7 +2413,7 @@
             </div>
           </div>
           
-          <div class="transport-card">
+          <div class="transport-card animate-in" style="--delay: 0.3s;">
             <div class="transport-icon">
               <i class="fas fa-taxi"></i>
             </div>
@@ -1061,7 +2429,7 @@
             </div>
           </div>
           
-          <div class="transport-card">
+          <div class="transport-card animate-in" style="--delay: 0.4s;">
             <div class="transport-icon">
               <i class="fas fa-bicycle"></i>
             </div>
@@ -1083,7 +2451,7 @@
     <!-- Section 10: Contact -->
     <section class="contact-section scroll-section" id="contact">
       <div class="container">
-        <div class="contact-card">
+        <div class="contact-card animate-in">
           <div class="contact-profile">
             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
             <div class="contact-info">
@@ -1121,15 +2489,15 @@
     <!-- Section 11: Feedback -->
     <section class="feedback-section scroll-section" id="feedback">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header animate-in">
           <h2 class="section-title">Your Feedback Matters</h2>
           <p class="section-subtitle">Help us improve and share your experience</p>
         </div>
         
         <div class="feedback-content">
-          <p>I strive to provide the best possible experience for my guests. If you're enjoying your stay or have suggestions for improvement, I'd love to hear from you!</p>
+          <p class="animate-in" style="--delay: 0.2s;">I strive to provide the best possible experience for my guests. If you're enjoying your stay or have suggestions for improvement, I'd love to hear from you!</p>
           
-          <div class="feedback-buttons">
+          <div class="feedback-buttons animate-in" style="--delay: 0.3s;">
             <a href="#" class="feedback-button">
               <i class="fas fa-comment-alt"></i>
               <span>Send Feedback</span>
@@ -1142,9 +2510,9 @@
           </div>
           
           <div class="feedback-testimonials">
-            <h3>What Previous Guests Said:</h3>
+            <h3 class="animate-in" style="--delay: 0.4s;">What Previous Guests Said:</h3>
             
-            <div class="testimonial">
+            <div class="testimonial animate-in" style="--delay: 0.5s;">
               <div class="testimonial-stars">
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i>
@@ -1156,7 +2524,7 @@
               <p class="testimonial-author">- Sarah, August 2024</p>
             </div>
             
-            <div class="testimonial">
+            <div class="testimonial animate-in" style="--delay: 0.6s;">
               <div class="testimonial-stars">
                 <i class="fas fa-star"></i>
                 <i class="fas fa-star"></i>
@@ -1206,7 +2574,12 @@
     </div>
   </footer>
   
-  <!-- Airtable Integration JavaScript -->
+  <!-- Back to top button -->
+  <div class="back-to-top" id="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+  
+  <!-- JavaScript -->
   <script>
     // Global variables
     let allRecords = [];
@@ -1228,6 +2601,7 @@
     const noResultsDiv = document.getElementById('no-results');
     const toggleFiltersBtn = document.getElementById('toggle-filters');
     const filtersPanel = document.getElementById('filters-panel');
+    const backToTopBtn = document.getElementById('back-to-top');
     
     // Initialize the app
     function init() {
@@ -1237,6 +2611,7 @@
       setupFAQAccordion();
       setupStickyNav();
       setupExpandButtons();
+      setupBackToTop();
     }
     
     // Set up event listeners for filters and search
@@ -1282,6 +2657,27 @@
         } else {
           header.classList.remove('scrolled');
         }
+        
+        // Show or hide back to top button
+        if (scrollPosition > 500) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+        
+        // Check for sections in viewport for animation
+        document.querySelectorAll('.scroll-section').forEach(section => {
+          if (isElementInViewport(section)) {
+            section.classList.add('active');
+          }
+        });
+        
+        // Animate elements when they enter viewport
+        document.querySelectorAll('.animate-in:not(.visible)').forEach(el => {
+          if (isElementInViewport(el)) {
+            el.classList.add('visible');
+          }
+        });
       });
       
       // Navigation menu highlighting
@@ -1354,59 +2750,58 @@
       });
     }
     
+    // Setup back to top button
+    function setupBackToTop() {
+      backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Check if element is in viewport
+    function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+        rect.bottom >= 0
+      );
+    }
+    
     // Animate elements on page load
     function animateElements() {
       const elementsToAnimate = document.querySelectorAll('.animate-in');
       
       elementsToAnimate.forEach((element, index) => {
-        setTimeout(() => {
-          element.classList.add('visible');
-        }, index * 100);
+        // If element already has a delay, respect it
+        const existingDelay = element.style.getPropertyValue('--delay');
+        if (!existingDelay) {
+          element.style.setProperty('--delay', `${index * 0.1}s`);
+        }
+        
+        // If element is in viewport, make it visible immediately
+        if (isElementInViewport(element)) {
+          setTimeout(() => {
+            element.classList.add('visible');
+          }, 100);
+        }
       });
     }
     
-    // Fetch experiences data from Netlify function
+    // Fetch experiences data 
     function fetchExperiences() {
       showLoading(true);
       
-      fetch('/.netlify/functions/get-experiences')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('✅ Data received:', data);
-          
-          if (!data.records || data.records.length === 0) {
-            showNoResults(true);
-            return;
-          }
-          
-          allRecords = data.records;
-          populateFilterOptions();
-          applyFilters();
-          
-          // Initial animation
-          animateElements();
-        })
-        .catch(error => {
-          console.error('❌ Error fetching experiences:', error);
-          showNoResults(true);
-          
-          // Fallback to sample data for development/preview
-          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            console.log('Loading sample data for development...');
-            loadSampleData();
-          }
-        })
-        .finally(() => {
-          showLoading(false);
-        });
+      // For demonstration purposes, using sample data
+      // In production, you would fetch from an API
+      setTimeout(() => {
+        loadSampleData();
+        showLoading(false);
+      }, 1000);
     }
     
-    // Load sample data for development/preview purposes
+    // Load sample data for demonstration
     function loadSampleData() {
       const sampleData = {
         records: [
@@ -1442,7 +2837,16 @@
               'Audience Type': 'Art Lovers',
               'Estimated Price': '35',
               Duration: '3',
-              URL: 'https://example.com/lacma'
+              URL: 'https://example.com/lacma',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
             }
           },
           {
@@ -1477,7 +2881,16 @@
               'Audience Type': 'Foodies',
               'Estimated Price': '250',
               Duration: '3',
-              URL: 'https://example.com/dining'
+              URL: 'https://example.com/dining',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
             }
           },
           {
@@ -1512,20 +2925,26 @@
               'Audience Type': 'Active',
               'Estimated Price': '60',
               Duration: '1',
-              URL: 'https://example.com/skate'
+              URL: 'https://example.com/skate',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
             }
           }
         ]
       };
       
-      console.log('✅ Sample data loaded:', sampleData);
+      console.log('✅ Sample data loaded');
       
       allRecords = sampleData.records;
       populateFilterOptions();
       applyFilters();
-      
-      // Initial animation
-      animateElements();
     }
     
     // Populate filter dropdowns with options from data
@@ -1746,7 +3165,7 @@
         card.href = url;
         card.target = "_blank";
         card.className = 'experience-card animate-in';
-        card.style.setProperty('--delay', `${index * 0.05}s`);
+        card.style.setProperty('--delay', `${index * 0.1}s`);
         
         // Generate a placeholder icon based on category
         let categoryIcon = 'fa-ticket';
@@ -1798,10 +3217,10 @@
         card.innerHTML = cardHTML;
         experienceList.appendChild(card);
         
-        // Add visible class for animation
+        // Add visible class for animation after a short delay
         setTimeout(() => {
           card.classList.add('visible');
-        }, 50);
+        }, 50 + index * 100);
       });
     }
     
@@ -1825,145 +3244,21 @@
       }
     }
     
-    // Start the app when the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', init);
+    // Trigger initial animations when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize elements
+      init();
+      
+      // Trigger initial scroll event to check for visible elements
+      setTimeout(() => {
+        window.dispatchEvent(new Event('scroll'));
+      }, 300);
+    });
+    
     // Backup init in case DOMContentLoaded already fired
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
       init();
     }
-  </script>
-  
-  <!-- Scroll Functionality JavaScript -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const scrollContainer = document.querySelector('.scroll-container');
-      const sections = document.querySelectorAll('.scroll-section');
-      let currentSection = 0;
-      let isScrolling = false;
-      let touchStartY = 0;
-      let touchEndY = 0;
-      
-      // Create scroll indicator if it doesn't exist
-      const scrollIndicator = document.querySelector('.scroll-indicator') || createScrollIndicator();
-      const dots = scrollIndicator.querySelectorAll('.scroll-dot');
-      
-      // Initialize
-      updateActiveSection(0);
-      
-      // Create scroll indicator
-      function createScrollIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'scroll-indicator';
-        
-        sections.forEach((section, index) => {
-          const dot = document.createElement('div');
-          dot.className = 'scroll-dot';
-          if (index === 0) dot.classList.add('active');
-          
-          dot.addEventListener('click', () => {
-            navigateToSection(index);
-          });
-          
-          indicator.appendChild(dot);
-        });
-        
-        document.body.appendChild(indicator);
-        return indicator;
-      }
-      
-      // Update active section
-      function updateActiveSection(index) {
-        sections.forEach((section, i) => {
-          if (i === index) {
-            section.classList.add('active');
-          } else {
-            section.classList.remove('active');
-          }
-        });
-        
-        dots.forEach((dot, i) => {
-          if (i === index) {
-            dot.classList.add('active');
-          } else {
-            dot.classList.remove('active');
-          }
-        });
-        
-        currentSection = index;
-      }
-      
-      // Handle scroll
-      function handleScroll(event) {
-        if (isScrolling) return;
-        isScrolling = true;
-        
-        const delta = event.deltaY;
-        
-        if (delta > 0 && currentSection < sections.length - 1) {
-          // Scroll down
-          navigateToSection(currentSection + 1);
-        } else if (delta < 0 && currentSection > 0) {
-          // Scroll up
-          navigateToSection(currentSection - 1);
-        } else {
-          isScrolling = false;
-        }
-      }
-      
-      // Navigate to section
-      function navigateToSection(index) {
-        updateActiveSection(index);
-        
-        // Smooth scroll to section
-        sections[index].scrollIntoView({
-          behavior: 'smooth'
-        });
-        
-        // Reset scrolling state after animation
-        setTimeout(() => {
-          isScrolling = false;
-        }, 1000);
-      }
-      
-      // Touch events for mobile
-      function handleTouchStart(event) {
-        touchStartY = event.touches[0].clientY;
-      }
-      
-      function handleTouchEnd(event) {
-        touchEndY = event.changedTouches[0].clientY;
-        handleSwipe();
-      }
-      
-      function handleSwipe() {
-        if (isScrolling) return;
-        
-        const swipeDistance = touchStartY - touchEndY;
-        const threshold = 50; // Minimum distance to register as swipe
-        
-        if (swipeDistance > threshold && currentSection < sections.length - 1) {
-          // Swipe up (navigate down)
-          navigateToSection(currentSection + 1);
-        } else if (swipeDistance < -threshold && currentSection > 0) {
-          // Swipe down (navigate up)
-          navigateToSection(currentSection - 1);
-        }
-      }
-      
-      // Event listeners
-      scrollContainer.addEventListener('wheel', handleScroll, { passive: false });
-      scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
-      scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true });
-      
-      // Keyboard navigation
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowDown' && currentSection < sections.length - 1) {
-          navigateToSection(currentSection + 1);
-        } else if (event.key === 'ArrowUp' && currentSection > 0) {
-          navigateToSection(currentSection - 1);
-        }
-      });
-    });
   </script>
 </body>
 </html>
