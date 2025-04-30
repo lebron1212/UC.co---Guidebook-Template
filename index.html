@@ -3,49 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to 123 Main Street</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <title>123 Main Street | Los Angeles</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;700;900&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
+    /* Core Variables */
     :root {
-      --bg: #ffffff;
-      --text: #111111;
-      --text-secondary: #545454;
-      --text-muted: #888888;
-      --border: #e0e0e0;
-      --border-light: #f0f0f0;
-      --card-bg: #ffffff;
-      --card-hover: #f9f9f9;
-      --primary: #0f172a;
-      --primary-light: #1e293b;
-      --accent: #f97316;
-      --accent-light: #fff0eb;
-      --emergency-red: #ef4444;
-      --emergency-orange: #f59e0b;
-      --emergency-blue: #3b82f6;
-      --emergency-teal: #14b8a6;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.08);
-      --spacing-xs: 4px;
-      --spacing-sm: 8px;
-      --spacing-md: 16px;
-      --spacing-lg: 24px;
-      --spacing-xl: 32px;
-      --spacing-2xl: 48px;
-      --spacing-3xl: 64px;
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 16px;
-      --font-sans: 'Montserrat', -apple-system, sans-serif;
+      --black: #000000;
+      --white: #ffffff;
+      --gold: #AC7A2A;
+      --gold-light: rgba(172, 122, 42, 0.1);
+      --gray-100: #f8f8f8;
+      --gray-200: #eeeeee;
+      --gray-900: #111111;
+      
+      /* Typography */
       --font-mono: 'IBM Plex Mono', monospace;
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.25s ease;
-      --transition-slow: 0.35s ease;
-      --section-transition: 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+      --font-sans: 'Helvetica Neue', sans-serif;
+      
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      --space-4xl: 96px;
+      
+      /* Animation */
+      --transition-fast: 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+      --transition-medium: 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+      --transition-slow: 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 
+    /* Reset & Base Styles */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -55,988 +48,889 @@
     html {
       font-size: 16px;
       scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      font-family: var(--font-sans);
-      color: var(--text);
-      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
+    body {
+      font-family: var(--font-sans);
+      color: var(--black);
+      background-color: var(--white);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
     img {
       max-width: 100%;
+      display: block;
     }
 
     a {
-      color: var(--text);
+      color: inherit;
       text-decoration: none;
-      transition: color var(--transition-fast);
-    }
-
-    a:hover {
-      color: var(--accent);
-    }
-
-    button {
-      font-family: var(--font-sans);
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 var(--spacing-lg);
-      position: relative;
-      z-index: 2;
     }
 
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
-      margin: 0;
-      font-weight: 700;
-      line-height: 1.1;
+      font-family: var(--font-sans);
+      font-weight: 900;
+      letter-spacing: -0.02em;
     }
-
-    p {
-      margin: 0 0 var(--spacing-md) 0;
-    }
-
-    /* Header */
-    header {
-      padding: var(--spacing-2xl) 0;
-      position: relative;
-      z-index: 10;
-      transition: padding var(--transition-normal);
-      background-color: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(5px);
-    }
-
-    header.scrolled {
-      padding: var(--spacing-lg) 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .title-prefix {
+    
+    .mono {
       font-family: var(--font-mono);
-      font-size: 0.875rem;
-      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    
+    .mono-title {
+      font-family: var(--font-mono);
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-md);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--gold);
+    }
+    
+    .page-title {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      line-height: 1;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .section-title {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      margin-bottom: var(--space-lg);
       position: relative;
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--gold);
+    }
+    
+    .centered .section-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    p {
+      margin-bottom: var(--space-lg);
+      max-width: 65ch;
     }
 
-    .title-separator {
-      display: inline-block;
-      width: 30px;
-      height: 1px;
-      background-color: var(--text-secondary);
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
     }
-
-    .main-title {
-      font-size: 3.5rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: var(--spacing-md);
-      max-width: 800px;
+    
+    .container-sm {
+      max-width: 1000px;
     }
-
-    .subtitle {
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      max-width: 600px;
+    
+    .centered {
+      text-align: center;
+    }
+    
+    section {
+      padding: var(--space-4xl) 0;
+      position: relative;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+    
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     /* Navigation */
-    .category-nav {
-      background-color: var(--bg);
-      border-bottom: 1px solid var(--border);
-      padding: var(--spacing-md) 0;
-      transition: all var(--transition-normal);
-      z-index: 9;
-    }
-
-    .category-nav.sticky {
+    .nav-wrapper {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      box-shadow: var(--shadow-sm);
+      z-index: 100;
+      transition: background-color var(--transition-medium);
+    }
+    
+    .nav-wrapper.scrolled {
       background-color: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
     }
-
-    .category-list {
+    
+    .navbar {
       display: flex;
-      list-style: none;
-      gap: var(--spacing-lg);
-      overflow-x: auto;
-      padding-bottom: var(--spacing-sm);
-      scrollbar-width: thin;
-    }
-
-    .category-list::-webkit-scrollbar {
-      height: 4px;
-    }
-
-    .category-list::-webkit-scrollbar-track {
-      background: var(--border-light);
-    }
-
-    .category-list::-webkit-scrollbar-thumb {
-      background-color: var(--text-muted);
-      border-radius: 10px;
-    }
-
-    .category-item {
-      white-space: nowrap;
-    }
-
-    .category-link {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-sm) 0;
-      position: relative;
+      height: 80px;
+      transition: height var(--transition-medium);
+    }
+    
+    .nav-wrapper.scrolled .navbar {
+      height: 60px;
+    }
+    
+    .logo {
+      font-family: var(--font-mono);
       font-weight: 600;
-      color: var(--text-secondary);
-      transition: color var(--transition-fast);
+      letter-spacing: 0.1em;
+      font-size: 1.1rem;
     }
-
-    .category-link i {
-      font-size: 0.875rem;
+    
+    .nav-links {
+      display: none;
     }
-
-    .category-link::after {
+    
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+        gap: var(--space-xl);
+      }
+      
+      .menu-button {
+        display: none;
+      }
+    }
+    
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      padding: var(--space-xs) 0;
+    }
+    
+    .nav-link::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       width: 0;
-      height: 2px;
-      background-color: var(--accent);
-      transition: width var(--transition-normal);
+      height: 1px;
+      background-color: var(--gold);
+      transition: width var(--transition-fast);
     }
-
-    .category-item.active .category-link {
-      color: var(--text);
-    }
-
-    .category-item.active .category-link::after {
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
       width: 100%;
     }
-
-    .category-link:hover {
-      color: var(--accent);
-    }
-
-    /* Hero Banner */
-    .hero-banner {
-      padding: var(--spacing-2xl) 0;
-      background-color: var(--accent-light);
-      margin-bottom: var(--spacing-3xl);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-banner::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-      z-index: 1;
-    }
-
-    .personal-message {
-      display: flex;
-      gap: var(--spacing-xl);
-      align-items: center;
-      background-color: var(--bg);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-xl);
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      z-index: 2;
-      transform: translateY(0);
-      transition: transform var(--transition-slow);
-    }
-
-    .personal-message:hover {
-      transform: translateY(-5px);
-    }
-
-    .host-image {
-      flex-shrink: 0;
-    }
-
-    .host-image img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--bg);
-      box-shadow: var(--shadow-md);
-    }
-
-    .host-message h3 {
-      margin-bottom: var(--spacing-sm);
-      font-size: 1.5rem;
-    }
-
-    .host-name {
-      font-weight: 600;
-      margin-top: var(--spacing-md);
-      font-style: italic;
-    }
-
-    /* Quick Info Section */
-    .quick-info-section {
-      margin-bottom: var(--spacing-3xl);
-      padding: var(--spacing-xl) 0;
-    }
-
-    .info-cards {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-lg);
-    }
-
-    @media (min-width: 640px) {
-      .info-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .info-cards {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .info-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-lg);
-      display: flex;
-      gap: var(--spacing-md);
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition-normal);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .info-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 5px;
-      height: 100%;
-      background-color: var(--accent);
-      opacity: 0;
-      transition: opacity var(--transition-normal);
-    }
-
-    .info-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
-    }
-
-    .info-card:hover::before {
-      opacity: 1;
-    }
-
-    .info-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    
+    .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
-      background-color: var(--accent-light);
-      color: var(--accent);
-      font-size: 1.25rem;
-      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .menu-line {
+      width: 24px;
+      height: 2px;
+      background-color: var(--black);
+      transition: transform var(--transition-fast), opacity var(--transition-fast);
+    }
+    
+    .menu-open .menu-line:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    
+    .menu-open .menu-line:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .menu-open .menu-line:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background-color: var(--white);
+      overflow: hidden;
+      transition: height var(--transition-medium);
+      z-index: 99;
+    }
+    
+    .mobile-menu.open {
+      height: calc(100vh - 80px);
+    }
+    
+    .mobile-menu-links {
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-xl);
+      gap: var(--space-xl);
+    }
+    
+    .mobile-link {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
-    .info-content h4 {
-      margin-bottom: var(--spacing-sm);
-      font-size: 1.125rem;
-    }
-
-    .info-content p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-xs);
-    }
-
-    .info-content p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Section Styling */
-    .section-header {
-      text-align: center;
-      margin-bottom: var(--spacing-2xl);
-    }
-
-    .section-title {
-      font-size: 2.5rem;
-      margin-bottom: var(--spacing-sm);
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
       position: relative;
-      display: inline-block;
+      overflow: hidden;
+      background-color: var(--black);
+      color: var(--white);
     }
-
-    .section-title::after {
-      content: '';
+    
+    .hero-bg {
       position: absolute;
-      bottom: -10px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+    
+    .hero-subtitle {
+      margin-bottom: var(--space-md);
+    }
+    
+    .hero-title {
+      font-size: clamp(3rem, 10vw, 6rem);
+      line-height: 0.9;
+      margin-bottom: var(--space-xl);
+    }
+    
+    .hero-description {
+      font-size: 1.2rem;
+      max-width: 500px;
+      margin-bottom: var(--space-xl);
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: var(--space-xl);
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background-color: var(--accent);
-      border-radius: 2px;
-    }
-
-    .section-subtitle {
-      color: var(--text-secondary);
-      font-size: 1.125rem;
-    }
-
-    /* Search Container */
-    .search-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      flex-direction: column;
       align-items: center;
+      color: var(--white);
+      opacity: 0.8;
+      transition: opacity var(--transition-fast);
+    }
+    
+    .scroll-indicator:hover {
+      opacity: 1;
+    }
+    
+    .scroll-indicator span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      margin-bottom: var(--space-sm);
+    }
+    
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid var(--white);
+      border-bottom: 2px solid var(--white);
+      transform: rotate(45deg);
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) rotate(45deg);
+      }
+      40% {
+        transform: translateY(-10px) rotate(45deg);
+      }
+      60% {
+        transform: translateY(-5px) rotate(45deg);
+      }
+    }
+
+    /* Quick Info */
+    .quick-info {
+      background-color: var(--black);
+      color: var(--white);
+      padding: var(--space-xl) 0;
+    }
+    
+    .info-card {
+      display: flex;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      transition: transform var(--transition-medium);
+    }
+    
+    .info-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .info-icon {
+      font-size: 1.5rem;
+      color: var(--gold);
+      width: 40px;
+      flex-shrink: 0;
+    }
+    
+    .info-content h3 {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-sm);
+      font-weight: 500;
+    }
+    
+    .info-content p {
+      font-size: 0.9rem;
+      margin-bottom: var(--space-xs);
+      opacity: 0.8;
+    }
+
+    /* Experiences Section */
+    .experiences {
+      overflow: hidden;
+    }
+    
+    .experiences-intro {
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .search-container {
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .search-wrapper {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+    
+    .search-bar {
+      flex: 1;
+      position: relative;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: var(--space-md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(0, 0, 0, 0.3);
     }
     
     .search-input {
-      flex: 1;
-      min-width: 200px;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
+      width: 100%;
+      padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) * 2 + 16px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 0;
       font-family: var(--font-mono);
-      transition: all var(--transition-normal);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      transition: border-color var(--transition-fast);
     }
     
     .search-input:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+      border-color: var(--gold);
+    }
+    
+    .toggle-filters-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-lg);
+      background-color: var(--black);
+      color: var(--white);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
+    }
+    
+    .toggle-filters-btn:hover {
+      background-color: var(--gold);
+    }
+    
+    .filters-panel {
+      background-color: var(--gray-100);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      display: none;
+    }
+    
+    .filters-panel.active {
+      display: block;
+    }
+    
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
     }
     
     .filter-group {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: var(--space-xs);
+      min-width: 160px;
     }
     
     .filter-label {
-      white-space: nowrap;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
     }
     
     select {
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background-color: white;
+      padding: var(--space-sm) var(--space-md);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 0;
       font-family: var(--font-mono);
-      transition: all var(--transition-normal);
+      font-size: 0.8rem;
+      background-color: var(--white);
+      transition: border-color var(--transition-fast);
     }
     
     select:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+      border-color: var(--gold);
     }
     
-    .experience-meta {
+    .results-count {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-bottom: var(--space-lg);
+      opacity: 0.6;
+    }
+    
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: var(--space-xl);
+    }
+    
+    @media (min-width: 640px) {
+      .experience-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .experience-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    .experience-card {
+      position: relative;
+      display: block;
+      background-color: var(--white);
+      overflow: hidden;
+      transform: translateY(40px);
+      opacity: 0;
+      transition: transform var(--transition-slow), opacity var(--transition-slow), box-shadow var(--transition-medium);
+    }
+    
+    .experience-card.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .experience-card:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-image {
+      height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-slow);
+    }
+    
+    .experience-card:hover .card-image img {
+      transform: scale(1.05);
+    }
+    
+    .category-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: rgba(0, 0, 0, 0.2);
+    }
+    
+    .featured-tag {
+      position: absolute;
+      top: var(--space-md);
+      left: var(--space-md);
+      background-color: var(--gold);
+      color: var(--white);
+      padding: var(--space-xs) var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    
+    .card-content {
+      padding: var(--space-lg);
+      background-color: var(--white);
+      position: relative;
+    }
+    
+    .card-meta {
+      margin-bottom: var(--space-md);
+    }
+    
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px var(--space-sm);
+      margin-right: var(--space-xs);
+      background-color: var(--gold-light);
+      color: var(--gold);
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      margin-bottom: var(--space-md);
+      transition: color var(--transition-fast);
+    }
+    
+    .experience-card:hover .card-title {
+      color: var(--gold);
+    }
+    
+    .card-details {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin: 8px 0;
-      font-size: 0.9rem;
+      gap: var(--space-sm);
+      font-size: 0.8rem;
+      color: rgba(0, 0, 0, 0.6);
     }
     
-    .meta-item {
+    .card-location, .card-duration {
       display: flex;
       align-items: center;
       gap: 4px;
     }
     
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-right: 4px;
-    }
-    
-    .badge-category {
-      background-color: #fef3c7;
-      color: #92400e;
-    }
-    
-    .badge-location {
-      background-color: #e0f2fe;
-      color: #0369a1;
-    }
-    
-    .badge-audience {
-      background-color: #e0e7ff;
-      color: #4338ca;
-    }
-    
-    .price-tag {
-      font-weight: 600;
-      color: #10b981;
-    }
-    
-    .duration-tag {
-      color: #6b7280;
+    .card-price {
+      font-weight: 700;
+      color: var(--gold);
     }
     
     .loading-spinner {
-      display: none;
-      margin: 20px auto;
-      width: 50px;
-      height: 50px;
-      border: 5px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      padding: var(--space-2xl) 0;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-top-color: var(--gold);
       border-radius: 50%;
-      border-top-color: var(--accent);
-      animation: spin 1s ease-in-out infinite;
+      animation: spin 1s linear infinite;
     }
     
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
     
-    .no-results {
-      text-align: center;
-      padding: 30px;
-      color: #6b7280;
-      font-style: italic;
-    }
-    
-    .card-content {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .featured-tag {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--accent);
-      color: white;
-      padding: 3px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      font-weight: 600;
-      z-index: 3;
-    }
-
-    /* Additional styles for the new design */
-    .filters-panel {
-      display: none;
-      margin-top: 15px;
-      background-color: #f8f9fa;
-      padding: 20px;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .filters-panel.active {
-      display: block;
-    }
-
-    .filters-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .filters-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .toggle-filters-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 18px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background-color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .toggle-filters-btn:hover {
-      background-color: #f1f1f1;
-    }
-
-    .toggle-filters-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .search-bar {
-      position: relative;
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-    }
-
-    .search-input {
-      width: 100%;
-      padding-left: 45px;
-      transition: all 0.2s ease;
-    }
-
-    .search-bar.focused .search-input {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
-    }
-
-    .search-wrapper {
-      display: flex;
-      gap: 10px;
-      width: 100%;
-      margin-bottom: 15px;
-    }
-
-    .search-hero {
-      background-color: #f8f9fa;
-      padding: 40px 0;
-      margin-bottom: 30px;
-      border-radius: var(--radius-lg);
-    }
-
-    .results-count {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      margin-bottom: 20px;
-    }
-
-    .results-summary {
-      margin-bottom: 20px;
-    }
-
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(0, 0, 0, 0.1);
-      border-radius: 50%;
-      border-top-color: var(--accent);
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      padding: 30px 0;
-    }
-
     .loading-spinner.hidden {
       display: none;
     }
-
+    
     .no-results {
       text-align: center;
-      padding: 50px 0;
+      padding: var(--space-3xl) 0;
     }
-
+    
     .no-results.hidden {
       display: none;
     }
-
+    
     .no-results-icon {
-      font-size: 2.5rem;
-      color: #ccc;
-      margin-bottom: 15px;
+      font-size: 3rem;
+      color: rgba(0, 0, 0, 0.2);
+      margin-bottom: var(--space-lg);
     }
-
+    
     .no-results h3 {
-      margin-bottom: 10px;
-      font-size: 1.25rem;
+      margin-bottom: var(--space-md);
     }
-
+    
     .no-results p {
-      color: var(--text-secondary);
+      color: rgba(0, 0, 0, 0.6);
     }
 
-    .experience-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 30px;
+    /* House Guide Section */
+    .house-guide {
+      background-color: var(--gray-100);
     }
-
-    @media (min-width: 640px) {
-      .experience-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .experience-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .experience-card {
-      display: block;
-      background-color: white;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: all 0.4s ease;
-      height: 100%;
-      text-decoration: none;
-      color: inherit;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .experience-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .experience-card:hover {
-      transform: translateY(-10px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .card-image {
-      height: 220px;
-      position: relative;
-    }
-
-    .category-icon {
-      font-size: 2.5rem;
-      color: var(--text-muted);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .card-content {
-      padding: 25px;
-    }
-
-    .card-meta {
-      margin-bottom: 15px;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .card-details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-    }
-
-    .card-location {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .card-price {
-      font-weight: 700;
-      color: #10b981;
-    }
-
-    .card-duration {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .animate-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      transition-delay: var(--delay, 0s);
-    }
-
-    .animate-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Guide Section */
-    .guide-section {
-      padding: var(--spacing-3xl) 0;
-      background-color: var(--border-light);
-    }
-
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-xl);
-    }
-
-    @media (min-width: 640px) {
-      .guide-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .guide-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
+    
     .guide-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-xl);
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
+      background-color: var(--white);
+      padding: var(--space-xl);
+      height: 100%;
       position: relative;
       overflow: hidden;
+      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
     }
-
+    
+    .guide-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background-color: var(--gold);
+      transition: height var(--transition-medium);
+    }
+    
     .guide-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-5px);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
-
+    
+    .guide-card:hover::before {
+      height: 100%;
+    }
+    
     .guide-icon {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 56px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      background-color: var(--accent-light);
-      color: var(--accent);
-      font-size: 1.5rem;
-      margin-bottom: var(--spacing-md);
+      background-color: var(--gold-light);
+      color: var(--gold);
+      font-size: 1.2rem;
+      margin-bottom: var(--space-lg);
     }
-
+    
     .guide-card h3 {
-      margin-bottom: var(--spacing-md);
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      margin-bottom: var(--space-lg);
+      transition: color var(--transition-medium);
     }
-
+    
+    .guide-card:hover h3 {
+      color: var(--gold);
+    }
+    
     .guide-list {
       list-style: none;
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--space-lg);
     }
-
+    
     .guide-list li {
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 0.875rem;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--gray-200);
       position: relative;
-      padding-left: var(--spacing-lg);
+      padding-left: var(--space-lg);
     }
-
+    
     .guide-list li::before {
       content: '•';
       position: absolute;
       left: 0;
-      color: var(--accent);
-      font-weight: bold;
+      color: var(--gold);
     }
-
+    
     .guide-list li:last-child {
       border-bottom: none;
     }
-
+    
     .guide-expand-btn {
       display: inline-block;
-      padding: var(--spacing-sm) var(--spacing-md);
-      background-color: var(--primary);
-      color: white;
-      border-radius: var(--radius-sm);
-      font-size: 0.75rem;
-      font-weight: 600;
-      transition: all var(--transition-normal);
+      padding: var(--space-sm) var(--space-lg);
+      background-color: var(--black);
+      color: var(--white);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color var(--transition-fast);
     }
-
+    
     .guide-expand-btn:hover {
-      background-color: var(--accent);
-      transform: translateY(-2px);
+      background-color: var(--gold);
     }
-
+    
     .guide-details {
       height: 0;
       overflow: hidden;
       opacity: 0;
-      transition: all var(--transition-normal);
-      margin-top: var(--spacing-md);
+      transition: height var(--transition-medium), opacity var(--transition-medium);
+      margin-top: var(--space-lg);
     }
-
+    
     .guide-details.active {
       height: auto;
       opacity: 1;
-      padding: var(--spacing-md);
-      background-color: var(--border-light);
-      border-radius: var(--radius-sm);
+      padding: var(--space-lg);
+      background-color: var(--gray-100);
     }
 
-    /* Tips Section */
-    .tips-section {
-      padding: var(--spacing-3xl) 0;
-    }
-
-    .tips-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--spacing-xl);
-    }
-
-    @media (min-width: 768px) {
-      .tips-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
+    /* Local Tips Section */
     .tip-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-lg);
+      height: 100%;
       overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
+      position: relative;
+      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
     }
-
+    
     .tip-card:hover {
       transform: translateY(-10px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
-
+    
     .tip-image {
-      height: 240px;
+      height: 280px;
       overflow: hidden;
     }
-
+    
     .tip-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform var(--transition-slow);
     }
-
+    
     .tip-card:hover .tip-image img {
       transform: scale(1.05);
     }
-
+    
     .tip-content {
-      padding: var(--spacing-xl);
+      padding: var(--space-xl);
+      background-color: var(--white);
     }
-
+    
     .tip-content h3 {
-      margin-bottom: var(--spacing-lg);
       font-size: 1.5rem;
-      position: relative;
-      padding-bottom: var(--spacing-sm);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--gold);
+      transition: color var(--transition-medium);
     }
-
-    .tip-content h3::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background-color: var(--accent);
+    
+    .tip-card:hover h3 {
+      color: var(--gold);
     }
-
+    
     .tip-list {
       list-style: none;
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--space-lg);
     }
-
+    
     .tip-list li {
-      padding: var(--spacing-md) 0;
-      border-bottom: 1px solid var(--border-light);
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--gray-200);
       position: relative;
-      padding-left: var(--spacing-lg);
+      padding-left: var(--space-lg);
     }
-
+    
     .tip-list li::before {
       content: '→';
       position: absolute;
       left: 0;
-      color: var(--accent);
+      color: var(--gold);
     }
-
+    
     .tip-list li:last-child {
       border-bottom: none;
     }
-
+    
     .tip-list li strong {
-      display: inline-block;
-      margin-right: var(--spacing-xs);
+      font-weight: 700;
     }
-
+    
     .tip-link {
+      font-family: var(--font-mono);
       display: inline-block;
-      color: var(--accent);
-      font-weight: 600;
+      color: var(--gold);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
       position: relative;
     }
-
+    
     .tip-link::after {
       content: '';
       position: absolute;
@@ -1044,1517 +938,897 @@
       left: 0;
       width: 0;
       height: 1px;
-      background-color: var(--accent);
-      transition: width var(--transition-normal);
+      background-color: var(--gold);
+      transition: width var(--transition-fast);
     }
-
+    
     .tip-link:hover::after {
       width: 100%;
     }
+
+    /* Other Sections Styling */
+    .amenities {
+      background-color: var(--gray-100);
+    }
     
-    /* Amenities Section */
-    .amenities-section {
-      padding: var(--spacing-3xl) 0;
-      background-color: var(--border-light);
-    }
-
-    .amenities-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-xl);
-    }
-
-    @media (min-width: 640px) {
-      .amenities-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .amenities-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
     .amenity-category {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
+      background-color: var(--white);
       height: 100%;
+      overflow: hidden;
+      transition: transform var(--transition-medium), box-shadow var(--transition-medium);
     }
-
+    
     .amenity-category:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-5px);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
-
+    
     .category-title {
-      padding: var(--spacing-lg);
-      font-size: 1.25rem;
       display: flex;
       align-items: center;
-      gap: var(--spacing-sm);
-      background-color: var(--primary);
-      color: white;
+      gap: var(--space-sm);
+      padding: var(--space-lg);
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      font-weight: 700;
     }
-
-    .category-title i {
-      font-size: 1.125rem;
-    }
-
+    
     .amenity-list {
       list-style: none;
-      padding: var(--spacing-lg);
+      padding: var(--space-lg);
     }
-
+    
     .amenity-list li {
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 0.875rem;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--gray-200);
       position: relative;
-      padding-left: var(--spacing-lg);
+      padding-left: var(--space-lg);
     }
-
+    
     .amenity-list li::before {
       content: '✓';
       position: absolute;
       left: 0;
-      color: var(--accent);
-      font-weight: bold;
+      color: var(--gold);
     }
-
+    
     .amenity-list li:last-child {
       border-bottom: none;
     }
 
     /* FAQ Section */
-    .faq-section {
-      padding: var(--spacing-3xl) 0;
-    }
-
     .faq-accordion {
       max-width: 800px;
       margin: 0 auto;
     }
-
+    
     .faq-item {
-      margin-bottom: var(--spacing-md);
-      border-radius: var(--radius-md);
+      margin-bottom: var(--space-md);
+      background-color: var(--white);
       overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      background-color: var(--card-bg);
-      transition: all var(--transition-normal);
+      transition: box-shadow var(--transition-medium);
     }
-
+    
     .faq-item:hover {
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     }
-
+    
     .faq-item.active {
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-
+    
     .faq-question {
-      padding: var(--spacing-lg);
+      padding: var(--space-lg);
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      background-color: var(--bg);
-      transition: background-color var(--transition-normal);
+      transition: background-color var(--transition-medium), color var(--transition-medium);
     }
-
+    
     .faq-item.active .faq-question {
-      background-color: var(--primary);
-      color: white;
+      background-color: var(--black);
+      color: var(--white);
     }
-
+    
     .faq-question h3 {
-      font-size: 1.125rem;
-      font-weight: 600;
+      font-size: 1.2rem;
+      font-weight: 700;
     }
-
+    
     .faq-question i {
-      font-size: 0.875rem;
-      transition: transform var(--transition-normal);
+      transition: transform var(--transition-medium);
     }
-
+    
     .faq-item.active .faq-question i {
       transform: rotate(180deg);
-      color: white;
     }
-
+    
     .faq-answer {
       max-height: 0;
       overflow: hidden;
-      transition: max-height var(--transition-normal);
+      transition: max-height var(--transition-medium);
     }
-
+    
     .faq-item.active .faq-answer {
       max-height: 500px;
     }
-
+    
     .faq-answer p {
-      padding: var(--spacing-lg);
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
-    /* Emergency Cards */
-    .emergency-section {
-      padding: var(--spacing-3xl) 0;
-      background-color: var(--border-light);
-    }
-
-    .emergency-cards {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-lg);
-    }
-
-    @media (min-width: 640px) {
-      .emergency-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .emergency-cards {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .emergency-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-      height: 100%;
-    }
-
-    .emergency-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .emergency-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 80px;
-      font-size: 2rem;
-      color: white;
-    }
-
-    .emergency-icon-red {
-      background-color: var(--emergency-red);
-    }
-
-    .emergency-icon-orange {
-      background-color: var(--emergency-orange);
-    }
-
-    .emergency-icon-blue {
-      background-color: var(--emergency-blue);
-    }
-
-    .emergency-icon-teal {
-      background-color: var(--emergency-teal);
-    }
-
-    .emergency-card h3 {
-      padding: var(--spacing-md);
-      text-align: center;
-      font-size: 1.25rem;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .emergency-number {
-      padding: var(--spacing-md);
-      text-align: center;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary);
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    .emergency-details {
-      padding: var(--spacing-md);
-    }
-
-    .emergency-details p {
-      margin-bottom: var(--spacing-md);
-      font-size: 0.875rem;
-    }
-
-    .emergency-details p:last-child {
-      margin-bottom: 0;
-    }
-
-    .emergency-details strong {
-      color: var(--primary);
-    }
-
-    /* Transportation Section */
-    .transportation-section {
-      padding: var(--spacing-3xl) 0;
-    }
-
-    .transport-grid {
-      display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-xl);
-    }
-
-    @media (min-width: 640px) {
-      .transport-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .transport-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .transport-card {
-      display: flex;
-      flex-direction: column;
-      background-color: var(--card-bg);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      transition: all var(--transition-normal);
-      height: 100%;
-    }
-
-    .transport-card:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-5px);
-    }
-
-    .transport-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100px;
-      background-color: var(--primary);
-      color: white;
-      font-size: 2.5rem;
-    }
-
-    .transport-content {
-      padding: var(--spacing-lg);
-      flex-grow: 1;
-    }
-
-    .transport-content h3 {
-      margin-bottom: var(--spacing-md);
-      font-size: 1.25rem;
-      position: relative;
-      padding-bottom: var(--spacing-sm);
-    }
-
-    .transport-content h3::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--accent);
-    }
-
-    .transport-list {
-      list-style: none;
-    }
-
-    .transport-list li {
-      padding: var(--spacing-sm) 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 0.875rem;
-      position: relative;
-      padding-left: var(--spacing-lg);
-    }
-
-    .transport-list li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    .transport-list li:last-child {
-      border-bottom: none;
+      padding: var(--space-lg);
+      color: rgba(0, 0, 0, 0.7);
     }
 
     /* Contact Section */
-    .contact-section {
-      padding: var(--spacing-3xl) 0;
-      background-color: var(--accent-light);
+    .contact {
+      background-color: var(--black);
+      color: var(--white);
     }
-
+    
     .contact-card {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-xl);
-      box-shadow: var(--shadow-lg);
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: var(--space-xl);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
+    
     .contact-profile {
       display: flex;
       align-items: center;
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-xl);
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
     }
-
+    
     .contact-profile img {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid white;
-      box-shadow: var(--shadow-md);
+      border: 3px solid var(--gold);
     }
-
+    
     .contact-info h3 {
-      margin-bottom: var(--spacing-xs);
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: var(--space-xs);
     }
-
+    
     .contact-info p {
-      color: var(--text-secondary);
+      opacity: 0.7;
     }
-
+    
     .contact-methods {
       display: grid;
       grid-template-columns: repeat(1, 1fr);
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-xl);
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
     }
-
+    
     @media (min-width: 640px) {
       .contact-methods {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-
-    @media (min-width: 1024px) {
+    
+    @media (min-width: 768px) {
       .contact-methods {
         grid-template-columns: repeat(4, 1fr);
       }
     }
-
+    
     .contact-method {
       display: flex;
       align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      background-color: var(--bg);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition-normal);
+      gap: var(--space-md);
+      padding: var(--space-md);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
     }
-
+    
     .contact-method:hover {
-      background-color: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
+      background-color: var(--gold);
+      transform: translateY(-5px);
     }
-
+    
     .contact-method i {
       font-size: 1.25rem;
     }
-
+    
     .contact-notes {
-      padding: var(--spacing-lg);
-      background-color: var(--border-light);
-      border-radius: var(--radius-md);
       position: relative;
+      padding: var(--space-xl);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-
+    
     .contact-notes::before {
       content: '"';
       position: absolute;
-      top: -10px;
+      top: -20px;
       left: 20px;
-      font-size: 4rem;
-      color: var(--accent);
-      line-height: 1;
+      font-size: 5rem;
       font-family: Georgia, serif;
-      opacity: 0.3;
-    }
-
-    /* Feedback Section */
-    .feedback-section {
-      padding: var(--spacing-3xl) 0;
-    }
-
-    .feedback-content {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .feedback-content > p {
-      margin-bottom: var(--spacing-xl);
-      font-size: 1.125rem;
-    }
-
-    .feedback-buttons {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-2xl);
-      flex-wrap: wrap;
-    }
-
-    .feedback-button {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-md) var(--spacing-xl);
-      background-color: var(--primary);
-      color: white;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      transition: all var(--transition-normal);
-    }
-
-    .feedback-button:hover {
-      background-color: var(--accent);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-      color: white;
-    }
-
-    .feedback-testimonials {
-      margin-top: var(--spacing-2xl);
-    }
-
-    .feedback-testimonials h3 {
-      margin-bottom: var(--spacing-xl);
-      font-size: 1.5rem;
-    }
-
-    .testimonial {
-      background-color: var(--card-bg);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-xl);
-      box-shadow: var(--shadow-md);
-      margin-bottom: var(--spacing-xl);
-      text-align: left;
-      position: relative;
-      transition: transform var(--transition-normal);
-    }
-
-    .testimonial:hover {
-      transform: translateY(-5px);
-    }
-
-    .testimonial::before {
-      content: '"';
-      position: absolute;
-      top: -10px;
-      left: 20px;
-      font-size: 4rem;
-      color: var(--accent);
+      color: var(--gold);
+      opacity: 0.5;
       line-height: 1;
-      font-family: Georgia, serif;
-      opacity: 0.3;
-    }
-
-    .testimonial-stars {
-      margin-bottom: var(--spacing-md);
-      color: gold;
-    }
-
-    .testimonial p {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    .testimonial-author {
-      margin-top: var(--spacing-md);
-      font-style: italic;
-      text-align: right;
-      color: var(--text-secondary);
     }
 
     /* Footer */
     footer {
-      padding: var(--spacing-3xl) 0 var(--spacing-xl);
-      background-color: var(--primary);
-      color: white;
+      background-color: var(--black);
+      color: var(--white);
+      padding: var(--space-2xl) 0 var(--space-lg);
     }
-
+    
     .footer-content {
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-xl);
-      margin-bottom: var(--spacing-xl);
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
     }
-
+    
     @media (min-width: 768px) {
       .footer-content {
         flex-direction: row;
         justify-content: space-between;
       }
     }
-
+    
     .footer-logo h3 {
-      margin-bottom: var(--spacing-xs);
-      font-size: 1.25rem;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-xs);
     }
-
+    
     .footer-logo p {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 0.875rem;
+      opacity: 0.6;
+      font-size: 0.9rem;
     }
-
+    
     .footer-links {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-lg);
+      gap: var(--space-lg);
     }
-
+    
     .footer-link {
-      color: white;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       position: relative;
     }
-
+    
     .footer-link::after {
       content: '';
       position: absolute;
-      bottom: -2px;
+      bottom: -4px;
       left: 0;
       width: 0;
       height: 1px;
-      background-color: white;
-      transition: width var(--transition-normal);
+      background-color: var(--gold);
+      transition: width var(--transition-fast);
     }
-
+    
     .footer-link:hover::after {
       width: 100%;
     }
-
+    
     .footer-social {
       display: flex;
-      gap: var(--spacing-md);
+      gap: var(--space-md);
     }
-
+    
     .social-link {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-      transition: all var(--transition-normal);
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
     }
-
+    
     .social-link:hover {
-      background-color: white;
-      color: var(--primary);
-      transform: translateY(-3px);
+      background-color: var(--gold);
+      transform: translateY(-5px);
     }
-
+    
     .footer-note {
       text-align: center;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 0.75rem;
-      padding-top: var(--spacing-lg);
+      padding-top: var(--space-lg);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.8rem;
+      opacity: 0.5;
     }
 
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: fixed;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .scroll-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: all var(--transition-normal);
-    }
-
-    .scroll-dot.active {
-      background-color: var(--accent);
-      transform: scale(1.3);
-    }
-
-    /* Back to top button */
+    /* Back to Top Button */
     .back-to-top {
       position: fixed;
       bottom: 30px;
       right: 30px;
       width: 50px;
       height: 50px;
-      border-radius: 50%;
-      background-color: var(--primary);
-      color: white;
+      background-color: var(--black);
+      color: var(--white);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: var(--shadow-md);
-      z-index: 100;
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity var(--transition-medium), transform var(--transition-medium), background-color var(--transition-fast);
+      z-index: 90;
     }
-
+    
     .back-to-top.visible {
       opacity: 1;
       transform: translateY(0);
     }
-
+    
     .back-to-top:hover {
-      background-color: var(--accent);
+      background-color: var(--gold);
     }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow), transform var(--transition-slow);
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .fade-in-delay-1 {
+      transition-delay: 0.1s;
+    }
+    
+    .fade-in-delay-2 {
+      transition-delay: 0.2s;
+    }
+    
+    .fade-in-delay-3 {
+      transition-delay: 0.3s;
+    }
+    
+    .fade-in-delay-4 {
+      transition-delay: 0.4s;
+    }
+    
+    .fade-in-delay-5 {
+      transition-delay: 0.5s;
+    }
+    
+    /* Utility Classes */
+    .bg-black {
+      background-color: var(--black);
+      color: var(--white);
+    }
+    
+    .bg-white {
+      background-color: var(--white);
+      color: var(--black);
+    }
+    
+    .bg-gray {
+      background-color: var(--gray-100);
+    }
+    
+    .text-gold {
+      color: var(--gold);
+    }
+    
+    .mt-sm { margin-top: var(--space-sm); }
+    .mt-md { margin-top: var(--space-md); }
+    .mt-lg { margin-top: var(--space-lg); }
+    .mt-xl { margin-top: var(--space-xl); }
+    
+    .mb-sm { margin-bottom: var(--space-sm); }
+    .mb-md { margin-bottom: var(--space-md); }
+    .mb-lg { margin-bottom: var(--space-lg); }
+    .mb-xl { margin-bottom: var(--space-xl); }
   </style>
 </head>
 <body>
-  <div class="scroll-container">
-    <!-- Section 1: Header and Intro -->
-    <section class="scroll-section" id="intro">
-      <header>
-        <div class="container">
-          <div class="header-content">
-            <h1 class="title-prefix">01 <span class="title-separator"></span> WELCOME GUIDE</h1>
-            <h2 class="main-title">Welcome to 123 Main Street</h2>
-            <p class="subtitle">Your ultimate guide to enjoying Los Angeles like a local</p>
-          </div>
-        </div>
-      </header>
-      
-      <nav class="category-nav">
-        <div class="container">
-          <ul class="category-list">
-            <li class="category-item active">
-              <a href="#experiences" class="category-link">
-                <i class="fas fa-compass"></i>
-                <span>Experiences</span>
-              </a>
-            </li>
-            <li class="category-item">
-              <a href="#house-guide" class="category-link">
-                <i class="fas fa-home"></i>
-                <span>House Guide</span>
-              </a>
-            </li>
-            <li class="category-item">
-              <a href="#local-tips" class="category-link">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Local Tips</span>
-              </a>
-            </li>
-            <li class="category-item">
-              <a href="#amenities" class="category-link">
-                <i class="fas fa-concierge-bell"></i>
-                <span>Amenities</span>
-              </a>
-            </li>
-            <li class="category-item">
-              <a href="#faq" class="category-link">
-                <i class="fas fa-question-circle"></i>
-                <span>FAQ</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+  <!-- Navigation -->
+  <div class="nav-wrapper">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">123 MAIN STREET</a>
+        <ul class="nav-links">
+          <li><a href="#experiences" class="nav-link">Experiences</a></li>
+          <li><a href="#house-guide" class="nav-link">House Guide</a></li>
+          <li><a href="#local-tips" class="nav-link">Local Tips</a></li>
+          <li><a href="#amenities" class="nav-link">Amenities</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button class="menu-button">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
       </nav>
-      
-      <div class="hero-banner">
-        <div class="container">
-          <div class="personal-message animate-in">
-            <div class="host-image">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
-            </div>
-            <div class="host-message">
-              <h3>Hello from your host!</h3>
-              <p>Welcome to 123 Main Street! I'm thrilled you've chosen my place for your stay in Los Angeles. I've put together this guide to help you have an amazing experience. Feel free to reach out if you need anything!</p>
-              <p class="host-name">- Alex</p>
-            </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <ul class="mobile-menu-links">
+      <li><a href="#experiences" class="mobile-link">Experiences</a></li>
+      <li><a href="#house-guide" class="mobile-link">House Guide</a></li>
+      <li><a href="#local-tips" class="mobile-link">Local Tips</a></li>
+      <li><a href="#amenities" class="mobile-link">Amenities</a></li>
+      <li><a href="#contact" class="mobile-link">Contact</a></li>
+    </ul>
+  </div>
+  
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <img src="https://images.unsplash.com/photo-1554143091-c41d76e3da15?auto=format&fit=crop&w=1920&q=80" alt="Los Angeles" class="hero-bg">
+    <div class="container">
+      <div class="hero-content">
+        <h3 class="mono-title hero-subtitle fade-in">Welcome Guide</h3>
+        <h1 class="hero-title fade-in fade-in-delay-1">123 Main Street</h1>
+        <p class="hero-description fade-in fade-in-delay-2">Your personal guide to experiencing Los Angeles like a local. Discover hidden gems, navigate the city, and make unforgettable memories.</p>
+      </div>
+    </div>
+    <a href="#quick-info" class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-arrow"></div>
+    </a>
+  </section>
+  
+  <!-- Quick Info Section -->
+  <section class="quick-info" id="quick-info">
+    <div class="container">
+      <div class="grid grid-4">
+        <div class="info-card fade-in">
+          <div class="info-icon">
+            <i class="fas fa-wifi"></i>
+          </div>
+          <div class="info-content">
+            <h3>WIFI</h3>
+            <p>Network: LA_Guest</p>
+            <p>Password: sunshine2025</p>
+          </div>
+        </div>
+        
+        <div class="info-card fade-in fade-in-delay-1">
+          <div class="info-icon">
+            <i class="fas fa-key"></i>
+          </div>
+          <div class="info-content">
+            <h3>ACCESS</h3>
+            <p>Door code: 2580</p>
+            <p>Check-in: After 3 PM</p>
+            <p>Check-out: Before 11 AM</p>
+          </div>
+        </div>
+        
+        <div class="info-card fade-in fade-in-delay-2">
+          <div class="info-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="info-content">
+            <h3>CONTACT</h3>
+            <p>Host: (310) 555-1234</p>
+            <p>Emergency: 911</p>
+          </div>
+        </div>
+        
+        <div class="info-card fade-in fade-in-delay-3">
+          <div class="info-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <div class="info-content">
+            <h3>PARKING</h3>
+            <p>Use space #42 in the garage</p>
+            <p>Gate code: 3791</p>
           </div>
         </div>
       </div>
-    </section>
-    
-    <!-- Section 2: Quick Info -->
-    <section id="quick-info" class="quick-info-section scroll-section">
-      <div class="container">
-        <div class="info-cards">
-          <div class="info-card animate-in" style="--delay: 0.1s;">
-            <div class="info-icon">
-              <i class="fas fa-wifi"></i>
-            </div>
-            <div class="info-content">
-              <h4>WiFi</h4>
-              <p>Network: LA_Guest</p>
-              <p>Password: sunshine2025</p>
-            </div>
-          </div>
-          
-          <div class="info-card animate-in" style="--delay: 0.2s;">
-            <div class="info-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <div class="info-content">
-              <h4>Access</h4>
-              <p>Door code: 2580</p>
-              <p>Check-in: After 3 PM</p>
-              <p>Check-out: Before 11 AM</p>
-            </div>
-          </div>
-          
-          <div class="info-card animate-in" style="--delay: 0.3s;">
-            <div class="info-icon">
-              <i class="fas fa-phone"></i>
-            </div>
-            <div class="info-content">
-              <h4>Contact</h4>
-              <p>Host: (310) 555-1234</p>
-              <p>Emergency: 911</p>
-            </div>
-          </div>
-          
-          <div class="info-card animate-in" style="--delay: 0.4s;">
-            <div class="info-icon">
-              <i class="fas fa-car"></i>
-            </div>
-            <div class="info-content">
-              <h4>Parking</h4>
-              <p>Use space #42 in the garage</p>
-              <p>Gate code: 3791</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 3: Experiences with Airtable Functionality -->
-    <section id="experiences" class="scroll-section">
-      <div class="search-hero">
-        <div class="container search-container">
-          <div class="section-header animate-in">
-            <h2 class="section-title">Discover Local Experiences</h2>
-            <p class="section-subtitle">Find the perfect activities for your stay</p>
-          </div>
-          
-          <div class="search-wrapper animate-in" style="--delay: 0.2s;">
-            <div class="search-bar">
-              <i class="fas fa-search search-icon"></i>
-              <input 
-                type="text" 
-                id="search-input" 
-                class="search-input" 
-                placeholder="Search experiences..." 
-                aria-label="Search experiences"
-              >
-            </div>
-            
-            <button id="toggle-filters" class="toggle-filters-btn">
-              <i class="fas fa-sliders-h"></i> Filters
-            </button>
-          </div>
-          
-          <div id="filters-panel" class="filters-panel">
-            <div class="filters-row">
-              <div class="filter-group">
-                <label for="category-filter" class="filter-label">
-                  <i class="fas fa-tag"></i> Category
-                </label>
-                <select id="category-filter">
-                  <option value="all">All Categories</option>
-                </select>
-              </div>
-              
-              <div class="filter-group">
-                <label for="location-filter" class="filter-label">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </label>
-                <select id="location-filter">
-                  <option value="all">All Locations</option>
-                </select>
-              </div>
-              
-              <div class="filter-group">
-                <label for="audience-filter" class="filter-label">
-                  <i class="fas fa-users"></i> Audience
-                </label>
-                <select id="audience-filter">
-                  <option value="all">All Types</option>
-                </select>
-              </div>
-            </div>
-            
-            <div class="filters-row">
-              <div class="filter-group">
-                <label for="price-filter" class="filter-label">
-                  <i class="fas fa-dollar-sign"></i> Price
-                </label>
-                <select id="price-filter">
-                  <option value="all">Any Price</option>
-                  <option value="0-50">Under $50</option>
-                  <option value="50-100">$50 - $100</option>
-                  <option value="100-200">$100 - $200</option>
-                  <option value="200+">$200+</option>
-                </select>
-              </div>
-              
-              <div class="filter-group">
-                <label for="duration-filter" class="filter-label">
-                  <i class="fas fa-clock"></i> Duration
-                </label>
-                <select id="duration-filter">
-                  <option value="all">Any Duration</option>
-                  <option value="1">1 hour</option>
-                  <option value="2">2 hours</option>
-                  <option value="3">3 hours</option>
-                  <option value="4+">4+ hours</option>
-                </select>
-              </div>
-              
-              <div class="filter-group">
-                <label for="sort-by" class="filter-label">
-                  <i class="fas fa-sort"></i> Sort by
-                </label>
-                <select id="sort-by">
-                  <option value="name">Name (A-Z)</option>
-                  <option value="name-desc">Name (Z-A)</option>
-                  <option value="price-asc">Price (Low to High)</option>
-                  <option value="price-desc">Price (High to Low)</option>
-                  <option value="duration-asc">Duration (Short to Long)</option>
-                  <option value="duration-desc">Duration (Long to Short)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
+    </div>
+  </section>
+  
+  <!-- Experiences Section -->
+  <section class="experiences" id="experiences">
+    <div class="container">
+      <div class="experiences-intro centered">
+        <h1 class="mono-title fade-in">Curated for You</h1>
+        <h2 class="section-title fade-in fade-in-delay-1">Discover Local Experiences</h2>
+        <p class="fade-in fade-in-delay-2">Explore the best Los Angeles has to offer with our handpicked selection of experiences, from iconic landmarks to hidden gems that only locals know about.</p>
       </div>
       
-      <div class="results-summary container">
-        <p id="results-count" class="results-count">Showing all experiences</p>
+      <div class="search-container fade-in fade-in-delay-3">
+        <div class="search-wrapper">
+          <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input 
+              type="text" 
+              id="search-input" 
+              class="search-input" 
+              placeholder="SEARCH EXPERIENCES..." 
+              aria-label="Search experiences">
+          </div>
+          
+          <button id="toggle-filters" class="toggle-filters-btn">
+            <i class="fas fa-sliders-h"></i> FILTERS
+          </button>
+        </div>
+        
+        <div id="filters-panel" class="filters-panel">
+          <div class="filters-row">
+            <div class="filter-group">
+              <label for="category-filter" class="filter-label">
+                <i class="fas fa-tag"></i> CATEGORY
+              </label>
+              <select id="category-filter">
+                <option value="all">All Categories</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label for="location-filter" class="filter-label">
+                <i class="fas fa-map-marker-alt"></i> LOCATION
+              </label>
+              <select id="location-filter">
+                <option value="all">All Locations</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label for="audience-filter" class="filter-label">
+                <i class="fas fa-users"></i> AUDIENCE
+              </label>
+              <select id="audience-filter">
+                <option value="all">All Types</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="filters-row">
+            <div class="filter-group">
+              <label for="price-filter" class="filter-label">
+                <i class="fas fa-dollar-sign"></i> PRICE
+              </label>
+              <select id="price-filter">
+                <option value="all">Any Price</option>
+                <option value="0-50">Under $50</option>
+                <option value="50-100">$50 - $100</option>
+                <option value="100-200">$100 - $200</option>
+                <option value="200+">$200+</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label for="duration-filter" class="filter-label">
+                <i class="fas fa-clock"></i> DURATION
+              </label>
+              <select id="duration-filter">
+                <option value="all">Any Duration</option>
+                <option value="1">1 hour</option>
+                <option value="2">2 hours</option>
+                <option value="3">3 hours</option>
+                <option value="4+">4+ hours</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label for="sort-by" class="filter-label">
+                <i class="fas fa-sort"></i> SORT BY
+              </label>
+              <select id="sort-by">
+                <option value="name">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="price-asc">Price (Low to High)</option>
+                <option value="price-desc">Price (High to Low)</option>
+                <option value="duration-asc">Duration (Short to Long)</option>
+                <option value="duration-desc">Duration (Long to Short)</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      <p id="results-count" class="results-count">Showing all experiences</p>
       
       <div id="loading-spinner" class="loading-spinner">
         <div class="spinner"></div>
       </div>
       
-      <main>
-        <div class="container">
-          <div id="experience-list" class="experience-grid">
-            <!-- Dynamic Experiences will be injected here -->
-          </div>
-          
-          <div id="no-results" class="no-results hidden">
-            <div class="no-results-icon">
-              <i class="fas fa-search"></i>
-            </div>
-            <h3>No experiences found</h3>
-            <p>Try adjusting your filters or search terms</p>
-          </div>
-        </div>
-      </main>
-    </section>
-    
-    <!-- Section 4: House Guide -->
-    <section id="house-guide" class="guide-section scroll-section">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">House Guide</h2>
-          <p class="section-subtitle">Everything you need to know about your stay</p>
-        </div>
-        
-        <div class="guide-grid">
-          <div class="guide-card animate-in" style="--delay: 0.1s;">
-            <div class="guide-icon">
-              <i class="fas fa-door-open"></i>
-            </div>
-            <h3>Checking In & Out</h3>
-            <ul class="guide-list">
-              <li>Check-in time: After 3:00 PM</li>
-              <li>Self check-in with keypad (code: 2580)</li>
-              <li>Check-out time: Before 11:00 AM</li>
-              <li>Just close the door behind you when leaving</li>
-              <li>No need to clean, but please tidy up</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="checkin-details">View Details</button>
-            <div id="checkin-details" class="guide-details">
-              <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call me immediately.</p>
-              <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
-            </div>
-          </div>
-          
-          <div class="guide-card animate-in" style="--delay: 0.2s;">
-            <div class="guide-icon">
-              <i class="fas fa-scroll"></i>
-            </div>
-            <h3>House Rules</h3>
-            <ul class="guide-list">
-              <li>No smoking anywhere on the property</li>
-              <li>No parties or events</li>
-              <li>Quiet hours: 10 PM - 8 AM</li>
-              <li>No pets allowed</li>
-              <li>Maximum 4 guests at any time</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="rules-details">View Details</button>
-            <div id="rules-details" class="guide-details">
-              <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
-              <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
-            </div>
-          </div>
-          
-          <div class="guide-card animate-in" style="--delay: 0.3s;">
-            <div class="guide-icon">
-              <i class="fas fa-trash"></i>
-            </div>
-            <h3>Trash & Recycling</h3>
-            <ul class="guide-list">
-              <li>Trash bins located in the side yard</li>
-              <li>Blue bin: Recycling</li>
-              <li>Black bin: General waste</li>
-              <li>Green bin: Yard waste</li>
-              <li>Trash pickup: Tuesday mornings</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="trash-details">View Details</button>
-            <div id="trash-details" class="guide-details">
-              <p>Please sort your recycling appropriately. Plastic containers, paper, and clean aluminum can go in the blue bin. Food waste and non-recyclables go in the black bin.</p>
-              <p>If you're staying during trash day (Tuesday), feel free to roll the bins to the curb the night before.</p>
-            </div>
-          </div>
-          
-          <div class="guide-card animate-in" style="--delay: 0.4s;">
-            <div class="guide-icon">
-              <i class="fas fa-temperature-low"></i>
-            </div>
-            <h3>A/C & Heating</h3>
-            <ul class="guide-list">
-              <li>Thermostat located in the hallway</li>
-              <li>Set between 68-78°F for comfort</li>
-              <li>A/C: Press "Cool" button</li>
-              <li>Heat: Press "Heat" button</li>
-              <li>Please turn off when leaving</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="ac-details">View Details</button>
-            <div id="ac-details" class="guide-details">
-              <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
-              <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
-            </div>
-          </div>
-          
-          <div class="guide-card animate-in" style="--delay: 0.5s;">
-            <div class="guide-icon">
-              <i class="fas fa-tv"></i>
-            </div>
-            <h3>TV & Entertainment</h3>
-            <ul class="guide-list">
-              <li>Smart TV with Netflix, Hulu, Disney+</li>
-              <li>Use the Samsung remote to power on</li>
-              <li>Press "Source" to switch inputs</li>
-              <li>Login credentials in the drawer</li>
-              <li>Board games in the living room cabinet</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="tv-details">View Details</button>
-            <div id="tv-details" class="guide-details">
-              <p>The main TV is a 55" Samsung smart TV. You can access streaming services by pressing the Home button on the remote and selecting the app you want to use. Netflix, Hulu, and Disney+ are already logged in with guest accounts.</p>
-              <p>If you want to connect your own device, HDMI cables are in the TV cabinet. Use HDMI 1 for best quality.</p>
-            </div>
-          </div>
-          
-          <div class="guide-card animate-in" style="--delay: 0.6s;">
-            <div class="guide-icon">
-              <i class="fas fa-shower"></i>
-            </div>
-            <h3>Bathroom</h3>
-            <ul class="guide-list">
-              <li>Extra towels in the linen closet</li>
-              <li>Pull shower knob to activate water</li>
-              <li>Turn left handle for hot water</li>
-              <li>Hair dryer under the sink</li>
-              <li>Please conserve water when possible</li>
-            </ul>
-            <button class="guide-expand-btn" data-target="bathroom-details">View Details</button>
-            <div id="bathroom-details" class="guide-details">
-              <p>The shower can be a bit tricky. Pull the knob out to start water flow, then turn counter-clockwise for hotter water. The sweet spot is usually around the 2 o'clock position.</p>
-              <p>We've provided basic toiletries including shampoo, conditioner, body wash, and hand soap. If you need anything else, there's a convenience store just two blocks away.</p>
-            </div>
-          </div>
-        </div>
+      <div id="experience-list" class="experience-grid">
+        <!-- Experiences will be dynamically populated here -->
       </div>
-    </section>
-    
-    <!-- Section 5: Local Tips -->
-    <section id="local-tips" class="tips-section scroll-section">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Local Tips</h2>
-          <p class="section-subtitle">Insider recommendations to experience LA like a local</p>
+      
+      <div id="no-results" class="no-results hidden">
+        <div class="no-results-icon">
+          <i class="fas fa-search"></i>
         </div>
-        
-        <div class="tips-grid">
-          <div class="tip-card animate-in" style="--delay: 0.2s;">
-            <div class="tip-image">
-              <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
-            </div>
-            <div class="tip-content">
-              <h3>Best Restaurants</h3>
-              <ul class="tip-list">
-                <li><strong>Bestia</strong> - Amazing Italian, reserve weeks ahead</li>
-                <li><strong>El Cholo</strong> - Classic Mexican, great margaritas</li>
-                <li><strong>Grand Central Market</strong> - Food hall with options for everyone</li>
-                <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
-                <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
-              </ul>
-              <a href="#" class="tip-link">View All Restaurant Recommendations</a>
-            </div>
-          </div>
-          
-          <div class="tip-card animate-in" style="--delay: 0.4s;">
-            <div class="tip-image">
-              <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
-            </div>
-            <div class="tip-content">
-              <h3>Hidden Gems</h3>
-              <ul class="tip-list">
-                <li><strong>The Last Bookstore</strong> - Unique bookstore with art installations</li>
-                <li><strong>Hollywood Forever Cemetery</strong> - Movie screenings in summer</li>
-                <li><strong>The Museum of Jurassic Technology</strong> - Wonderfully weird collection</li>
-                <li><strong>Watts Towers</strong> - Impressive folk art structures</li>
-                <li><strong>The Bradbury Building</strong> - Historic landmark with gorgeous interior</li>
-              </ul>
-              <a href="#" class="tip-link">View All Hidden Gems</a>
-            </div>
-          </div>
-        </div>
+        <h3>No experiences found</h3>
+        <p>Try adjusting your filters or search terms</p>
       </div>
-    </section>
-    
-    <!-- Section 6: Amenities -->
-    <section id="amenities" class="amenities-section scroll-section">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Home Amenities</h2>
-          <p class="section-subtitle">Everything available to make your stay comfortable</p>
-        </div>
-        
-        <div class="amenities-grid">
-          <div class="amenity-category animate-in" style="--delay: 0.1s;">
-            <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
-            <ul class="amenity-list">
-              <li>Full-size refrigerator</li>
-              <li>Microwave & toaster oven</li>
-              <li>Coffee maker with pods</li>
-              <li>Dishwasher</li>
-              <li>Basic spices & cooking oil</li>
-              <li>Pots, pans & cooking utensils</li>
-              <li>Dishes, glasses & flatware</li>
-              <li>Wine opener & glasses</li>
-            </ul>
-          </div>
-          
-          <div class="amenity-category animate-in" style="--delay: 0.2s;">
-            <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
-            <ul class="amenity-list">
-              <li>Queen-size mattress</li>
-              <li>Extra pillows in closet</li>
-              <li>Memory foam topper</li>
-              <li>Blackout curtains</li>
-              <li>Reading lamps</li>
-              <li>Extra blankets</li>
-              <li>Alarm clock</li>
-              <li>Hangers & iron</li>
-            </ul>
-          </div>
-          
-          <div class="amenity-category animate-in" style="--delay: 0.3s;">
-            <h3 class="category-title"><i class="fas fa-shower"></i> Bathroom</h3>
-            <ul class="amenity-list">
-              <li>Towels & washcloths</li>
-              <li>Shampoo & conditioner</li>
-              <li>Body wash & hand soap</li>
-              <li>Hair dryer</li>
-              <li>First aid kit</li>
-              <li>Extra toilet paper</li>
-              <li>Shower caddy</li>
-              <li>Makeup remover wipes</li>
-            </ul>
-          </div>
-          
-          <div class="amenity-category animate-in" style="--delay: 0.4s;">
-            <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
-            <ul class="amenity-list">
-              <li>High-speed WiFi</li>
-              <li>55" Smart TV</li>
-              <li>Netflix, Hulu, Disney+</li>
-              <li>Bluetooth speaker</li>
-              <li>USB charging ports</li>
-              <li>Smart thermostat</li>
-              <li>Ring doorbell</li>
-              <li>Printer/scanner</li>
-            </ul>
-          </div>
-          
-          <div class="amenity-category animate-in" style="--delay: 0.5s;">
-            <h3 class="category-title"><i class="fas fa-swimming-pool"></i> Outdoor</h3>
-            <ul class="amenity-list">
-              <li>Balcony with seating</li>
-              <li>BBQ grill (propane)</li>
-              <li>Shared swimming pool</li>
-              <li>Pool towels</li>
-              <li>Outdoor dining table</li>
-              <li>String lights</li>
-              <li>Fire pit</li>
-              <li>Secure parking spot</li>
-            </ul>
-          </div>
-          
-          <div class="amenity-category animate-in" style="--delay: 0.6s;">
-            <h3 class="category-title"><i class="fas fa-plus"></i> Extras</h3>
-            <ul class="amenity-list">
-              <li>Yoga mat</li>
-              <li>Board games</li>
-              <li>Books & magazines</li>
-              <li>Beach chairs & umbrella</li>
-              <li>Picnic basket</li>
-              <li>Reusable shopping bags</li>
-              <li>Laundry supplies</li>
-              <li>Basic cleaning supplies</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 7: FAQ -->
-    <section id="faq" class="faq-section scroll-section">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Frequently Asked Questions</h2>
-          <p class="section-subtitle">Quick answers to common questions</p>
-        </div>
-        
-        <div class="faq-accordion">
-          <div class="faq-item animate-in" style="--delay: 0.1s;">
-            <div class="faq-question">
-              <h3>Is parking included with my stay?</h3>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <p>Yes, one dedicated parking spot (#42) is included with your stay. You'll need the garage code (3791) to access the parking area. If you have additional vehicles, street parking is available but may require a permit or payment depending on the time of day.</p>
-            </div>
-          </div>
-          
-          <div class="faq-item animate-in" style="--delay: 0.2s;">
-            <div class="faq-question">
-              <h3>How do I access the building?</h3>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call me immediately.</p>
-            </div>
-          </div>
-          
-          <div class="faq-item animate-in" style="--delay: 0.3s;">
-            <div class="faq-question">
-              <h3>What is the best way to get around?</h3>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
-            </div>
-          </div>
-          
-          <div class="faq-item animate-in" style="--delay: 0.4s;">
-            <div class="faq-question">
-              <h3>Is early check-in or late check-out possible?</h3>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <p>Early check-in and late check-out may be possible depending on our cleaning schedule and other bookings. Please message me at least 24 hours in advance to inquire about availability. A fee may apply for significantly extended hours.</p>
-            </div>
-          </div>
-          
-          <div class="faq-item animate-in" style="--delay: 0.5s;">
-            <div class="faq-question">
-              <h3>Is the property suitable for children?</h3>
-              <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-              <p>Yes, the property is family-friendly, but please note there are some areas that require supervision such as the balcony and pool. We provide a pack-n-play upon request, and the sofa in the living room converts to a comfortable bed suitable for older children.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 8: Emergency -->
-    <section class="emergency-section scroll-section" id="emergency">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Emergency Information</h2>
-          <p class="section-subtitle">Important contacts and procedures for emergencies</p>
-        </div>
-        
-        <div class="emergency-cards">
-          <div class="emergency-card animate-in" style="--delay: 0.1s;">
-            <div class="emergency-icon emergency-icon-red">
-              <i class="fas fa-ambulance"></i>
-            </div>
-            <h3>Medical Emergency</h3>
-            <p class="emergency-number">Call 911</p>
-            <div class="emergency-details">
-              <p><strong>Nearest Hospital:</strong><br>Cedars-Sinai Medical Center<br>8700 Beverly Blvd<br>Los Angeles, CA 90048</p>
-              <p><strong>Urgent Care:</strong><br>CityMD Urgent Care<br>450 N La Cienega Blvd<br>Los Angeles, CA 90048</p>
-              <p>Open 8am-8pm daily</p>
-            </div>
-          </div>
-          
-          <div class="emergency-card animate-in" style="--delay: 0.2s;">
-            <div class="emergency-icon emergency-icon-orange">
-              <i class="fas fa-fire"></i>
-            </div>
-            <h3>Fire Emergency</h3>
-            <p class="emergency-number">Call 911</p>
-            <div class="emergency-details">
-              <p><strong>Fire Extinguisher Location:</strong><br>Under the kitchen sink</p>
-              <p><strong>Fire Alarm:</strong><br>Located in hallway and bedroom</p>
-              <p><strong>Emergency Exit:</strong><br>Main door and balcony emergency ladder in bedroom closet</p>
-            </div>
-          </div>
-          
-          <div class="emergency-card animate-in" style="--delay: 0.3s;">
-            <div class="emergency-icon emergency-icon-blue">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <h3>Police / Security</h3>
-            <p class="emergency-number">Call 911</p>
-            <div class="emergency-details">
-              <p><strong>Local Police (non-emergency):</strong><br>(213) 555-6789</p>
-              <p><strong>Building Security:</strong><br>(310) 555-7890</p>
-              <p><strong>Neighborhood Watch:</strong><br>(323) 555-9012</p>
-            </div>
-          </div>
-          
-          <div class="emergency-card animate-in" style="--delay: 0.4s;">
-            <div class="emergency-icon emergency-icon-teal">
-              <i class="fas fa-home"></i>
-            </div>
-            <h3>Property Issues</h3>
-            <p class="emergency-number">Call Host: (310) 555-1234</p>
-            <div class="emergency-details">
-              <p><strong>Water Shut-off:</strong><br>Under the kitchen sink</p>
-              <p><strong>Circuit Breaker:</strong><br>In the hallway closet</p>
-              <p><strong>Gas Shut-off:</strong><br>Outside, east side of building</p>
-              <p><strong>Plumber (Emergency):</strong><br>(213) 555-8765</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 9: Transportation -->
-    <section class="transportation-section scroll-section" id="transportation">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Getting Around</h2>
-          <p class="section-subtitle">Transportation options and tips</p>
-        </div>
-        
-        <div class="transport-grid">
-          <div class="transport-card animate-in" style="--delay: 0.1s;">
-            <div class="transport-icon">
-              <i class="fas fa-car"></i>
-            </div>
-            <div class="transport-content">
-              <h3>Driving & Parking</h3>
-              <ul class="transport-list">
-                <li>Your dedicated parking space is #42 in the garage</li>
-                <li>Garage entry code: 3791</li>
-                <li>Street parking is metered from 8am-8pm</li>
-                <li>Avoid parking on the north side during street cleaning (Tuesdays 10am-12pm)</li>
-                <li>Traffic is heaviest from 7-10am and 4-7pm weekdays</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="transport-card animate-in" style="--delay: 0.2s;">
-            <div class="transport-icon">
-              <i class="fas fa-bus"></i>
-            </div>
-            <div class="transport-content">
-              <h3>Public Transit</h3>
-              <ul class="transport-list">
-                <li>Metro Gold Line station is 3 blocks east</li>
-                <li>Bus lines 30, 45, and 81 stop at the corner</li>
-                <li>Download the LA Metro app for real-time schedules</li>
-                <li>TAP cards available at any station ($2 + fare)</li>
-                <li>Day passes are $7 for unlimited rides</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="transport-card animate-in" style="--delay: 0.3s;">
-            <div class="transport-icon">
-              <i class="fas fa-taxi"></i>
-            </div>
-            <div class="transport-content">
-              <h3>Rideshare & Taxis</h3>
-              <ul class="transport-list">
-                <li>Uber and Lyft are widely available</li>
-                <li>Typical wait time is 3-5 minutes</li>
-                <li>Set pickup point as "Main Entrance" for easiest access</li>
-                <li>Yellow Cab: (213) 555-5555</li>
-                <li>Airport shuttle services available by reservation</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div class="transport-card animate-in" style="--delay: 0.4s;">
-            <div class="transport-icon">
-              <i class="fas fa-bicycle"></i>
-            </div>
-            <div class="transport-content">
-              <h3>Biking & Walking</h3>
-              <ul class="transport-list">
-                <li>Metro Bike Share station one block south</li>
-                <li>Electric scooters (Bird, Lime) can be found nearby</li>
-                <li>Walk Score: 85 - Most errands can be done on foot</li>
-                <li>Bike Score: 75 - Bike lanes on main streets</li>
-                <li>Pedestrian-friendly neighborhood with good sidewalks</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 10: Contact -->
-    <section class="contact-section scroll-section" id="contact">
-      <div class="container">
-        <div class="contact-card animate-in">
-          <div class="contact-profile">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
-            <div class="contact-info">
-              <h3>Your Host, Alex</h3>
-              <p>Available 24/7 for emergencies</p>
-            </div>
-          </div>
-          
-          <div class="contact-methods">
-            <a href="tel:3105551234" class="contact-method">
-              <i class="fas fa-phone"></i>
-              <span>(310) 555-1234</span>
-            </a>
-            <a href="sms:3105551234" class="contact-method">
-              <i class="fas fa-comment"></i>
-              <span>Text Message</span>
-            </a>
-            <a href="mailto:alex@example.com" class="contact-method">
-              <i class="fas fa-envelope"></i>
-              <span>alex@example.com</span>
-            </a>
-            <a href="https://airbnb.com/messaging" class="contact-method">
-              <i class="fab fa-airbnb"></i>
-              <span>Airbnb Message</span>
-            </a>
-          </div>
-          
-          <div class="contact-notes">
-            <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message through Airbnb and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Section 11: Feedback -->
-    <section class="feedback-section scroll-section" id="feedback">
-      <div class="container">
-        <div class="section-header animate-in">
-          <h2 class="section-title">Your Feedback Matters</h2>
-          <p class="section-subtitle">Help us improve and share your experience</p>
-        </div>
-        
-        <div class="feedback-content">
-          <p class="animate-in" style="--delay: 0.2s;">I strive to provide the best possible experience for my guests. If you're enjoying your stay or have suggestions for improvement, I'd love to hear from you!</p>
-          
-          <div class="feedback-buttons animate-in" style="--delay: 0.3s;">
-            <a href="#" class="feedback-button">
-              <i class="fas fa-comment-alt"></i>
-              <span>Send Feedback</span>
-            </a>
-            
-            <a href="https://airbnb.com/reviews" class="feedback-button">
-              <i class="fas fa-star"></i>
-              <span>Leave a Review</span>
-            </a>
-          </div>
-          
-          <div class="feedback-testimonials">
-            <h3 class="animate-in" style="--delay: 0.4s;">What Previous Guests Said:</h3>
-            
-            <div class="testimonial animate-in" style="--delay: 0.5s;">
-              <div class="testimonial-stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <p>"Alex's place was perfect! Great location, clean, and had everything we needed. The guide book was super helpful for exploring LA. Would definitely stay again!"</p>
-              <p class="testimonial-author">- Sarah, August 2024</p>
-            </div>
-            
-            <div class="testimonial animate-in" style="--delay: 0.6s;">
-              <div class="testimonial-stars">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </div>
-              <p>"Loved staying here! The recommendations in the local tips section led us to some amazing spots we would have never found otherwise. Alex was responsive and helpful throughout our stay."</p>
-              <p class="testimonial-author">- Michael, July 2024</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
   
+  <!-- House Guide Section -->
+  <section class="house-guide" id="house-guide">
+    <div class="container">
+      <div class="section-header centered fade-in">
+        <h1 class="mono-title">Stay Information</h1>
+        <h2 class="section-title">House Guide</h2>
+        <p>Everything you need to know to make your stay comfortable and hassle-free.</p>
+      </div>
+      
+      <div class="grid grid-3">
+        <div class="guide-card fade-in fade-in-delay-1">
+          <div class="guide-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <h3>Checking In & Out</h3>
+          <ul class="guide-list">
+            <li>Check-in time: After 3:00 PM</li>
+            <li>Self check-in with keypad (code: 2580)</li>
+            <li>Check-out time: Before 11:00 AM</li>
+            <li>Just close the door behind you when leaving</li>
+            <li>No need to clean, but please tidy up</li>
+          </ul>
+          <button class="guide-expand-btn" data-target="checkin-details">VIEW DETAILS</button>
+          <div id="checkin-details" class="guide-details">
+            <p>The keypad is located to the right of the main door. Enter the 4-digit code followed by the # key. The door will unlock automatically. If you have any issues, please call me immediately.</p>
+            <p>For check-out, please make sure all windows are closed, lights are turned off, and the door is locked behind you. You can leave the keys on the kitchen counter.</p>
+          </div>
+        </div>
+        
+        <div class="guide-card fade-in fade-in-delay-2">
+          <div class="guide-icon">
+            <i class="fas fa-scroll"></i>
+          </div>
+          <h3>House Rules</h3>
+          <ul class="guide-list">
+            <li>No smoking anywhere on the property</li>
+            <li>No parties or events</li>
+            <li>Quiet hours: 10 PM - 8 AM</li>
+            <li>No pets allowed</li>
+            <li>Maximum 4 guests at any time</li>
+          </ul>
+          <button class="guide-expand-btn" data-target="rules-details">VIEW DETAILS</button>
+          <div id="rules-details" class="guide-details">
+            <p>We ask that you respect our neighbors by keeping noise levels reasonable, especially after 10 PM. The walls can be thin in places, and sound carries easily.</p>
+            <p>If you're traveling with children, please ensure they are supervised at all times, especially around the staircase and balcony areas.</p>
+          </div>
+        </div>
+        
+        <div class="guide-card fade-in fade-in-delay-3">
+          <div class="guide-icon">
+            <i class="fas fa-temperature-low"></i>
+          </div>
+          <h3>A/C & Heating</h3>
+          <ul class="guide-list">
+            <li>Thermostat located in the hallway</li>
+            <li>Set between 68-78°F for comfort</li>
+            <li>A/C: Press "Cool" button</li>
+            <li>Heat: Press "Heat" button</li>
+            <li>Please turn off when leaving</li>
+          </ul>
+          <button class="guide-expand-btn" data-target="ac-details">VIEW DETAILS</button>
+          <div id="ac-details" class="guide-details">
+            <p>The Nest thermostat can be adjusted by turning the dial clockwise to increase temperature or counterclockwise to decrease it. The display will show the current temperature and the target temperature.</p>
+            <p>For best efficiency, we recommend keeping the A/C around 75°F in summer and heat around 68°F in winter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Local Tips Section -->
+  <section class="local-tips" id="local-tips">
+    <div class="container">
+      <div class="section-header centered fade-in">
+        <h1 class="mono-title">Insider Knowledge</h1>
+        <h2 class="section-title">Local Tips</h2>
+        <p>Discover Los Angeles like a local with our insider recommendations.</p>
+      </div>
+      
+      <div class="grid grid-2">
+        <div class="tip-card fade-in fade-in-delay-1">
+          <div class="tip-image">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop" alt="Restaurant" />
+          </div>
+          <div class="tip-content">
+            <h3>Best Restaurants</h3>
+            <ul class="tip-list">
+              <li><strong>Bestia</strong> - Amazing Italian, reserve weeks ahead</li>
+              <li><strong>El Cholo</strong> - Classic Mexican, great margaritas</li>
+              <li><strong>Grand Central Market</strong> - Food hall with options for everyone</li>
+              <li><strong>Jon & Vinny's</strong> - Pizza spot loved by locals</li>
+              <li><strong>Providence</strong> - Fine dining, perfect for special occasions</li>
+            </ul>
+            <a href="#" class="tip-link">VIEW ALL RECOMMENDATIONS</a>
+          </div>
+        </div>
+        
+        <div class="tip-card fade-in fade-in-delay-2">
+          <div class="tip-image">
+            <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=800&auto=format&fit=crop" alt="Hidden Gems" />
+          </div>
+          <div class="tip-content">
+            <h3>Hidden Gems</h3>
+            <ul class="tip-list">
+              <li><strong>The Last Bookstore</strong> - Unique bookstore with art installations</li>
+              <li><strong>Hollywood Forever Cemetery</strong> - Movie screenings in summer</li>
+              <li><strong>The Museum of Jurassic Technology</strong> - Wonderfully weird collection</li>
+              <li><strong>Watts Towers</strong> - Impressive folk art structures</li>
+              <li><strong>The Bradbury Building</strong> - Historic landmark with gorgeous interior</li>
+            </ul>
+            <a href="#" class="tip-link">VIEW ALL HIDDEN GEMS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Amenities Section -->
+  <section class="amenities" id="amenities">
+    <div class="container">
+      <div class="section-header centered fade-in">
+        <h1 class="mono-title">For Your Comfort</h1>
+        <h2 class="section-title">Amenities</h2>
+        <p>Everything available to make your stay comfortable and enjoyable.</p>
+      </div>
+      
+      <div class="grid grid-3">
+        <div class="amenity-category fade-in fade-in-delay-1">
+          <h3 class="category-title"><i class="fas fa-utensils"></i> Kitchen</h3>
+          <ul class="amenity-list">
+            <li>Full-size refrigerator</li>
+            <li>Microwave & toaster oven</li>
+            <li>Coffee maker with pods</li>
+            <li>Dishwasher</li>
+            <li>Basic spices & cooking oil</li>
+            <li>Pots, pans & cooking utensils</li>
+            <li>Dishes, glasses & flatware</li>
+            <li>Wine opener & glasses</li>
+          </ul>
+        </div>
+        
+        <div class="amenity-category fade-in fade-in-delay-2">
+          <h3 class="category-title"><i class="fas fa-bed"></i> Bedroom</h3>
+          <ul class="amenity-list">
+            <li>Queen-size mattress</li>
+            <li>Extra pillows in closet</li>
+            <li>Memory foam topper</li>
+            <li>Blackout curtains</li>
+            <li>Reading lamps</li>
+            <li>Extra blankets</li>
+            <li>Alarm clock</li>
+            <li>Hangers & iron</li>
+          </ul>
+        </div>
+        
+        <div class="amenity-category fade-in fade-in-delay-3">
+          <h3 class="category-title"><i class="fas fa-wifi"></i> Technology</h3>
+          <ul class="amenity-list">
+            <li>High-speed WiFi</li>
+            <li>55" Smart TV</li>
+            <li>Netflix, Hulu, Disney+</li>
+            <li>Bluetooth speaker</li>
+            <li>USB charging ports</li>
+            <li>Smart thermostat</li>
+            <li>Ring doorbell</li>
+            <li>Printer/scanner</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ Section -->
+  <section class="faq" id="faq">
+    <div class="container container-sm">
+      <div class="section-header centered fade-in">
+        <h1 class="mono-title">Answers</h1>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p>Quick answers to common questions about your stay.</p>
+      </div>
+      
+      <div class="faq-accordion">
+        <div class="faq-item fade-in fade-in-delay-1">
+          <div class="faq-question">
+            <h3>Is parking included with my stay?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Yes, one dedicated parking spot (#42) is included with your stay. You'll need the garage code (3791) to access the parking area. If you have additional vehicles, street parking is available but may require a permit or payment depending on the time of day.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item fade-in fade-in-delay-2">
+          <div class="faq-question">
+            <h3>How do I access the building?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>To access the building, use the keypad at the main entrance and enter code 1234 followed by the # key. For your individual unit, use the keypad on the door with code 2580. If you have any issues, please call me immediately.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item fade-in fade-in-delay-3">
+          <div class="faq-question">
+            <h3>What is the best way to get around?</h3>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>While having a car in LA is convenient, there are many options. Uber and Lyft are widely available. Public transportation includes Metro buses and trains, with a station just 3 blocks away. For shorter trips, electric scooters and bikes are available through apps like Bird and Lime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container container-sm">
+      <div class="section-header centered fade-in">
+        <h1 class="mono-title">Get in Touch</h1>
+        <h2 class="section-title">Contact</h2>
+        <p>Reach out anytime for assistance during your stay.</p>
+      </div>
+      
+      <div class="contact-card fade-in fade-in-delay-1">
+        <div class="contact-profile">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces" alt="Your Host" />
+          <div class="contact-info">
+            <h3>Alex</h3>
+            <p>Available 24/7 for emergencies</p>
+          </div>
+        </div>
+        
+        <div class="contact-methods">
+          <a href="tel:3105551234" class="contact-method">
+            <i class="fas fa-phone"></i>
+            <span>(310) 555-1234</span>
+          </a>
+          <a href="sms:3105551234" class="contact-method">
+            <i class="fas fa-comment"></i>
+            <span>Text Message</span>
+          </a>
+          <a href="mailto:alex@example.com" class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <span>alex@example.com</span>
+          </a>
+          <a href="https://airbnb.com/messaging" class="contact-method">
+            <i class="fab fa-airbnb"></i>
+            <span>Airbnb Message</span>
+          </a>
+        </div>
+        
+        <div class="contact-notes">
+          <p>I live 10 minutes away and can stop by if needed. For non-emergencies, please text or message through Airbnb and I'll respond promptly. I can also help with reservations, recommendations, or special requests to make your stay perfect!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
         <div class="footer-logo">
-          <h3>123 Main Street</h3>
+          <h3>123 MAIN STREET</h3>
           <p>Los Angeles, CA 90012</p>
         </div>
         
         <div class="footer-links">
-          <a href="#experiences" class="footer-link">Experiences</a>
-          <a href="#house-guide" class="footer-link">House Guide</a>
-          <a href="#local-tips" class="footer-link">Local Tips</a>
-          <a href="#amenities" class="footer-link">Amenities</a>
-          <a href="#faq" class="footer-link">FAQ</a>
+          <a href="#experiences" class="footer-link">EXPERIENCES</a>
+          <a href="#house-guide" class="footer-link">HOUSE GUIDE</a>
+          <a href="#local-tips" class="footer-link">LOCAL TIPS</a>
+          <a href="#amenities" class="footer-link">AMENITIES</a>
+          <a href="#contact" class="footer-link">CONTACT</a>
         </div>
         
         <div class="footer-social">
@@ -2570,11 +1844,11 @@
         </div>
       </div>
       
-      <p class="footer-note">© 2025 123 Main Street | Powered by Unified Content</p>
+      <p class="footer-note">© 2025 123 Main Street | Los Angeles</p>
     </div>
   </footer>
   
-  <!-- Back to top button -->
+  <!-- Back to Top Button -->
   <div class="back-to-top" id="back-to-top">
     <i class="fas fa-arrow-up"></i>
   </div>
@@ -2602,6 +1876,9 @@
     const toggleFiltersBtn = document.getElementById('toggle-filters');
     const filtersPanel = document.getElementById('filters-panel');
     const backToTopBtn = document.getElementById('back-to-top');
+    const menuButton = document.querySelector('.menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const navWrapper = document.querySelector('.nav-wrapper');
     
     // Initialize the app
     function init() {
@@ -2609,13 +1886,26 @@
       fetchExperiences();
       animateElements();
       setupFAQAccordion();
-      setupStickyNav();
       setupExpandButtons();
       setupBackToTop();
     }
     
-    // Set up event listeners for filters and search
+    // Set up event listeners
     function setupEventListeners() {
+      // Mobile menu toggle
+      menuButton.addEventListener('click', () => {
+        menuButton.classList.toggle('menu-open');
+        mobileMenu.classList.toggle('open');
+      });
+      
+      // Close mobile menu when clicking a link
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+          menuButton.classList.remove('menu-open');
+          mobileMenu.classList.remove('open');
+        });
+      });
+      
       // Search input with debounce
       searchInput.addEventListener('input', () => {
         clearTimeout(searchDebounceTimer);
@@ -2635,27 +1925,17 @@
       // Toggle filters panel
       toggleFiltersBtn.addEventListener('click', () => {
         filtersPanel.classList.toggle('active');
-        toggleFiltersBtn.classList.toggle('active');
-      });
-      
-      // Focus animation for search input
-      searchInput.addEventListener('focus', () => {
-        document.querySelector('.search-bar').classList.add('focused');
-      });
-      
-      searchInput.addEventListener('blur', () => {
-        document.querySelector('.search-bar').classList.remove('focused');
       });
       
       // Scroll animations
       window.addEventListener('scroll', () => {
         const scrollPosition = window.scrollY;
-        const header = document.querySelector('header');
         
+        // Add class to header when scrolled
         if (scrollPosition > 50) {
-          header.classList.add('scrolled');
+          navWrapper.classList.add('scrolled');
         } else {
-          header.classList.remove('scrolled');
+          navWrapper.classList.remove('scrolled');
         }
         
         // Show or hide back to top button
@@ -2665,30 +1945,62 @@
           backToTopBtn.classList.remove('visible');
         }
         
-        // Check for sections in viewport for animation
-        document.querySelectorAll('.scroll-section').forEach(section => {
-          if (isElementInViewport(section)) {
-            section.classList.add('active');
-          }
-        });
-        
         // Animate elements when they enter viewport
-        document.querySelectorAll('.animate-in:not(.visible)').forEach(el => {
+        document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
           if (isElementInViewport(el)) {
             el.classList.add('visible');
           }
         });
+        
+        // Highlight active nav link based on scroll position
+        highlightActiveNavLink();
       });
       
-      // Navigation menu highlighting
-      document.querySelectorAll('.category-link').forEach(link => {
+      // Smooth scroll for navigation links
+      document.querySelectorAll('.nav-link, .mobile-link, .footer-link').forEach(link => {
         link.addEventListener('click', function(e) {
-          document.querySelectorAll('.category-item').forEach(item => {
-            item.classList.remove('active');
-          });
-          this.parentElement.classList.add('active');
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 60,
+              behavior: 'smooth'
+            });
+          }
         });
       });
+    }
+    
+    // Highlight active nav link based on scroll position
+    function highlightActiveNavLink() {
+      const sections = document.querySelectorAll('section[id]');
+      const scrollPosition = window.scrollY + 100;
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${sectionId}`) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+    
+    // Check if element is in viewport
+    function isElementInViewport(el) {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+        rect.bottom >= 0
+      );
     }
     
     // Setup FAQ accordion functionality
@@ -2714,22 +2026,6 @@
       });
     }
     
-    // Setup sticky navigation
-    function setupStickyNav() {
-      const categoryNav = document.querySelector('.category-nav');
-      const navTop = categoryNav ? categoryNav.offsetTop : 0;
-      
-      window.addEventListener('scroll', () => {
-        if (window.scrollY >= navTop) {
-          categoryNav.classList.add('sticky');
-          document.body.style.paddingTop = categoryNav.offsetHeight + 'px';
-        } else {
-          categoryNav.classList.remove('sticky');
-          document.body.style.paddingTop = 0;
-        }
-      });
-    }
-    
     // Setup expand buttons for guide cards
     function setupExpandButtons() {
       const expandButtons = document.querySelectorAll('.guide-expand-btn');
@@ -2741,10 +2037,10 @@
           
           if (targetDetails.classList.contains('active')) {
             targetDetails.classList.remove('active');
-            button.textContent = 'View Details';
+            button.textContent = 'VIEW DETAILS';
           } else {
             targetDetails.classList.add('active');
-            button.textContent = 'Hide Details';
+            button.textContent = 'HIDE DETAILS';
           }
         });
       });
@@ -2760,33 +2056,15 @@
       });
     }
     
-    // Check if element is in viewport
-    function isElementInViewport(el) {
-      const rect = el.getBoundingClientRect();
-      return (
-        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
-        rect.bottom >= 0
-      );
-    }
-    
     // Animate elements on page load
     function animateElements() {
-      const elementsToAnimate = document.querySelectorAll('.animate-in');
-      
-      elementsToAnimate.forEach((element, index) => {
-        // If element already has a delay, respect it
-        const existingDelay = element.style.getPropertyValue('--delay');
-        if (!existingDelay) {
-          element.style.setProperty('--delay', `${index * 0.1}s`);
-        }
-        
-        // If element is in viewport, make it visible immediately
-        if (isElementInViewport(element)) {
-          setTimeout(() => {
+      setTimeout(() => {
+        document.querySelectorAll('.fade-in').forEach(element => {
+          if (isElementInViewport(element)) {
             element.classList.add('visible');
-          }, 100);
-        }
-      });
+          }
+        });
+      }, 200);
     }
     
     // Fetch experiences data 
@@ -2801,7 +2079,7 @@
       }, 1000);
     }
     
-    // Load sample data for demonstration
+    // Load sample data
     function loadSampleData() {
       const sampleData = {
         records: [
@@ -2939,8 +2217,6 @@
           }
         ]
       };
-      
-      console.log('✅ Sample data loaded');
       
       allRecords = sampleData.records;
       populateFilterOptions();
@@ -3147,7 +2423,7 @@
         const location = fields.Location || '';
         const audienceType = fields['Audience Type'] || '';
         const price = fields['Estimated Price'] 
-          ? `${parseFloat(fields['Estimated Price']).toFixed(0)}` 
+          ? `$${parseFloat(fields['Estimated Price']).toFixed(0)}` 
           : 'Price not available';
         const duration = fields.Duration 
           ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
@@ -3164,8 +2440,7 @@
         const card = document.createElement('a');
         card.href = url;
         card.target = "_blank";
-        card.className = 'experience-card animate-in';
-        card.style.setProperty('--delay', `${index * 0.1}s`);
+        card.className = 'experience-card';
         
         // Generate a placeholder icon based on category
         let categoryIcon = 'fa-ticket';
@@ -3180,20 +2455,17 @@
         if (imageUrl) {
           // Use actual image if available
           cardImageHtml = `
-            <div class="card-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
-              ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
+            <div class="card-image">
+              ${index < 3 ? '<span class="featured-tag">FEATURED</span>' : ''}
+              <img src="${imageUrl}" alt="${name}">
             </div>
           `;
         } else {
           // Create placeholder with icon if no image
-          const cardColors = ['#f3f4f6', '#e5e7eb', '#d1d5db', '#f0fdf4', '#f0f9ff', '#fef3c7'];
-          const colorIndex = index % cardColors.length;
-          const placeholderBg = cardColors[colorIndex];
-          
           cardImageHtml = `
-            <div class="card-image" style="background-color: ${placeholderBg}">
+            <div class="card-image">
+              ${index < 3 ? '<span class="featured-tag">FEATURED</span>' : ''}
               <i class="fas ${categoryIcon} category-icon"></i>
-              ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
             </div>
           `;
         }
@@ -3203,7 +2475,7 @@
           ${cardImageHtml}
           <div class="card-content">
             <div class="card-meta">
-              ${category ? `<span class="badge badge-category">${category}</span>` : ''}
+              ${category ? `<span class="badge">${category}</span>` : ''}
             </div>
             <h3 class="card-title">${name}</h3>
             <div class="card-details">
@@ -3230,17 +2502,6 @@
         loadingSpinner.classList.remove('hidden');
       } else {
         loadingSpinner.classList.add('hidden');
-      }
-    }
-    
-    // Show message when no results
-    function showNoResults(visible) {
-      if (visible) {
-        noResultsDiv.classList.remove('hidden');
-        experienceList.classList.add('hidden');
-      } else {
-        noResultsDiv.classList.add('hidden');
-        experienceList.classList.remove('hidden');
       }
     }
     
