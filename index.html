@@ -234,107 +234,163 @@
     function fetchExperiences() {
       showLoading(true);
       
-      // For demo purposes, we'll create sample data
-      setTimeout(() => {
-        const sampleData = {
-          records: [
-            {
-              id: '1',
-              fields: {
-                Name: 'Hollywood Sign Hike',
-                Description: 'Experience the iconic Hollywood Sign up close with this guided hike through Griffith Park.',
-                Category: 'Outdoor',
-                Location: 'Hollywood Hills',
-                'Audience Type': 'Active',
-                'Estimated Price': '25',
-                Duration: '2',
-                URL: 'https://example.com/hike'
-              }
-            },
-            {
-              id: '2',
-              fields: {
-                Name: 'LACMA Art Tour',
-                Description: 'Explore the extensive collection at the Los Angeles County Museum of Art with an expert guide.',
-                Category: 'Arts & Culture',
-                Location: 'Mid-Wilshire',
-                'Audience Type': 'Art Lovers',
-                'Estimated Price': '35',
-                Duration: '3',
-                URL: 'https://example.com/lacma'
-              }
-            },
-            {
-              id: '3',
-              fields: {
-                Name: 'Santa Monica Sunset Bike Tour',
-                Description: 'Cycle along the famous Santa Monica beach as the sun sets over the Pacific.',
-                Category: 'Outdoor',
-                Location: 'Santa Monica',
-                'Audience Type': 'Active',
-                'Estimated Price': '45',
-                Duration: '2',
-                URL: 'https://example.com/bike'
-              }
-            },
-            {
-              id: '4',
-              fields: {
-                Name: 'Michelin Star Dining Experience',
-                Description: 'Indulge in a multi-course tasting menu at one of LA\'s finest restaurants.',
-                Category: 'Food & Drink',
-                Location: 'Downtown LA',
-                'Audience Type': 'Foodies',
-                'Estimated Price': '250',
-                Duration: '3',
-                URL: 'https://example.com/dining'
-              }
-            },
-            {
-              id: '5',
-              fields: {
-                Name: 'Warner Bros. Studio Tour',
-                Description: 'Go behind the scenes of your favorite movies and TV shows with this exclusive studio tour.',
-                Category: 'Entertainment',
-                Location: 'Burbank',
-                'Audience Type': 'All Ages',
-                'Estimated Price': '75',
-                Duration: '3',
-                URL: 'https://example.com/studio'
-              }
-            },
-            {
-              id: '6',
-              fields: {
-                Name: 'Venice Beach Skateboarding Lesson',
-                Description: 'Learn to skateboard from the pros at the famous Venice Beach Skatepark.',
-                Category: 'Sport',
-                Location: 'Venice',
-                'Audience Type': 'Active',
-                'Estimated Price': '60',
-                Duration: '1',
-                URL: 'https://example.com/skate'
-              }
+      fetch('/.netlify/functions/get-experiences')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('✅ Data received:', data);
+          
+          if (!data.records || data.records.length === 0) {
+            showNoResults('No experiences found in the database.');
+            return;
+          }
+          
+          allRecords = data.records;
+          populateFilterOptions();
+          applyFilters();
+          
+          // Initial animation
+          animateElements();
+        })
+        .catch(error => {
+          console.error('❌ Error fetching experiences:', error);
+          showNoResults(`Error loading experiences. Please try again later.`);
+          
+          // Fallback to sample data for development/preview
+          if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('Loading sample data for development...');
+            loadSampleData();
+          }
+        })
+        .finally(() => {
+          showLoading(false);
+        });
+    }
+    
+    // Load sample data for development/preview purposes
+    function loadSampleData() {
+      const sampleData = {
+        records: [
+          {
+            id: '1',
+            fields: {
+              Name: 'Hollywood Sign Hike',
+              Description: 'Experience the iconic Hollywood Sign up close with this guided hike through Griffith Park.',
+              Category: 'Outdoor',
+              Location: 'Hollywood Hills',
+              'Audience Type': 'Active',
+              'Estimated Price': '25',
+              Duration: '2',
+              URL: 'https://example.com/hike',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
             }
-          ]
-        };
-        
-        console.log('✅ Data received:', sampleData);
-        
-        if (!sampleData.records || sampleData.records.length === 0) {
-          showNoResults('No experiences found in the database.');
-          return;
-        }
-        
-        allRecords = sampleData.records;
-        populateFilterOptions();
-        applyFilters();
-        
-        // Initial animation
-        animateElements();
-        
-        showLoading(false);
-      }, 1000);
+          },
+          {
+            id: '2',
+            fields: {
+              Name: 'LACMA Art Tour',
+              Description: 'Explore the extensive collection at the Los Angeles County Museum of Art with an expert guide.',
+              Category: 'Arts & Culture',
+              Location: 'Mid-Wilshire',
+              'Audience Type': 'Art Lovers',
+              'Estimated Price': '35',
+              Duration: '3',
+              URL: 'https://example.com/lacma'
+            }
+          },
+          {
+            id: '3',
+            fields: {
+              Name: 'Santa Monica Sunset Bike Tour',
+              Description: 'Cycle along the famous Santa Monica beach as the sun sets over the Pacific.',
+              Category: 'Outdoor',
+              Location: 'Santa Monica',
+              'Audience Type': 'Active',
+              'Estimated Price': '45',
+              Duration: '2',
+              URL: 'https://example.com/bike',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1530053969600-caed2596d242?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            id: '4',
+            fields: {
+              Name: 'Michelin Star Dining Experience',
+              Description: 'Indulge in a multi-course tasting menu at one of LA\'s finest restaurants.',
+              Category: 'Food & Drink',
+              Location: 'Downtown LA',
+              'Audience Type': 'Foodies',
+              'Estimated Price': '250',
+              Duration: '3',
+              URL: 'https://example.com/dining'
+            }
+          },
+          {
+            id: '5',
+            fields: {
+              Name: 'Warner Bros. Studio Tour',
+              Description: 'Go behind the scenes of your favorite movies and TV shows with this exclusive studio tour.',
+              Category: 'Entertainment',
+              Location: 'Burbank',
+              'Audience Type': 'All Ages',
+              'Estimated Price': '75',
+              Duration: '3',
+              URL: 'https://example.com/studio',
+              Photo: [
+                {
+                  thumbnails: {
+                    large: {
+                      url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&auto=format&fit=crop'
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            id: '6',
+            fields: {
+              Name: 'Venice Beach Skateboarding Lesson',
+              Description: 'Learn to skateboard from the pros at the famous Venice Beach Skatepark.',
+              Category: 'Sport',
+              Location: 'Venice',
+              'Audience Type': 'Active',
+              'Estimated Price': '60',
+              Duration: '1',
+              URL: 'https://example.com/skate'
+            }
+          }
+        ]
+      };
+      
+      console.log('✅ Sample data loaded:', sampleData);
+      
+      allRecords = sampleData.records;
+      populateFilterOptions();
+      applyFilters();
+      
+      // Initial animation
+      animateElements();
     }
     
     // Populate filter dropdowns with options from data
@@ -537,16 +593,18 @@
         const location = fields.Location || '';
         const audienceType = fields['Audience Type'] || '';
         const price = fields['Estimated Price'] 
-          ? `$${parseFloat(fields['Estimated Price']).toFixed(0)}` 
+          ? `${parseFloat(fields['Estimated Price']).toFixed(0)}` 
           : 'Price not available';
         const duration = fields.Duration 
           ? `${fields.Duration} ${parseInt(fields.Duration) === 1 ? 'hour' : 'hours'}` 
           : '';
         
-        // Create placeholder image (would be replaced with actual images in production)
-        const cardColors = ['#f3f4f6', '#e5e7eb', '#d1d5db', '#f0fdf4', '#f0f9ff', '#fef3c7'];
-        const colorIndex = index % cardColors.length;
-        const placeholderBg = cardColors[colorIndex];
+        // Get image URL if available
+        const imageUrl = fields.Photo && 
+                         fields.Photo.length > 0 && 
+                         fields.Photo[0].thumbnails
+          ? fields.Photo[0].thumbnails.large.url
+          : null;
         
         // Create card element
         const card = document.createElement('a');
@@ -563,12 +621,32 @@
         if (category === 'Entertainment') categoryIcon = 'fa-film';
         if (category === 'Sport') categoryIcon = 'fa-basketball';
         
+        // Create card image element
+        let cardImageHtml = '';
+        if (imageUrl) {
+          // Use actual image if available
+          cardImageHtml = `
+            <div class="card-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;">
+              ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
+            </div>
+          `;
+        } else {
+          // Create placeholder with icon if no image
+          const cardColors = ['#f3f4f6', '#e5e7eb', '#d1d5db', '#f0fdf4', '#f0f9ff', '#fef3c7'];
+          const colorIndex = index % cardColors.length;
+          const placeholderBg = cardColors[colorIndex];
+          
+          cardImageHtml = `
+            <div class="card-image" style="background-color: ${placeholderBg}">
+              <i class="fas ${categoryIcon} category-icon"></i>
+              ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
+            </div>
+          `;
+        }
+        
         // Build card HTML
         let cardHTML = `
-          <div class="card-image" style="background-color: ${placeholderBg}">
-            <i class="fas ${categoryIcon} category-icon"></i>
-            ${index < 3 ? '<span class="featured-tag">Featured</span>' : ''}
-          </div>
+          ${cardImageHtml}
           <div class="card-content">
             <div class="card-meta">
               ${category ? `<span class="badge badge-category">${category}</span>` : ''}
