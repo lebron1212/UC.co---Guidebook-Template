@@ -160,12 +160,14 @@
 </head>
 <body>
   <header class="fade-in">
-    <h1 class="section-heading">01 Welcome</h1>
-    <p class="main-text">Welcome to 123 Main Street</p>
-    <p class="sub-text">Let's curate your dream vacation in Los Angeles</p>
+    <div class="container">
+      <h1 class="section-heading">01 Welcome</h1>
+      <p class="main-text">Welcome to 123 Main Street</p>
+      <p class="sub-text">Let's curate your dream vacation in Los Angeles</p>
+    </div>
   </header>
   
-  <section id="search-controls" class="fade-in" style="padding: 1rem 1.5rem;">
+  <section id="search-controls" class="fade-in container">
     <div class="search-container">
       <input 
         type="text" 
@@ -236,12 +238,16 @@
   
   <div id="loading-spinner" class="loading-spinner"></div>
   
-  <main id="experience-list" class="fade-in">
-    <!-- Dynamic Experiences will be injected here -->
+  <main class="fade-in container">
+    <div id="experience-list">
+      <!-- Dynamic Experiences will be injected here -->
+    </div>
   </main>
   
   <footer class="fade-in">
-    <p class="footer-note">Powered by Unified Content</p>
+    <div class="container">
+      <p class="footer-note">Powered by Unified Content</p>
+    </div>
   </footer>
   
   <script>
