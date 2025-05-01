@@ -4,22 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elevated Luxury Experience</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <style>
     /* Core Variables */
     :root {
-      --black: #000000;
+      --kraft: #D4C2A8;
+      --deep-brown: #4A3728;
+      --light-kraft: #E7DFD0;
+      --cream: #F9F4E8;
+      --burgundy: #722F37;
+      --navy: #283447;
+      --black: #1A1714;
       --white: #FFFFFF;
-      --gold: #AC7A2A;
-      --gold-light: #C69C54;
-      --gold-dark: #8A6218;
       
       /* Typography */
-      --font-heading: 'Cormorant', serif;
-      --font-body: 'Montserrat', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-secondary: 'Libre Baskerville', serif;
       
       /* Spacing */
       --space-xs: 8px;
@@ -42,41 +44,56 @@
       padding: 0;
     }
 
-    html, body {
+    html {
       font-size: 16px;
+      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background-color: var(--black);
-      color: var(--white);
-      height: 100%;
-      overflow: hidden;
+      background-color: var(--cream);
+      color: var(--deep-brown);
     }
 
     body {
-      font-family: var(--font-body);
+      font-family: var(--font-mono);
       line-height: 1.6;
       letter-spacing: 0.02em;
+      overflow-x: hidden;
+      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
+      background-blend-mode: multiply;
+      background-size: 500px;
+      background-repeat: repeat;
+    }
+
+    /* Kraft Paper Texture Effect */
+    body:before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(249, 244, 232, 0.8);
+      z-index: -1;
     }
 
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-heading);
-      font-weight: 600;
+      font-family: var(--font-serif);
+      font-weight: 900;
       line-height: 1.1;
       margin-bottom: var(--space-md);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      color: var(--deep-brown);
     }
     
     h1 {
       font-size: clamp(3.5rem, 10vw, 7rem);
-      letter-spacing: 0.03em;
-      font-weight: 700;
+      letter-spacing: -0.02em;
     }
     
     h2 {
       font-size: clamp(2.5rem, 6vw, 4rem);
-      letter-spacing: 0.03em;
+      letter-spacing: -0.01em;
+      position: relative;
     }
     
     h3 {
@@ -88,49 +105,101 @@
     }
     
     p {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      letter-spacing: 0.02em;
+      font-family: var(--font-secondary);
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
       margin-bottom: var(--space-md);
       max-width: 760px;
       line-height: 1.8;
-      font-weight: 300;
+      color: var(--deep-brown);
     }
 
     .subtitle {
-      font-family: var(--font-body);
-      font-size: 0.875rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      color: var(--gold);
+      color: var(--burgundy);
       margin-bottom: var(--space-sm);
       font-weight: 500;
+      position: relative;
+      display: inline-block;
     }
 
-    /* Main Scroll Container */
-    .main-container {
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      position: relative;
+    .subtitle:after {
+      content: "";
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      background-color: var(--burgundy);
+      bottom: -4px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-medium);
+    }
+
+    .subtitle.visible:after {
+      transform: scaleX(1);
+    }
+
+    .number-indicator {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      color: var(--burgundy);
+      margin-right: var(--space-sm);
+    }
+
+    /* Layout */
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
     }
     
-    .scroll-container {
-      height: 100vh;
-      width: 100%;
+    section {
       position: relative;
+      padding: var(--space-xl) 0;
+      border-bottom: 1px solid rgba(74, 55, 40, 0.1);
       overflow: hidden;
     }
-
-    /* Sections */
-    section {
-      height: 100vh;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    
+    .grid {
+      display: grid;
+      gap: var(--space-md);
+    }
+    
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+    
+    .grid-4 {
+      grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 1024px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
 
     /* Header & Navigation */
@@ -140,19 +209,20 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(249, 244, 232, 0.9);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       height: 80px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid rgba(172, 122, 42, 0.3);
-      transition: all var(--transition-medium);
+      border-bottom: 1px solid var(--kraft);
+      transition: background-color var(--transition-medium),
+                  height var(--transition-medium);
     }
     
     .header.scrolled {
       height: 60px;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(249, 244, 232, 0.95);
     }
     
     .navbar {
@@ -160,15 +230,14 @@
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      padding: 0 var(--space-lg);
     }
     
     .logo {
-      font-family: var(--font-heading);
+      font-family: var(--font-serif);
       font-size: 1.25rem;
-      font-weight: 600;
+      font-weight: 900;
       letter-spacing: 0.05em;
-      color: var(--white);
+      color: var(--deep-brown);
       text-decoration: none;
       position: relative;
       overflow: hidden;
@@ -184,7 +253,7 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--burgundy);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
@@ -211,15 +280,15 @@
     }
     
     .nav-link {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: var(--white);
+      color: var(--deep-brown);
       text-decoration: none;
       padding: var(--space-xs) 0;
       position: relative;
-      font-weight: 500;
+      font-weight: 400;
       transition: color var(--transition-fast);
     }
     
@@ -230,14 +299,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--burgundy);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .nav-link:hover {
-      color: var(--gold);
+      color: var(--burgundy);
     }
     
     .nav-link:hover::after,
@@ -259,7 +328,7 @@
     .menu-line {
       width: 100%;
       height: 1px;
-      background-color: var(--white);
+      background-color: var(--deep-brown);
       display: block;
       position: absolute;
       left: 0;
@@ -269,7 +338,7 @@
     }
     
     .menu-button:hover .menu-line {
-      background-color: var(--gold);
+      background-color: var(--burgundy);
     }
     
     .menu-line:nth-child(1) {
@@ -287,7 +356,7 @@
     
     .menu-open .menu-line:nth-child(1) {
       transform: translateY(9px) rotate(45deg);
-      background-color: var(--gold);
+      background-color: var(--burgundy);
     }
     
     .menu-open .menu-line:nth-child(2) {
@@ -296,7 +365,7 @@
     
     .menu-open .menu-line:nth-child(3) {
       transform: translateY(-9px) rotate(-45deg);
-      background-color: var(--gold);
+      background-color: var(--burgundy);
     }
     
     .mobile-menu {
@@ -305,7 +374,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.98);
+      background-color: rgba(249, 244, 232, 0.98);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 999;
@@ -333,10 +402,10 @@
     }
     
     .mobile-nav-link {
-      font-family: var(--font-heading);
+      font-family: var(--font-serif);
       font-size: 2rem;
-      font-weight: 600;
-      color: var(--white);
+      font-weight: 900;
+      color: var(--deep-brown);
       text-decoration: none;
       position: relative;
       display: inline-block;
@@ -363,14 +432,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--burgundy);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .mobile-nav-link:hover {
-      color: var(--gold);
+      color: var(--burgundy);
     }
     
     .mobile-nav-link:hover::after {
@@ -378,221 +447,289 @@
       transform-origin: left;
     }
 
-    /* Content Layout */
-    .container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
+    /* Get Excited Section */
+    .get-excited-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 80px;
       position: relative;
-      z-index: 2;
-    }
-    
-    .section-header {
-      margin-bottom: var(--space-lg);
-      position: relative;
-    }
-    
-    .section-number {
-      font-family: var(--font-heading);
-      font-size: clamp(4rem, 15vw, 8rem);
-      color: rgba(172, 122, 42, 0.1);
-      position: absolute;
-      top: -100px;
-      left: -30px;
-      z-index: -1;
-      font-weight: 700;
-      line-height: 1;
-      opacity: 0;
-    }
-    
-    .section-title {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      letter-spacing: 0.05em;
-      margin-bottom: var(--space-md);
-      position: relative;
-      opacity: 0;
-      color: var(--white);
-    }
-    
-    .section-divider {
-      width: 0;
-      height: 2px;
-      background-color: var(--gold);
-      margin-bottom: var(--space-md);
-    }
-    
-    .section-description {
-      opacity: 0;
-      max-width: 700px;
-    }
-
-    /* Grid Layout */
-    .grid {
-      display: grid;
-      gap: var(--space-md);
-    }
-    
-    .grid-2 {
-      grid-template-columns: 1fr;
-    }
-    
-    .grid-3 {
-      grid-template-columns: 1fr;
-    }
-    
-    .grid-4 {
-      grid-template-columns: 1fr;
-    }
-    
-    @media (min-width: 768px) {
-      .grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (min-width: 992px) {
-      .grid-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      
-      .grid-4 {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* Home Section */
-    #home {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .home-content {
-      position: relative;
-      z-index: 2;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
-      text-align: center;
-    }
-    
-    .sun-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      overflow: hidden;
       z-index: 1;
-      width: 100%;
-      height: 100%;
-      opacity: 0.2;
     }
-    
-    .bracket {
-      display: inline-block;
-      font-size: clamp(4rem, 10vw, 8rem);
-      color: var(--white);
-      opacity: 0;
-    }
-    
-    .rotating-words {
-      display: inline-block;
-      position: relative;
-      text-align: center;
-      height: clamp(4rem, 10vw, 8rem);
-      vertical-align: top;
-      margin: 0 clamp(1rem, 2vw, 2rem);
-    }
-    
-    .rotating-word {
+
+    .get-excited-section:before {
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      margin: 0 auto;
-      color: var(--gold);
-      opacity: 0;
-      transform: translateY(50px);
-      font-size: clamp(4rem, 10vw, 8rem);
-      font-weight: 700;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/8.jpg");
+      background-size: cover;
+      opacity: 0.15;
+      z-index: -1;
     }
     
-    .welcome-text {
-      font-family: var(--font-body);
-      font-size: clamp(1rem, 1.5vw, 1.25rem);
-      letter-spacing: 0.2em;
+    .get-excited-container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .get-excited-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(114, 47, 55, 0.08), rgba(249, 244, 232, 0) 70%);
+      z-index: 1;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .get-excited-bg.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .get-excited-title {
+      font-size: clamp(3.5rem, 6.5vw, 6.5rem);
+      line-height: 0.9;
+      margin-bottom: var(--space-lg);
+      color: var(--deep-brown);
+      font-weight: 900;
       text-transform: uppercase;
-      margin: var(--space-lg) 0;
+      letter-spacing: -0.01em;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow: visible;
       opacity: 0;
-      color: var(--white);
+      transform: translateY(20px);
+      transition: opacity var(--transition-slow),
+                 transform var(--transition-slow);
+    }
+
+    .get-excited-title.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
-    .explore-button {
+    .get-excited-bracket {
       display: inline-block;
-      font-family: var(--font-body);
-      font-size: 0.875rem;
+      color: var(--deep-brown);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .get-excited-bracket.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .excited-text-wrapper {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      margin: 0 10px;
+      height: 1.1em;
+      vertical-align: bottom;
+    }
+    
+    .excited-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      color: var(--burgundy);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: textCycle 10s infinite;
+      display: block;
+    }
+    
+    .excited-text:nth-child(1) {
+      position: relative;
+      opacity: 1;
+      transform: translateY(0);
+      animation-delay: 0s;
+    }
+    
+    .excited-text:nth-child(2) {
+      animation-delay: 2.5s;
+    }
+    
+    .excited-text:nth-child(3) {
+      animation-delay: 5s;
+    }
+    
+    .excited-text:nth-child(4) {
+      animation-delay: 7.5s;
+    }
+    
+    @keyframes textCycle {
+      0%, 20%, 100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      25%, 45% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      50% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+    }
+    
+    .question-text {
+      font-family: var(--font-mono);
+      font-size: clamp(0.75rem, 1.5vw, 0.875rem);
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      color: var(--black);
-      background-color: var(--gold);
-      border: none;
-      padding: var(--space-sm) var(--space-lg);
+      margin-bottom: var(--space-lg);
+      font-weight: 300;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.3s;
+    }
+    
+    .question-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
       margin-top: var(--space-lg);
+    }
+    
+    .section-nav-item {
+      font-family: var(--font-mono);
+      font-weight: 400;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      background-color: transparent;
+      color: var(--deep-brown);
+      border: 1px solid var(--kraft);
+      padding: var(--space-sm) var(--space-md);
       cursor: pointer;
       transition: background-color var(--transition-medium),
-                  transform var(--transition-medium);
-      opacity: 0;
+                  color var(--transition-medium),
+                  border-color var(--transition-medium),
+                  transform var(--transition-medium),
+                  opacity var(--transition-slow);
       text-decoration: none;
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+      transition-delay: calc(0.4s + var(--index) * 0.1s);
       position: relative;
       overflow: hidden;
     }
     
-    .explore-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
-      transition: left 0.7s;
+    .section-nav-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     
-    .explore-button:hover {
-      background-color: var(--gold-light);
+    .section-nav-item:hover {
+      background-color: var(--burgundy);
+      border-color: var(--burgundy);
+      color: var(--cream);
       transform: translateY(-5px);
     }
-    
-    .explore-button:hover::before {
-      left: 100%;
+
+    .section-nav-item:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--burgundy);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-medium);
+      z-index: -1;
     }
 
-    /* Info Section */
-    #info {
-      background-color: var(--black);
+    .section-nav-item:hover:before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Quick Info Section */
+    .quick-info {
+      background-color: var(--light-kraft);
+      border-top: 1px solid var(--kraft);
+      border-bottom: 1px solid var(--kraft);
       position: relative;
     }
     
-    .info-grid-container {
-      opacity: 0;
+    .quick-info::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 50%, rgba(114, 47, 55, 0.05), rgba(249, 244, 232, 0) 70%);
+      z-index: 0;
     }
     
     .info-card {
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--gold);
+      background-color: rgba(255, 255, 255, 0.7);
       padding: var(--space-md);
+      border-left: 3px solid var(--burgundy);
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
       transition: transform var(--transition-medium),
                   box-shadow var(--transition-medium);
       position: relative;
       z-index: 1;
       overflow: hidden;
+      transform: translateY(50px);
       opacity: 0;
+      border-radius: 2px;
+    }
+
+    .info-card:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
+      background-size: cover;
+      opacity: 0.05;
+      z-index: -1;
+    }
+    
+    .info-card.visible {
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow),
+                  box-shadow var(--transition-medium);
+      transition-delay: calc(var(--index) * 0.1s);
+    }
+    
+    .info-card:hover {
+      transform: translateY(-10px) rotateZ(1deg);
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.1);
     }
     
     .info-card::before {
@@ -602,7 +739,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
+      background: linear-gradient(45deg, rgba(114, 47, 55, 0.03), rgba(249, 244, 232, 0) 70%);
       z-index: -1;
       opacity: 0;
       transition: opacity var(--transition-medium);
@@ -613,557 +750,336 @@
     }
     
     .info-icon {
-      color: var(--gold);
-      font-size: 2rem;
+      color: var(--burgundy);
+      font-size: 1.5rem;
       margin-bottom: var(--space-sm);
       transform: translateY(0);
       transition: transform var(--transition-medium);
     }
     
     .info-card:hover .info-icon {
-      transform: translateY(-5px);
+      transform: translateY(-5px) rotateZ(-5deg);
     }
     
     .info-content h3 {
-      font-family: var(--font-body);
-      font-size: 0.875rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       letter-spacing: 0.2em;
       margin-bottom: var(--space-xs);
-      color: var(--gold);
+      color: var(--burgundy);
       text-transform: uppercase;
-      font-weight: 600;
+      font-weight: 500;
+      position: relative;
+      display: inline-block;
+    }
+
+    .info-content h3:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: var(--burgundy);
+      bottom: -2px;
+      left: 0;
+      transform: scaleX(0.3);
+      transform-origin: left;
+      transition: transform var(--transition-medium);
+    }
+
+    .info-card:hover .info-content h3:after {
+      transform: scaleX(1);
     }
     
     .info-content p {
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       margin-bottom: var(--space-xs);
-      font-weight: 300;
-      color: var(--white);
+      font-weight: 400;
     }
 
-    /* Experiences Section */
-    #experiences {
-      background-color: var(--black);
+    /* Section Styles */
+    .section-header {
+      margin-bottom: var(--space-lg);
       position: relative;
     }
     
-    .experiences-grid {
+    .section-number {
+      font-family: var(--font-serif);
+      font-size: clamp(4rem, 15vw, 9rem);
+      color: rgba(114, 47, 55, 0.05);
+      position: absolute;
+      top: -80px;
+      left: -30px;
+      z-index: -1;
+      font-weight: 900;
+      line-height: 1;
       opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    .experience-card {
+    .section-number.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .section-title {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-md);
       position: relative;
-      height: 400px;
-      overflow: hidden;
       opacity: 0;
-    }
-    
-    .experience-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.7s ease;
-    }
-    
-    .experience-card:hover .experience-bg {
-      transform: scale(1.1);
-    }
-    
-    .experience-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.9) 20%,
-        rgba(0, 0, 0, 0.5) 50%,
-        rgba(0, 0, 0, 0.1)
-      );
-      padding: var(--space-md);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      transform: translateY(60%);
-      transition: transform 0.5s ease;
-    }
-    
-    .experience-card:hover .experience-overlay {
-      transform: translateY(0);
-    }
-    
-    .experience-title {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      color: var(--white);
-      margin-bottom: var(--space-sm);
-      position: relative;
-    }
-    
-    .experience-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--gold);
-    }
-    
-    .experience-content {
-      margin-top: var(--space-md);
-      font-size: 0.875rem;
-      color: var(--white);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: translateY(50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
       transition-delay: 0.1s;
+      text-transform: uppercase;
+      color: var(--deep-brown);
     }
     
-    .experience-card:hover .experience-content {
+    .section-title.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title:after {
+      content: "";
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background-color: var(--burgundy);
+      bottom: -10px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-slow);
+      transition-delay: 0.3s;
+    }
+
+    .section-title.visible:after {
+      transform: scaleX(1);
+    }
+    
+    .section-divider {
+      width: 0;
+      height: 2px;
+      background-color: var(--burgundy);
+      margin-bottom: var(--space-md);
+      transition: width var(--transition-slow);
+      transition-delay: 0.3s;
+    }
+    
+    .section-divider.visible {
+      width: 60px;
+    }
+    
+    .section-description {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.4s;
+    }
+    
+    .section-description.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Card Styles */
+    .card {
+      background-color: rgba(255, 255, 255, 0.7);
+      border-left: 3px solid var(--burgundy);
+      padding: var(--space-md);
+      height: 100%;
+      transition: transform var(--transition-slow),
+                  box-shadow var(--transition-medium),
+                  opacity var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(50px);
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+      border-radius: 2px;
+    }
+
+    .card:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
+      background-size: cover;
+      opacity: 0.05;
+      z-index: -1;
+    }
+    
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: calc(var(--index) * 0.1s);
+    }
+    
+    .card:hover {
+      transform: translateY(-15px) rotateZ(1deg);
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(114, 47, 55, 0.03), rgba(249, 244, 232, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .card:hover::before {
+      opacity: 1;
+    }
+    
+    .card-title {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: 1.25rem;
+      margin-bottom: var(--space-sm);
+      border-bottom: 1px solid rgba(74, 55, 40, 0.1);
+      padding-bottom: var(--space-sm);
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0;
+      color: var(--deep-brown);
+    }
+    
+    .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--burgundy);
+      transition: width var(--transition-medium);
+    }
+    
+    .card:hover .card-title::after {
+      width: 100%;
+    }
+    
+    .card-content {
+      font-family: var(--font-secondary);
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--deep-brown);
+    }
+    
+    /* Search & Filter */
+    .search-filter-container {
+      margin-bottom: var(--space-lg);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+      transition-delay: 0.5s;
+    }
+    
+    .search-filter-container.visible {
       opacity: 1;
       transform: translateY(0);
     }
     
-    .experience-detail {
+    .search-bar {
       display: flex;
-      margin-bottom: var(--space-xs);
+      margin-bottom: var(--space-md);
     }
     
-    .experience-label {
-      color: var(--gold);
-      font-weight: 500;
-      margin-right: var(--space-xs);
-      min-width: 80px;
+    .search-input {
+      flex: 1;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--kraft);
+      color: var(--deep-brown);
+      padding: var(--space-sm) var(--space-md);
+      font-family: var(--font-mono);
       font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      transition: border-color var(--transition-fast),
+                  background-color var(--transition-fast);
     }
     
-    .experience-value {
-      color: rgba(255, 255, 255, 0.8);
+    .search-input:focus {
+      outline: none;
+      border-color: var(--burgundy);
+      background-color: rgba(255, 255, 255, 0.8);
     }
     
-    .experience-button {
-      display: inline-block;
-      background-color: var(--gold);
-      color: var(--black);
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      padding: 8px 24px;
-      margin-top: var(--space-md);
+    .search-button {
+      background-color: var(--burgundy);
+      color: var(--cream);
       border: none;
+      padding: 0 var(--space-md);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      transition: background-color var(--transition-fast);
     }
     
-    .experience-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-      );
-      transition: left 0.7s;
+    .search-button:hover {
+      background-color: var(--deep-brown);
     }
     
-    .experience-button:hover {
-      background-color: var(--gold-light);
-      transform: translateY(-3px);
-    }
-    
-    .experience-button:hover::before {
-      left: 100%;
-    }
-
-    /* Guide Section */
-    #guide {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .guide-grid {
-      opacity: 0;
-    }
-    
-    .guide-feature {
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--gold);
-      padding: var(--space-lg);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-    }
-    
-    .guide-feature::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .guide-feature:hover::before {
-      opacity: 1;
-    }
-    
-    .guide-feature:hover {
-      transform: translateY(-10px);
-    }
-    
-    .guide-icon {
-      color: var(--gold);
-      font-size: 2.5rem;
-      margin-bottom: var(--space-md);
-      transition: transform 0.5s ease;
-    }
-    
-    .guide-feature:hover .guide-icon {
-      transform: translateY(-5px);
-    }
-    
-    .guide-title {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      color: var(--white);
-      margin-bottom: var(--space-md);
-      position: relative;
-    }
-    
-    .guide-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--gold);
-      transform: scaleX(1);
-      transform-origin: left;
-      transition: transform 0.5s ease;
-    }
-    
-    .guide-feature:hover .guide-title::after {
-      transform: scaleX(1.5);
-    }
-    
-    .guide-list {
-      list-style: none;
-    }
-    
-    .guide-item {
+    .filter-tags {
       display: flex;
-      margin-bottom: var(--space-sm);
-      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
     }
     
-    .guide-bullet {
-      color: var(--gold);
-      margin-right: var(--space-xs);
-    }
-    
-    .guide-text {
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    /* Tips Section */
-    #tips {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .tips-grid {
-      opacity: 0;
-    }
-    
-    .tip-card {
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--gold);
-      padding: var(--space-md);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-    
-    .tip-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .tip-card:hover::before {
-      opacity: 1;
-    }
-    
-    .tip-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
-    }
-    
-    .tip-title {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      color: var(--white);
-      margin-bottom: var(--space-md);
-      position: relative;
-    }
-    
-    .tip-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--gold);
-      transform: scaleX(1);
-      transform-origin: left;
-      transition: transform 0.5s ease;
-    }
-    
-    .tip-card:hover .tip-title::after {
-      transform: scaleX(1.5);
-    }
-    
-    .tip-place {
-      margin-bottom: var(--space-sm);
-      opacity: 0.8;
-      transition: opacity 0.3s ease;
-    }
-    
-    .tip-card:hover .tip-place {
-      opacity: 1;
-    }
-    
-    .tip-place-name {
-      font-family: var(--font-heading);
-      font-size: 1.125rem;
-      color: var(--gold);
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-    
-    .tip-place-desc {
-      font-size: 0.875rem;
-      color: var(--white);
-      line-height: 1.6;
-    }
-
-    /* Amenities Section */
-    #amenities {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .amenities-grid {
-      opacity: 0;
-    }
-    
-    .amenity-card {
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--gold);
-      padding: var(--space-md);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-    
-    .amenity-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .amenity-card:hover::before {
-      opacity: 1;
-    }
-    
-    .amenity-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
-    }
-    
-    .amenity-title {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      color: var(--white);
-      margin-bottom: var(--space-md);
-      position: relative;
-    }
-    
-    .amenity-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--gold);
-      transform: scaleX(1);
-      transform-origin: left;
-      transition: transform 0.5s ease;
-    }
-    
-    .amenity-card:hover .amenity-title::after {
-      transform: scaleX(1.5);
-    }
-    
-    .amenity-list {
-      list-style: none;
-    }
-    
-    .amenity-item {
-      display: flex;
-      margin-bottom: var(--space-sm);
-      align-items: flex-start;
-    }
-    
-    .amenity-bullet {
-      color: var(--gold);
-      margin-right: var(--space-xs);
-    }
-    
-    .amenity-text {
-      font-size: 0.875rem;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    /* Contact Section */
-    #contact {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .contact-grid {
-      opacity: 0;
-    }
-    
-    .contact-card {
-      background-color: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--gold);
-      padding: var(--space-md);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-    
-    .contact-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .contact-card:hover::before {
-      opacity: 1;
-    }
-    
-    .contact-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
-    }
-    
-    .contact-title {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      color: var(--white);
-      margin-bottom: var(--space-md);
-      position: relative;
-    }
-    
-    .contact-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 40px;
-      height: 2px;
-      background-color: var(--gold);
-      transform: scaleX(1);
-      transform-origin: left;
-      transition: transform 0.5s ease;
-    }
-    
-    .contact-card:hover .contact-title::after {
-      transform: scaleX(1.5);
-    }
-    
-    .contact-detail {
-      display: flex;
-      margin-bottom: var(--space-sm);
-      align-items: flex-start;
-    }
-    
-    .contact-label {
-      min-width: 100px;
-      color: var(--gold);
-      font-weight: 500;
-      font-size: 0.875rem;
-      text-transform: uppercase;
+    .filter-tag {
+      background-color: transparent;
+      border: 1px solid var(--kraft);
+      color: var(--deep-brown);
+      padding: 5px 15px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
       letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color var(--transition-fast),
+                  color var(--transition-fast),
+                  border-color var(--transition-fast);
     }
     
-    .contact-value {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 0.875rem;
+    .filter-tag:hover,
+    .filter-tag.active {
+      background-color: var(--burgundy);
+      color: var(--cream);
+      border-color: var(--burgundy);
     }
-
+    
     /* Footer */
     footer {
-      position: relative;
+      background-color: var(--light-kraft);
       padding: var(--space-lg) 0;
-      background-color: var(--black);
-      border-top: 1px solid var(--gold);
+      border-top: 1px solid var(--kraft);
+      position: relative;
       overflow: hidden;
+    }
+    
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 70% 30%, rgba(114, 47, 55, 0.05), rgba(249, 244, 232, 0) 70%);
+      z-index: 0;
     }
     
     .footer-content {
@@ -1183,12 +1099,12 @@
     }
     
     .footer-logo {
-      font-family: var(--font-heading);
-      font-weight: 600;
+      font-family: var(--font-serif);
+      font-weight: 900;
       font-size: 1.5rem;
-      letter-spacing: 0.05em;
+      letter-spacing: 0;
       text-transform: uppercase;
-      color: var(--white);
+      color: var(--deep-brown);
     }
     
     .footer-nav {
@@ -1198,11 +1114,11 @@
     }
     
     .footer-link {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: var(--white);
+      color: var(--deep-brown);
       text-decoration: none;
       transition: color var(--transition-fast);
       position: relative;
@@ -1216,14 +1132,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--gold);
+      background-color: var(--burgundy);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .footer-link:hover {
-      color: var(--gold);
+      color: var(--burgundy);
     }
     
     .footer-link:hover::after {
@@ -1232,1456 +1148,1521 @@
     }
     
     .copyright {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.6);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(74, 55, 40, 0.7);
       margin-top: var(--space-lg);
       text-align: center;
       position: relative;
       z-index: 1;
       letter-spacing: 0.1em;
     }
-
-    /* Progress Indicator */
-    .progress-indicator {
+    
+    /* Side Navigation */
+    .side-nav {
       position: fixed;
       top: 50%;
       right: 20px;
       transform: translateY(-50%);
-      display: flex;
+      display: none;
       flex-direction: column;
-      gap: 15px;
+      gap: var(--space-sm);
       z-index: 100;
     }
     
-    .progress-dot {
-      position: relative;
-      width: 16px;
-      height: 16px;
-      border: 1px solid var(--gold);
-      background-color: transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    @media (min-width: 992px) {
+      .side-nav {
+        display: flex;
+      }
     }
     
-    .progress-dot::before {
+    .side-nav-item {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--burgundy);
+      background-color: transparent;
+      border-radius: 0;
+      cursor: pointer;
+      transition: transform var(--transition-medium),
+                  background-color var(--transition-medium);
+      position: relative;
+    }
+    
+    .side-nav-item::before {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      width: 8px;
-      height: 8px;
-      background-color: var(--gold);
-      transition: transform 0.3s ease;
+      width: 4px;
+      height: 4px;
+      background-color: var(--burgundy);
+      transition: transform var(--transition-medium);
     }
     
-    .progress-dot:hover,
-    .progress-dot.active {
-      border-color: var(--gold-light);
+    .side-nav-item:hover,
+    .side-nav-item.active {
+      background-color: var(--burgundy);
+      transform: scale(1.2);
     }
     
-    .progress-dot:hover::before,
-    .progress-dot.active::before {
+    .side-nav-item:hover::before,
+    .side-nav-item.active::before {
       transform: translate(-50%, -50%) scale(1);
     }
     
-    .progress-label {
+    .side-nav-label {
       position: absolute;
-      right: 30px;
-      top: 0;
+      right: 25px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--light-kraft);
       padding: 5px 10px;
-      background-color: rgba(0, 0, 0, 0.8);
-      color: var(--white);
-      font-size: 0.75rem;
+      border-left: 1px solid var(--burgundy);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       white-space: nowrap;
-      border-left: 1px solid var(--gold);
-      transform: translateX(10px);
       opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      visibility: hidden;
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium),
+                  transform var(--transition-medium);
+      transform: translateX(10px) translateY(-50%);
+      color: var(--deep-brown);
     }
     
-    .progress-dot:hover .progress-label {
+    .side-nav-item:hover .side-nav-label {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) translateY(-50%);
+    }
+    
+    /* Animation Classes */
+    .animate-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .fade-in {
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+    }
+    
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+    
+    .slide-in-left.visible {
       opacity: 1;
       transform: translateX(0);
     }
     
-    /* Section Background */
-    .section-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.3;
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    .section-gradient {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(172, 122, 42, 0.2), rgba(0, 0, 0, 0.9) 70%);
-      z-index: 1;
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
     }
     
-    /* Animations for Progress */
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(to right, var(--gold-dark), var(--gold), var(--gold-light));
-      z-index: 1001;
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
     }
     
-    /* Sun Icon Animation */
-    .sun-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
-    .sun-center {
-      width: 40px;
-      height: 40px;
-      background-color: var(--gold);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    
-    .sun-ray {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 2px;
-      height: 0;
-      background-color: var(--gold);
-      transform-origin: center bottom;
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
     }
 
-    /* Preloader */
-    .preloader {
+    /* Stumptown-inspired stamp effect classes */
+    .stamped {
+      position: relative;
+      display: inline-block;
+    }
+
+    .stamped:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 1px dashed var(--burgundy);
+      top: 2px;
+      left: 2px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+
+    .stamped.visible:after {
+      opacity: 0.3;
+    }
+
+    /* Vintage stamp effect for cards */
+    .stamp-edge {
+      position: relative;
+    }
+
+    .stamp-edge:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath fill='%23722F37' fill-opacity='0.2' d='M0,0 L30,0 L30,30 L25,28 L22,30 L19,27 L16,29 L13,26 L10,28 L7,25 L4,27 L0,22 Z'/%3E%3C/svg%3E");
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+
+    .stamp-edge.visible:before {
+      opacity: 1;
+    }
+    
+    /* Progress Bar */
+    .progress-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background-color: var(--black);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .preloader-content {
-      text-align: center;
-    }
-    
-    .preloader-logo {
-      font-family: var(--font-heading);
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: var(--space-md);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    
-    .preloader-bar {
-      width: 200px;
-      height: 2px;
-      background-color: rgba(255, 255, 255, 0.1);
-      margin: 0 auto;
-      position: relative;
+      height: 3px;
+      background-color: transparent;
+      z-index: 1001;
       overflow: hidden;
     }
     
-    .preloader-progress {
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--kraft), var(--burgundy));
+      width: 0;
+      transition: width var(--transition-fast);
+    }
+    
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background-color: var(--cream);
+      border: 1px solid var(--burgundy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium),
+                  background-color var(--transition-fast),
+                  transform var(--transition-medium);
+    }
+    
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .back-to-top:hover {
+      background-color: var(--burgundy);
+      transform: translateY(-5px);
+    }
+    
+    .back-to-top i {
+      color: var(--deep-brown);
+      font-size: 1rem;
+      transition: transform var(--transition-medium), color var(--transition-medium);
+    }
+    
+    .back-to-top:hover i {
+      color: var(--cream);
+      transform: translateY(-3px);
+    }
+    
+    /* Additional Features */
+    .accent-text {
+      color: var(--burgundy);
+      font-weight: 700;
+    }
+    
+    .text-reveal {
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+    }
+    
+    .text-reveal-content {
+      display: block;
+      transform: translateY(100%);
+      transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    
+    .text-reveal.visible .text-reveal-content {
+      transform: translateY(0);
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--cream);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--kraft);
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--burgundy);
+    }
+    
+    /* Parallax Effect */
+    .parallax-bg {
       position: absolute;
       top: 0;
       left: 0;
-      width: 0;
+      width: 100%;
+      height: 120%;
+      background-size: cover;
+      background-position: center;
+      transform: translateY(0);
+      z-index: -1;
+    }
+
+    /* Apple-style parallax effects */
+    .parallax-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .parallax-element {
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform var(--transition-slow),
+                  opacity var(--transition-slow);
+    }
+
+    .parallax-element.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Pin elements for scroll storytelling */
+    .pin-wrap {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .pin-element {
+      position: relative;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity var(--transition-slow), 
+                 transform var(--transition-slow);
+    }
+
+    .pin-element.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Animated numbers feature */
+    .count-up {
+      display: inline-block;
+      font-weight: 700;
+      color: var(--burgundy);
+    }
+
+    /* Hand-drawn elements */
+    .hand-drawn {
+      position: relative;
+    }
+
+    .hand-drawn:after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 5'%3E%3Cpath fill='none' stroke='%23722F37' stroke-width='1' stroke-linecap='round' d='M0,2 Q25,5 50,2 T100,2'/%3E%3C/svg%3E");
+      background-size: 100px 5px;
+      background-repeat: repeat-x;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: opacity var(--transition-medium),
+                  transform var(--transition-medium);
+    }
+
+    .hand-drawn.visible:after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    /* Apple-style Floating Elements */
+    .float-element {
+      transform: translateY(0);
+      transition: transform 3s ease-in-out;
+      animation: floating 6s infinite ease-in-out;
+    }
+
+    @keyframes floating {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    /* Letter By Letter Text Animation */
+    .text-animation {
+      display: inline-block;
+      opacity: 0;
+    }
+
+    .text-animation span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-medium),
+                  transform var(--transition-medium);
+    }
+
+    .text-animation.visible span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered animation for list items */
+    .stagger-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity var(--transition-medium),
+                  transform var(--transition-medium);
+    }
+
+    .stagger-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Split screen reveal effect */
+    .split-reveal {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-left, .split-right {
+      opacity: 0;
+      transition: opacity var(--transition-slow),
+                  transform var(--transition-slow);
+    }
+
+    .split-left {
+      transform: translateX(-50px);
+    }
+
+    .split-right {
+      transform: translateX(50px);
+    }
+
+    .split-left.visible, .split-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Stumptown-inspired texture overlay */
+    .texture-overlay {
+      position: relative;
+    }
+
+    .texture-overlay:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
-      background-color: var(--gold);
-      transition: width 0.5s ease;
+      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/8.jpg");
+      background-size: 500px;
+      opacity: 0.03;
+      z-index: -1;
+      mix-blend-mode: multiply;
     }
   </style>
 </head>
 <body>
-  <!-- Preloader -->
-  <div class="preloader">
-    <div class="preloader-content">
-      <div class="preloader-logo">LUXURY PROPERTY</div>
-      <div class="preloader-bar">
-        <div class="preloader-progress" id="preloaderProgress"></div>
-      </div>
-    </div>
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
-
-  <!-- Scroll Progress -->
-  <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- Header -->
   <header class="header">
-    <nav class="navbar">
-      <a href="#home" class="logo">LUXURY PROPERTY</a>
-      
-      <ul class="nav-links">
-        <li><a href="#home" class="nav-link active">HOME</a></li>
-        <li><a href="#info" class="nav-link">INFO</a></li>
-        <li><a href="#experiences" class="nav-link">EXPERIENCES</a></li>
-        <li><a href="#guide" class="nav-link">HOUSE GUIDE</a></li>
-        <li><a href="#tips" class="nav-link">LOCAL TIPS</a></li>
-        <li><a href="#amenities" class="nav-link">AMENITIES</a></li>
-        <li><a href="#contact" class="nav-link">CONTACT</a></li>
-      </ul>
-      
-      <button class="menu-button" aria-label="Toggle menu">
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-        <span class="menu-line"></span>
-      </button>
-    </nav>
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo">LUXURY PROPERTY</a>
+        
+        <ul class="nav-links">
+          <li><a href="#get-excited" class="nav-link active">HOME</a></li>
+          <li><a href="#experiences" class="nav-link">EXPERIENCES</a></li>
+          <li><a href="#guide" class="nav-link">HOUSE GUIDE</a></li>
+          <li><a href="#tips" class="nav-link">LOCAL TIPS</a></li>
+          <li><a href="#amenities" class="nav-link">AMENITIES</a></li>
+          <li><a href="#contact" class="nav-link">CONTACT</a></li>
+        </ul>
+        
+        <button class="menu-button" aria-label="Toggle menu">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
+      </nav>
+    </div>
   </header>
   
   <!-- Mobile Menu -->
   <div class="mobile-menu">
     <ul class="mobile-nav-links">
-      <li><a href="#home" class="mobile-nav-link" style="--index: 0;">HOME</a></li>
-      <li><a href="#info" class="mobile-nav-link" style="--index: 1;">INFO</a></li>
-      <li><a href="#experiences" class="mobile-nav-link" style="--index: 2;">EXPERIENCES</a></li>
-      <li><a href="#guide" class="mobile-nav-link" style="--index: 3;">HOUSE GUIDE</a></li>
-      <li><a href="#tips" class="mobile-nav-link" style="--index: 4;">LOCAL TIPS</a></li>
-      <li><a href="#amenities" class="mobile-nav-link" style="--index: 5;">AMENITIES</a></li>
-      <li><a href="#contact" class="mobile-nav-link" style="--index: 6;">CONTACT</a></li>
+      <li><a href="#get-excited" class="mobile-nav-link" style="--index: 0;">HOME</a></li>
+      <li><a href="#experiences" class="mobile-nav-link" style="--index: 1;">EXPERIENCES</a></li>
+      <li><a href="#guide" class="mobile-nav-link" style="--index: 2;">HOUSE GUIDE</a></li>
+      <li><a href="#tips" class="mobile-nav-link" style="--index: 3;">LOCAL TIPS</a></li>
+      <li><a href="#amenities" class="mobile-nav-link" style="--index: 4;">AMENITIES</a></li>
+      <li><a href="#contact" class="mobile-nav-link" style="--index: 5;">CONTACT</a></li>
     </ul>
   </div>
   
-  <!-- Progress Indicator -->
-  <div class="progress-indicator">
-    <a href="#home" class="progress-dot active">
-      <span class="progress-label">HOME</span>
+  <!-- Side Navigation -->
+  <nav class="side-nav">
+    <a href="#get-excited" class="side-nav-item active">
+      <span class="side-nav-label">HOME</span>
     </a>
-    <a href="#info" class="progress-dot">
-      <span class="progress-label">INFO</span>
+    <a href="#info" class="side-nav-item">
+      <span class="side-nav-label">INFO</span>
     </a>
-    <a href="#experiences" class="progress-dot">
-      <span class="progress-label">EXPERIENCES</span>
+    <a href="#experiences" class="side-nav-item">
+      <span class="side-nav-label">EXPERIENCES</span>
     </a>
-    <a href="#guide" class="progress-dot">
-      <span class="progress-label">HOUSE GUIDE</span>
+    <a href="#guide" class="side-nav-item">
+      <span class="side-nav-label">HOUSE GUIDE</span>
     </a>
-    <a href="#tips" class="progress-dot">
-      <span class="progress-label">LOCAL TIPS</span>
+    <a href="#tips" class="side-nav-item">
+      <span class="side-nav-label">LOCAL TIPS</span>
     </a>
-    <a href="#amenities" class="progress-dot">
-      <span class="progress-label">AMENITIES</span>
+    <a href="#amenities" class="side-nav-item">
+      <span class="side-nav-label">AMENITIES</span>
     </a>
-    <a href="#contact" class="progress-dot">
-      <span class="progress-label">CONTACT</span>
+    <a href="#contact" class="side-nav-item">
+      <span class="side-nav-label">CONTACT</span>
     </a>
+  </nav>
+  
+  <!-- Get Excited Section -->
+  <section class="get-excited-section parallax-section" id="get-excited">
+    <div class="get-excited-bg"></div>
+    <div class="container get-excited-container">
+      <h1 class="get-excited-title text-animation">
+        <span class="get-excited-bracket">[</span>
+        <span class="excited-text-wrapper">
+          <span class="excited-text">EXCITED</span>
+          <span class="excited-text">INSPIRED</span>
+          <span class="excited-text">LUXURIOUS</span>
+          <span class="excited-text">PAMPERED</span>
+        </span>
+        <span class="get-excited-bracket">]</span>
+      </h1>
+      <p class="question-text stamped">WELCOME TO YOUR LUXURY EXPERIENCE</p>
+      
+      <div class="section-navigation">
+        <a href="#experiences" class="section-nav-item" style="--index: 0;">EXPERIENCES</a>
+        <a href="#guide" class="section-nav-item" style="--index: 1;">HOUSE GUIDE</a>
+        <a href="#tips" class="section-nav-item" style="--index: 2;">LOCAL TIPS</a>
+        <a href="#amenities" class="section-nav-item" style="--index: 3;">AMENITIES</a>
+        <a href="#contact" class="section-nav-item" style="--index: 4;">CONTACT</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Quick Info Section -->
+  <section class="quick-info parallax-section" id="info">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number stamped">01</div>
+        <p class="subtitle animate-in">ESSENTIAL INFORMATION</p>
+        <h2 class="section-title animate-in hand-drawn">QUICK INFO</h2>
+      </div>
+      
+      <div class="grid grid-4">
+        <div class="info-card stamp-edge" style="--index: 0;">
+          <div class="info-icon float-element">
+            <i class="fas fa-wifi"></i>
+          </div>
+          <div class="info-content">
+            <h3>WIFI</h3>
+            <p>Network: Guest_Network</p>
+            <p>Password: sunshine2025</p>
+          </div>
+        </div>
+        
+        <div class="info-card stamp-edge" style="--index: 1;">
+          <div class="info-icon float-element">
+            <i class="fas fa-key"></i>
+          </div>
+          <div class="info-content">
+            <h3>ACCESS</h3>
+            <p>Door code: 2580</p>
+            <p>Check-in: After 3 PM</p>
+            <p>Check-out: Before 11 AM</p>
+          </div>
+        </div>
+        
+        <div class="info-card stamp-edge" style="--index: 2;">
+          <div class="info-icon float-element">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="info-content">
+            <h3>CONTACT</h3>
+            <p>Host: (123) 456-7890</p>
+            <p>Emergency: 911</p>
+          </div>
+        </div>
+        
+        <div class="info-card stamp-edge" style="--index: 3;">
+          <div class="info-icon float-element">
+            <i class="fas fa-car"></i>
+          </div>
+          <div class="info-content">
+            <h3>PARKING</h3>
+            <p>Use space #42 in the garage</p>
+            <p>Gate code: 3791</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Experiences Section -->
+  <section class="experiences parallax-section" id="experiences">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number stamped">02</div>
+        <p class="subtitle animate-in">CURATED FOR YOU</p>
+        <h2 class="section-title animate-in hand-drawn">EXPERIENCES</h2>
+        <p class="section-description animate-in">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
+      </div>
+      
+      <!-- Search & Filter -->
+      <div class="search-filter-container animate-in">
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="Search experiences..." id="experienceSearch">
+          <button class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="filter-tags">
+          <button class="filter-tag active" data-filter="all">All</button>
+          <button class="filter-tag" data-filter="adventure">Adventure</button>
+          <button class="filter-tag" data-filter="culinary">Culinary</button>
+          <button class="filter-tag" data-filter="cultural">Cultural</button>
+          <button class="filter-tag" data-filter="wellness">Wellness</button>
+        </div>
+      </div>
+      
+      <div class="grid grid-3" id="experiencesGrid">
+        <div class="card parallax-element" style="--index: 0;" data-category="adventure">
+          <h3 class="card-title">PRIVATE YACHT TOUR</h3>
+          <div class="card-content">
+            <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
+            <p><span class="accent-text">Duration:</span> 4 hours</p>
+            <p><span class="accent-text">Price:</span> $750 per group</p>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 1;" data-category="culinary">
+          <h3 class="card-title">CHEF'S TABLE DINNER</h3>
+          <div class="card-content">
+            <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
+            <p><span class="accent-text">Duration:</span> 3 hours</p>
+            <p><span class="accent-text">Price:</span> $350 per person</p>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 2;" data-category="cultural">
+          <h3 class="card-title">PRIVATE ART GALLERY TOUR</h3>
+          <div class="card-content">
+            <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
+            <p><span class="accent-text">Duration:</span> 2 hours</p>
+            <p><span class="accent-text">Price:</span> $200 per person</p>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 3;" data-category="wellness">
+          <h3 class="card-title">MOUNTAINTOP YOGA</h3>
+          <div class="card-content">
+            <p>Private helicopter transport to a scenic mountaintop for a guided sunrise yoga session followed by champagne breakfast.</p>
+            <p><span class="accent-text">Duration:</span> 4 hours</p>
+            <p><span class="accent-text">Price:</span> $500 per person</p>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 4;" data-category="adventure">
+          <h3 class="card-title">DESERT STARGAZING</h3>
+          <div class="card-content">
+            <p>Chauffeured journey into the desert with an astronomer guide, high-powered telescopes, and premium picnic dinner.</p>
+            <p><span class="accent-text">Duration:</span> 5 hours</p>
+            <p><span class="accent-text">Price:</span> $375 per person</p>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 5;" data-category="culinary">
+          <h3 class="card-title">PRIVATE WINE TASTING</h3>
+          <div class="card-content">
+            <p>Exclusive cellar tour and tasting of rare vintages with a master sommelier in a historic vineyard estate.</p>
+            <p><span class="accent-text">Duration:</span> 3 hours</p>
+            <p><span class="accent-text">Price:</span> $250 per person</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Guide Section -->
+  <section class="guide parallax-section" id="guide">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number stamped">03</div>
+        <p class="subtitle animate-in">STAY INFORMATION</p>
+        <h2 class="section-title animate-in hand-drawn">HOUSE GUIDE</h2>
+        <p class="section-description animate-in">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
+      </div>
+      
+      <div class="grid grid-3">
+        <div class="card split-left" style="--index: 0;">
+          <h3 class="card-title">CHECKING IN & OUT</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Check-in time: After 3:00 PM</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Self check-in with keypad (code: 2580)</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Check-out time: Before 11:00 AM</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Personal concierge available 24/7</li>
+              <li class="stagger-item" style="--stagger: 4;">• Housekeeping service included daily</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card" style="--index: 1;">
+          <h3 class="card-title">HOUSE FEATURES</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Smart home system controls lighting, climate, music</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Heated infinity pool with panoramic views</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Private screening room with 4K projector</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Private spa with sauna and steam room</li>
+              <li class="stagger-item" style="--stagger: 4;">• Wine cellar with curated selection</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card split-right" style="--index: 2;">
+          <h3 class="card-title">PRIVATE SERVICES</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Private chef available upon request</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• In-home massage and spa treatments</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Chauffeur service with luxury vehicles</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Personal shopping assistance</li>
+              <li class="stagger-item" style="--stagger: 4;">• Yacht and helicopter bookings</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Tips Section -->
+  <section class="tips parallax-section" id="tips">
+    <div class="container">
+      <div class="section-header pin-wrap">
+        <div class="section-number stamped">04</div>
+        <p class="subtitle animate-in">INSIDER KNOWLEDGE</p>
+        <h2 class="section-title animate-in hand-drawn">LOCAL TIPS</h2>
+        <p class="section-description animate-in">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
+      </div>
+      
+      <div class="grid grid-2">
+        <div class="card pin-element" style="--index: 0;">
+          <h3 class="card-title">EXCLUSIVE DINING</h3>
+          <div class="card-content">
+            <div style="margin-bottom: var(--space-sm);">
+              <p style="font-weight: 500; margin-bottom: 4px;">LA MAISON DORÉE</p>
+              <p style="margin-bottom: var(--space-xs);">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
+            </div>
+            <div style="margin-bottom: var(--space-sm);">
+              <p style="font-weight: 500; margin-bottom: 4px;">OCEAN & VINE</p>
+              <p style="margin-bottom: var(--space-xs);">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
+            </div>
+            <div>
+              <p style="font-weight: 500; margin-bottom: 4px;">THE GARDEN ROOM</p>
+              <p>Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card pin-element" style="--index: 1;">
+          <h3 class="card-title">HIDDEN TREASURES</h3>
+          <div class="card-content">
+            <div style="margin-bottom: var(--space-sm);">
+              <p style="font-weight: 500; margin-bottom: 4px;">PRIVATE BEACH COVE</p>
+              <p style="margin-bottom: var(--space-xs);">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
+            </div>
+            <div style="margin-bottom: var(--space-sm);">
+              <p style="font-weight: 500; margin-bottom: 4px;">ARTISAN ATELIER</p>
+              <p style="margin-bottom: var(--space-xs);">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
+            </div>
+            <div>
+              <p style="font-weight: 500; margin-bottom: 4px;">THE CURATOR'S GALLERY</p>
+              <p>Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Amenities Section -->
+  <section class="amenities parallax-section" id="amenities">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number stamped">05</div>
+        <p class="subtitle animate-in">FOR YOUR PLEASURE</p>
+        <h2 class="section-title animate-in hand-drawn">AMENITIES</h2>
+        <p class="section-description animate-in">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
+      </div>
+      
+      <div class="grid grid-3">
+        <div class="card parallax-element" style="--index: 0;">
+          <h3 class="card-title">CULINARY</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Full chef's kitchen with premium appliances</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Wine refrigerator stocked with curated selection</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Gourmet coffee and espresso bar</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Crystal glassware and fine china</li>
+              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Refrigerator pre-stocked with essentials</li>
+              <li class="stagger-item" style="--stagger: 5;">• Private chef available on request</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 1;">
+          <h3 class="card-title">BEDROOM & SPA</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Custom king-size mattress with Italian linens</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Pillow menu with 8 luxury options</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Marble bathroom with heated floors</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Soaking tub with panoramic views</li>
+              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Premium bath amenities by Diptyque</li>
+              <li class="stagger-item" style="--stagger: 5;">• In-room massage services available</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="card parallax-element" style="--index: 2;">
+          <h3 class="card-title">TECHNOLOGY</h3>
+          <div class="card-content">
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Ultra-high-speed WiFi throughout</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• 85" OLED Smart TV with surround sound</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• All premium streaming services included</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Smart home controls via tablet or voice</li>
+              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Private cinema room with leather recliners</li>
+              <li class="stagger-item" style="--stagger: 5;">• Ambient sound system throughout property</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section -->
+  <section class="contact parallax-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-number stamped">06</div>
+        <p class="subtitle animate-in">AT YOUR SERVICE</p>
+        <h2 class="section-title animate-in hand-drawn">PERSONAL CONCIERGE</h2>
+        <p class="section-description animate-in">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
+      </div>
+      
+      <div class="grid grid-2">
+        <div class="card split-left" style="--index: 0;">
+          <h3 class="card-title">YOUR PERSONAL TEAM</h3>
+          <div class="card-content">
+            <p>Our team of hospitality experts is entirely at your disposal throughout your stay.</p>
+            <p><span class="accent-text">Concierge:</span> (123) 456-7890 (Available 24/7)</p>
+            <p><span class="accent-text">Private Chef:</span> (123) 456-7891</p>
+            <p><span class="accent-text">Chauffeur:</span> (123) 456-7892</p>
+            <p><span class="accent-text">Wellness Expert:</span> (123) 456-7893</p>
+            <p><span class="accent-text">Email:</span> concierge@luxuryproperty.com</p>
+          </div>
+        </div>
+        
+        <div class="card split-right" style="--index: 1;">
+          <h3 class="card-title">ADDITIONAL SERVICES</h3>
+          <div class="card-content">
+            <p>Simply contact your concierge to arrange any of these premium services:</p>
+            <ul style="list-style: none; padding: 0;">
+              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Private yacht or helicopter charter</li>
+              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• VIP restaurant reservations</li>
+              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• After-hours shopping at luxury boutiques</li>
+              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Priority access to exclusive events</li>
+              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• In-home spa and wellness treatments</li>
+              <li class="stagger-item" style="--stagger: 5;">• Custom itinerary planning for your stay</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">LUXURY PROPERTY</div>
+        
+        <div class="footer-nav">
+          <a href="#get-excited" class="footer-link">HOME</a>
+          <a href="#experiences" class="footer-link">EXPERIENCES</a>
+          <a href="#guide" class="footer-link">HOUSE GUIDE</a>
+          <a href="#tips" class="footer-link">LOCAL TIPS</a>
+          <a href="#amenities" class="footer-link">AMENITIES</a>
+          <a href="#contact" class="footer-link">CONTACT</a>
+        </div>
+      </div>
+      
+      <p class="copyright">© 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.</p>
+    </div>
+  </footer>
+  
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
   </div>
   
-  <!-- Main Content -->
-  <div class="main-container">
-    <div class="scroll-container" id="scrollContainer">
-      <!-- Home Section -->
-      <section id="home" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="sun-container" id="sunContainer"></div>
-        <div class="home-content">
-          <h1>
-            <span class="bracket" id="leftBracket">[</span>
-            <div class="rotating-words" id="rotatingWords">
-              <span class="rotating-word">LUXURY</span>
-              <span class="rotating-word">EXCLUSIVE</span>
-              <span class="rotating-word">ELEVATED</span>
-              <span class="rotating-word">PREMIER</span>
-            </div>
-            <span class="bracket" id="rightBracket">]</span>
-          </h1>
-          <p class="welcome-text" id="welcomeText">WELCOME TO YOUR LUXURY EXPERIENCE</p>
-          <a href="#info" class="explore-button" id="exploreButton">EXPLORE</a>
-        </div>
-      </section>
-      
-      <!-- Info Section -->
-      <section id="info" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="infoNumber">01</div>
-            <p class="subtitle" id="infoSubtitle">ESSENTIAL INFORMATION</p>
-            <h2 class="section-title" id="infoTitle">QUICK INFO</h2>
-            <div class="section-divider" id="infoDivider"></div>
-            <p class="section-description" id="infoDescription">Everything you need for a seamless luxury experience at your fingertips.</p>
-          </div>
-          
-          <div class="grid grid-4 info-grid-container" id="infoGrid">
-            <div class="info-card" id="infoCard1">
-              <div class="info-icon">
-                <i class="fas fa-wifi"></i>
-              </div>
-              <div class="info-content">
-                <h3>WIFI</h3>
-                <p>Network: Guest_Network</p>
-                <p>Password: sunshine2025</p>
-              </div>
-            </div>
-            
-            <div class="info-card" id="infoCard2">
-              <div class="info-icon">
-                <i class="fas fa-key"></i>
-              </div>
-              <div class="info-content">
-                <h3>ACCESS</h3>
-                <p>Door code: 2580</p>
-                <p>Check-in: After 3 PM</p>
-                <p>Check-out: Before 11 AM</p>
-              </div>
-            </div>
-            
-            <div class="info-card" id="infoCard3">
-              <div class="info-icon">
-                <i class="fas fa-phone"></i>
-              </div>
-              <div class="info-content">
-                <h3>CONTACT</h3>
-                <p>Host: (123) 456-7890</p>
-                <p>Emergency: 911</p>
-              </div>
-            </div>
-            
-            <div class="info-card" id="infoCard4">
-              <div class="info-icon">
-                <i class="fas fa-car"></i>
-              </div>
-              <div class="info-content">
-                <h3>PARKING</h3>
-                <p>Use space #42 in the garage</p>
-                <p>Gate code: 3791</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Experiences Section -->
-      <section id="experiences" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="experienceNumber">02</div>
-            <p class="subtitle" id="experienceSubtitle">CURATED FOR YOU</p>
-            <h2 class="section-title" id="experienceTitle">EXPERIENCES</h2>
-            <div class="section-divider" id="experienceDivider"></div>
-            <p class="section-description" id="experienceDescription">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
-          </div>
-          
-          <div class="grid grid-3 experiences-grid" id="experiencesGrid">
-            <div class="experience-card" id="experienceCard1">
-              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
-              <div class="experience-overlay">
-                <h3 class="experience-title">PRIVATE YACHT TOUR</h3>
-                <div class="experience-content">
-                  <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
-                  <div class="experience-detail">
-                    <span class="experience-label">Duration:</span>
-                    <span class="experience-value">4 hours</span>
-                  </div>
-                  <div class="experience-detail">
-                    <span class="experience-label">Price:</span>
-                    <span class="experience-value">$750 per group</span>
-                  </div>
-                  <button class="experience-button">RESERVE</button>
-                </div>
-              </div>
-            </div>
-            
-            <div class="experience-card" id="experienceCard2">
-              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
-              <div class="experience-overlay">
-                <h3 class="experience-title">CHEF'S TABLE DINNER</h3>
-                <div class="experience-content">
-                  <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
-                  <div class="experience-detail">
-                    <span class="experience-label">Duration:</span>
-                    <span class="experience-value">3 hours</span>
-                  </div>
-                  <div class="experience-detail">
-                    <span class="experience-label">Price:</span>
-                    <span class="experience-value">$350 per person</span>
-                  </div>
-                  <button class="experience-button">RESERVE</button>
-                </div>
-              </div>
-            </div>
-            
-            <div class="experience-card" id="experienceCard3">
-              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
-              <div class="experience-overlay">
-                <h3 class="experience-title">PRIVATE ART GALLERY</h3>
-                <div class="experience-content">
-                  <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
-                  <div class="experience-detail">
-                    <span class="experience-label">Duration:</span>
-                    <span class="experience-value">2 hours</span>
-                  </div>
-                  <div class="experience-detail">
-                    <span class="experience-label">Price:</span>
-                    <span class="experience-value">$200 per person</span>
-                  </div>
-                  <button class="experience-button">RESERVE</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Guide Section -->
-      <section id="guide" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="guideNumber">03</div>
-            <p class="subtitle" id="guideSubtitle">STAY INFORMATION</p>
-            <h2 class="section-title" id="guideTitle">HOUSE GUIDE</h2>
-            <div class="section-divider" id="guideDivider"></div>
-            <p class="section-description" id="guideDescription">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
-          </div>
-          
-          <div class="grid grid-3 guide-grid" id="guideGrid">
-            <div class="guide-feature" id="guideFeature1">
-              <div class="guide-icon">
-                <i class="fas fa-home"></i>
-              </div>
-              <h3 class="guide-title">CHECKING IN & OUT</h3>
-              <ul class="guide-list">
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Check-in time: After 3:00 PM</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Self check-in with keypad (code: 2580)</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Check-out time: Before 11:00 AM</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Personal concierge available 24/7</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Housekeeping service included daily</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div class="guide-feature" id="guideFeature2">
-              <div class="guide-icon">
-                <i class="fas fa-gem"></i>
-              </div>
-              <h3 class="guide-title">HOUSE FEATURES</h3>
-              <ul class="guide-list">
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Smart home system controls lighting, climate, music</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Heated infinity pool with panoramic views</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Private screening room with 4K projector</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Private spa with sauna and steam room</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Wine cellar with curated selection</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div class="guide-feature" id="guideFeature3">
-              <div class="guide-icon">
-                <i class="fas fa-concierge-bell"></i>
-              </div>
-              <h3 class="guide-title">PRIVATE SERVICES</h3>
-              <ul class="guide-list">
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Private chef available upon request</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">In-home massage and spa treatments</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Chauffeur service with luxury vehicles</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Personal shopping assistance</span>
-                </li>
-                <li class="guide-item">
-                  <span class="guide-bullet">•</span>
-                  <span class="guide-text">Yacht and helicopter bookings</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-     <!-- Tips Section -->
-<section id="tips" class="section">
-  <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-  <div class="section-gradient"></div>
-  <div class="container">
-    <div class="section-header">
-      <div class="section-number" id="tipsNumber">04</div>
-      <p class="subtitle" id="tipsSubtitle">INSIDER KNOWLEDGE</p>
-      <h2 class="section-title" id="tipsTitle">LOCAL TIPS</h2>
-      <div class="section-divider" id="tipsDivider"></div>
-      <p class="section-description" id="tipsDescription">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
-    </div>
-    
-    <div class="grid grid-2 tips-grid" id="tipsGrid">
-      <div class="tip-card" id="tipCard1">
-        <h3 class="tip-title">EXCLUSIVE DINING</h3>
-        <div class="tip-place">
-          <p class="tip-place-name">LA MAISON DORÉE</p>
-          <p class="tip-place-desc">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
-        </div>
-        <div class="tip-place">
-          <p class="tip-place-name">OCEAN & VINE</p>
-          <p class="tip-place-desc">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
-        </div>
-        <div class="tip-place">
-          <p class="tip-place-name">THE GARDEN ROOM</p>
-          <p class="tip-place-desc">Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
-        </div>
-      </div>
-      
-      <div class="tip-card" id="tipCard2">
-        <h3 class="tip-title">HIDDEN TREASURES</h3>
-        <div class="tip-place">
-          <p class="tip-place-name">PRIVATE BEACH COVE</p>
-          <p class="tip-place-desc">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
-        </div>
-        <div class="tip-place">
-          <p class="tip-place-name">ARTISAN ATELIER</p>
-          <p class="tip-place-desc">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
-        </div>
-        <div class="tip-place">
-          <p class="tip-place-name">THE CURATOR'S GALLERY</p>
-          <p class="tip-place-desc">Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-      
-      <!-- Amenities Section -->
-      <section id="amenities" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="amenitiesNumber">05</div>
-            <p class="subtitle" id="amenitiesSubtitle">FOR YOUR PLEASURE</p>
-            <h2 class="section-title" id="amenitiesTitle">AMENITIES</h2>
-            <div class="section-divider" id="amenitiesDivider"></div>
-            <p class="section-description" id="amenitiesDescription">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
-          </div>
-          
-          <div class="grid grid-3 amenities-grid" id="amenitiesGrid">
-            <div class="amenity-card" id="amenityCard1">
-              <h3 class="amenity-title">CULINARY</h3>
-              <ul class="amenity-list">
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Full chef's kitchen with premium appliances</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Wine refrigerator stocked with curated selection</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Gourmet coffee and espresso bar</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Crystal glassware and fine china</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Refrigerator pre-stocked with essentials</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Private chef available on request</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div class="amenity-card" id="amenityCard2">
-              <h3 class="amenity-title">BEDROOM & SPA</h3>
-              <ul class="amenity-list">
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Custom king-size mattress with Italian linens</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Pillow menu with 8 luxury options</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Marble bathroom with heated floors</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Soaking tub with panoramic views</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Premium bath amenities by Diptyque</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">In-room massage services available</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div class="amenity-card" id="amenityCard3">
-              <h3 class="amenity-title">TECHNOLOGY</h3>
-              <ul class="amenity-list">
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Ultra-high-speed WiFi throughout</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">85" OLED Smart TV with surround sound</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">All premium streaming services included</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Smart home controls via tablet or voice</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Private cinema room with leather recliners</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Ambient sound system throughout property</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Contact Section -->
-      <section id="contact" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="contactNumber">06</div>
-            <p class="subtitle" id="contactSubtitle">AT YOUR SERVICE</p>
-            <h2 class="section-title" id="contactTitle">PERSONAL CONCIERGE</h2>
-            <div class="section-divider" id="contactDivider"></div>
-            <p class="section-description" id="contactDescription">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
-          </div>
-          
-          <div class="grid grid-2 contact-grid" id="contactGrid">
-            <div class="contact-card" id="contactCard1">
-              <h3 class="contact-title">YOUR PERSONAL TEAM</h3>
-              <div class="contact-detail">
-                <span class="contact-label">Concierge:</span>
-                <span class="contact-value">(123) 456-7890 (Available 24/7)</span>
-              </div>
-              <div class="contact-detail">
-                <span class="contact-label">Private Chef:</span>
-                <span class="contact-value">(123) 456-7891</span>
-              </div>
-              <div class="contact-detail">
-                <span class="contact-label">Chauffeur:</span>
-                <span class="contact-value">(123) 456-7892</span>
-              </div>
-              <div class="contact-detail">
-                <span class="contact-label">Wellness:</span>
-                <span class="contact-value">(123) 456-7893</span>
-              </div>
-              <div class="contact-detail">
-                <span class="contact-label">Email:</span>
-                <span class="contact-value">concierge@luxuryproperty.com</span>
-              </div>
-            </div>
-            
-            <div class="contact-card" id="contactCard2">
-              <h3 class="contact-title">ADDITIONAL SERVICES</h3>
-              <ul class="amenity-list">
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Private yacht or helicopter charter</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">VIP restaurant reservations</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">After-hours shopping at luxury boutiques</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Priority access to exclusive events</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">In-home spa and wellness treatments</span>
-                </li>
-                <li class="amenity-item">
-                  <span class="amenity-bullet">•</span>
-                  <span class="amenity-text">Custom itinerary planning for your stay</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Footer -->
-      <footer>
-        <div class="container">
-          <div class="footer-content">
-            <div class="footer-logo">LUXURY PROPERTY</div>
-            
-            <div class="footer-nav">
-              <a href="#home" class="footer-link">HOME</a>
-              <a href="#info" class="footer-link">INFO</a>
-              <a href="#experiences" class="footer-link">EXPERIENCES</a>
-              <a href="#guide" class="footer-link">HOUSE GUIDE</a>
-              <a href="#tips" class="footer-link">LOCAL TIPS</a>
-              <a href="#amenities" class="footer-link">AMENITIES</a>
-              <a href="#contact" class="footer-link">CONTACT</a>
-            </div>
-          </div>
-          
-          <p class="copyright">© 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.</p>
-        </div>
-      </footer>
-    </div>
-  </div>
+  <!-- JavaScript -->
   <script>
-    // Wait for DOM to be loaded before initializing
     document.addEventListener('DOMContentLoaded', () => {
-      // Simulate loading progress
-      simulateLoading();
+      // Initialize all animations and effects
+      initializeWebsite();
     });
     
-    // Simulate loading progress with failsafe
-    function simulateLoading() {
-      const progressBar = document.getElementById('preloaderProgress');
-      let width = 0;
-      
-      // Force complete loading after 3 seconds as a failsafe
-      setTimeout(() => {
-        completeLoading();
-      }, 3000);
-      
-      const interval = setInterval(() => {
-        if (width >= 100) {
-          clearInterval(interval);
-          completeLoading();
-        } else {
-          width += 5;
-          progressBar.style.width = width + '%';
-        }
-      }, 100);
-      
-      // Function to complete loading and show content
-      function completeLoading() {
-        const preloader = document.querySelector('.preloader');
-        if (preloader) {
-          preloader.style.opacity = '0';
-          preloader.style.transition = 'opacity 0.5s';
-          
-          setTimeout(() => {
-            preloader.style.display = 'none';
-            // Initialize the website after preloader is hidden
-            initializeWebsite();
-          }, 500);
-        } else {
-          // If preloader element doesn't exist, initialize anyway
-          initializeWebsite();
-        }
-      }
-    }
-    
-    // Initialize the website
     function initializeWebsite() {
-      console.log("Website initialized");
+      // Initialize homepage dynamic elements
+      initHomepage();
       
-      // Initialize GSAP ScrollTrigger if available
-      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-      }
-      
-      // Initialize home screen animations
-      initHomeAnimation();
-      
-      // Initialize scroll handling
-      initScrollHandling();
+      // Initialize scroll animations
+      initScrollAnimations();
       
       // Initialize navigation
       initNavigation();
       
-      // Initialize section animations
-      initSectionAnimations();
+      // Initialize progress bar
+      initProgressBar();
       
-      // Create sun icon animations throughout the site
-      createSunIconAnimations();
+      // Initialize back to top button
+      initBackToTop();
+      
+      // Initialize experiences search and filter
+      initExperiencesFilter();
+
+      // Initialize letter by letter animation
+      initLetterAnimation();
+
+      // Initialize staggered animations
+      initStaggeredAnimations();
     }
     
-    // Initialize home screen animations
-    function initHomeAnimation() {
-      // Create sun icon
-      createHomeSunIcon();
+    // Homepage animations
+    function initHomepage() {
+      // Show background radial gradient
+      setTimeout(() => {
+        document.querySelector('.get-excited-bg').classList.add('visible');
+      }, 300);
       
-      // Animate brackets
-      gsap.to('#leftBracket', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.5
-      });
+      // Show title with animation
+      setTimeout(() => {
+        document.querySelector('.get-excited-title').classList.add('visible');
+        
+        // Show title brackets with staggered delay
+        document.querySelectorAll('.get-excited-bracket').forEach((el, index) => {
+          setTimeout(() => {
+            el.classList.add('visible');
+          }, index * 400);
+        });
+      }, 500);
       
-      gsap.to('#rightBracket', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.7
-      });
+      // Show the question text
+      setTimeout(() => {
+        document.querySelector('.question-text').classList.add('visible');
+      }, 1300);
       
-      // Initialize rotating words
-      initRotatingWords();
-      
-      // Animate welcome text
-      gsap.to('#welcomeText', {
-        opacity: 1,
-        duration: 1,
-        delay: 1.5
-      });
-      
-      // Animate explore button
-      gsap.to('#exploreButton', {
-        opacity: 1,
-        duration: 1,
-        delay: 1.8
-      });
+      // Show navigation buttons with stagger
+      setTimeout(() => {
+        document.querySelectorAll('.section-nav-item').forEach(el => {
+          el.classList.add('visible');
+        });
+      }, 1500);
     }
     
-    // Create sun icon in home section
-    function createHomeSunIcon() {
-      const container = document.getElementById('sunContainer');
-      const sunIcon = document.createElement('div');
-      sunIcon.className = 'sun-icon';
+    // Letter by letter animation
+    function initLetterAnimation() {
+      const textElements = document.querySelectorAll('.text-animation');
       
-      // Create center of sun
-      const sunCenter = document.createElement('div');
-      sunCenter.className = 'sun-center';
-      sunIcon.appendChild(sunCenter);
-      
-      // Create rays
-      const numberOfRays = 24;
-      for (let i = 0; i < numberOfRays; i++) {
-        const ray = document.createElement('div');
-        ray.className = 'sun-ray';
+      textElements.forEach(element => {
+        const text = element.textContent;
+        element.textContent = '';
         
-        // Position and rotate ray
-        const angle = (i * 360) / numberOfRays;
-        ray.style.transform = `rotate(${angle}deg)`;
-        
-        // Set ray thickness (alternate between thick and thin)
-        ray.style.width = i % 2 === 0 ? '2px' : '1px';
-        
-        // Add ray to sun icon
-        sunIcon.appendChild(ray);
-      }
-      
-      // Add sun icon to container
-      container.appendChild(sunIcon);
-      
-      // Animate the sun center
-      gsap.to('.sun-center', {
-        scale: 1.5,
-        duration: 1.5,
-        repeat: 1,
-        yoyo: true,
-        ease: 'power2.inOut',
-        onComplete: () => {
-          // Animate rays after center animation
-          document.querySelectorAll('.sun-ray').forEach((ray, index) => {
-            gsap.to(ray, {
-              height: 100,
-              duration: 1.8,
-              delay: index * 0.04,
-              ease: 'power3.out'
-            });
-          });
+        // Create spans for each letter
+        for (let i = 0; i < text.length; i++) {
+          const span = document.createElement('span');
+          span.textContent = text[i];
+          span.style.transitionDelay = `${i * 0.03}s`;
+          element.appendChild(span);
         }
       });
     }
-    
-    // Initialize rotating words animation
-    function initRotatingWords() {
-      const words = document.querySelectorAll('.rotating-word');
-      let currentIndex = 0;
+
+    // Staggered animations
+    function initStaggeredAnimations() {
+      const staggerItems = document.querySelectorAll('.stagger-item');
       
-      // Show first word
-      gsap.to(words[0], {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 1
+      staggerItems.forEach(item => {
+        const staggerIndex = item.style.getPropertyValue('--stagger') || 0;
+        item.style.transitionDelay = `${staggerIndex * 0.1}s`;
       });
-      
-      // Set interval to rotate words
-      setInterval(() => {
-        // Hide current word
-        gsap.to(words[currentIndex], {
-          opacity: 0,
-          y: -50,
-          duration: 0.8,
-          ease: 'power2.in'
-        });
-        
-        // Update index
-        currentIndex = (currentIndex + 1) % words.length;
-        
-        // Show next word
-        gsap.to(words[currentIndex], {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.3,
-          ease: 'power2.out'
-        });
-      }, 3000);
     }
     
-    // Initialize scroll handling
-    function initScrollHandling() {
-      // Create scroll progress indicator
-      const scrollProgress = document.getElementById('scrollProgress');
+    // Scroll animations with Apple-style parallax effects
+    function initScrollAnimations() {
+      // Options for the IntersectionObserver
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
       
-      // Update scroll progress on scroll
-      window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrollPercentage = (scrollTop / scrollHeight) * 100;
-        
-        scrollProgress.style.width = scrollPercentage + '%';
-      });
-      
-      // Initialize snap scrolling if ScrollTrigger is available
-      if (typeof ScrollTrigger !== 'undefined') {
-        initSnapScrolling();
-      } else {
-        // Fallback for normal scrolling
-        document.body.style.overflow = 'auto';
-        document.querySelector('.scroll-container').style.overflow = 'auto';
-        
-        // Add scroll event listener to update active section
-        window.addEventListener('scroll', () => {
-          const scrollPosition = window.scrollY + window.innerHeight / 2;
-          
-          // Get all sections
-          const sections = document.querySelectorAll('section');
-          
-          // Find current section
-          sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionBottom = sectionTop + section.offsetHeight;
+      // Handle intersection for general elements
+      const handleIntersect = (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
             
-            if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
-              updateActiveNavigation(section.id);
+            // For staggered items, add visible class to children
+            if (entry.target.querySelectorAll('.stagger-item').length > 0) {
+              entry.target.querySelectorAll('.stagger-item').forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.add('visible');
+                }, index * 100);
+              });
             }
-          });
+            
+            observer.unobserve(entry.target); // Stop observing once visible
+          }
         });
-      }
-    }
-    
-    // Initialize snap scrolling
-    function initSnapScrolling() {
-      const sections = document.querySelectorAll('.section');
+      };
       
-      // Create GSAP ScrollTrigger for each section if available
-      if (typeof ScrollTrigger !== 'undefined') {
-        sections.forEach(section => {
-          // Pin sections for fixed height view
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top top',
-            end: 'bottom top',
-            pin: true,
-            pinSpacing: false
-          });
-          
-          // Add animation to reveal section content when in view
-          ScrollTrigger.create({
-            trigger: section,
-            start: 'top center',
-            end: 'center center',
-            onEnter: () => {
-              // Update active navigation
-              updateActiveNavigation(section.id);
-              
-              // Begin section animations
-              animateSection(section.id);
-            }
-          });
+      // Create observers for different element types
+      const generalObserver = new IntersectionObserver(handleIntersect, observerOptions);
+      
+      // Special observer for parallax elements
+      const parallaxObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
         });
-      } else {
-        // Fallback to basic scrolling
-        document.body.style.overflow = 'auto';
-        document.querySelector('.scroll-container').style.overflow = 'auto';
-      }
+      }, {
+        threshold: 0.1,
+        rootMargin: '-10% 0px -10% 0px'
+      });
+
+      // Special observer for pinned elements
+      const pinObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          } else {
+            //entry.target.classList.remove('visible');
+          }
+        });
+      }, {
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+        rootMargin: '-20% 0px -20% 0px'
+      });
+      
+      // Observer for stamped elements
+      const stampObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.5
+      });
+      
+      // Observer for hand-drawn elements
+      const handDrawnObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.5
+      });
+      
+      // Observe section elements
+      document.querySelectorAll('.section-number, .subtitle, .section-title, .section-description, .search-filter-container').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe cards and info cards
+      document.querySelectorAll('.card, .info-card').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe parallax elements
+      document.querySelectorAll('.parallax-element').forEach(el => {
+        parallaxObserver.observe(el);
+      });
+      
+      // Observe pinned elements
+      document.querySelectorAll('.pin-element').forEach(el => {
+        pinObserver.observe(el);
+      });
+      
+      // Observe split elements
+      document.querySelectorAll('.split-left, .split-right').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe stamped elements
+      document.querySelectorAll('.stamped').forEach(el => {
+        stampObserver.observe(el);
+      });
+      
+      // Observe hand-drawn elements
+      document.querySelectorAll('.hand-drawn').forEach(el => {
+        handDrawnObserver.observe(el);
+      });
+      
+      // Observe text animation elements
+      document.querySelectorAll('.text-animation').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe letter by letter elements
+      document.querySelectorAll('.letter-by-letter').forEach(el => {
+        generalObserver.observe(el);
+      });
+      
+      // Observe other animate-in elements
+      document.querySelectorAll('.animate-in:not(.visible)').forEach(el => {
+        generalObserver.observe(el);
+      });
     }
     
-    // Initialize navigation
+    // Navigation
     function initNavigation() {
       const header = document.querySelector('.header');
       const menuButton = document.querySelector('.menu-button');
       const mobileMenu = document.querySelector('.mobile-menu');
-      const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link, .progress-dot');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+      const sideNavItems = document.querySelectorAll('.side-nav-item');
       
-      // Handle scroll for header state
+      // Shrink header on scroll with smooth transition
+      let lastScrollY = 0;
+      
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 50) {
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
         }
+        
+        // Hide/show header on scroll direction
+        if (currentScrollY > lastScrollY && currentScrollY > 300) {
+          header.style.transform = 'translateY(-100%)';
+        } else {
+          header.style.transform = 'translateY(0)';
+        }
+        
+        lastScrollY = currentScrollY;
       });
       
-      // Toggle mobile menu
+      // Toggle mobile menu with animation
       menuButton.addEventListener('click', () => {
         menuButton.classList.toggle('menu-open');
         mobileMenu.classList.toggle('open');
+        
+        if (mobileMenu.classList.contains('open')) {
+          document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        } else {
+          document.body.style.overflow = ''; // Re-enable scrolling
+        }
       });
       
-      // Handle nav link clicks
-      navLinks.forEach(link => {
-        link.addEventListener('click', e => {
+      // Handle navigation link clicks with smooth scrolling
+      [...navLinks, ...mobileNavLinks, ...sideNavItems].forEach(link => {
+        link.addEventListener('click', (e) => {
           e.preventDefault();
           
           // Close mobile menu if open
           menuButton.classList.remove('menu-open');
           mobileMenu.classList.remove('open');
+          document.body.style.overflow = '';
           
           // Get target section
-          const targetId = link.getAttribute('href').substring(1);
-          const targetSection = document.getElementById(targetId);
+          const targetId = link.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
           
-          // Scroll to section
           if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+            // Calculate offset considering header height
+            const headerHeight = header.offsetHeight;
+            const offsetTop = targetSection.offsetTop - headerHeight;
             
-            // Update active navigation
-            updateActiveNavigation(targetId);
+            // Smooth scroll to section
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
           }
         });
       });
-    }
-    
-    // Update active navigation links
-    function updateActiveNavigation(sectionId) {
-      // Update main navigation
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-          link.classList.add('active');
-        }
-      });
       
-      // Update progress dots
-      document.querySelectorAll('.progress-dot').forEach(dot => {
-        dot.classList.remove('active');
-        if (dot.getAttribute('href') === `#${sectionId}`) {
-          dot.classList.add('active');
-        }
-      });
-    }
-    
-    // Initialize section animations
-    function initSectionAnimations() {
-      // Create initial observers for section animations
-      const sections = ['info', 'experiences', 'guide', 'tips', 'amenities', 'contact'];
-      
-      sections.forEach(sectionId => {
-        // Create observer for each section
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                // Start section animation when in view
-                animateSection(sectionId);
-                // Stop observing after animation
-                observer.unobserve(entry.target);
+      // Update active nav link on scroll
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + header.offsetHeight + 50;
+        
+        // Get all sections
+        const sections = document.querySelectorAll('section[id]');
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionBottom = sectionTop + sectionHeight;
+          const sectionId = section.getAttribute('id');
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            // Update main navigation
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
               }
             });
-          },
-          { threshold: 0.2 }
-        );
-        
-        // Observe section
-        const section = document.getElementById(sectionId);
-        if (section) {
-          observer.observe(section);
-        }
-      });
-    }
-    
-    // Animate section based on id
-    function animateSection(sectionId) {
-      // Check if GSAP is available
-      if (typeof gsap === 'undefined') {
-        console.warn('GSAP not available, skipping animations');
-        return;
-      }
-      
-      // Animation for all sections
-      gsap.to(`#${sectionId}Number`, {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        duration: 1,
-        ease: 'power2.out'
-      });
-      
-      gsap.to(`#${sectionId}Subtitle`, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.2,
-        ease: 'power2.out'
-      });
-      
-      gsap.to(`#${sectionId}Title`, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.3,
-        ease: 'power2.out'
-      });
-      
-      gsap.to(`#${sectionId}Divider`, {
-        width: 120,
-        duration: 1.5,
-        delay: 0.4,
-        ease: 'power2.out'
-      });
-      
-      gsap.to(`#${sectionId}Description`, {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.5,
-        ease: 'power2.out'
-      });
-      
-      // Specific animations for each section
-      switch (sectionId) {
-        case 'info':
-          animateInfoSection();
-          break;
-        case 'experiences':
-          animateExperiencesSection();
-          break;
-        case 'guide':
-          animateGuideSection();
-          break;
-        case 'tips':
-          animateTipsSection();
-          break;
-        case 'amenities':
-          animateAmenitiesSection();
-          break;
-        case 'contact':
-          animateContactSection();
-          break;
-      }
-    }
-    
-    // Animate Info Section
-    function animateInfoSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#infoGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for cards
-      gsap.to('.info-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Animate Experiences Section
-    function animateExperiencesSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#experiencesGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for experience cards
-      gsap.to('.experience-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Animate Guide Section
-    function animateGuideSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#guideGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for guide features
-      gsap.to('.guide-feature', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Animate Tips Section
-    function animateTipsSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#tipsGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for tip cards
-      gsap.to('.tip-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Animate Amenities Section
-    function animateAmenitiesSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#amenitiesGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for amenity cards
-      gsap.to('.amenity-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Animate Contact Section
-    function animateContactSection() {
-      if (typeof gsap === 'undefined') return;
-      
-      // Fade in grid container
-      gsap.to('#contactGrid', {
-        opacity: 1,
-        duration: 1,
-        delay: 0.6,
-        ease: 'power2.out'
-      });
-      
-      // Staggered animation for contact cards
-      gsap.to('.contact-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 0.8,
-        ease: 'power2.out'
-      });
-    }
-    
-    // Create sun icon animations throughout the site
-    function createSunIconAnimations() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-      
-      // Create smaller sun icons for each section
-      const sections = document.querySelectorAll('.section:not(#home)');
-      
-      sections.forEach(section => {
-        const container = document.createElement('div');
-        container.className = 'sun-container';
-        container.style.opacity = '0.05';
-        
-        const sunIcon = document.createElement('div');
-        sunIcon.className = 'sun-icon';
-        
-        // Create center of sun
-        const sunCenter = document.createElement('div');
-        sunCenter.className = 'sun-center';
-        sunCenter.style.width = '20px';
-        sunCenter.style.height = '20px';
-        sunIcon.appendChild(sunCenter);
-        
-        // Create rays (fewer than main sun)
-        const numberOfRays = 12;
-        for (let i = 0; i < numberOfRays; i++) {
-          const ray = document.createElement('div');
-          ray.className = 'sun-ray';
-          
-          // Position and rotate ray
-          const angle = (i * 360) / numberOfRays;
-          ray.style.transform = `rotate(${angle}deg)`;
-          ray.style.width = '1px';
-          
-          // Add ray to sun icon
-          sunIcon.appendChild(ray);
-        }
-        
-        // Add sun icon to container
-        container.appendChild(sunIcon);
-        
-        // Position the sun randomly in the section
-        const randomX = Math.random() * 80 + 10; // Between 10% and 90%
-        const randomY = Math.random() * 80 + 10; // Between 10% and 90%
-        
-        container.style.position = 'absolute';
-        container.style.top = `${randomY}%`;
-        container.style.left = `${randomX}%`;
-        container.style.transform = 'translate(-50%, -50%)';
-        
-        // Add to section
-        section.appendChild(container);
-        
-        // Create animation for this sun
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'top bottom',
-          end: 'bottom top',
-          onEnter: () => {
-            // Animate sun when section is entered
-            gsap.to(container, {
-              opacity: 0.1,
-              duration: 1
-            });
             
-            // Animate rays
-            const rays = container.querySelectorAll('.sun-ray');
-            gsap.to(rays, {
-              height: 50,
-              duration: 1.5,
-              stagger: 0.05,
-              ease: 'power2.out'
-            });
-          },
-          onLeave: () => {
-            // Hide sun when section is left
-            gsap.to(container, {
-              opacity: 0,
-              duration: 1
-            });
-          },
-          onEnterBack: () => {
-            // Show sun when scrolling back up
-            gsap.to(container, {
-              opacity: 0.1,
-              duration: 1
-            });
-          },
-          onLeaveBack: () => {
-            // Hide sun when scrolling further up
-            gsap.to(container, {
-              opacity: 0,
-              duration: 1
+            // Update side navigation
+            sideNavItems.forEach(item => {
+              item.classList.remove('active');
+              if (item.getAttribute('href') === `#${sectionId}`) {
+                item.classList.add('active');
+              }
             });
           }
         });
       });
     }
+    
+    // Progress bar
+    function initProgressBar() {
+      const progressBar = document.getElementById('progressBar');
+      
+      window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = (scrolled / windowHeight) * 100;
+        
+        progressBar.style.width = progress + '%';
+      });
+    }
+    
+    // Back to top button
+    function initBackToTop() {
+      const backToTopButton = document.getElementById('back-to-top');
+      
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTopButton.classList.add('visible');
+        } else {
+          backToTopButton.classList.remove('visible');
+        }
+      });
+      
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Experiences search and filter functionality
+    function initExperiencesFilter() {
+      const searchInput = document.getElementById('experienceSearch');
+      const filterTags = document.querySelectorAll('.filter-tag');
+      const experienceCards = document.querySelectorAll('#experiencesGrid .card');
+      
+      // Search functionality
+      searchInput.addEventListener('input', filterExperiences);
+      
+      // Filter tag functionality
+      filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          // Update active state
+          filterTags.forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          
+          // Filter experiences
+          filterExperiences();
+        });
+      });
+      
+      function filterExperiences() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const activeFilter = document.querySelector('.filter-tag.active').getAttribute('data-filter');
+        
+        experienceCards.forEach(card => {
+          const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+          const cardContent = card.querySelector('.card-content').textContent.toLowerCase();
+          const cardCategory = card.getAttribute('data-category');
+          
+          const matchesSearch = cardTitle.includes(searchTerm) || cardContent.includes(searchTerm);
+          const matchesFilter = activeFilter === 'all' || cardCategory === activeFilter;
+          
+          if (matchesSearch && matchesFilter) {
+            card.style.display = '';
+            
+            // Add a slight delay for the animation
+            setTimeout(() => {
+              card.classList.add('visible');
+            }, 100);
+          } else {
+            card.classList.remove('visible');
+            
+            // Remove the card after animation completes
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 300);
+          }
+        });
+      }
+    }
+    
+    // Apple-style parallax effect on scroll with dynamic speeds
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY;
+      
+      // Parallax for section background elements
+      document.querySelectorAll('.parallax-section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate how much of the section is visible
+        const visiblePct = calculateVisiblePercentage(section, windowHeight, scrollPosition);
+        
+        if (visiblePct > 0) {
+          // Create parallax effect for section elements
+          const sectionNumber = section.querySelector('.section-number');
+          if (sectionNumber) {
+            sectionNumber.style.transform = `translateY(${visiblePct * 30}px)`;
+          }
+          
+          // Add effects to other elements in the section
+          const parallaxElements = section.querySelectorAll('.parallax-element');
+          if (parallaxElements.length > 0) {
+            parallaxElements.forEach((el, index) => {
+              const speed = 0.05 + (index * 0.01);
+              const yOffset = (scrollPosition - sectionTop) * speed;
+              el.style.transform = `translateY(${yOffset}px)`;
+            });
+          }
+        }
+        
+        // Pin elements when section is in view
+        const pinElements = section.querySelectorAll('.pin-element');
+        if (pinElements.length > 0) {
+          const inView = scrollPosition > sectionTop - windowHeight / 2 && 
+                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
+          
+          if (inView) {
+            pinElements.forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add('visible');
+              }, index * 200);
+            });
+          }
+        }
+        
+        // Animate staggered items when section is in view
+        const staggerItems = section.querySelectorAll('.stagger-item');
+        if (staggerItems.length > 0) {
+          const inView = scrollPosition > sectionTop - windowHeight / 1.5 && 
+                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
+          
+          if (inView) {
+            staggerItems.forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add('visible');
+              }, index * 100);
+            });
+          }
+        }
+        
+        // Animate split elements
+        const splitElements = section.querySelectorAll('.split-left, .split-right');
+        if (splitElements.length > 0) {
+          const inView = scrollPosition > sectionTop - windowHeight / 1.2 && 
+                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
+          
+          if (inView) {
+            splitElements.forEach((el) => {
+              el.classList.add('visible');
+            });
+          }
+        }
+      });
+    });
+    
+    // Calculate how much of an element is visible in the viewport
+    function calculateVisiblePercentage(element, windowHeight, scrollY) {
+      const rect = element.getBoundingClientRect();
+      const elemTop = rect.top + scrollY;
+      const elemBottom = elemTop + rect.height;
+      
+      // Element is above viewport
+      if (elemBottom < scrollY) {
+        return 0;
+      }
+      
+      // Element is below viewport
+      if (elemTop > scrollY + windowHeight) {
+        return 0;
+      }
+      
+      // Element is partially visible
+      let visibleTop = Math.max(elemTop, scrollY);
+      let visibleBottom = Math.min(elemBottom, scrollY + windowHeight);
+      let visibleHeight = visibleBottom - visibleTop;
+      
+      return visibleHeight / rect.height;
+    }
+    
+    // Initialize floating animations
+    function initFloatingElements() {
+      const floatElements = document.querySelectorAll('.float-element');
+      
+      floatElements.forEach((el, index) => {
+        // Offset each element's animation
+        el.style.animationDelay = `${index * 0.5}s`;
+      });
+    }
+    
+    // Initialize counting animations
+    function initCountUpElements() {
+      const countUpElements = document.querySelectorAll('.count-up');
+      
+      const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+      };
+      
+      const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute('data-target'), 10);
+            const duration = parseInt(el.getAttribute('data-duration') || 2000, 10);
+            
+            let start = 0;
+            const increment = target / (duration / 16);
+            const startTime = performance.now();
+            
+            function updateCount(timestamp) {
+              const elapsed = timestamp - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              
+              // Use easing function for smoother animation
+              const easedProgress = 1 - Math.pow(1 - progress, 3);
+              const currentCount = Math.floor(easedProgress * target);
+              
+              el.textContent = currentCount;
+              
+              if (progress < 1) {
+                requestAnimationFrame(updateCount);
+              } else {
+                el.textContent = target;
+              }
+            }
+            
+            requestAnimationFrame(updateCount);
+            countObserver.unobserve(el);
+          }
+        });
+      }, observerOptions);
+      
+      countUpElements.forEach(el => {
+        countObserver.observe(el);
+      });
+    }
+    
+    // Initialize on load
+    window.addEventListener('load', () => {
+      initFloatingElements();
+      initCountUpElements();
+    });
   </script>
 </body>
 </html>
