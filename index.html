@@ -4,19 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elevated Luxury Experience</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <style>
     /* Core Variables */
     :root {
       --black: #000000;
       --white: #FFFFFF;
       --gold: #AC7A2A;
-      --gold-light: #C09550;
+      --gold-light: #C69C54;
       --gold-dark: #8A6218;
       
       /* Typography */
-      --font-heading: 'Playfair Display', serif;
+      --font-heading: 'Cormorant', serif;
       --font-body: 'Montserrat', sans-serif;
       
       /* Spacing */
@@ -40,28 +42,26 @@
       padding: 0;
     }
 
-    html {
+    html, body {
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       background-color: var(--black);
       color: var(--white);
-      overflow: hidden;
       height: 100%;
+      overflow: hidden;
     }
 
     body {
       font-family: var(--font-body);
       line-height: 1.6;
       letter-spacing: 0.02em;
-      overflow: hidden;
-      height: 100%;
     }
 
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
       font-family: var(--font-heading);
-      font-weight: 700;
+      font-weight: 600;
       line-height: 1.1;
       margin-bottom: var(--space-md);
       text-transform: uppercase;
@@ -71,7 +71,7 @@
     h1 {
       font-size: clamp(3.5rem, 10vw, 7rem);
       letter-spacing: 0.03em;
-      font-weight: 900;
+      font-weight: 700;
     }
     
     h2 {
@@ -107,14 +107,30 @@
       font-weight: 500;
     }
 
-    /* Scroll Container */
+    /* Main Scroll Container */
+    .main-container {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+    
     .scroll-container {
       height: 100vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
+      width: 100%;
       position: relative;
+      overflow: hidden;
+    }
+
+    /* Sections */
+    section {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Header & Navigation */
@@ -124,20 +140,19 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       height: 80px;
       display: flex;
       align-items: center;
       border-bottom: 1px solid rgba(172, 122, 42, 0.3);
-      transition: background-color var(--transition-medium),
-                  height var(--transition-medium);
+      transition: all var(--transition-medium);
     }
     
     .header.scrolled {
       height: 60px;
-      background-color: rgba(0, 0, 0, 0.95);
+      background-color: rgba(0, 0, 0, 0.9);
     }
     
     .navbar {
@@ -151,7 +166,7 @@
     .logo {
       font-family: var(--font-heading);
       font-size: 1.25rem;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.05em;
       color: var(--white);
       text-decoration: none;
@@ -320,7 +335,7 @@
     .mobile-nav-link {
       font-family: var(--font-heading);
       font-size: 2rem;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--white);
       text-decoration: none;
       position: relative;
@@ -363,48 +378,14 @@
       transform-origin: left;
     }
 
-    /* Section Styles */
-    section {
-      height: 100vh;
-      position: relative;
-      scroll-snap-align: start;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1000px;
-    }
-    
-    .section-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.3;
-      transition: transform 1s ease-out, opacity 1s ease-out;
-      z-index: -1;
-    }
-    
-    .section-gradient {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(172, 122, 42, 0.2), rgba(0, 0, 0, 0.9) 70%);
-      z-index: -1;
-    }
-
+    /* Content Layout */
     .container {
       width: 100%;
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 var(--space-md);
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
     
     .section-header {
@@ -420,38 +401,20 @@
       top: -100px;
       left: -30px;
       z-index: -1;
-      font-weight: 900;
+      font-weight: 700;
       line-height: 1;
       opacity: 0;
-      transform: translateY(50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .section-number.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
     
     .section-title {
       font-family: var(--font-heading);
-      font-weight: 900;
+      font-weight: 700;
       font-size: clamp(2.5rem, 8vw, 4rem);
       letter-spacing: 0.05em;
       margin-bottom: var(--space-md);
       position: relative;
       opacity: 0;
-      transform: translateY(50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.1s;
-      text-transform: uppercase;
       color: var(--white);
-    }
-    
-    .section-title.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
     
     .section-divider {
@@ -459,137 +422,14 @@
       height: 2px;
       background-color: var(--gold);
       margin-bottom: var(--space-md);
-      transition: width var(--transition-slow);
-      transition-delay: 0.3s;
-    }
-    
-    .section-divider.visible {
-      width: 120px;
     }
     
     .section-description {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.4s;
       max-width: 700px;
     }
-    
-    .section-description.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
 
-    /* Home Section */
-    .home-section {
-      background-color: var(--black);
-      position: relative;
-    }
-    
-    .home-content {
-      position: relative;
-      z-index: 2;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
-      text-align: center;
-    }
-    
-    .bracket {
-      display: inline-block;
-      font-size: clamp(4rem, 10vw, 8rem);
-      color: var(--white);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .bracket.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .rotating-words {
-      display: inline-block;
-      position: relative;
-      text-align: center;
-      height: clamp(4rem, 10vw, 8rem);
-      vertical-align: top;
-      margin: 0 clamp(1rem, 2vw, 2rem);
-    }
-    
-    .rotating-word {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      color: var(--gold);
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      font-size: clamp(4rem, 10vw, 8rem);
-      font-weight: 900;
-    }
-    
-    .rotating-word.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .welcome-text {
-      font-family: var(--font-body);
-      font-size: clamp(1rem, 1.5vw, 1.25rem);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin: var(--space-lg) 0;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.6s;
-      color: var(--white);
-    }
-    
-    .welcome-text.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .explore-button {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 0.875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--black);
-      background-color: var(--gold);
-      border: none;
-      padding: var(--space-sm) var(--space-lg);
-      margin-top: var(--space-lg);
-      cursor: pointer;
-      transition: background-color var(--transition-medium),
-                  transform var(--transition-medium),
-                  opacity var(--transition-slow);
-      opacity: 0;
-      transform: translateY(30px);
-      transition-delay: 0.8s;
-      text-decoration: none;
-    }
-    
-    .explore-button.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .explore-button:hover {
-      background-color: var(--gold-light);
-      transform: translateY(-5px);
-    }
-
-    /* Main content grid layout */
+    /* Grid Layout */
     .grid {
       display: grid;
       gap: var(--space-md);
@@ -623,10 +463,124 @@
       }
     }
 
-    /* Quick Info Section */
-    .info-section {
+    /* Home Section */
+    #home {
       background-color: var(--black);
       position: relative;
+    }
+    
+    .home-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+      text-align: center;
+    }
+    
+    .sun-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      opacity: 0.2;
+    }
+    
+    .bracket {
+      display: inline-block;
+      font-size: clamp(4rem, 10vw, 8rem);
+      color: var(--white);
+      opacity: 0;
+    }
+    
+    .rotating-words {
+      display: inline-block;
+      position: relative;
+      text-align: center;
+      height: clamp(4rem, 10vw, 8rem);
+      vertical-align: top;
+      margin: 0 clamp(1rem, 2vw, 2rem);
+    }
+    
+    .rotating-word {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      color: var(--gold);
+      opacity: 0;
+      transform: translateY(50px);
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 700;
+    }
+    
+    .welcome-text {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: var(--space-lg) 0;
+      opacity: 0;
+      color: var(--white);
+    }
+    
+    .explore-button {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--black);
+      background-color: var(--gold);
+      border: none;
+      padding: var(--space-sm) var(--space-lg);
+      margin-top: var(--space-lg);
+      cursor: pointer;
+      transition: background-color var(--transition-medium),
+                  transform var(--transition-medium);
+      opacity: 0;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .explore-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.7s;
+    }
+    
+    .explore-button:hover {
+      background-color: var(--gold-light);
+      transform: translateY(-5px);
+    }
+    
+    .explore-button:hover::before {
+      left: 100%;
+    }
+
+    /* Info Section */
+    #info {
+      background-color: var(--black);
+      position: relative;
+    }
+    
+    .info-grid-container {
+      opacity: 0;
     }
     
     .info-card {
@@ -638,22 +592,7 @@
       position: relative;
       z-index: 1;
       overflow: hidden;
-      transform: translateY(50px);
       opacity: 0;
-    }
-    
-    .info-card.visible {
-      transform: translateY(0);
-      opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow),
-                  box-shadow var(--transition-medium);
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
-    }
-    
-    .info-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
     }
     
     .info-card::before {
@@ -702,37 +641,24 @@
       color: var(--white);
     }
 
-    /* Experience Cards */
-    .experiences-section {
+    /* Experiences Section */
+    #experiences {
       background-color: var(--black);
       position: relative;
     }
     
-    .card {
+    .experiences-grid {
+      opacity: 0;
+    }
+    
+    .experience-card {
       position: relative;
-      background-color: rgba(0, 0, 0, 0.7);
-      border: 1px solid var(--gold);
       height: 400px;
       overflow: hidden;
-      transform: translateY(50px);
       opacity: 0;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow),
-                  box-shadow var(--transition-medium);
     }
     
-    .card.visible {
-      transform: translateY(0);
-      opacity: 1;
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
-    }
-    
-    .card:hover {
-      transform: translateY(-15px);
-      box-shadow: 0 15px 30px rgba(172, 122, 42, 0.3);
-    }
-    
-    .card-image {
+    .experience-bg {
       position: absolute;
       top: 0;
       left: 0;
@@ -740,203 +666,264 @@
       height: 100%;
       background-size: cover;
       background-position: center;
-      transition: transform var(--transition-slow);
-      opacity: 0.7;
-      z-index: 0;
+      transition: transform 0.7s ease;
     }
     
-    .card:hover .card-image {
+    .experience-card:hover .experience-bg {
       transform: scale(1.1);
     }
     
-    .card-overlay {
+    .experience-overlay {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 50%, rgba(0, 0, 0, 0));
+      height: 100%;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 20%,
+        rgba(0, 0, 0, 0.5) 50%,
+        rgba(0, 0, 0, 0.1)
+      );
       padding: var(--space-md);
-      z-index: 1;
-      transition: transform var(--transition-medium);
-      transform: translateY(70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transform: translateY(60%);
+      transition: transform 0.5s ease;
     }
     
-    .card:hover .card-overlay {
+    .experience-card:hover .experience-overlay {
       transform: translateY(0);
     }
     
-    .card-title {
+    .experience-title {
       font-family: var(--font-heading);
       font-size: 1.5rem;
-      margin-bottom: var(--space-sm);
       color: var(--white);
+      margin-bottom: var(--space-sm);
       position: relative;
     }
     
-    .card-title::after {
+    .experience-title::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 0;
       width: 40px;
       height: 2px;
       background-color: var(--gold);
     }
     
-    .card-content {
+    .experience-content {
       margin-top: var(--space-md);
-      height: 0;
+      font-size: 0.875rem;
+      color: var(--white);
       opacity: 0;
-      transition: height var(--transition-medium),
-                  opacity var(--transition-medium);
-      overflow: hidden;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition-delay: 0.1s;
     }
     
-    .card:hover .card-content {
-      height: auto;
+    .experience-card:hover .experience-content {
       opacity: 1;
+      transform: translateY(0);
     }
     
-    .card-detail {
+    .experience-detail {
       display: flex;
-      align-items: center;
       margin-bottom: var(--space-xs);
     }
     
-    .card-detail-label {
+    .experience-label {
       color: var(--gold);
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      font-weight: 500;
       margin-right: var(--space-xs);
       min-width: 80px;
-    }
-    
-    .card-detail-value {
-      color: var(--white);
-      font-size: 0.8125rem;
-    }
-    
-    .card-button {
-      display: inline-block;
-      margin-top: var(--space-md);
-      padding: var(--space-xs) var(--space-md);
-      background-color: var(--gold);
-      color: var(--black);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: background-color var(--transition-fast),
-                  transform var(--transition-fast);
     }
     
-    .card-button:hover {
+    .experience-value {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .experience-button {
+      display: inline-block;
+      background-color: var(--gold);
+      color: var(--black);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 8px 24px;
+      margin-top: var(--space-md);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .experience-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.7s;
+    }
+    
+    .experience-button:hover {
       background-color: var(--gold-light);
       transform: translateY(-3px);
     }
+    
+    .experience-button:hover::before {
+      left: 100%;
+    }
 
     /* Guide Section */
-    .guide-section {
+    #guide {
       background-color: var(--black);
       position: relative;
     }
     
-    .feature-card {
-      position: relative;
-      padding: var(--space-lg);
-      border: 1px solid var(--gold);
-      background-color: rgba(0, 0, 0, 0.7);
-      transition: transform var(--transition-medium),
-                  box-shadow var(--transition-medium);
-      transform: translateY(50px);
+    .guide-grid {
       opacity: 0;
+    }
+    
+    .guide-feature {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--gold);
+      padding: var(--space-lg);
       height: 100%;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
     }
     
-    .feature-card.visible {
-      transform: translateY(0);
+    .guide-feature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .guide-feature:hover::before {
       opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow);
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
     }
     
-    .feature-card:hover {
+    .guide-feature:hover {
       transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
     }
     
-    .feature-icon {
+    .guide-icon {
       color: var(--gold);
       font-size: 2.5rem;
       margin-bottom: var(--space-md);
+      transition: transform 0.5s ease;
     }
     
-    .feature-title {
+    .guide-feature:hover .guide-icon {
+      transform: translateY(-5px);
+    }
+    
+    .guide-title {
       font-family: var(--font-heading);
       font-size: 1.5rem;
-      margin-bottom: var(--space-md);
       color: var(--white);
+      margin-bottom: var(--space-md);
       position: relative;
     }
     
-    .feature-title::after {
+    .guide-title::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 0;
       width: 40px;
       height: 2px;
       background-color: var(--gold);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 0.5s ease;
     }
     
-    .feature-list {
+    .guide-feature:hover .guide-title::after {
+      transform: scaleX(1.5);
+    }
+    
+    .guide-list {
       list-style: none;
     }
     
-    .feature-item {
+    .guide-item {
       display: flex;
       margin-bottom: var(--space-sm);
       align-items: flex-start;
-      color: var(--white);
     }
     
-    .feature-bullet {
+    .guide-bullet {
       color: var(--gold);
       margin-right: var(--space-xs);
     }
     
-    .feature-text {
+    .guide-text {
       font-size: 0.875rem;
       line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
     }
 
-    /* Local Tips Section */
-    .tips-section {
+    /* Tips Section */
+    #tips {
       background-color: var(--black);
       position: relative;
     }
     
-    .tip-card {
-      position: relative;
-      border: 1px solid var(--gold);
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: var(--space-md);
-      transform: translateY(50px);
+    .tips-grid {
       opacity: 0;
-      height: 100%;
     }
     
-    .tip-card.visible {
-      transform: translateY(0);
+    .tip-card {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--gold);
+      padding: var(--space-md);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .tip-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .tip-card:hover::before {
       opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow);
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
     }
     
     .tip-card:hover {
@@ -947,23 +934,36 @@
     .tip-title {
       font-family: var(--font-heading);
       font-size: 1.75rem;
-      margin-bottom: var(--space-md);
       color: var(--white);
+      margin-bottom: var(--space-md);
       position: relative;
     }
     
     .tip-title::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 0;
       width: 40px;
       height: 2px;
       background-color: var(--gold);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .tip-card:hover .tip-title::after {
+      transform: scaleX(1.5);
     }
     
     .tip-place {
       margin-bottom: var(--space-sm);
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    
+    .tip-card:hover .tip-place {
+      opacity: 1;
     }
     
     .tip-place-name {
@@ -971,6 +971,7 @@
       font-size: 1.125rem;
       color: var(--gold);
       margin-bottom: 5px;
+      font-weight: 600;
     }
     
     .tip-place-desc {
@@ -980,27 +981,41 @@
     }
 
     /* Amenities Section */
-    .amenities-section {
+    #amenities {
       background-color: var(--black);
       position: relative;
     }
     
-    .amenity-card {
-      position: relative;
-      border: 1px solid var(--gold);
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: var(--space-md);
-      transform: translateY(50px);
+    .amenities-grid {
       opacity: 0;
-      height: 100%;
     }
     
-    .amenity-card.visible {
-      transform: translateY(0);
+    .amenity-card {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--gold);
+      padding: var(--space-md);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .amenity-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .amenity-card:hover::before {
       opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow);
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
     }
     
     .amenity-card:hover {
@@ -1011,19 +1026,26 @@
     .amenity-title {
       font-family: var(--font-heading);
       font-size: 1.5rem;
-      margin-bottom: var(--space-md);
       color: var(--white);
+      margin-bottom: var(--space-md);
       position: relative;
     }
     
     .amenity-title::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 0;
       width: 40px;
       height: 2px;
       background-color: var(--gold);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .amenity-card:hover .amenity-title::after {
+      transform: scaleX(1.5);
     }
     
     .amenity-list {
@@ -1034,7 +1056,6 @@
       display: flex;
       margin-bottom: var(--space-sm);
       align-items: flex-start;
-      color: var(--white);
     }
     
     .amenity-bullet {
@@ -1045,48 +1066,75 @@
     .amenity-text {
       font-size: 0.875rem;
       line-height: 1.6;
+      color: rgba(255, 255, 255, 0.9);
     }
 
     /* Contact Section */
-    .contact-section {
+    #contact {
       background-color: var(--black);
       position: relative;
     }
     
-    .contact-card {
-      position: relative;
-      border: 1px solid var(--gold);
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: var(--space-md);
-      transform: translateY(50px);
+    .contact-grid {
       opacity: 0;
-      height: 100%;
     }
     
-    .contact-card.visible {
-      transform: translateY(0);
+    .contact-card {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--gold);
+      padding: var(--space-md);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.1), rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity var(--transition-medium);
+    }
+    
+    .contact-card:hover::before {
       opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow);
-      transition-delay: calc(var(--index) * 0.1s + 0.2s);
+    }
+    
+    .contact-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.2);
     }
     
     .contact-title {
       font-family: var(--font-heading);
       font-size: 1.5rem;
-      margin-bottom: var(--space-md);
       color: var(--white);
+      margin-bottom: var(--space-md);
       position: relative;
     }
     
     .contact-title::after {
       content: '';
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 0;
       width: 40px;
       height: 2px;
       background-color: var(--gold);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .contact-card:hover .contact-title::after {
+      transform: scaleX(1.5);
     }
     
     .contact-detail {
@@ -1098,14 +1146,14 @@
     .contact-label {
       min-width: 100px;
       color: var(--gold);
-      font-weight: 600;
+      font-weight: 500;
       font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
     
     .contact-value {
-      color: var(--white);
+      color: rgba(255, 255, 255, 0.9);
       font-size: 0.875rem;
     }
 
@@ -1115,7 +1163,7 @@
       padding: var(--space-lg) 0;
       background-color: var(--black);
       border-top: 1px solid var(--gold);
-      scroll-snap-align: start;
+      overflow: hidden;
     }
     
     .footer-content {
@@ -1136,7 +1184,7 @@
     
     .footer-logo {
       font-family: var(--font-heading);
-      font-weight: 700;
+      font-weight: 600;
       font-size: 1.5rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -1202,248 +1250,189 @@
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
       z-index: 100;
     }
     
     .progress-dot {
-      width: 12px;
-      height: 12px;
+      position: relative;
+      width: 16px;
+      height: 16px;
       border: 1px solid var(--gold);
       background-color: transparent;
-      transition: background-color var(--transition-medium),
-                  transform var(--transition-medium);
       cursor: pointer;
+      transition: all 0.3s ease;
     }
     
-    .progress-dot:hover {
-      transform: scale(1.2);
-    }
-    
-    .progress-dot.active {
+    .progress-dot::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 8px;
+      height: 8px;
       background-color: var(--gold);
+      transition: transform 0.3s ease;
+    }
+    
+    .progress-dot:hover,
+    .progress-dot.active {
+      border-color: var(--gold-light);
+    }
+    
+    .progress-dot:hover::before,
+    .progress-dot.active::before {
+      transform: translate(-50%, -50%) scale(1);
     }
     
     .progress-label {
       position: absolute;
-      right: 25px;
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-      background-color: rgba(0, 0, 0, 0.8);
+      right: 30px;
+      top: 0;
       padding: 5px 10px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: var(--white);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--white);
+      white-space: nowrap;
       border-left: 1px solid var(--gold);
       transform: translateX(10px);
-      transition: opacity var(--transition-medium),
-                  transform var(--transition-medium);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
     
     .progress-dot:hover .progress-label {
       opacity: 1;
       transform: translateX(0);
     }
+    
+    /* Section Background */
+    .section-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+    }
+    
+    .section-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(172, 122, 42, 0.2), rgba(0, 0, 0, 0.9) 70%);
+      z-index: 1;
+    }
+    
+    /* Animations for Progress */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--gold-dark), var(--gold), var(--gold-light));
+      z-index: 1001;
+    }
+    
+    /* Sun Icon Animation */
+    .sun-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .sun-center {
+      width: 40px;
+      height: 40px;
+      background-color: var(--gold);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .sun-ray {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 0;
+      background-color: var(--gold);
+      transform-origin: center bottom;
+    }
+
+    /* Preloader */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--black);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .preloader-content {
+      text-align: center;
+    }
+    
+    .preloader-logo {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: var(--space-md);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    
+    .preloader-bar {
+      width: 200px;
+      height: 2px;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .preloader-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background-color: var(--gold);
+      transition: width 0.5s ease;
+    }
   </style>
 </head>
 <body>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Initialize the website
-      initializeWebsite();
-    });
-    
-    function initializeWebsite() {
-      // Initialize section visibility
-      initSections();
-      
-      // Initialize scroll snapping and animations
-      initScrollSnapping();
-      
-      // Initialize navigation and progress indicators
-      initNavigation();
-      
-      // Initialize home section animations
-      initHomeSection();
-    }
-    
-    function initSections() {
-      // Make first section visible immediately
-      const homeSection = document.getElementById('home');
-      revealSection(homeSection);
-      
-      // Setup intersection observer for revealing sections
-      const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            revealSection(entry.target);
-            
-            // Update active navigation
-            updateActiveNavigation(entry.target.id);
-          }
-        });
-      }, {
-        threshold: 0.3
-      });
-      
-      // Observe all sections
-      document.querySelectorAll('section').forEach(section => {
-        sectionObserver.observe(section);
-      });
-    }
-    
-    function revealSection(section) {
-      // Reveal section elements with animation
-      section.querySelectorAll('.section-number, .section-title, .section-divider, .section-description').forEach(el => {
-        el.classList.add('visible');
-      });
-      
-      // Reveal cards and other animated elements
-      section.querySelectorAll('.info-card, .card, .feature-card, .tip-card, .amenity-card, .contact-card').forEach(el => {
-        setTimeout(() => {
-          el.classList.add('visible');
-        }, 300);
-      });
-    }
-    
-    function initScrollSnapping() {
-      const scrollContainer = document.querySelector('.scroll-container');
-      const sections = document.querySelectorAll('section');
-      let isScrolling = false;
-      let currentSectionIndex = 0;
-      
-      // Detect scroll events
-      scrollContainer.addEventListener('scroll', () => {
-        if (!isScrolling) {
-          isScrolling = true;
-          checkScrollPosition();
-          setTimeout(() => {
-            isScrolling = false;
-          }, 200);
-        }
-      });
-      
-      function checkScrollPosition() {
-        const containerHeight = scrollContainer.clientHeight;
-        const scrollTop = scrollContainer.scrollTop;
-        const newIndex = Math.round(scrollTop / containerHeight);
-        
-        if (newIndex !== currentSectionIndex) {
-          currentSectionIndex = newIndex;
-          // Update active navigation
-          if (sections[currentSectionIndex]) {
-            updateActiveNavigation(sections[currentSectionIndex].id);
-          }
-        }
-      }
-      
-      // Mouse wheel event for smooth section transitions
-      scrollContainer.addEventListener('wheel', (e) => {
-        // Prevent default behavior on specific animations in progress
-        if (document.body.classList.contains('animating-section')) {
-          e.preventDefault();
-          return;
-        }
-      }, { passive: false });
-    }
-    
-    function initNavigation() {
-      const header = document.querySelector('.header');
-      const menuButton = document.querySelector('.menu-button');
-      const mobileMenu = document.querySelector('.mobile-menu');
-      const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link, .progress-dot');
-      
-      // Handle scroll for header state
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      });
-      
-      // Toggle mobile menu
-      menuButton.addEventListener('click', () => {
-        menuButton.classList.toggle('menu-open');
-        mobileMenu.classList.toggle('open');
-      });
-      
-      // Navigation link click handling
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          // Close mobile menu if open
-          menuButton.classList.remove('menu-open');
-          mobileMenu.classList.remove('open');
-          
-          // Get target section
-          const targetId = link.getAttribute('href').substring(1);
-          
-          // Scroll to section
-          document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
-          
-          // Update active navigation
-          updateActiveNavigation(targetId);
-        });
-      });
-    }
-    
-    function updateActiveNavigation(sectionId) {
-      // Update main navigation
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-          link.classList.add('active');
-        }
-      });
-      
-      // Update progress dots
-      document.querySelectorAll('.progress-dot').forEach(dot => {
-        dot.classList.remove('active');
-        if (dot.getAttribute('href') === `#${sectionId}`) {
-          dot.classList.add('active');
-        }
-      });
-    }
-    
-    function initHomeSection() {
-      // Reveal brackets
-      const brackets = document.querySelectorAll('.bracket');
-      brackets.forEach((bracket, index) => {
-        setTimeout(() => {
-          bracket.classList.add('visible');
-        }, 500 + index * 300);
-      });
-      
-      // Setup rotating words
-      const rotatingWords = document.querySelectorAll('.rotating-word');
-      let currentWordIndex = 0;
-      
-      // Show first word immediately
-      rotatingWords[0].classList.add('active');
-      
-      // Setup rotation interval
-      setInterval(() => {
-        // Hide current word
-        rotatingWords[currentWordIndex].classList.remove('active');
-        
-        // Move to next word
-        currentWordIndex = (currentWordIndex + 1) % rotatingWords.length;
-        
-        // Show new word
-        rotatingWords[currentWordIndex].classList.add('active');
-      }, 3000);
-      
-      // Reveal welcome text and button
-      setTimeout(() => {
-        document.querySelector('.welcome-text').classList.add('visible');
-        document.querySelector('.explore-button').classList.add('visible');
-      }, 1500);
-    }
-  </script>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-content">
+      <div class="preloader-logo">LUXURY PROPERTY</div>
+      <div class="preloader-bar">
+        <div class="preloader-progress" id="preloaderProgress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <!-- Header -->
   <header class="header">
     <nav class="navbar">
@@ -1506,490 +1495,491 @@
   </div>
   
   <!-- Main Content -->
-  <div class="scroll-container">
-    <!-- Home Section -->
-    <section id="home" class="home-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="home-content">
-        <h1>
-          <span class="bracket">[</span>
-          <div class="rotating-words">
-            <span class="rotating-word">LUXURY</span>
-            <span class="rotating-word">EXCLUSIVE</span>
-            <span class="rotating-word">ELEVATED</span>
-            <span class="rotating-word">PREMIER</span>
-          </div>
-          <span class="bracket">]</span>
-        </h1>
-        <p class="welcome-text">WELCOME TO YOUR LUXURY EXPERIENCE</p>
-        <a href="#info" class="explore-button">EXPLORE</a>
-      </div>
-    </section>
-    
-    <!-- Info Section -->
-    <section id="info" class="info-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">01</div>
-          <p class="subtitle">ESSENTIAL INFORMATION</p>
-          <h2 class="section-title">QUICK INFO</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Everything you need for a seamless luxury experience at your fingertips.</p>
+  <div class="main-container">
+    <div class="scroll-container" id="scrollContainer">
+      <!-- Home Section -->
+      <section id="home" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="sun-container" id="sunContainer"></div>
+        <div class="home-content">
+          <h1>
+            <span class="bracket" id="leftBracket">[</span>
+            <div class="rotating-words" id="rotatingWords">
+              <span class="rotating-word">LUXURY</span>
+              <span class="rotating-word">EXCLUSIVE</span>
+              <span class="rotating-word">ELEVATED</span>
+              <span class="rotating-word">PREMIER</span>
+            </div>
+            <span class="bracket" id="rightBracket">]</span>
+          </h1>
+          <p class="welcome-text" id="welcomeText">WELCOME TO YOUR LUXURY EXPERIENCE</p>
+          <a href="#info" class="explore-button" id="exploreButton">EXPLORE</a>
         </div>
-        
-        <div class="grid grid-4">
-          <div class="info-card" style="--index: 0;">
-            <div class="info-icon">
-              <i class="fas fa-wifi"></i>
-            </div>
-            <div class="info-content">
-              <h3>WIFI</h3>
-              <p>Network: Guest_Network</p>
-              <p>Password: sunshine2025</p>
-            </div>
+      </section>
+      
+      <!-- Info Section -->
+      <section id="info" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="infoNumber">01</div>
+            <p class="subtitle" id="infoSubtitle">ESSENTIAL INFORMATION</p>
+            <h2 class="section-title" id="infoTitle">QUICK INFO</h2>
+            <div class="section-divider" id="infoDivider"></div>
+            <p class="section-description" id="infoDescription">Everything you need for a seamless luxury experience at your fingertips.</p>
           </div>
           
-          <div class="info-card" style="--index: 1;">
-            <div class="info-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <div class="info-content">
-              <h3>ACCESS</h3>
-              <p>Door code: 2580</p>
-              <p>Check-in: After 3 PM</p>
-              <p>Check-out: Before 11 AM</p>
-            </div>
-          </div>
-          
-          <div class="info-card" style="--index: 2;">
-            <div class="info-icon">
-              <i class="fas fa-phone"></i>
-            </div>
-            <div class="info-content">
-              <h3>CONTACT</h3>
-              <p>Host: (123) 456-7890</p>
-              <p>Emergency: 911</p>
-            </div>
-          </div>
-          
-          <div class="info-card" style="--index: 3;">
-            <div class="info-icon">
-              <i class="fas fa-car"></i>
-            </div>
-            <div class="info-content">
-              <h3>PARKING</h3>
-              <p>Use space #42 in the garage</p>
-              <p>Gate code: 3791</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Experiences Section -->
-    <section id="experiences" class="experiences-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">02</div>
-          <p class="subtitle">CURATED FOR YOU</p>
-          <h2 class="section-title">EXPERIENCES</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
-        </div>
-        
-        <div class="grid grid-3">
-          <div class="card" style="--index: 0;">
-            <div class="card-image" style="background-image: url('/api/placeholder/800/600');"></div>
-            <div class="card-overlay">
-              <h3 class="card-title">PRIVATE YACHT TOUR</h3>
-              <div class="card-content">
-                <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
-                <div class="card-detail">
-                  <span class="card-detail-label">Duration:</span>
-                  <span class="card-detail-value">4 hours</span>
-                </div>
-                <div class="card-detail">
-                  <span class="card-detail-label">Price:</span>
-                  <span class="card-detail-value">$750 per group</span>
-                </div>
-                <button class="card-button">RESERVE</button>
+          <div class="grid grid-4 info-grid-container" id="infoGrid">
+            <div class="info-card" id="infoCard1">
+              <div class="info-icon">
+                <i class="fas fa-wifi"></i>
+              </div>
+              <div class="info-content">
+                <h3>WIFI</h3>
+                <p>Network: Guest_Network</p>
+                <p>Password: sunshine2025</p>
               </div>
             </div>
-          </div>
-          
-          <div class="card" style="--index: 1;">
-            <div class="card-image" style="background-image: url('/api/placeholder/800/600');"></div>
-            <div class="card-overlay">
-              <h3 class="card-title">CHEF'S TABLE DINNER</h3>
-              <div class="card-content">
-                <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
-                <div class="card-detail">
-                  <span class="card-detail-label">Duration:</span>
-                  <span class="card-detail-value">3 hours</span>
-                </div>
-                <div class="card-detail">
-                  <span class="card-detail-label">Price:</span>
-                  <span class="card-detail-value">$350 per person</span>
-                </div>
-                <button class="card-button">RESERVE</button>
+            
+            <div class="info-card" id="infoCard2">
+              <div class="info-icon">
+                <i class="fas fa-key"></i>
+              </div>
+              <div class="info-content">
+                <h3>ACCESS</h3>
+                <p>Door code: 2580</p>
+                <p>Check-in: After 3 PM</p>
+                <p>Check-out: Before 11 AM</p>
               </div>
             </div>
-          </div>
-          
-          <div class="card" style="--index: 2;">
-            <div class="card-image" style="background-image: url('/api/placeholder/800/600');"></div>
-            <div class="card-overlay">
-              <h3 class="card-title">PRIVATE ART GALLERY</h3>
-              <div class="card-content">
-                <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
-                <div class="card-detail">
-                  <span class="card-detail-label">Duration:</span>
-                  <span class="card-detail-value">2 hours</span>
-                </div>
-                <div class="card-detail">
-                  <span class="card-detail-label">Price:</span>
-                  <span class="card-detail-value">$200 per person</span>
-                </div>
-                <button class="card-button">RESERVE</button>
+            
+            <div class="info-card" id="infoCard3">
+              <div class="info-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="info-content">
+                <h3>CONTACT</h3>
+                <p>Host: (123) 456-7890</p>
+                <p>Emergency: 911</p>
+              </div>
+            </div>
+            
+            <div class="info-card" id="infoCard4">
+              <div class="info-icon">
+                <i class="fas fa-car"></i>
+              </div>
+              <div class="info-content">
+                <h3>PARKING</h3>
+                <p>Use space #42 in the garage</p>
+                <p>Gate code: 3791</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    
-    <!-- Guide Section -->
-    <section id="guide" class="guide-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">03</div>
-          <p class="subtitle">STAY INFORMATION</p>
-          <h2 class="section-title">HOUSE GUIDE</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
-        </div>
-        
-        <div class="grid grid-3">
-          <div class="feature-card" style="--index: 0;">
-            <div class="feature-icon">
-              <i class="fas fa-home"></i>
-            </div>
-            <h3 class="feature-title">CHECKING IN & OUT</h3>
-            <ul class="feature-list">
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Check-in time: After 3:00 PM</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Self check-in with keypad (code: 2580)</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Check-out time: Before 11:00 AM</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Personal concierge available 24/7</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Housekeeping service included daily</span>
-              </li>
-            </ul>
+      </section>
+      
+      <!-- Experiences Section -->
+      <section id="experiences" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="experienceNumber">02</div>
+            <p class="subtitle" id="experienceSubtitle">CURATED FOR YOU</p>
+            <h2 class="section-title" id="experienceTitle">EXPERIENCES</h2>
+            <div class="section-divider" id="experienceDivider"></div>
+            <p class="section-description" id="experienceDescription">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
           </div>
           
-          <div class="feature-card" style="--index: 1;">
-            <div class="feature-icon">
-              <i class="fas fa-gem"></i>
+          <div class="grid grid-3 experiences-grid" id="experiencesGrid">
+            <div class="experience-card" id="experienceCard1">
+              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
+              <div class="experience-overlay">
+                <h3 class="experience-title">PRIVATE YACHT TOUR</h3>
+                <div class="experience-content">
+                  <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
+                  <div class="experience-detail">
+                    <span class="experience-label">Duration:</span>
+                    <span class="experience-value">4 hours</span>
+                  </div>
+                  <div class="experience-detail">
+                    <span class="experience-label">Price:</span>
+                    <span class="experience-value">$750 per group</span>
+                  </div>
+                  <button class="experience-button">RESERVE</button>
+                </div>
+              </div>
             </div>
-            <h3 class="feature-title">HOUSE FEATURES</h3>
-            <ul class="feature-list">
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Smart home system controls lighting, climate, music</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Heated infinity pool with panoramic views</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Private screening room with 4K projector</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Private spa with sauna and steam room</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Wine cellar with curated selection</span>
-              </li>
-            </ul>
+            
+            <div class="experience-card" id="experienceCard2">
+              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
+              <div class="experience-overlay">
+                <h3 class="experience-title">CHEF'S TABLE DINNER</h3>
+                <div class="experience-content">
+                  <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
+                  <div class="experience-detail">
+                    <span class="experience-label">Duration:</span>
+                    <span class="experience-value">3 hours</span>
+                  </div>
+                  <div class="experience-detail">
+                    <span class="experience-label">Price:</span>
+                    <span class="experience-value">$350 per person</span>
+                  </div>
+                  <button class="experience-button">RESERVE</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="experience-card" id="experienceCard3">
+              <div class="experience-bg" style="background-image: url('/api/placeholder/800/600');"></div>
+              <div class="experience-overlay">
+                <h3 class="experience-title">PRIVATE ART GALLERY</h3>
+                <div class="experience-content">
+                  <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
+                  <div class="experience-detail">
+                    <span class="experience-label">Duration:</span>
+                    <span class="experience-value">2 hours</span>
+                  </div>
+                  <div class="experience-detail">
+                    <span class="experience-label">Price:</span>
+                    <span class="experience-value">$200 per person</span>
+                  </div>
+                  <button class="experience-button">RESERVE</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Guide Section -->
+      <section id="guide" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="guideNumber">03</div>
+            <p class="subtitle" id="guideSubtitle">STAY INFORMATION</p>
+            <h2 class="section-title" id="guideTitle">HOUSE GUIDE</h2>
+            <div class="section-divider" id="guideDivider"></div>
+            <p class="section-description" id="guideDescription">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
           </div>
           
-          <div class="feature-card" style="--index: 2;">
-            <div class="feature-icon">
-              <i class="fas fa-concierge-bell"></i>
+          <div class="grid grid-3 guide-grid" id="guideGrid">
+            <div class="guide-feature" id="guideFeature1">
+              <div class="guide-icon">
+                <i class="fas fa-home"></i>
+              </div>
+              <h3 class="guide-title">CHECKING IN & OUT</h3>
+              <ul class="guide-list">
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Check-in time: After 3:00 PM</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Self check-in with keypad (code: 2580)</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Check-out time: Before 11:00 AM</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Personal concierge available 24/7</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Housekeeping service included daily</span>
+                </li>
+              </ul>
             </div>
-            <h3 class="feature-title">PRIVATE SERVICES</h3>
-            <ul class="feature-list">
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Private chef available upon request</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">In-home massage and spa treatments</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Chauffeur service with luxury vehicles</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Personal shopping assistance</span>
-              </li>
-              <li class="feature-item">
-                <span class="feature-bullet">•</span>
-                <span class="feature-text">Yacht and helicopter bookings</span>
-              </li>
-            </ul>
+            
+            <div class="guide-feature" id="guideFeature2">
+              <div class="guide-icon">
+                <i class="fas fa-gem"></i>
+              </div>
+              <h3 class="guide-title">HOUSE FEATURES</h3>
+              <ul class="guide-list">
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Smart home system controls lighting, climate, music</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Heated infinity pool with panoramic views</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Private screening room with 4K projector</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Private spa with sauna and steam room</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Wine cellar with curated selection</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="guide-feature" id="guideFeature3">
+              <div class="guide-icon">
+                <i class="fas fa-concierge-bell"></i>
+              </div>
+              <h3 class="guide-title">PRIVATE SERVICES</h3>
+              <ul class="guide-list">
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Private chef available upon request</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">In-home massage and spa treatments</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Chauffeur service with luxury vehicles</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Personal shopping assistance</span>
+                </li>
+                <li class="guide-item">
+                  <span class="guide-bullet">•</span>
+                  <span class="guide-text">Yacht and helicopter bookings</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-    
-    <!-- Tips Section -->
-    <section id="tips" class="tips-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">04</div>
-          <p class="subtitle">INSIDER KNOWLEDGE</p>
-          <h2 class="section-title">LOCAL TIPS</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
+      </section>
+      
+      <!-- Tips Section -->
+      <section id="tips" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="tipsNumber">04</div>
+            <p class="subtitle" id="tipsSubtitle">INSIDER KNOWLEDGE</p>
+            <h2 class="section-title" id="tipsTitle">LOCAL TIPS</h2>
+            <div class="section-divider" id="tipsDivider"></div>
+            <p class="section-description" id="tipsDescription">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
+          </div>
+          
+          <div class="grid grid-2 tips-grid" id="tipsGrid">
+            <div class="tip-card" id="tipCard1">
+              <h3 class="tip-title">EXCLUSIVE DINING</h3>
+              <div class="tip-place">
+                <p class="tip-place-name">THE CURATOR'S GALLERY</p>
+                <p class="tip-place-desc">Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div class="grid grid-2">
-          <div class="tip-card" style="--index: 0;">
-            <h3 class="tip-title">EXCLUSIVE DINING</h3>
-            <div class="tip-place">
-              <p class="tip-place-name">LA MAISON DORÉE</p>
-              <p class="tip-place-desc">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
+      </section>
+      
+      <!-- Amenities Section -->
+      <section id="amenities" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="amenitiesNumber">05</div>
+            <p class="subtitle" id="amenitiesSubtitle">FOR YOUR PLEASURE</p>
+            <h2 class="section-title" id="amenitiesTitle">AMENITIES</h2>
+            <div class="section-divider" id="amenitiesDivider"></div>
+            <p class="section-description" id="amenitiesDescription">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
+          </div>
+          
+          <div class="grid grid-3 amenities-grid" id="amenitiesGrid">
+            <div class="amenity-card" id="amenityCard1">
+              <h3 class="amenity-title">CULINARY</h3>
+              <ul class="amenity-list">
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Full chef's kitchen with premium appliances</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Wine refrigerator stocked with curated selection</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Gourmet coffee and espresso bar</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Crystal glassware and fine china</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Refrigerator pre-stocked with essentials</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Private chef available on request</span>
+                </li>
+              </ul>
             </div>
-            <div class="tip-place">
-              <p class="tip-place-name">OCEAN & VINE</p>
-              <p class="tip-place-desc">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
+            
+            <div class="amenity-card" id="amenityCard2">
+              <h3 class="amenity-title">BEDROOM & SPA</h3>
+              <ul class="amenity-list">
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Custom king-size mattress with Italian linens</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Pillow menu with 8 luxury options</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Marble bathroom with heated floors</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Soaking tub with panoramic views</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Premium bath amenities by Diptyque</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">In-room massage services available</span>
+                </li>
+              </ul>
             </div>
-            <div class="tip-place">
-              <p class="tip-place-name">THE GARDEN ROOM</p>
-              <p class="tip-place-desc">Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
+            
+            <div class="amenity-card" id="amenityCard3">
+              <h3 class="amenity-title">TECHNOLOGY</h3>
+              <ul class="amenity-list">
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Ultra-high-speed WiFi throughout</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">85" OLED Smart TV with surround sound</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">All premium streaming services included</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Smart home controls via tablet or voice</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Private cinema room with leather recliners</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Ambient sound system throughout property</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Contact Section -->
+      <section id="contact" class="section">
+        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+        <div class="section-gradient"></div>
+        <div class="container">
+          <div class="section-header">
+            <div class="section-number" id="contactNumber">06</div>
+            <p class="subtitle" id="contactSubtitle">AT YOUR SERVICE</p>
+            <h2 class="section-title" id="contactTitle">PERSONAL CONCIERGE</h2>
+            <div class="section-divider" id="contactDivider"></div>
+            <p class="section-description" id="contactDescription">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
+          </div>
+          
+          <div class="grid grid-2 contact-grid" id="contactGrid">
+            <div class="contact-card" id="contactCard1">
+              <h3 class="contact-title">YOUR PERSONAL TEAM</h3>
+              <div class="contact-detail">
+                <span class="contact-label">Concierge:</span>
+                <span class="contact-value">(123) 456-7890 (Available 24/7)</span>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-label">Private Chef:</span>
+                <span class="contact-value">(123) 456-7891</span>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-label">Chauffeur:</span>
+                <span class="contact-value">(123) 456-7892</span>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-label">Wellness:</span>
+                <span class="contact-value">(123) 456-7893</span>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-label">Email:</span>
+                <span class="contact-value">concierge@luxuryproperty.com</span>
+              </div>
+            </div>
+            
+            <div class="contact-card" id="contactCard2">
+              <h3 class="contact-title">ADDITIONAL SERVICES</h3>
+              <ul class="amenity-list">
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Private yacht or helicopter charter</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">VIP restaurant reservations</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">After-hours shopping at luxury boutiques</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Priority access to exclusive events</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">In-home spa and wellness treatments</span>
+                </li>
+                <li class="amenity-item">
+                  <span class="amenity-bullet">•</span>
+                  <span class="amenity-text">Custom itinerary planning for your stay</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Footer -->
+      <footer>
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-logo">LUXURY PROPERTY</div>
+            
+            <div class="footer-nav">
+              <a href="#home" class="footer-link">HOME</a>
+              <a href="#info" class="footer-link">INFO</a>
+              <a href="#experiences" class="footer-link">EXPERIENCES</a>
+              <a href="#guide" class="footer-link">HOUSE GUIDE</a>
+              <a href="#tips" class="footer-link">LOCAL TIPS</a>
+              <a href="#amenities" class="footer-link">AMENITIES</a>
+              <a href="#contact" class="footer-link">CONTACT</a>
             </div>
           </div>
           
-          <div class="tip-card" style="--index: 1;">
-            <h3 class="tip-title">HIDDEN TREASURES</h3>
-            <div class="tip-place">
-              <p class="tip-place-name">PRIVATE BEACH COVE</p>
-              <p class="tip-place-desc">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
-            </div>
-            <div class="tip-place">
-              <p class="tip-place-name">ARTISAN ATELIER</p>
-              <p class="tip-place-desc">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
-            </div>
-            <div class="tip-place">
-              <p class="tip-place-name">THE CURATOR'S GALLERY</p>
-              <p class="tip-place-desc">Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
-            </div>
-          </div>
+          <p class="copyright">© 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.</p>
         </div>
-      </div>
-    </section>
-    
-    <!-- Amenities Section -->
-    <section id="amenities" class="amenities-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">05</div>
-          <p class="subtitle">FOR YOUR PLEASURE</p>
-          <h2 class="section-title">AMENITIES</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
-        </div>
-        
-        <div class="grid grid-3">
-          <div class="amenity-card" style="--index: 0;">
-            <h3 class="amenity-title">CULINARY</h3>
-            <ul class="amenity-list">
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Full chef's kitchen with premium appliances</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Wine refrigerator stocked with curated selection</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Gourmet coffee and espresso bar</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Crystal glassware and fine china</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Refrigerator pre-stocked with essentials</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Private chef available on request</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="amenity-card" style="--index: 1;">
-            <h3 class="amenity-title">BEDROOM & SPA</h3>
-            <ul class="amenity-list">
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Custom king-size mattress with Italian linens</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Pillow menu with 8 luxury options</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Marble bathroom with heated floors</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Soaking tub with panoramic views</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Premium bath amenities by Diptyque</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">In-room massage services available</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="amenity-card" style="--index: 2;">
-            <h3 class="amenity-title">TECHNOLOGY</h3>
-            <ul class="amenity-list">
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Ultra-high-speed WiFi throughout</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">85" OLED Smart TV with surround sound</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">All premium streaming services included</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Smart home controls via tablet or voice</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Private cinema room with leather recliners</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Ambient sound system throughout property</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-      <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-      <div class="section-gradient"></div>
-      <div class="container">
-        <div class="section-header">
-          <div class="section-number">06</div>
-          <p class="subtitle">AT YOUR SERVICE</p>
-          <h2 class="section-title">PERSONAL CONCIERGE</h2>
-          <div class="section-divider"></div>
-          <p class="section-description">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
-        </div>
-        
-        <div class="grid grid-2">
-          <div class="contact-card" style="--index: 0;">
-            <h3 class="contact-title">YOUR PERSONAL TEAM</h3>
-            <div class="contact-detail">
-              <span class="contact-label">Concierge:</span>
-              <span class="contact-value">(123) 456-7890 (Available 24/7)</span>
-            </div>
-            <div class="contact-detail">
-              <span class="contact-label">Private Chef:</span>
-              <span class="contact-value">(123) 456-7891</span>
-            </div>
-            <div class="contact-detail">
-              <span class="contact-label">Chauffeur:</span>
-              <span class="contact-value">(123) 456-7892</span>
-            </div>
-            <div class="contact-detail">
-              <span class="contact-label">Wellness:</span>
-              <span class="contact-value">(123) 456-7893</span>
-            </div>
-            <div class="contact-detail">
-              <span class="contact-label">Email:</span>
-              <span class="contact-value">concierge@luxuryproperty.com</span>
-            </div>
-          </div>
-          
-          <div class="contact-card" style="--index: 1;">
-            <h3 class="contact-title">ADDITIONAL SERVICES</h3>
-            <ul class="amenity-list">
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Private yacht or helicopter charter</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">VIP restaurant reservations</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">After-hours shopping at luxury boutiques</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Priority access to exclusive events</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">In-home spa and wellness treatments</span>
-              </li>
-              <li class="amenity-item">
-                <span class="amenity-bullet">•</span>
-                <span class="amenity-text">Custom itinerary planning for your stay</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+      </footer>
+    </div>
+  </div>
