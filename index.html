@@ -4,24 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elevated Luxury Experience</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Archivo+Black&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <style>
     /* Core Variables */
     :root {
-      --kraft: #D4C2A8;
-      --deep-brown: #4A3728;
-      --light-kraft: #E7DFD0;
-      --cream: #F9F4E8;
-      --burgundy: #722F37;
-      --navy: #283447;
-      --black: #1A1714;
+      --black: #080808;
+      --true-black: #000000;
+      --off-white: #F7F7F2;
       --white: #FFFFFF;
+      --gold: #AC7A2A;
+      --gold-highlight: #C08C35;
+      --gold-shadow: #8D6422;
+      --charcoal: #1C1C1C;
+      --light-charcoal: #2A2A2A;
+      --cream: #F4F0E8;
       
       /* Typography */
-      --font-serif: 'Playfair Display', serif;
+      --font-heading: 'Archivo Black', 'Helvetica Neue', sans-serif;
       --font-mono: 'IBM Plex Mono', monospace;
-      --font-secondary: 'Libre Baskerville', serif;
       
       /* Spacing */
       --space-xs: 8px;
@@ -49,8 +52,8 @@
       scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background-color: var(--cream);
-      color: var(--deep-brown);
+      background-color: var(--black);
+      color: var(--off-white);
     }
 
     body {
@@ -58,42 +61,26 @@
       line-height: 1.6;
       letter-spacing: 0.02em;
       overflow-x: hidden;
-      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
-      background-blend-mode: multiply;
-      background-size: 500px;
-      background-repeat: repeat;
-    }
-
-    /* Kraft Paper Texture Effect */
-    body:before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(249, 244, 232, 0.8);
-      z-index: -1;
     }
 
     /* Typography */
     h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-weight: 900;
       line-height: 1.1;
       margin-bottom: var(--space-md);
-      color: var(--deep-brown);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
     }
     
     h1 {
       font-size: clamp(3.5rem, 10vw, 7rem);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
     
     h2 {
       font-size: clamp(2.5rem, 6vw, 4rem);
       letter-spacing: -0.01em;
-      position: relative;
     }
     
     h3 {
@@ -105,13 +92,13 @@
     }
     
     p {
-      font-family: var(--font-secondary);
-      font-size: 0.9rem;
-      letter-spacing: 0.01em;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
       margin-bottom: var(--space-md);
       max-width: 760px;
       line-height: 1.8;
-      color: var(--deep-brown);
+      font-weight: 300;
     }
 
     .subtitle {
@@ -119,34 +106,15 @@
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
-      color: var(--burgundy);
+      color: var(--gold);
       margin-bottom: var(--space-sm);
       font-weight: 500;
-      position: relative;
-      display: inline-block;
-    }
-
-    .subtitle:after {
-      content: "";
-      position: absolute;
-      height: 1px;
-      width: 100%;
-      background-color: var(--burgundy);
-      bottom: -4px;
-      left: 0;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition-medium);
-    }
-
-    .subtitle.visible:after {
-      transform: scaleX(1);
     }
 
     .number-indicator {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-size: 1rem;
-      color: var(--burgundy);
+      color: var(--gold);
       margin-right: var(--space-sm);
     }
 
@@ -161,7 +129,7 @@
     section {
       position: relative;
       padding: var(--space-xl) 0;
-      border-bottom: 1px solid rgba(74, 55, 40, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       overflow: hidden;
     }
     
@@ -209,20 +177,20 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      background-color: rgba(249, 244, 232, 0.9);
+      background-color: rgba(8, 8, 8, 0.9);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       height: 80px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid var(--kraft);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: background-color var(--transition-medium),
                   height var(--transition-medium);
     }
     
     .header.scrolled {
       height: 60px;
-      background-color: rgba(249, 244, 232, 0.95);
+      background-color: rgba(8, 8, 8, 0.95);
     }
     
     .navbar {
@@ -233,11 +201,11 @@
     }
     
     .logo {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-size: 1.25rem;
       font-weight: 900;
       letter-spacing: 0.05em;
-      color: var(--deep-brown);
+      color: var(--white);
       text-decoration: none;
       position: relative;
       overflow: hidden;
@@ -253,7 +221,7 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
@@ -284,7 +252,7 @@
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: var(--deep-brown);
+      color: var(--off-white);
       text-decoration: none;
       padding: var(--space-xs) 0;
       position: relative;
@@ -299,14 +267,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .nav-link:hover {
-      color: var(--burgundy);
+      color: var(--gold);
     }
     
     .nav-link:hover::after,
@@ -328,7 +296,7 @@
     .menu-line {
       width: 100%;
       height: 1px;
-      background-color: var(--deep-brown);
+      background-color: var(--off-white);
       display: block;
       position: absolute;
       left: 0;
@@ -338,7 +306,7 @@
     }
     
     .menu-button:hover .menu-line {
-      background-color: var(--burgundy);
+      background-color: var(--gold);
     }
     
     .menu-line:nth-child(1) {
@@ -356,7 +324,7 @@
     
     .menu-open .menu-line:nth-child(1) {
       transform: translateY(9px) rotate(45deg);
-      background-color: var(--burgundy);
+      background-color: var(--gold);
     }
     
     .menu-open .menu-line:nth-child(2) {
@@ -365,7 +333,7 @@
     
     .menu-open .menu-line:nth-child(3) {
       transform: translateY(-9px) rotate(-45deg);
-      background-color: var(--burgundy);
+      background-color: var(--gold);
     }
     
     .mobile-menu {
@@ -374,7 +342,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(249, 244, 232, 0.98);
+      background-color: rgba(8, 8, 8, 0.98);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 999;
@@ -402,10 +370,10 @@
     }
     
     .mobile-nav-link {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-size: 2rem;
       font-weight: 900;
-      color: var(--deep-brown);
+      color: var(--off-white);
       text-decoration: none;
       position: relative;
       display: inline-block;
@@ -432,14 +400,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .mobile-nav-link:hover {
-      color: var(--burgundy);
+      color: var(--gold);
     }
     
     .mobile-nav-link:hover::after {
@@ -454,22 +422,9 @@
       flex-direction: column;
       justify-content: center;
       padding-top: 80px;
+      background-color: var(--black);
       position: relative;
       overflow: hidden;
-      z-index: 1;
-    }
-
-    .get-excited-section:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/8.jpg");
-      background-size: cover;
-      opacity: 0.15;
-      z-index: -1;
     }
     
     .get-excited-container {
@@ -483,7 +438,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 50% 50%, rgba(114, 47, 55, 0.08), rgba(249, 244, 232, 0) 70%);
+      background: radial-gradient(circle at 50% 50%, rgba(172, 122, 42, 0.08), rgba(0, 0, 0, 0) 70%);
       z-index: 1;
       opacity: 0;
       transform: scale(0.8);
@@ -500,7 +455,7 @@
       font-size: clamp(3.5rem, 6.5vw, 6.5rem);
       line-height: 0.9;
       margin-bottom: var(--space-lg);
-      color: var(--deep-brown);
+      color: var(--white);
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: -0.01em;
@@ -508,20 +463,11 @@
       flex-wrap: nowrap;
       align-items: center;
       overflow: visible;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-slow),
-                 transform var(--transition-slow);
-    }
-
-    .get-excited-title.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
     
     .get-excited-bracket {
       display: inline-block;
-      color: var(--deep-brown);
+      color: var(--white);
       opacity: 0;
       transform: translateY(30px);
       transition: opacity var(--transition-slow),
@@ -537,6 +483,7 @@
       position: relative;
       display: inline-block;
       overflow: hidden;
+      width: min-content;
       margin: 0 10px;
       height: 1.1em;
       vertical-align: bottom;
@@ -547,7 +494,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      color: var(--burgundy);
+      color: var(--gold);
       white-space: nowrap;
       opacity: 0;
       transform: translateY(100%);
@@ -622,8 +569,8 @@
       text-transform: uppercase;
       letter-spacing: 0.15em;
       background-color: transparent;
-      color: var(--deep-brown);
-      border: 1px solid var(--kraft);
+      color: var(--off-white);
+      border: 1px solid rgba(172, 122, 42, 0.3);
       padding: var(--space-sm) var(--space-md);
       cursor: pointer;
       transition: background-color var(--transition-medium),
@@ -636,8 +583,6 @@
       opacity: 0;
       transform: translateY(30px);
       transition-delay: calc(0.4s + var(--index) * 0.1s);
-      position: relative;
-      overflow: hidden;
     }
     
     .section-nav-item.visible {
@@ -646,36 +591,17 @@
     }
     
     .section-nav-item:hover {
-      background-color: var(--burgundy);
-      border-color: var(--burgundy);
-      color: var(--cream);
+      background-color: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
       transform: translateY(-5px);
-    }
-
-    .section-nav-item:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--burgundy);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform var(--transition-medium);
-      z-index: -1;
-    }
-
-    .section-nav-item:hover:before {
-      transform: scaleX(1);
-      transform-origin: left;
     }
 
     /* Quick Info Section */
     .quick-info {
-      background-color: var(--light-kraft);
-      border-top: 1px solid var(--kraft);
-      border-bottom: 1px solid var(--kraft);
+      background-color: var(--black);
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid rgba(172, 122, 42, 0.3);
       position: relative;
     }
     
@@ -686,15 +612,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 30% 50%, rgba(114, 47, 55, 0.05), rgba(249, 244, 232, 0) 70%);
+      background: radial-gradient(circle at 30% 50%, rgba(172, 122, 42, 0.08), rgba(8, 8, 8, 0) 70%);
       z-index: 0;
     }
     
     .info-card {
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: rgba(255, 255, 255, 0.02);
       padding: var(--space-md);
-      border-left: 3px solid var(--burgundy);
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+      border-left: 1px solid var(--gold);
       transition: transform var(--transition-medium),
                   box-shadow var(--transition-medium);
       position: relative;
@@ -702,20 +627,6 @@
       overflow: hidden;
       transform: translateY(50px);
       opacity: 0;
-      border-radius: 2px;
-    }
-
-    .info-card:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
-      background-size: cover;
-      opacity: 0.05;
-      z-index: -1;
     }
     
     .info-card.visible {
@@ -728,8 +639,8 @@
     }
     
     .info-card:hover {
-      transform: translateY(-10px) rotateZ(1deg);
-      box-shadow: 8px 8px 20px rgba(0,0,0,0.1);
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.07);
     }
     
     .info-card::before {
@@ -739,7 +650,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(114, 47, 55, 0.03), rgba(249, 244, 232, 0) 70%);
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.03), rgba(8, 8, 8, 0) 70%);
       z-index: -1;
       opacity: 0;
       transition: opacity var(--transition-medium);
@@ -750,7 +661,7 @@
     }
     
     .info-icon {
-      color: var(--burgundy);
+      color: var(--gold);
       font-size: 1.5rem;
       margin-bottom: var(--space-sm);
       transform: translateY(0);
@@ -758,7 +669,7 @@
     }
     
     .info-card:hover .info-icon {
-      transform: translateY(-5px) rotateZ(-5deg);
+      transform: translateY(-5px);
     }
     
     .info-content h3 {
@@ -766,34 +677,15 @@
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       margin-bottom: var(--space-xs);
-      color: var(--burgundy);
+      color: var(--gold);
       text-transform: uppercase;
       font-weight: 500;
-      position: relative;
-      display: inline-block;
-    }
-
-    .info-content h3:after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background-color: var(--burgundy);
-      bottom: -2px;
-      left: 0;
-      transform: scaleX(0.3);
-      transform-origin: left;
-      transition: transform var(--transition-medium);
-    }
-
-    .info-card:hover .info-content h3:after {
-      transform: scaleX(1);
     }
     
     .info-content p {
       font-size: 0.75rem;
       margin-bottom: var(--space-xs);
-      font-weight: 400;
+      font-weight: 300;
     }
 
     /* Section Styles */
@@ -803,9 +695,9 @@
     }
     
     .section-number {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-size: clamp(4rem, 15vw, 9rem);
-      color: rgba(114, 47, 55, 0.05);
+      color: rgba(255, 255, 255, 0.02);
       position: absolute;
       top: -80px;
       left: -30px;
@@ -824,7 +716,7 @@
     }
     
     .section-title {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-weight: 900;
       font-size: clamp(2.5rem, 8vw, 3.5rem);
       letter-spacing: -0.01em;
@@ -836,36 +728,17 @@
                   transform var(--transition-slow);
       transition-delay: 0.1s;
       text-transform: uppercase;
-      color: var(--deep-brown);
     }
     
     .section-title.visible {
       opacity: 1;
       transform: translateY(0);
     }
-
-    .section-title:after {
-      content: "";
-      position: absolute;
-      width: 60px;
-      height: 3px;
-      background-color: var(--burgundy);
-      bottom: -10px;
-      left: 0;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition-slow);
-      transition-delay: 0.3s;
-    }
-
-    .section-title.visible:after {
-      transform: scaleX(1);
-    }
     
     .section-divider {
       width: 0;
       height: 2px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       margin-bottom: var(--space-md);
       transition: width var(--transition-slow);
       transition-delay: 0.3s;
@@ -890,8 +763,8 @@
 
     /* Card Styles */
     .card {
-      background-color: rgba(255, 255, 255, 0.7);
-      border-left: 3px solid var(--burgundy);
+      background-color: rgba(255, 255, 255, 0.02);
+      border-left: 1px solid var(--gold);
       padding: var(--space-md);
       height: 100%;
       transition: transform var(--transition-slow),
@@ -901,21 +774,6 @@
       overflow: hidden;
       opacity: 0;
       transform: translateY(50px);
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
-      border-radius: 2px;
-    }
-
-    .card:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/1.jpg");
-      background-size: cover;
-      opacity: 0.05;
-      z-index: -1;
     }
     
     .card.visible {
@@ -925,8 +783,9 @@
     }
     
     .card:hover {
-      transform: translateY(-15px) rotateZ(1deg);
-      box-shadow: 8px 8px 20px rgba(0,0,0,0.1);
+      transform: translateY(-15px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
+                  0 5px 15px rgba(172, 122, 42, 0.05);
     }
     
     .card::before {
@@ -936,7 +795,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(114, 47, 55, 0.03), rgba(249, 244, 232, 0) 70%);
+      background: linear-gradient(45deg, rgba(172, 122, 42, 0.03), rgba(8, 8, 8, 0) 70%);
       z-index: -1;
       opacity: 0;
       transition: opacity var(--transition-medium);
@@ -947,16 +806,15 @@
     }
     
     .card-title {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-weight: 900;
       font-size: 1.25rem;
       margin-bottom: var(--space-sm);
-      border-bottom: 1px solid rgba(74, 55, 40, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       padding-bottom: var(--space-sm);
       position: relative;
       text-transform: uppercase;
       letter-spacing: 0;
-      color: var(--deep-brown);
     }
     
     .card-title::after {
@@ -966,7 +824,7 @@
       left: 0;
       width: 0;
       height: 1px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transition: width var(--transition-medium);
     }
     
@@ -975,10 +833,9 @@
     }
     
     .card-content {
-      font-family: var(--font-secondary);
+      font-family: var(--font-mono);
       font-size: 0.75rem;
-      font-weight: 400;
-      color: var(--deep-brown);
+      font-weight: 300;
     }
     
     /* Search & Filter */
@@ -1003,9 +860,9 @@
     
     .search-input {
       flex: 1;
-      background-color: rgba(255, 255, 255, 0.5);
-      border: 1px solid var(--kraft);
-      color: var(--deep-brown);
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--off-white);
       padding: var(--space-sm) var(--space-md);
       font-family: var(--font-mono);
       font-size: 0.75rem;
@@ -1015,13 +872,13 @@
     
     .search-input:focus {
       outline: none;
-      border-color: var(--burgundy);
-      background-color: rgba(255, 255, 255, 0.8);
+      border-color: var(--gold);
+      background-color: rgba(255, 255, 255, 0.05);
     }
     
     .search-button {
-      background-color: var(--burgundy);
-      color: var(--cream);
+      background-color: var(--gold);
+      color: var(--black);
       border: none;
       padding: 0 var(--space-md);
       font-family: var(--font-mono);
@@ -1031,7 +888,7 @@
     }
     
     .search-button:hover {
-      background-color: var(--deep-brown);
+      background-color: var(--gold-highlight);
     }
     
     .filter-tags {
@@ -1042,8 +899,8 @@
     
     .filter-tag {
       background-color: transparent;
-      border: 1px solid var(--kraft);
-      color: var(--deep-brown);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--off-white);
       padding: 5px 15px;
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -1057,16 +914,224 @@
     
     .filter-tag:hover,
     .filter-tag.active {
-      background-color: var(--burgundy);
-      color: var(--cream);
-      border-color: var(--burgundy);
+      background-color: var(--gold);
+      color: var(--black);
+      border-color: var(--gold);
+    }
+
+    /* Experience Showcase Section */
+    .experience-showcase {
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .showcase-container {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .showcase-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    
+    .showcase-item.active {
+      opacity: 1;
+    }
+    
+    .showcase-icon {
+      width: 120px;
+      height: 120px;
+      margin-bottom: var(--space-md);
+    }
+    
+    .showcase-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: var(--space-md);
+      color: var(--gold);
+    }
+    
+    .showcase-description {
+      max-width: 600px;
+      margin: 0 auto var(--space-lg);
+    }
+    
+    .showcase-indicator {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--space-sm);
+    }
+    
+    .indicator-dot {
+      width: 10px;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: background-color var(--transition-medium),
+                  transform var(--transition-medium);
+      cursor: pointer;
+    }
+    
+    .indicator-dot.active {
+      background-color: var(--gold);
+      transform: scale(1.2);
+    }
+    
+    /* Animated SVG styles */
+    .svg-path {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    
+    /* Geometric Background Elements */
+    .geometric-element {
+      position: absolute;
+      will-change: transform, opacity;
+      pointer-events: none;
+      opacity: 0;
+      z-index: -1;
+      border: 1px solid var(--gold);
+    }
+    
+    .geo-circle {
+      border-radius: 50%;
+    }
+    
+    .geo-line {
+      height: 1px;
+      background-color: var(--gold);
+      border: none;
+    }
+    
+    .geo-dot {
+      width: 4px;
+      height: 4px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      border: none;
+    }
+    
+    /* Features Slider Section */
+    .features-slider {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .slider-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    
+    .slider-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    
+    .slider-item.active {
+      opacity: 1;
+    }
+    
+    .feature-image {
+      width: 50%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-image img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .feature-content {
+      width: 50%;
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .feature-title {
+      margin-bottom: var(--space-md);
+      color: var(--gold);
+    }
+    
+    .feature-description {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .slider-navigation {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: var(--space-md);
+    }
+    
+    .slider-button {
+      background: none;
+      border: none;
+      color: var(--off-white);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color var(--transition-fast);
+    }
+    
+    .slider-button:hover {
+      color: var(--gold);
+    }
+    
+    /* Scroll Drawing Canvas */
+    .drawing-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
     }
     
     /* Footer */
     footer {
-      background-color: var(--light-kraft);
+      background-color: var(--black);
       padding: var(--space-lg) 0;
-      border-top: 1px solid var(--kraft);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       position: relative;
       overflow: hidden;
     }
@@ -1078,7 +1143,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 70% 30%, rgba(114, 47, 55, 0.05), rgba(249, 244, 232, 0) 70%);
+      background: radial-gradient(circle at 70% 30%, rgba(172, 122, 42, 0.05), rgba(8, 8, 8, 0) 70%);
       z-index: 0;
     }
     
@@ -1099,12 +1164,11 @@
     }
     
     .footer-logo {
-      font-family: var(--font-serif);
+      font-family: var(--font-heading);
       font-weight: 900;
       font-size: 1.5rem;
       letter-spacing: 0;
       text-transform: uppercase;
-      color: var(--deep-brown);
     }
     
     .footer-nav {
@@ -1118,7 +1182,7 @@
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: var(--deep-brown);
+      color: var(--off-white);
       text-decoration: none;
       transition: color var(--transition-fast);
       position: relative;
@@ -1132,14 +1196,14 @@
       left: 0;
       width: 100%;
       height: 1px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transform: scaleX(0);
       transform-origin: right;
       transition: transform var(--transition-medium);
     }
     
     .footer-link:hover {
-      color: var(--burgundy);
+      color: var(--gold);
     }
     
     .footer-link:hover::after {
@@ -1150,7 +1214,7 @@
     .copyright {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: rgba(74, 55, 40, 0.7);
+      color: rgba(255, 255, 255, 0.4);
       margin-top: var(--space-lg);
       text-align: center;
       position: relative;
@@ -1179,8 +1243,7 @@
     .side-nav-item {
       width: 10px;
       height: 10px;
-      border: 1px solid var(--burgundy);
-      background-color: transparent;
+      background-color: rgba(255, 255, 255, 0.2);
       border-radius: 0;
       cursor: pointer;
       transition: transform var(--transition-medium),
@@ -1196,13 +1259,13 @@
       transform: translate(-50%, -50%) scale(0);
       width: 4px;
       height: 4px;
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transition: transform var(--transition-medium);
     }
     
     .side-nav-item:hover,
     .side-nav-item.active {
-      background-color: var(--burgundy);
+      background-color: rgba(255, 255, 255, 0.4);
       transform: scale(1.2);
     }
     
@@ -1216,9 +1279,9 @@
       right: 25px;
       top: 50%;
       transform: translateY(-50%);
-      background-color: var(--light-kraft);
+      background-color: rgba(8, 8, 8, 0.9);
       padding: 5px 10px;
-      border-left: 1px solid var(--burgundy);
+      border-left: 1px solid var(--gold);
       font-family: var(--font-mono);
       font-size: 0.65rem;
       text-transform: uppercase;
@@ -1230,7 +1293,6 @@
                   visibility var(--transition-medium),
                   transform var(--transition-medium);
       transform: translateX(10px) translateY(-50%);
-      color: var(--deep-brown);
     }
     
     .side-nav-item:hover .side-nav-label {
@@ -1296,50 +1358,6 @@
       opacity: 1;
       transform: scale(1);
     }
-
-    /* Stumptown-inspired stamp effect classes */
-    .stamped {
-      position: relative;
-      display: inline-block;
-    }
-
-    .stamped:after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 1px dashed var(--burgundy);
-      top: 2px;
-      left: 2px;
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-
-    .stamped.visible:after {
-      opacity: 0.3;
-    }
-
-    /* Vintage stamp effect for cards */
-    .stamp-edge {
-      position: relative;
-    }
-
-    .stamp-edge:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 30px;
-      height: 30px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath fill='%23722F37' fill-opacity='0.2' d='M0,0 L30,0 L30,30 L25,28 L22,30 L19,27 L16,29 L13,26 L10,28 L7,25 L4,27 L0,22 Z'/%3E%3C/svg%3E");
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-
-    .stamp-edge.visible:before {
-      opacity: 1;
-    }
     
     /* Progress Bar */
     .progress-container {
@@ -1347,7 +1365,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 3px;
+      height: 2px;
       background-color: transparent;
       z-index: 1001;
       overflow: hidden;
@@ -1355,7 +1373,7 @@
     
     .progress-bar {
       height: 100%;
-      background: linear-gradient(to right, var(--kraft), var(--burgundy));
+      background: linear-gradient(to right, var(--gold-shadow), var(--gold), var(--gold-highlight));
       width: 0;
       transition: width var(--transition-fast);
     }
@@ -1367,8 +1385,8 @@
       right: 30px;
       width: 50px;
       height: 50px;
-      background-color: var(--cream);
-      border: 1px solid var(--burgundy);
+      background-color: rgba(8, 8, 8, 0.9);
+      border: 1px solid var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1388,25 +1406,24 @@
     }
     
     .back-to-top:hover {
-      background-color: var(--burgundy);
+      background-color: var(--gold);
       transform: translateY(-5px);
     }
     
     .back-to-top i {
-      color: var(--deep-brown);
+      color: var(--off-white);
       font-size: 1rem;
-      transition: transform var(--transition-medium), color var(--transition-medium);
+      transition: transform var(--transition-medium);
     }
     
     .back-to-top:hover i {
-      color: var(--cream);
+      color: var(--black);
       transform: translateY(-3px);
     }
     
     /* Additional Features */
     .accent-text {
-      color: var(--burgundy);
-      font-weight: 700;
+      color: var(--gold);
     }
     
     .text-reveal {
@@ -1425,207 +1442,199 @@
       transform: translateY(0);
     }
     
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 99;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .scroll-icon {
+      width: 30px;
+      height: 50px;
+      border: 2px solid var(--gold);
+      border-radius: 15px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    
+    .scroll-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: scrollDot 2s infinite;
+    }
+    
+    @keyframes scrollDot {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, 25px);
+      }
+    }
+    
+    .scroll-text {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+    
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
     }
     
     ::-webkit-scrollbar-track {
-      background: var(--cream);
+      background: var(--black);
     }
     
     ::-webkit-scrollbar-thumb {
-      background: var(--kraft);
+      background: var(--gold-shadow);
     }
     
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--burgundy);
+      background: var(--gold);
+    }
+
+    /* Hand-drawn SVG wrapper */
+    .handdrawn-svg-container {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
     }
     
-    /* Parallax Effect */
-    .parallax-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 120%;
-      background-size: cover;
-      background-position: center;
-      transform: translateY(0);
-      z-index: -1;
-    }
-
-    /* Apple-style parallax effects */
-    .parallax-section {
+    /* Pinned Section */
+    .pinned-section {
+      height: 300vh;
       position: relative;
-      overflow: hidden;
     }
-
-    .parallax-element {
-      transform: translateY(100px);
-      opacity: 0;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow);
-    }
-
-    .parallax-element.visible {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    /* Pin elements for scroll storytelling */
-    .pin-wrap {
+    
+    .pinned-container {
       height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-
-    .pin-element {
-      position: relative;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity var(--transition-slow), 
-                 transform var(--transition-slow);
-    }
-
-    .pin-element.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* Animated numbers feature */
-    .count-up {
-      display: inline-block;
-      font-weight: 700;
-      color: var(--burgundy);
-    }
-
-    /* Hand-drawn elements */
-    .hand-drawn {
-      position: relative;
-    }
-
-    .hand-drawn:after {
-      content: "";
-      position: absolute;
-      bottom: -5px;
-      left: 0;
       width: 100%;
-      height: 2px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 5'%3E%3Cpath fill='none' stroke='%23722F37' stroke-width='1' stroke-linecap='round' d='M0,2 Q25,5 50,2 T100,2'/%3E%3C/svg%3E");
-      background-size: 100px 5px;
-      background-repeat: repeat-x;
-      opacity: 0;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: opacity var(--transition-medium),
-                  transform var(--transition-medium);
-    }
-
-    .hand-drawn.visible:after {
-      opacity: 1;
-      transform: scaleX(1);
-    }
-
-    /* Apple-style Floating Elements */
-    .float-element {
-      transform: translateY(0);
-      transition: transform 3s ease-in-out;
-      animation: floating 6s infinite ease-in-out;
-    }
-
-    @keyframes floating {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-15px);
-      }
-    }
-
-    /* Letter By Letter Text Animation */
-    .text-animation {
-      display: inline-block;
-      opacity: 0;
-    }
-
-    .text-animation span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity var(--transition-medium),
-                  transform var(--transition-medium);
-    }
-
-    .text-animation.visible span {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Staggered animation for list items */
-    .stagger-item {
-      opacity: 0;
-      transform: translateX(-20px);
-      transition: opacity var(--transition-medium),
-                  transform var(--transition-medium);
-    }
-
-    .stagger-item.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Split screen reveal effect */
-    .split-reveal {
-      position: relative;
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
     }
-
-    .split-left, .split-right {
-      opacity: 0;
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-
-    .split-left {
-      transform: translateX(-50px);
-    }
-
-    .split-right {
-      transform: translateX(50px);
-    }
-
-    .split-left.visible, .split-right.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Stumptown-inspired texture overlay */
-    .texture-overlay {
-      position: relative;
-    }
-
-    .texture-overlay:after {
-      content: "";
+    
+    /* Sequence Animation Frame */
+    .sequence-frame {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url("https://cdnjs.cloudflare.com/ajax/libs/texture-img/1.0.0/8.jpg");
-      background-size: 500px;
-      opacity: 0.03;
-      z-index: -1;
-      mix-blend-mode: multiply;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-medium),
+                  visibility var(--transition-medium);
+    }
+    
+    .sequence-frame.active {
+      opacity: 1;
+      visibility: visible;
     }
   </style>
 </head>
 <body>
+  <!-- SVG Definitions -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <!-- Geometric Icons -->
+    <symbol id="geo-circle" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="geo-square" viewBox="0 0 100 100">
+      <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="geo-diamond" viewBox="0 0 100 100">
+      <rect x="15" y="15" width="70" height="70" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(45, 50, 50)" />
+    </symbol>
+    
+    <symbol id="geo-line-h" viewBox="0 0 100 100">
+      <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="geo-line-v" viewBox="0 0 100 100">
+      <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="geo-wave" viewBox="0 0 100 100">
+      <path d="M10,50 Q25,20 40,50 Q55,80 70,50 Q85,20 90,50" fill="none" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <!-- Hand-drawn Icons -->
+    <symbol id="hand-circle" viewBox="0 0 100 100">
+      <path d="M30,52 C28,38 40,25 49,27 C61,29 75,37 73,51 C71,65 60,77 47,74 C34,71 28,62 30,52 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    
+    <symbol id="hand-square" viewBox="0 0 100 100">
+      <path d="M28,27 L73,29 L74,74 L25,73 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    
+    <symbol id="hand-wave" viewBox="0 0 100 100">
+      <path d="M15,50 C25,30 35,70 50,50 C65,30 75,70 85,50" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    
+    <!-- Luxury Icons -->
+    <symbol id="luxury-pool" viewBox="0 0 100 100">
+      <path d="M15,45 L85,45" stroke="currentColor" stroke-width="1" />
+      <path d="M15,50 L85,50" stroke="currentColor" stroke-width="1" />
+      <path d="M15,55 C35,57 65,57 85,55" stroke="currentColor" stroke-width="1" fill="none" />
+      <path d="M15,60 C35,64 65,64 85,60" stroke="currentColor" stroke-width="1" fill="none" />
+      <path d="M15,65 C35,72 65,72 85,65" stroke="currentColor" stroke-width="1" fill="none" />
+      <path d="M15,45 L15,65" stroke="currentColor" stroke-width="1" />
+      <path d="M85,45 L85,65" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="luxury-yacht" viewBox="0 0 100 100">
+      <path d="M20,60 L80,60 L70,75 L30,75 Z" fill="none" stroke="currentColor" stroke-width="1" />
+      <path d="M50,30 L50,60" stroke="currentColor" stroke-width="1" />
+      <path d="M50,30 L70,45 L70,60" fill="none" stroke="currentColor" stroke-width="1" />
+    </symbol>
+    
+    <symbol id="luxury-chef" viewBox="0 0 100 100">
+      <path d="M40,60 L40,75 L60,75 L60,60" fill="none" stroke="currentColor" stroke-width="1" />
+      <path d="M30,60 C20,55 20,40 30,35 C35,25 45,25 50,35 C55,25 65,25 70,35 C80,40 80,55 70,60 Z" fill="none" stroke="currentColor" stroke-width="1" />
+    </symbol>
+  </svg>
+
   <!-- Progress Bar -->
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="scroll-indicator" id="scrollIndicator">
+    <div class="scroll-icon">
+      <div class="scroll-dot"></div>
+    </div>
+    <div class="scroll-text">Scroll to explore</div>
   </div>
 
   <!-- Header -->
@@ -1672,6 +1681,9 @@
     <a href="#info" class="side-nav-item">
       <span class="side-nav-label">INFO</span>
     </a>
+    <a href="#experience-showcase" class="side-nav-item">
+      <span class="side-nav-label">SHOWCASE</span>
+    </a>
     <a href="#experiences" class="side-nav-item">
       <span class="side-nav-label">EXPERIENCES</span>
     </a>
@@ -1690,10 +1702,10 @@
   </nav>
   
   <!-- Get Excited Section -->
-  <section class="get-excited-section parallax-section" id="get-excited">
+  <section class="get-excited-section" id="get-excited">
     <div class="get-excited-bg"></div>
     <div class="container get-excited-container">
-      <h1 class="get-excited-title text-animation">
+      <h1 class="get-excited-title">
         <span class="get-excited-bracket">[</span>
         <span class="excited-text-wrapper">
           <span class="excited-text">EXCITED</span>
@@ -1703,30 +1715,32 @@
         </span>
         <span class="get-excited-bracket">]</span>
       </h1>
-      <p class="question-text stamped">WELCOME TO YOUR LUXURY EXPERIENCE</p>
+      <p class="question-text">WELCOME TO YOUR LUXURY EXPERIENCE</p>
       
       <div class="section-navigation">
-        <a href="#experiences" class="section-nav-item" style="--index: 0;">EXPERIENCES</a>
-        <a href="#guide" class="section-nav-item" style="--index: 1;">HOUSE GUIDE</a>
-        <a href="#tips" class="section-nav-item" style="--index: 2;">LOCAL TIPS</a>
-        <a href="#amenities" class="section-nav-item" style="--index: 3;">AMENITIES</a>
-        <a href="#contact" class="section-nav-item" style="--index: 4;">CONTACT</a>
+        <a href="#experience-showcase" class="section-nav-item" style="--index: 0;">SHOWCASE</a>
+        <a href="#experiences" class="section-nav-item" style="--index: 1;">EXPERIENCES</a>
+        <a href="#guide" class="section-nav-item" style="--index: 2;">HOUSE GUIDE</a>
+        <a href="#tips" class="section-nav-item" style="--index: 3;">LOCAL TIPS</a>
+        <a href="#amenities" class="section-nav-item" style="--index: 4;">AMENITIES</a>
+        <a href="#contact" class="section-nav-item" style="--index: 5;">CONTACT</a>
       </div>
     </div>
   </section>
   
   <!-- Quick Info Section -->
-  <section class="quick-info parallax-section" id="info">
+  <section class="quick-info" id="info">
     <div class="container">
       <div class="section-header">
-        <div class="section-number stamped">01</div>
+        <div class="section-number">01</div>
         <p class="subtitle animate-in">ESSENTIAL INFORMATION</p>
-        <h2 class="section-title animate-in hand-drawn">QUICK INFO</h2>
+        <h2 class="section-title animate-in">QUICK INFO</h2>
+        <div class="section-divider animate-in"></div>
       </div>
       
       <div class="grid grid-4">
-        <div class="info-card stamp-edge" style="--index: 0;">
-          <div class="info-icon float-element">
+        <div class="info-card" style="--index: 0;">
+          <div class="info-icon">
             <i class="fas fa-wifi"></i>
           </div>
           <div class="info-content">
@@ -1736,8 +1750,8 @@
           </div>
         </div>
         
-        <div class="info-card stamp-edge" style="--index: 1;">
-          <div class="info-icon float-element">
+        <div class="info-card" style="--index: 1;">
+          <div class="info-icon">
             <i class="fas fa-key"></i>
           </div>
           <div class="info-content">
@@ -1748,8 +1762,8 @@
           </div>
         </div>
         
-        <div class="info-card stamp-edge" style="--index: 2;">
-          <div class="info-icon float-element">
+        <div class="info-card" style="--index: 2;">
+          <div class="info-icon">
             <i class="fas fa-phone"></i>
           </div>
           <div class="info-content">
@@ -1759,8 +1773,8 @@
           </div>
         </div>
         
-        <div class="info-card stamp-edge" style="--index: 3;">
-          <div class="info-icon float-element">
+        <div class="info-card" style="--index: 3;">
+          <div class="info-icon">
             <i class="fas fa-car"></i>
           </div>
           <div class="info-content">
@@ -1773,13 +1787,48 @@
     </div>
   </section>
   
+  <!-- NEW: Experience Showcase Section with Pinned Scroll Animation -->
+  <section class="pinned-section" id="experience-showcase">
+    <div class="pinned-container">
+      <div class="container">
+        <h2 class="section-title">LUXURY LIVING</h2>
+        
+        <!-- Sequence frames - these will be shown/hidden based on scroll -->
+        <div class="sequence-frame" data-index="0">
+          <svg width="200" height="200" class="showcase-icon">
+            <use xlink:href="#luxury-pool" class="svg-path"></use>
+          </svg>
+          <h3>INFINITY POOL</h3>
+          <p>Experience the seamless blend of sky and water in our custom-designed infinity pool with panoramic ocean views.</p>
+        </div>
+        
+        <div class="sequence-frame" data-index="1">
+          <svg width="200" height="200" class="showcase-icon">
+            <use xlink:href="#luxury-yacht" class="svg-path"></use>
+          </svg>
+          <h3>PRIVATE YACHT</h3>
+          <p>Explore the coastline aboard our exclusive yacht, available for private charters with a professional crew.</p>
+        </div>
+        
+        <div class="sequence-frame" data-index="2">
+          <svg width="200" height="200" class="showcase-icon">
+            <use xlink:href="#luxury-chef" class="svg-path"></use>
+          </svg>
+          <h3>PERSONAL CHEF</h3>
+          <p>Indulge in bespoke culinary experiences prepared by your personal chef in the comfort of your luxury residence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
   <!-- Experiences Section -->
-  <section class="experiences parallax-section" id="experiences">
+  <section class="experiences" id="experiences">
     <div class="container">
       <div class="section-header">
-        <div class="section-number stamped">02</div>
+        <div class="section-number">02</div>
         <p class="subtitle animate-in">CURATED FOR YOU</p>
-        <h2 class="section-title animate-in hand-drawn">EXPERIENCES</h2>
+        <h2 class="section-title animate-in">EXPERIENCES</h2>
+        <div class="section-divider animate-in"></div>
         <p class="section-description animate-in">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
       </div>
       
@@ -1801,7 +1850,7 @@
       </div>
       
       <div class="grid grid-3" id="experiencesGrid">
-        <div class="card parallax-element" style="--index: 0;" data-category="adventure">
+        <div class="card" style="--index: 0;" data-category="adventure">
           <h3 class="card-title">PRIVATE YACHT TOUR</h3>
           <div class="card-content">
             <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
@@ -1810,7 +1859,7 @@
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 1;" data-category="culinary">
+        <div class="card" style="--index: 1;" data-category="culinary">
           <h3 class="card-title">CHEF'S TABLE DINNER</h3>
           <div class="card-content">
             <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
@@ -1819,7 +1868,7 @@
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 2;" data-category="cultural">
+        <div class="card" style="--index: 2;" data-category="cultural">
           <h3 class="card-title">PRIVATE ART GALLERY TOUR</h3>
           <div class="card-content">
             <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
@@ -1828,7 +1877,7 @@
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 3;" data-category="wellness">
+        <div class="card" style="--index: 3;" data-category="wellness">
           <h3 class="card-title">MOUNTAINTOP YOGA</h3>
           <div class="card-content">
             <p>Private helicopter transport to a scenic mountaintop for a guided sunrise yoga session followed by champagne breakfast.</p>
@@ -1837,7 +1886,7 @@
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 4;" data-category="adventure">
+        <div class="card" style="--index: 4;" data-category="adventure">
           <h3 class="card-title">DESERT STARGAZING</h3>
           <div class="card-content">
             <p>Chauffeured journey into the desert with an astronomer guide, high-powered telescopes, and premium picnic dinner.</p>
@@ -1846,7 +1895,7 @@
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 5;" data-category="culinary">
+        <div class="card" style="--index: 5;" data-category="culinary">
           <h3 class="card-title">PRIVATE WINE TASTING</h3>
           <div class="card-content">
             <p>Exclusive cellar tour and tasting of rare vintages with a master sommelier in a historic vineyard estate.</p>
@@ -1859,25 +1908,26 @@
   </section>
   
   <!-- Guide Section -->
-  <section class="guide parallax-section" id="guide">
+  <section class="guide" id="guide">
     <div class="container">
       <div class="section-header">
-        <div class="section-number stamped">03</div>
+        <div class="section-number">03</div>
         <p class="subtitle animate-in">STAY INFORMATION</p>
-        <h2 class="section-title animate-in hand-drawn">HOUSE GUIDE</h2>
+        <h2 class="section-title animate-in">HOUSE GUIDE</h2>
+        <div class="section-divider animate-in"></div>
         <p class="section-description animate-in">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="card split-left" style="--index: 0;">
+        <div class="card" style="--index: 0;">
           <h3 class="card-title">CHECKING IN & OUT</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Check-in time: After 3:00 PM</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Self check-in with keypad (code: 2580)</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Check-out time: Before 11:00 AM</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Personal concierge available 24/7</li>
-              <li class="stagger-item" style="--stagger: 4;">• Housekeeping service included daily</li>
+              <li style="margin-bottom: var(--space-xs);">• Check-in time: After 3:00 PM</li>
+              <li style="margin-bottom: var(--space-xs);">• Self check-in with keypad (code: 2580)</li>
+              <li style="margin-bottom: var(--space-xs);">• Check-out time: Before 11:00 AM</li>
+              <li style="margin-bottom: var(--space-xs);">• Personal concierge available 24/7</li>
+              <li>• Housekeeping service included daily</li>
             </ul>
           </div>
         </div>
@@ -1886,24 +1936,24 @@
           <h3 class="card-title">HOUSE FEATURES</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Smart home system controls lighting, climate, music</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Heated infinity pool with panoramic views</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Private screening room with 4K projector</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Private spa with sauna and steam room</li>
-              <li class="stagger-item" style="--stagger: 4;">• Wine cellar with curated selection</li>
+              <li style="margin-bottom: var(--space-xs);">• Smart home system controls lighting, climate, music</li>
+              <li style="margin-bottom: var(--space-xs);">• Heated infinity pool with panoramic views</li>
+              <li style="margin-bottom: var(--space-xs);">• Private screening room with 4K projector</li>
+              <li style="margin-bottom: var(--space-xs);">• Private spa with sauna and steam room</li>
+              <li>• Wine cellar with curated selection</li>
             </ul>
           </div>
         </div>
         
-        <div class="card split-right" style="--index: 2;">
+        <div class="card" style="--index: 2;">
           <h3 class="card-title">PRIVATE SERVICES</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Private chef available upon request</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• In-home massage and spa treatments</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Chauffeur service with luxury vehicles</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Personal shopping assistance</li>
-              <li class="stagger-item" style="--stagger: 4;">• Yacht and helicopter bookings</li>
+              <li style="margin-bottom: var(--space-xs);">• Private chef available upon request</li>
+              <li style="margin-bottom: var(--space-xs);">• In-home massage and spa treatments</li>
+              <li style="margin-bottom: var(--space-xs);">• Chauffeur service with luxury vehicles</li>
+              <li style="margin-bottom: var(--space-xs);">• Personal shopping assistance</li>
+              <li>• Yacht and helicopter bookings</li>
             </ul>
           </div>
         </div>
@@ -1912,17 +1962,18 @@
   </section>
   
   <!-- Tips Section -->
-  <section class="tips parallax-section" id="tips">
+  <section class="tips" id="tips">
     <div class="container">
-      <div class="section-header pin-wrap">
-        <div class="section-number stamped">04</div>
+      <div class="section-header">
+        <div class="section-number">04</div>
         <p class="subtitle animate-in">INSIDER KNOWLEDGE</p>
-        <h2 class="section-title animate-in hand-drawn">LOCAL TIPS</h2>
+        <h2 class="section-title animate-in">LOCAL TIPS</h2>
+        <div class="section-divider animate-in"></div>
         <p class="section-description animate-in">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="card pin-element" style="--index: 0;">
+        <div class="card" style="--index: 0;">
           <h3 class="card-title">EXCLUSIVE DINING</h3>
           <div class="card-content">
             <div style="margin-bottom: var(--space-sm);">
@@ -1940,7 +1991,7 @@
           </div>
         </div>
         
-        <div class="card pin-element" style="--index: 1;">
+        <div class="card" style="--index: 1;">
           <h3 class="card-title">HIDDEN TREASURES</h3>
           <div class="card-content">
             <div style="margin-bottom: var(--space-sm);">
@@ -1961,55 +2012,56 @@
     </div>
   </section>
   
-  <!-- Amenities Section -->
-  <section class="amenities parallax-section" id="amenities">
+  <!-- Amenities Section with Scroll Animation -->
+  <section class="amenities" id="amenities">
     <div class="container">
       <div class="section-header">
-        <div class="section-number stamped">05</div>
+        <div class="section-number">05</div>
         <p class="subtitle animate-in">FOR YOUR PLEASURE</p>
-        <h2 class="section-title animate-in hand-drawn">AMENITIES</h2>
+        <h2 class="section-title animate-in">AMENITIES</h2>
+        <div class="section-divider animate-in"></div>
         <p class="section-description animate-in">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
       </div>
       
       <div class="grid grid-3">
-        <div class="card parallax-element" style="--index: 0;">
+        <div class="card" style="--index: 0;">
           <h3 class="card-title">CULINARY</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Full chef's kitchen with premium appliances</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Wine refrigerator stocked with curated selection</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Gourmet coffee and espresso bar</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Crystal glassware and fine china</li>
-              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Refrigerator pre-stocked with essentials</li>
-              <li class="stagger-item" style="--stagger: 5;">• Private chef available on request</li>
+              <li style="margin-bottom: var(--space-xs);">• Full chef's kitchen with premium appliances</li>
+              <li style="margin-bottom: var(--space-xs);">• Wine refrigerator stocked with curated selection</li>
+              <li style="margin-bottom: var(--space-xs);">• Gourmet coffee and espresso bar</li>
+              <li style="margin-bottom: var(--space-xs);">• Crystal glassware and fine china</li>
+              <li style="margin-bottom: var(--space-xs);">• Refrigerator pre-stocked with essentials</li>
+              <li>• Private chef available on request</li>
             </ul>
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 1;">
+        <div class="card" style="--index: 1;">
           <h3 class="card-title">BEDROOM & SPA</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Custom king-size mattress with Italian linens</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• Pillow menu with 8 luxury options</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• Marble bathroom with heated floors</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Soaking tub with panoramic views</li>
-              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Premium bath amenities by Diptyque</li>
-              <li class="stagger-item" style="--stagger: 5;">• In-room massage services available</li>
+              <li style="margin-bottom: var(--space-xs);">• Custom king-size mattress with Italian linens</li>
+              <li style="margin-bottom: var(--space-xs);">• Pillow menu with 8 luxury options</li>
+              <li style="margin-bottom: var(--space-xs);">• Marble bathroom with heated floors</li>
+              <li style="margin-bottom: var(--space-xs);">• Soaking tub with panoramic views</li>
+              <li style="margin-bottom: var(--space-xs);">• Premium bath amenities by Diptyque</li>
+              <li>• In-room massage services available</li>
             </ul>
           </div>
         </div>
         
-        <div class="card parallax-element" style="--index: 2;">
+        <div class="card" style="--index: 2;">
           <h3 class="card-title">TECHNOLOGY</h3>
           <div class="card-content">
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Ultra-high-speed WiFi throughout</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• 85" OLED Smart TV with surround sound</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• All premium streaming services included</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Smart home controls via tablet or voice</li>
-              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• Private cinema room with leather recliners</li>
-              <li class="stagger-item" style="--stagger: 5;">• Ambient sound system throughout property</li>
+              <li style="margin-bottom: var(--space-xs);">• Ultra-high-speed WiFi throughout</li>
+              <li style="margin-bottom: var(--space-xs);">• 85" OLED Smart TV with surround sound</li>
+              <li style="margin-bottom: var(--space-xs);">• All premium streaming services included</li>
+              <li style="margin-bottom: var(--space-xs);">• Smart home controls via tablet or voice</li>
+              <li style="margin-bottom: var(--space-xs);">• Private cinema room with leather recliners</li>
+              <li>• Ambient sound system throughout property</li>
             </ul>
           </div>
         </div>
@@ -2018,17 +2070,18 @@
   </section>
   
   <!-- Contact Section -->
-  <section class="contact parallax-section" id="contact">
+  <section class="contact" id="contact">
     <div class="container">
       <div class="section-header">
-        <div class="section-number stamped">06</div>
+        <div class="section-number">06</div>
         <p class="subtitle animate-in">AT YOUR SERVICE</p>
-        <h2 class="section-title animate-in hand-drawn">PERSONAL CONCIERGE</h2>
+        <h2 class="section-title animate-in">PERSONAL CONCIERGE</h2>
+        <div class="section-divider animate-in"></div>
         <p class="section-description animate-in">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
       </div>
       
       <div class="grid grid-2">
-        <div class="card split-left" style="--index: 0;">
+        <div class="card" style="--index: 0;">
           <h3 class="card-title">YOUR PERSONAL TEAM</h3>
           <div class="card-content">
             <p>Our team of hospitality experts is entirely at your disposal throughout your stay.</p>
@@ -2040,17 +2093,17 @@
           </div>
         </div>
         
-        <div class="card split-right" style="--index: 1;">
+        <div class="card" style="--index: 1;">
           <h3 class="card-title">ADDITIONAL SERVICES</h3>
           <div class="card-content">
             <p>Simply contact your concierge to arrange any of these premium services:</p>
             <ul style="list-style: none; padding: 0;">
-              <li class="stagger-item" style="--stagger: 0; margin-bottom: var(--space-xs);">• Private yacht or helicopter charter</li>
-              <li class="stagger-item" style="--stagger: 1; margin-bottom: var(--space-xs);">• VIP restaurant reservations</li>
-              <li class="stagger-item" style="--stagger: 2; margin-bottom: var(--space-xs);">• After-hours shopping at luxury boutiques</li>
-              <li class="stagger-item" style="--stagger: 3; margin-bottom: var(--space-xs);">• Priority access to exclusive events</li>
-              <li class="stagger-item" style="--stagger: 4; margin-bottom: var(--space-xs);">• In-home spa and wellness treatments</li>
-              <li class="stagger-item" style="--stagger: 5;">• Custom itinerary planning for your stay</li>
+              <li style="margin-bottom: var(--space-xs);">• Private yacht or helicopter charter</li>
+              <li style="margin-bottom: var(--space-xs);">• VIP restaurant reservations</li>
+              <li style="margin-bottom: var(--space-xs);">• After-hours shopping at luxury boutiques</li>
+              <li style="margin-bottom: var(--space-xs);">• Priority access to exclusive events</li>
+              <li style="margin-bottom: var(--space-xs);">• In-home spa and wellness treatments</li>
+              <li>• Custom itinerary planning for your stay</li>
             </ul>
           </div>
         </div>
@@ -2086,11 +2139,17 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Register ScrollTrigger plugin
+      gsap.registerPlugin(ScrollTrigger);
+      
       // Initialize all animations and effects
       initializeWebsite();
     });
     
     function initializeWebsite() {
+      // Create geometric background elements
+      createGeometricElements();
+      
       // Initialize homepage dynamic elements
       initHomepage();
       
@@ -2100,217 +2159,349 @@
       // Initialize navigation
       initNavigation();
       
+      // Initialize scroll-based showcase sequence
+      initShowcaseSequence();
+      
+      // Initialize section-specific animations
+      initSectionAnimations();
+      
       // Initialize progress bar
       initProgressBar();
       
       // Initialize back to top button
       initBackToTop();
       
+      // Initialize scroll indicator
+      initScrollIndicator();
+      
       // Initialize experiences search and filter
       initExperiencesFilter();
-
-      // Initialize letter by letter animation
-      initLetterAnimation();
-
-      // Initialize staggered animations
-      initStaggeredAnimations();
+      
+      // Initialize hand-drawn SVG animations
+      initSvgAnimations();
+    }
+    
+    // Geometric background elements
+    function createGeometricElements() {
+      // Create geometric background container
+      const geometricBg = document.createElement('div');
+      geometricBg.className = 'geometric-background';
+      geometricBg.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      `;
+      document.body.appendChild(geometricBg);
+      
+      // Create various geometric shapes
+      const shapes = [
+        // Circles
+        { type: 'circle', x: '10%', y: '20%', size: '150px' },
+        { type: 'circle', x: '85%', y: '15%', size: '100px' },
+        { type: 'circle', x: '70%', y: '85%', size: '120px' },
+        
+        // Lines
+        { type: 'line', x: '20%', y: '40%', width: '200px', angle: 0 },
+        { type: 'line', x: '80%', y: '60%', width: '150px', angle: 45 },
+        { type: 'line', x: '40%', y: '80%', width: '100px', angle: 90 },
+        
+        // Squares/Diamonds
+        { type: 'square', x: '75%', y: '30%', size: '80px' },
+        { type: 'square', x: '15%', y: '70%', size: '60px' },
+        
+        // Dots
+        { type: 'dot', x: '30%', y: '25%', size: '4px' },
+        { type: 'dot', x: '65%', y: '45%', size: '4px' },
+        { type: 'dot', x: '25%', y: '90%', size: '4px' },
+        { type: 'dot', x: '90%', y: '75%', size: '4px' }
+      ];
+      
+      // Add shapes to the background
+      shapes.forEach((shape, index) => {
+        const element = document.createElement('div');
+        element.className = `geometric-element geo-${shape.type}`;
+        element.dataset.index = index;
+        
+        // Basic positioning
+        element.style.cssText = `
+          position: absolute;
+          left: ${shape.x};
+          top: ${shape.y};
+          opacity: 0;
+          will-change: transform, opacity;
+        `;
+        
+        // Shape-specific styling
+        switch(shape.type) {
+          case 'circle':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              border: 1px solid var(--gold);
+              border-radius: 50%;
+            `;
+            break;
+            
+          case 'line':
+            element.style.cssText += `
+              width: ${shape.width};
+              height: 1px;
+              background-color: var(--gold);
+              transform: rotate(${shape.angle}deg);
+            `;
+            break;
+            
+          case 'square':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              border: 1px solid var(--gold);
+              transform: rotate(45deg);
+            `;
+            break;
+            
+          case 'dot':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              background-color: var(--gold);
+              border-radius: 50%;
+            `;
+            break;
+        }
+        
+        geometricBg.appendChild(element);
+        
+        // Create staggered fade-in and subtle animation for each element
+        gsap.to(element, {
+          opacity: 0.3,
+          duration: 1,
+          delay: index * 0.1,
+          ease: "power2.out"
+        });
+        
+        // Add scroll-based parallax effect
+        gsap.to(element, {
+          y: (index % 2 === 0) ? '10vh' : '-10vh',
+          x: (index % 3 === 0) ? '5vw' : '-5vw',
+          rotation: (index % 2 === 0) ? '+=30' : '-=30',
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.5
+          }
+        });
+      });
     }
     
     // Homepage animations
     function initHomepage() {
-      // Show background radial gradient
-      setTimeout(() => {
-        document.querySelector('.get-excited-bg').classList.add('visible');
-      }, 300);
+      // Show background radial gradient with GSAP
+      gsap.to('.get-excited-bg', {
+        opacity: 1,
+        scale: 1,
+        duration: 1.5,
+        ease: "power3.out"
+      });
       
-      // Show title with animation
-      setTimeout(() => {
-        document.querySelector('.get-excited-title').classList.add('visible');
-        
-        // Show title brackets with staggered delay
-        document.querySelectorAll('.get-excited-bracket').forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add('visible');
-          }, index * 400);
-        });
-      }, 500);
+      // Get excited section elements
+      const excitedBrackets = document.querySelectorAll('.get-excited-bracket');
+      const questionText = document.querySelector('.question-text');
+      const navItems = document.querySelectorAll('.section-nav-item');
       
-      // Show the question text
-      setTimeout(() => {
-        document.querySelector('.question-text').classList.add('visible');
-      }, 1300);
+      // Create staggered animation timeline
+      const tl = gsap.timeline();
       
-      // Show navigation buttons with stagger
-      setTimeout(() => {
-        document.querySelectorAll('.section-nav-item').forEach(el => {
-          el.classList.add('visible');
-        });
-      }, 1500);
-    }
-    
-    // Letter by letter animation
-    function initLetterAnimation() {
-      const textElements = document.querySelectorAll('.text-animation');
+      // Bracket animation with staggered delay
+      tl.to(excitedBrackets[0], {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)"
+      }, 0.3);
       
-      textElements.forEach(element => {
-        const text = element.textContent;
-        element.textContent = '';
-        
-        // Create spans for each letter
-        for (let i = 0; i < text.length; i++) {
-          const span = document.createElement('span');
-          span.textContent = text[i];
-          span.style.transitionDelay = `${i * 0.03}s`;
-          element.appendChild(span);
+      tl.to(excitedBrackets[1], {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)"
+      }, 0.5);
+      
+      // Question text animation
+      tl.to(questionText, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      }, 0.7);
+      
+      // Nav items animation with stagger
+      tl.to(navItems, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.6,
+        ease: "power2.out"
+      }, 0.9);
+      
+      // Create parallax effect for the excited section
+      gsap.to('#get-excited', {
+        backgroundPosition: '0 20%',
+        ease: "none",
+        scrollTrigger: {
+          trigger: '#get-excited',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
         }
       });
     }
-
-    // Staggered animations
-    function initStaggeredAnimations() {
-      const staggerItems = document.querySelectorAll('.stagger-item');
-      
-      staggerItems.forEach(item => {
-        const staggerIndex = item.style.getPropertyValue('--stagger') || 0;
-        item.style.transitionDelay = `${staggerIndex * 0.1}s`;
-      });
-    }
     
-    // Scroll animations with Apple-style parallax effects
+    // Scroll animations for sections
     function initScrollAnimations() {
-      // Options for the IntersectionObserver
+      // Animate section headers when they enter viewport
       const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-      
-      // Handle intersection for general elements
-      const handleIntersect = (entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            
-            // For staggered items, add visible class to children
-            if (entry.target.querySelectorAll('.stagger-item').length > 0) {
-              entry.target.querySelectorAll('.stagger-item').forEach((item, index) => {
-                setTimeout(() => {
-                  item.classList.add('visible');
-                }, index * 100);
-              });
-            }
-            
-            observer.unobserve(entry.target); // Stop observing once visible
-          }
-        });
-      };
-      
-      // Create observers for different element types
-      const generalObserver = new IntersectionObserver(handleIntersect, observerOptions);
-      
-      // Special observer for parallax elements
-      const parallaxObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, {
         threshold: 0.1,
-        rootMargin: '-10% 0px -10% 0px'
-      });
-
-      // Special observer for pinned elements
-      const pinObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          } else {
-            //entry.target.classList.remove('visible');
+        rootMargin: '0px 0px -10% 0px'
+      };
+      
+      // Observe section numbers
+      document.querySelectorAll('.section-number').forEach(el => {
+        gsap.from(el, {
+          x: -50,
+          opacity: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: el.parentElement,
+            start: 'top 80%',
+            end: 'top 50%',
+            scrub: true
           }
         });
-      }, {
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-        rootMargin: '-20% 0px -20% 0px'
       });
       
-      // Observer for stamped elements
-      const stampObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+      // Observe section titles
+      document.querySelectorAll('.section-title').forEach(el => {
+        gsap.from(el, {
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            end: 'top 60%',
+            scrub: true
           }
         });
-      }, {
-        threshold: 0.5
       });
       
-      // Observer for hand-drawn elements
-      const handDrawnObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+      // Observe section dividers
+      document.querySelectorAll('.section-divider').forEach(el => {
+        gsap.from(el, {
+          width: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            end: 'top 60%',
+            scrub: true
           }
         });
-      }, {
-        threshold: 0.5
       });
       
-      // Observe section elements
-      document.querySelectorAll('.section-number, .subtitle, .section-title, .section-description, .search-filter-container').forEach(el => {
-        generalObserver.observe(el);
+      // Observe section descriptions
+      document.querySelectorAll('.section-description').forEach(el => {
+        gsap.from(el, {
+          y: 30,
+          opacity: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            end: 'top 60%',
+            scrub: true
+          }
+        });
       });
       
-      // Observe cards and info cards
-      document.querySelectorAll('.card, .info-card').forEach(el => {
-        generalObserver.observe(el);
-      });
-      
-      // Observe parallax elements
-      document.querySelectorAll('.parallax-element').forEach(el => {
-        parallaxObserver.observe(el);
-      });
-      
-      // Observe pinned elements
-      document.querySelectorAll('.pin-element').forEach(el => {
-        pinObserver.observe(el);
-      });
-      
-      // Observe split elements
-      document.querySelectorAll('.split-left, .split-right').forEach(el => {
-        generalObserver.observe(el);
-      });
-      
-      // Observe stamped elements
-      document.querySelectorAll('.stamped').forEach(el => {
-        stampObserver.observe(el);
-      });
-      
-      // Observe hand-drawn elements
-      document.querySelectorAll('.hand-drawn').forEach(el => {
-        handDrawnObserver.observe(el);
-      });
-      
-      // Observe text animation elements
-      document.querySelectorAll('.text-animation').forEach(el => {
-        generalObserver.observe(el);
-      });
-      
-      // Observe letter by letter elements
-      document.querySelectorAll('.letter-by-letter').forEach(el => {
-        generalObserver.observe(el);
-      });
-      
-      // Observe other animate-in elements
-      document.querySelectorAll('.animate-in:not(.visible)').forEach(el => {
-        generalObserver.observe(el);
+      // Create staggered animations for cards
+      const cards = document.querySelectorAll('.card, .info-card');
+      cards.forEach(card => {
+        gsap.from(card, {
+          y: 50,
+          opacity: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            end: 'top 65%',
+            scrub: true
+          }
+        });
+        
+        // Add SVG outline animation for cards
+        addCardOutline(card);
       });
     }
     
-    // Navigation
+    // Add SVG outline drawing animation to cards
+    function addCardOutline(card) {
+      // Create SVG outline for card drawing effect
+      const svgOutline = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svgOutline.classList.add('card-outline');
+      svgOutline.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      `;
+      
+      // Create rectangle path
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', '0');
+      rect.setAttribute('y', '0');
+      rect.setAttribute('width', '100%');
+      rect.setAttribute('height', '100%');
+      rect.setAttribute('fill', 'none');
+      rect.setAttribute('stroke', 'var(--gold)');
+      rect.setAttribute('stroke-width', '1');
+      rect.setAttribute('opacity', '0.5');
+      
+      // Calculate perimeter for stroke-dasharray
+      setTimeout(() => {
+        const cardWidth = card.offsetWidth;
+        const cardHeight = card.offsetHeight;
+        const perimeter = 2 * (cardWidth + cardHeight);
+        
+        rect.setAttribute('stroke-dasharray', perimeter);
+        rect.setAttribute('stroke-dashoffset', perimeter);
+        
+        // Add animation on scroll
+        gsap.to(rect, {
+          strokeDashoffset: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            end: 'top 60%',
+            scrub: true
+          }
+        });
+      }, 100);
+      
+      svgOutline.appendChild(rect);
+      card.appendChild(svgOutline);
+    }
+    
+    // Navigation functionality
     function initNavigation() {
       const header = document.querySelector('.header');
       const menuButton = document.querySelector('.menu-button');
@@ -2319,41 +2510,33 @@
       const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
       const sideNavItems = document.querySelectorAll('.side-nav-item');
       
-      // Shrink header on scroll with smooth transition
-      let lastScrollY = 0;
-      
-      window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-        
-        if (currentScrollY > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
+      // Shrink header on scroll
+      ScrollTrigger.create({
+        start: 'top -80',
+        end: 99999,
+        onUpdate: (self) => {
+          if (self.direction === -1) {
+            header.classList.remove('scrolled');
+          } else {
+            header.classList.add('scrolled');
+          }
         }
-        
-        // Hide/show header on scroll direction
-        if (currentScrollY > lastScrollY && currentScrollY > 300) {
-          header.style.transform = 'translateY(-100%)';
-        } else {
-          header.style.transform = 'translateY(0)';
-        }
-        
-        lastScrollY = currentScrollY;
       });
       
-      // Toggle mobile menu with animation
+      // Toggle mobile menu
       menuButton.addEventListener('click', () => {
         menuButton.classList.toggle('menu-open');
         mobileMenu.classList.toggle('open');
         
+        // Prevent scrolling when menu is open
         if (mobileMenu.classList.contains('open')) {
-          document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+          document.body.style.overflow = 'hidden';
         } else {
-          document.body.style.overflow = ''; // Re-enable scrolling
+          document.body.style.overflow = '';
         }
       });
       
-      // Handle navigation link clicks with smooth scrolling
+      // Handle navigation link clicks
       [...navLinks, ...mobileNavLinks, ...sideNavItems].forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
@@ -2370,61 +2553,489 @@
           if (targetSection) {
             // Calculate offset considering header height
             const headerHeight = header.offsetHeight;
-            const offsetTop = targetSection.offsetTop - headerHeight;
             
             // Smooth scroll to section
-            window.scrollTo({
-              top: offsetTop,
-              behavior: 'smooth'
+            gsap.to(window, {
+              duration: 1,
+              scrollTo: { 
+                y: targetSection, 
+                offsetY: headerHeight 
+              },
+              ease: "power2.inOut"
             });
           }
         });
       });
       
       // Update active nav link on scroll
-      window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY + header.offsetHeight + 50;
-        
-        // Get all sections
-        const sections = document.querySelectorAll('section[id]');
-        
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          const sectionBottom = sectionTop + sectionHeight;
-          const sectionId = section.getAttribute('id');
-          
-          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            // Update main navigation
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-              }
-            });
-            
-            // Update side navigation
-            sideNavItems.forEach(item => {
-              item.classList.remove('active');
-              if (item.getAttribute('href') === `#${sectionId}`) {
-                item.classList.add('active');
-              }
-            });
+      const sections = document.querySelectorAll('section[id]');
+      sections.forEach(section => {
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () => updateActiveNav(section.id),
+          onEnterBack: () => updateActiveNav(section.id)
+        });
+      });
+      
+      function updateActiveNav(sectionId) {
+        // Update main navigation
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${sectionId}`) {
+            link.classList.add('active');
           }
+        });
+        
+        // Update side navigation
+        sideNavItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('href') === `#${sectionId}`) {
+            item.classList.add('active');
+          }
+        });
+      }
+    }
+    
+    // Showcase section with scroll-based sequence
+    function initShowcaseSequence() {
+      const showcaseSection = document.getElementById('experience-showcase');
+      if (!showcaseSection) return;
+      
+      const showcaseContainer = showcaseSection.querySelector('.pinned-container');
+      const frames = showcaseSection.querySelectorAll('.sequence-frame');
+      const svgPaths = showcaseSection.querySelectorAll('.showcase-icon path, .showcase-icon line, .showcase-icon circle, .showcase-icon rect');
+      
+      // Pin the showcase container during scroll
+      ScrollTrigger.create({
+        trigger: showcaseSection,
+        start: 'top top',
+        end: '+=300%', // Duration of the pinned section (3x viewport height)
+        pin: showcaseContainer,
+        pinSpacing: true
+      });
+      
+      // Set initial state for all frames
+      gsap.set(frames, { 
+        opacity: 0,
+        visibility: 'hidden'
+      });
+      
+      // Make first frame visible initially
+      gsap.set(frames[0], { 
+        opacity: 1,
+        visibility: 'visible'
+      });
+      
+      // Set up SVG paths for drawing animation
+      gsap.set(svgPaths, function(i, target) {
+        const path = target;
+        const length = path.getTotalLength ? path.getTotalLength() : 100;
+        return {
+          strokeDasharray: length,
+          strokeDashoffset: length
+        };
+      });
+      
+      // Create animation sequence triggered by scroll
+      frames.forEach((frame, index) => {
+        // Calculate scroll positions
+        const scrollStart = index * (100 / frames.length);
+        const scrollEnd = (index + 1) * (100 / frames.length);
+        
+        // Create a timeline for each frame transition
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: showcaseSection,
+            start: `top+=${scrollStart}% top`,
+            end: `top+=${scrollEnd}% top`,
+            scrub: true,
+            onEnter: () => {
+              // Make current frame visible, hide others
+              frames.forEach((f, i) => {
+                if (i === index) {
+                  gsap.to(f, { opacity: 1, visibility: 'visible', duration: 0.5 });
+                } else {
+                  gsap.to(f, { opacity: 0, visibility: 'hidden', duration: 0.5 });
+                }
+              });
+            }
+          }
+        });
+        
+        // Animate SVG drawing for the current frame
+        const framePaths = frame.querySelectorAll('path, line, circle, rect');
+        tl.to(framePaths, {
+          strokeDashoffset: 0,
+          duration: 1,
+          stagger: 0.1
+        }, 0);
+        
+        // Animate content with stagger
+        const content = frame.querySelectorAll('h3, p');
+        tl.from(content, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.1
+        }, 0.3);
+      });
+    }
+    
+    // Section-specific animations
+    function initSectionAnimations() {
+      // Initialize section-specific custom animations
+      initExperiencesAnimations();
+      initGuideAnimations();
+      initTipsAnimations();
+      initAmenitiesAnimations();
+    }
+    
+    // Experiences section animations
+    function initExperiencesAnimations() {
+      const experiencesSection = document.getElementById('experiences');
+      if (!experiencesSection) return;
+      
+      // Add hand-drawn SVG decorations
+      const handDrawnContainer = document.createElement('div');
+      handDrawnContainer.className = 'handdrawn-svg-container';
+      handDrawnContainer.style.cssText = `
+        right: 5%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 150px;
+        height: 300px;
+      `;
+      
+      // Create SVG
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
+      svg.setAttribute('viewBox', '0 0 100 300');
+      
+      // Add hand-drawn paths
+      const paths = [
+        'M20,50 C20,30 80,30 80,50 C80,70 20,70 20,50 Z',
+        'M30,150 L50,120 L70,150 L50,180 Z',
+        'M30,230 L70,230 L70,270 L30,270 Z'
+      ];
+      
+      paths.forEach((d, i) => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'var(--gold)');
+        path.setAttribute('stroke-width', '1');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('opacity', '0.3');
+        
+        // Calculate length for stroke animation
+        const length = path.getTotalLength ? path.getTotalLength() : 100;
+        path.setAttribute('stroke-dasharray', length);
+        path.setAttribute('stroke-dashoffset', length);
+        
+        svg.appendChild(path);
+        
+        // Create drawing animation on scroll
+        gsap.to(path, {
+          strokeDashoffset: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: experiencesSection,
+            start: 'top 60%',
+            end: 'center center',
+            scrub: true
+          }
+        });
+      });
+      
+      handDrawnContainer.appendChild(svg);
+      experiencesSection.appendChild(handDrawnContainer);
+      
+      // Enhance search & filter container
+      const searchFilter = experiencesSection.querySelector('.search-filter-container');
+      if (searchFilter) {
+        gsap.from(searchFilter, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: searchFilter,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse'
+          }
+        });
+      }
+    }
+    
+    // Guide section animations
+    function initGuideAnimations() {
+      const guideSection = document.getElementById('guide');
+      if (!guideSection) return;
+      
+      // Add hand-drawn decorative elements
+      const svgContainer = document.createElement('div');
+      svgContainer.className = 'handdrawn-svg-container';
+      svgContainer.style.cssText = `
+        left: 5%;
+        top: 30%;
+        width: 100px;
+        height: 400px;
+      `;
+      
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
+      svg.setAttribute('viewBox', '0 0 100 400');
+      
+      // Create multiple decorative lines
+      for (let i = 0; i < 5; i++) {
+        const y = 80 * i + 40;
+        
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        line.setAttribute('d', `M20,${y} Q50,${y-20} 80,${y}`);
+        line.setAttribute('fill', 'none');
+        line.setAttribute('stroke', 'var(--gold)');
+        line.setAttribute('stroke-width', '1');
+        line.setAttribute('opacity', '0.2');
+        
+        const length = line.getTotalLength ? line.getTotalLength() : 100;
+        line.setAttribute('stroke-dasharray', length);
+        line.setAttribute('stroke-dashoffset', length);
+        
+        svg.appendChild(line);
+        
+        // Animate each line with delay
+        gsap.to(line, {
+          strokeDashoffset: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: guideSection,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: true
+          }
+        });
+      }
+      
+      svgContainer.appendChild(svg);
+      guideSection.appendChild(svgContainer);
+      
+      // Staggered reveal animation for list items
+      const listItems = guideSection.querySelectorAll('li');
+      listItems.forEach((item, i) => {
+        gsap.from(item, {
+          x: -20,
+          opacity: 0,
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: item.closest('.card'),
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          },
+          delay: i * 0.1
         });
       });
     }
     
-    // Progress bar
+    // Tips section animations
+    function initTipsAnimations() {
+      const tipsSection = document.getElementById('tips');
+      if (!tipsSection) return;
+      
+      // Add geometric decorative elements
+      const geoContainer = document.createElement('div');
+      geoContainer.className = 'geometric-decorations';
+      geoContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      `;
+      
+      // Create various geometric shapes
+      const shapes = [
+        { type: 'circle', x: '10%', y: '20%', size: '50px', opacity: 0.1 },
+        { type: 'line', x: '85%', y: '30%', width: '100px', angle: 45, opacity: 0.1 },
+        { type: 'diamond', x: '15%', y: '80%', size: '40px', opacity: 0.1 },
+        { type: 'dot', x: '80%', y: '85%', size: '5px', opacity: 0.3 },
+        { type: 'dot', x: '75%', y: '15%', size: '5px', opacity: 0.3 }
+      ];
+      
+      shapes.forEach(shape => {
+        const element = document.createElement('div');
+        element.className = `geometric-element geo-${shape.type}`;
+        
+        // Styling based on shape type
+        element.style.cssText = `
+          position: absolute;
+          left: ${shape.x};
+          top: ${shape.y};
+          opacity: 0;
+        `;
+        
+        switch(shape.type) {
+          case 'circle':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              border: 1px solid var(--gold);
+              border-radius: 50%;
+            `;
+            break;
+          case 'line':
+            element.style.cssText += `
+              width: ${shape.width};
+              height: 1px;
+              background-color: var(--gold);
+              transform: rotate(${shape.angle}deg);
+            `;
+            break;
+          case 'diamond':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              border: 1px solid var(--gold);
+              transform: rotate(45deg);
+            `;
+            break;
+          case 'dot':
+            element.style.cssText += `
+              width: ${shape.size};
+              height: ${shape.size};
+              background-color: var(--gold);
+              border-radius: 50%;
+            `;
+            break;
+        }
+        
+        geoContainer.appendChild(element);
+        
+        // Animate each element on scroll
+        gsap.to(element, {
+          opacity: shape.opacity,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: tipsSection,
+            start: 'top 80%',
+            end: 'top 40%',
+            scrub: true
+          }
+        });
+      });
+      
+      tipsSection.appendChild(geoContainer);
+      
+      // Enhance tip content with staggered animations
+      const tipItems = tipsSection.querySelectorAll('.card-content > div');
+      tipItems.forEach((item, i) => {
+        gsap.from(item, {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: item.closest('.card'),
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          },
+          delay: i * 0.2
+        });
+      });
+    }
+    
+    // Amenities section animations
+    function initAmenitiesAnimations() {
+      const amenitiesSection = document.getElementById('amenities');
+      if (!amenitiesSection) return;
+      
+      // Add glow effect to cards
+      const cards = amenitiesSection.querySelectorAll('.card');
+      cards.forEach(card => {
+        // Create glow overlay
+        const glowEffect = document.createElement('div');
+        glowEffect.className = 'card-glow';
+        glowEffect.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle at 50% 0%, rgba(172, 122, 42, 0.15), transparent 70%);
+          opacity: 0;
+          z-index: -1;
+          pointer-events: none;
+        `;
+        
+        card.style.position = 'relative';
+        card.style.overflow = 'hidden';
+        card.appendChild(glowEffect);
+        
+        // Animate glow effect on scroll
+        gsap.to(glowEffect, {
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: true
+          }
+        });
+        
+        // Enhanced hover effect
+        card.addEventListener('mouseenter', () => {
+          gsap.to(glowEffect, {
+            opacity: 0.8,
+            duration: 0.3
+          });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          gsap.to(glowEffect, {
+            opacity: 0.3,
+            duration: 0.3
+          });
+        });
+      });
+      
+      // Staggered animation for list items
+      const listItems = amenitiesSection.querySelectorAll('li');
+      listItems.forEach((item, i) => {
+        const card = item.closest('.card');
+        const index = Array.from(card.querySelectorAll('li')).indexOf(item);
+        
+        gsap.from(item, {
+          x: -20,
+          opacity: 0,
+          duration: 0.4,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          },
+          delay: index * 0.1
+        });
+      });
+    }
+    
+    // Progress bar animation
     function initProgressBar() {
       const progressBar = document.getElementById('progressBar');
       
-      window.addEventListener('scroll', () => {
-        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = window.scrollY;
-        const progress = (scrolled / windowHeight) * 100;
-        
-        progressBar.style.width = progress + '%';
+      // Create smoother progress bar animation
+      gsap.to(progressBar, {
+        width: '100%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.3
+        }
       });
     }
     
@@ -2432,27 +3043,59 @@
     function initBackToTop() {
       const backToTopButton = document.getElementById('back-to-top');
       
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
-          backToTopButton.classList.add('visible');
-        } else {
-          backToTopButton.classList.remove('visible');
-        }
+      // Show/hide based on scroll position
+      ScrollTrigger.create({
+        start: 100,
+        end: 99999,
+        toggleClass: {
+          targets: backToTopButton,
+          className: 'visible'
+        },
+        toggleActions: 'play none none reverse'
       });
       
+      // Scroll to top when clicked
       backToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: 0,
+          ease: "power2.inOut"
         });
       });
     }
     
-    // Experiences search and filter functionality
+    // Scroll indicator animation
+    function initScrollIndicator() {
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      
+      // Show indicator after delay
+      gsap.to(scrollIndicator, {
+        opacity: 1,
+        delay: 2,
+        duration: 0.5
+      });
+      
+      // Hide once user starts scrolling
+      ScrollTrigger.create({
+        start: 10,
+        end: 20,
+        onEnter: () => {
+          gsap.to(scrollIndicator, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => scrollIndicator.remove()
+          });
+        }
+      });
+    }
+    
+    // Experiences search and filter
     function initExperiencesFilter() {
       const searchInput = document.getElementById('experienceSearch');
       const filterTags = document.querySelectorAll('.filter-tag');
       const experienceCards = document.querySelectorAll('#experiencesGrid .card');
+      
+      if (!searchInput || !filterTags.length || !experienceCards.length) return;
       
       // Search functionality
       searchInput.addEventListener('input', filterExperiences);
@@ -2482,187 +3125,90 @@
           const matchesFilter = activeFilter === 'all' || cardCategory === activeFilter;
           
           if (matchesSearch && matchesFilter) {
-            card.style.display = '';
-            
-            // Add a slight delay for the animation
-            setTimeout(() => {
-              card.classList.add('visible');
-            }, 100);
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              duration: 0.4,
+              display: 'block',
+              ease: "power2.out"
+            });
           } else {
-            card.classList.remove('visible');
-            
-            // Remove the card after animation completes
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 300);
+            gsap.to(card, {
+              opacity: 0,
+              y: 20,
+              duration: 0.4,
+              display: 'none',
+              ease: "power2.in"
+            });
           }
         });
       }
     }
     
-    // Apple-style parallax effect on scroll with dynamic speeds
-    window.addEventListener('scroll', () => {
-      const scrollPosition = window.scrollY;
+    // SVG drawing animations
+    function initSvgAnimations() {
+      // Find all SVG elements with paths
+      const svgElements = document.querySelectorAll('svg:not(.card-outline)');
       
-      // Parallax for section background elements
-      document.querySelectorAll('.parallax-section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const windowHeight = window.innerHeight;
+      svgElements.forEach(svg => {
+        const paths = svg.querySelectorAll('path, line, circle, rect');
         
-        // Calculate how much of the section is visible
-        const visiblePct = calculateVisiblePercentage(section, windowHeight, scrollPosition);
-        
-        if (visiblePct > 0) {
-          // Create parallax effect for section elements
-          const sectionNumber = section.querySelector('.section-number');
-          if (sectionNumber) {
-            sectionNumber.style.transform = `translateY(${visiblePct * 30}px)`;
-          }
+        // Set up paths for drawing animation
+        paths.forEach(path => {
+          const length = path.getTotalLength ? path.getTotalLength() : 100;
           
-          // Add effects to other elements in the section
-          const parallaxElements = section.querySelectorAll('.parallax-element');
-          if (parallaxElements.length > 0) {
-            parallaxElements.forEach((el, index) => {
-              const speed = 0.05 + (index * 0.01);
-              const yOffset = (scrollPosition - sectionTop) * speed;
-              el.style.transform = `translateY(${yOffset}px)`;
-            });
-          }
-        }
-        
-        // Pin elements when section is in view
-        const pinElements = section.querySelectorAll('.pin-element');
-        if (pinElements.length > 0) {
-          const inView = scrollPosition > sectionTop - windowHeight / 2 && 
-                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
+          gsap.set(path, {
+            strokeDasharray: length,
+            strokeDashoffset: length
+          });
           
-          if (inView) {
-            pinElements.forEach((el, index) => {
-              setTimeout(() => {
-                el.classList.add('visible');
-              }, index * 200);
-            });
-          }
-        }
-        
-        // Animate staggered items when section is in view
-        const staggerItems = section.querySelectorAll('.stagger-item');
-        if (staggerItems.length > 0) {
-          const inView = scrollPosition > sectionTop - windowHeight / 1.5 && 
-                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
-          
-          if (inView) {
-            staggerItems.forEach((el, index) => {
-              setTimeout(() => {
-                el.classList.add('visible');
-              }, index * 100);
-            });
-          }
-        }
-        
-        // Animate split elements
-        const splitElements = section.querySelectorAll('.split-left, .split-right');
-        if (splitElements.length > 0) {
-          const inView = scrollPosition > sectionTop - windowHeight / 1.2 && 
-                     scrollPosition < sectionTop + sectionHeight - windowHeight / 2;
-          
-          if (inView) {
-            splitElements.forEach((el) => {
-              el.classList.add('visible');
-            });
-          }
-        }
-      });
-    });
-    
-    // Calculate how much of an element is visible in the viewport
-    function calculateVisiblePercentage(element, windowHeight, scrollY) {
-      const rect = element.getBoundingClientRect();
-      const elemTop = rect.top + scrollY;
-      const elemBottom = elemTop + rect.height;
-      
-      // Element is above viewport
-      if (elemBottom < scrollY) {
-        return 0;
-      }
-      
-      // Element is below viewport
-      if (elemTop > scrollY + windowHeight) {
-        return 0;
-      }
-      
-      // Element is partially visible
-      let visibleTop = Math.max(elemTop, scrollY);
-      let visibleBottom = Math.min(elemBottom, scrollY + windowHeight);
-      let visibleHeight = visibleBottom - visibleTop;
-      
-      return visibleHeight / rect.height;
-    }
-    
-    // Initialize floating animations
-    function initFloatingElements() {
-      const floatElements = document.querySelectorAll('.float-element');
-      
-      floatElements.forEach((el, index) => {
-        // Offset each element's animation
-        el.style.animationDelay = `${index * 0.5}s`;
-      });
-    }
-    
-    // Initialize counting animations
-    function initCountUpElements() {
-      const countUpElements = document.querySelectorAll('.count-up');
-      
-      const observerOptions = {
-        threshold: 0.5,
-        rootMargin: '0px'
-      };
-      
-      const countObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const target = parseInt(el.getAttribute('data-target'), 10);
-            const duration = parseInt(el.getAttribute('data-duration') || 2000, 10);
-            
-            let start = 0;
-            const increment = target / (duration / 16);
-            const startTime = performance.now();
-            
-            function updateCount(timestamp) {
-              const elapsed = timestamp - startTime;
-              const progress = Math.min(elapsed / duration, 1);
-              
-              // Use easing function for smoother animation
-              const easedProgress = 1 - Math.pow(1 - progress, 3);
-              const currentCount = Math.floor(easedProgress * target);
-              
-              el.textContent = currentCount;
-              
-              if (progress < 1) {
-                requestAnimationFrame(updateCount);
-              } else {
-                el.textContent = target;
-              }
+          // Create drawing animation on scroll
+          gsap.to(path, {
+            strokeDashoffset: 0,
+            duration: 1,
+            scrollTrigger: {
+              trigger: svg.closest('section') || svg,
+              start: 'top 70%',
+              end: 'top 30%',
+              scrub: true
             }
-            
-            requestAnimationFrame(updateCount);
-            countObserver.unobserve(el);
-          }
+          });
         });
-      }, observerOptions);
+      });
       
-      countUpElements.forEach(el => {
-        countObserver.observe(el);
+      // Add hover animation for SVG icons
+      const icons = document.querySelectorAll('.showcase-icon, .info-icon');
+      
+      icons.forEach(icon => {
+        icon.addEventListener('mouseenter', () => {
+          const paths = icon.querySelectorAll('path, line, circle, rect');
+          
+          gsap.to(paths, {
+            stroke: 'var(--gold-highlight)',
+            duration: 0.3
+          });
+          
+          gsap.to(icon, {
+            scale: 1.05,
+            duration: 0.3
+          });
+        });
+        
+        icon.addEventListener('mouseleave', () => {
+          const paths = icon.querySelectorAll('path, line, circle, rect');
+          
+          gsap.to(paths, {
+            stroke: 'var(--gold)',
+            duration: 0.3
+          });
+          
+          gsap.to(icon, {
+            scale: 1,
+            duration: 0.3
+          });
+        });
       });
     }
-    
-    // Initialize on load
-    window.addEventListener('load', () => {
-      initFloatingElements();
-      initCountUpElements();
-    });
   </script>
 </body>
 </html>
