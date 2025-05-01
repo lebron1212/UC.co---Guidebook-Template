@@ -1758,30 +1758,54 @@
         </div>
       </section>
       
-      <!-- Tips Section -->
-      <section id="tips" class="section">
-        <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
-        <div class="section-gradient"></div>
-        <div class="container">
-          <div class="section-header">
-            <div class="section-number" id="tipsNumber">04</div>
-            <p class="subtitle" id="tipsSubtitle">INSIDER KNOWLEDGE</p>
-            <h2 class="section-title" id="tipsTitle">LOCAL TIPS</h2>
-            <div class="section-divider" id="tipsDivider"></div>
-            <p class="section-description" id="tipsDescription">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
-          </div>
-          
-          <div class="grid grid-2 tips-grid" id="tipsGrid">
-            <div class="tip-card" id="tipCard1">
-              <h3 class="tip-title">EXCLUSIVE DINING</h3>
-              <div class="tip-place">
-                <p class="tip-place-name">THE CURATOR'S GALLERY</p>
-                <p class="tip-place-desc">Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
-              </div>
-            </div>
-          </div>
+     <!-- Tips Section -->
+<section id="tips" class="section">
+  <div class="section-bg" style="background-image: url('/api/placeholder/1920/1080');"></div>
+  <div class="section-gradient"></div>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number" id="tipsNumber">04</div>
+      <p class="subtitle" id="tipsSubtitle">INSIDER KNOWLEDGE</p>
+      <h2 class="section-title" id="tipsTitle">LOCAL TIPS</h2>
+      <div class="section-divider" id="tipsDivider"></div>
+      <p class="section-description" id="tipsDescription">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
+    </div>
+    
+    <div class="grid grid-2 tips-grid" id="tipsGrid">
+      <div class="tip-card" id="tipCard1">
+        <h3 class="tip-title">EXCLUSIVE DINING</h3>
+        <div class="tip-place">
+          <p class="tip-place-name">LA MAISON DORÉE</p>
+          <p class="tip-place-desc">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
         </div>
-      </section>
+        <div class="tip-place">
+          <p class="tip-place-name">OCEAN & VINE</p>
+          <p class="tip-place-desc">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
+        </div>
+        <div class="tip-place">
+          <p class="tip-place-name">THE GARDEN ROOM</p>
+          <p class="tip-place-desc">Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
+        </div>
+      </div>
+      
+      <div class="tip-card" id="tipCard2">
+        <h3 class="tip-title">HIDDEN TREASURES</h3>
+        <div class="tip-place">
+          <p class="tip-place-name">PRIVATE BEACH COVE</p>
+          <p class="tip-place-desc">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
+        </div>
+        <div class="tip-place">
+          <p class="tip-place-name">ARTISAN ATELIER</p>
+          <p class="tip-place-desc">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
+        </div>
+        <div class="tip-place">
+          <p class="tip-place-name">THE CURATOR'S GALLERY</p>
+          <p class="tip-place-desc">Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
       
       <!-- Amenities Section -->
       <section id="amenities" class="section">
@@ -1983,3 +2007,681 @@
       </footer>
     </div>
   </div>
+  <script>
+    // Wait for DOM to be loaded before initializing
+    document.addEventListener('DOMContentLoaded', () => {
+      // Simulate loading progress
+      simulateLoading();
+    });
+    
+    // Simulate loading progress with failsafe
+    function simulateLoading() {
+      const progressBar = document.getElementById('preloaderProgress');
+      let width = 0;
+      
+      // Force complete loading after 3 seconds as a failsafe
+      setTimeout(() => {
+        completeLoading();
+      }, 3000);
+      
+      const interval = setInterval(() => {
+        if (width >= 100) {
+          clearInterval(interval);
+          completeLoading();
+        } else {
+          width += 5;
+          progressBar.style.width = width + '%';
+        }
+      }, 100);
+      
+      // Function to complete loading and show content
+      function completeLoading() {
+        const preloader = document.querySelector('.preloader');
+        if (preloader) {
+          preloader.style.opacity = '0';
+          preloader.style.transition = 'opacity 0.5s';
+          
+          setTimeout(() => {
+            preloader.style.display = 'none';
+            // Initialize the website after preloader is hidden
+            initializeWebsite();
+          }, 500);
+        } else {
+          // If preloader element doesn't exist, initialize anyway
+          initializeWebsite();
+        }
+      }
+    }
+    
+    // Initialize the website
+    function initializeWebsite() {
+      console.log("Website initialized");
+      
+      // Initialize GSAP ScrollTrigger if available
+      if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+      
+      // Initialize home screen animations
+      initHomeAnimation();
+      
+      // Initialize scroll handling
+      initScrollHandling();
+      
+      // Initialize navigation
+      initNavigation();
+      
+      // Initialize section animations
+      initSectionAnimations();
+      
+      // Create sun icon animations throughout the site
+      createSunIconAnimations();
+    }
+    
+    // Initialize home screen animations
+    function initHomeAnimation() {
+      // Create sun icon
+      createHomeSunIcon();
+      
+      // Animate brackets
+      gsap.to('#leftBracket', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.5
+      });
+      
+      gsap.to('#rightBracket', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.7
+      });
+      
+      // Initialize rotating words
+      initRotatingWords();
+      
+      // Animate welcome text
+      gsap.to('#welcomeText', {
+        opacity: 1,
+        duration: 1,
+        delay: 1.5
+      });
+      
+      // Animate explore button
+      gsap.to('#exploreButton', {
+        opacity: 1,
+        duration: 1,
+        delay: 1.8
+      });
+    }
+    
+    // Create sun icon in home section
+    function createHomeSunIcon() {
+      const container = document.getElementById('sunContainer');
+      const sunIcon = document.createElement('div');
+      sunIcon.className = 'sun-icon';
+      
+      // Create center of sun
+      const sunCenter = document.createElement('div');
+      sunCenter.className = 'sun-center';
+      sunIcon.appendChild(sunCenter);
+      
+      // Create rays
+      const numberOfRays = 24;
+      for (let i = 0; i < numberOfRays; i++) {
+        const ray = document.createElement('div');
+        ray.className = 'sun-ray';
+        
+        // Position and rotate ray
+        const angle = (i * 360) / numberOfRays;
+        ray.style.transform = `rotate(${angle}deg)`;
+        
+        // Set ray thickness (alternate between thick and thin)
+        ray.style.width = i % 2 === 0 ? '2px' : '1px';
+        
+        // Add ray to sun icon
+        sunIcon.appendChild(ray);
+      }
+      
+      // Add sun icon to container
+      container.appendChild(sunIcon);
+      
+      // Animate the sun center
+      gsap.to('.sun-center', {
+        scale: 1.5,
+        duration: 1.5,
+        repeat: 1,
+        yoyo: true,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          // Animate rays after center animation
+          document.querySelectorAll('.sun-ray').forEach((ray, index) => {
+            gsap.to(ray, {
+              height: 100,
+              duration: 1.8,
+              delay: index * 0.04,
+              ease: 'power3.out'
+            });
+          });
+        }
+      });
+    }
+    
+    // Initialize rotating words animation
+    function initRotatingWords() {
+      const words = document.querySelectorAll('.rotating-word');
+      let currentIndex = 0;
+      
+      // Show first word
+      gsap.to(words[0], {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 1
+      });
+      
+      // Set interval to rotate words
+      setInterval(() => {
+        // Hide current word
+        gsap.to(words[currentIndex], {
+          opacity: 0,
+          y: -50,
+          duration: 0.8,
+          ease: 'power2.in'
+        });
+        
+        // Update index
+        currentIndex = (currentIndex + 1) % words.length;
+        
+        // Show next word
+        gsap.to(words[currentIndex], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power2.out'
+        });
+      }, 3000);
+    }
+    
+    // Initialize scroll handling
+    function initScrollHandling() {
+      // Create scroll progress indicator
+      const scrollProgress = document.getElementById('scrollProgress');
+      
+      // Update scroll progress on scroll
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+        
+        scrollProgress.style.width = scrollPercentage + '%';
+      });
+      
+      // Initialize snap scrolling if ScrollTrigger is available
+      if (typeof ScrollTrigger !== 'undefined') {
+        initSnapScrolling();
+      } else {
+        // Fallback for normal scrolling
+        document.body.style.overflow = 'auto';
+        document.querySelector('.scroll-container').style.overflow = 'auto';
+        
+        // Add scroll event listener to update active section
+        window.addEventListener('scroll', () => {
+          const scrollPosition = window.scrollY + window.innerHeight / 2;
+          
+          // Get all sections
+          const sections = document.querySelectorAll('section');
+          
+          // Find current section
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+              updateActiveNavigation(section.id);
+            }
+          });
+        });
+      }
+    }
+    
+    // Initialize snap scrolling
+    function initSnapScrolling() {
+      const sections = document.querySelectorAll('.section');
+      
+      // Create GSAP ScrollTrigger for each section if available
+      if (typeof ScrollTrigger !== 'undefined') {
+        sections.forEach(section => {
+          // Pin sections for fixed height view
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            pin: true,
+            pinSpacing: false
+          });
+          
+          // Add animation to reveal section content when in view
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top center',
+            end: 'center center',
+            onEnter: () => {
+              // Update active navigation
+              updateActiveNavigation(section.id);
+              
+              // Begin section animations
+              animateSection(section.id);
+            }
+          });
+        });
+      } else {
+        // Fallback to basic scrolling
+        document.body.style.overflow = 'auto';
+        document.querySelector('.scroll-container').style.overflow = 'auto';
+      }
+    }
+    
+    // Initialize navigation
+    function initNavigation() {
+      const header = document.querySelector('.header');
+      const menuButton = document.querySelector('.menu-button');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link, .progress-dot');
+      
+      // Handle scroll for header state
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Toggle mobile menu
+      menuButton.addEventListener('click', () => {
+        menuButton.classList.toggle('menu-open');
+        mobileMenu.classList.toggle('open');
+      });
+      
+      // Handle nav link clicks
+      navLinks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          
+          // Close mobile menu if open
+          menuButton.classList.remove('menu-open');
+          mobileMenu.classList.remove('open');
+          
+          // Get target section
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          
+          // Scroll to section
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update active navigation
+            updateActiveNavigation(targetId);
+          }
+        });
+      });
+    }
+    
+    // Update active navigation links
+    function updateActiveNavigation(sectionId) {
+      // Update main navigation
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${sectionId}`) {
+          link.classList.add('active');
+        }
+      });
+      
+      // Update progress dots
+      document.querySelectorAll('.progress-dot').forEach(dot => {
+        dot.classList.remove('active');
+        if (dot.getAttribute('href') === `#${sectionId}`) {
+          dot.classList.add('active');
+        }
+      });
+    }
+    
+    // Initialize section animations
+    function initSectionAnimations() {
+      // Create initial observers for section animations
+      const sections = ['info', 'experiences', 'guide', 'tips', 'amenities', 'contact'];
+      
+      sections.forEach(sectionId => {
+        // Create observer for each section
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Start section animation when in view
+                animateSection(sectionId);
+                // Stop observing after animation
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2 }
+        );
+        
+        // Observe section
+        const section = document.getElementById(sectionId);
+        if (section) {
+          observer.observe(section);
+        }
+      });
+    }
+    
+    // Animate section based on id
+    function animateSection(sectionId) {
+      // Check if GSAP is available
+      if (typeof gsap === 'undefined') {
+        console.warn('GSAP not available, skipping animations');
+        return;
+      }
+      
+      // Animation for all sections
+      gsap.to(`#${sectionId}Number`, {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        duration: 1,
+        ease: 'power2.out'
+      });
+      
+      gsap.to(`#${sectionId}Subtitle`, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.2,
+        ease: 'power2.out'
+      });
+      
+      gsap.to(`#${sectionId}Title`, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.3,
+        ease: 'power2.out'
+      });
+      
+      gsap.to(`#${sectionId}Divider`, {
+        width: 120,
+        duration: 1.5,
+        delay: 0.4,
+        ease: 'power2.out'
+      });
+      
+      gsap.to(`#${sectionId}Description`, {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: 'power2.out'
+      });
+      
+      // Specific animations for each section
+      switch (sectionId) {
+        case 'info':
+          animateInfoSection();
+          break;
+        case 'experiences':
+          animateExperiencesSection();
+          break;
+        case 'guide':
+          animateGuideSection();
+          break;
+        case 'tips':
+          animateTipsSection();
+          break;
+        case 'amenities':
+          animateAmenitiesSection();
+          break;
+        case 'contact':
+          animateContactSection();
+          break;
+      }
+    }
+    
+    // Animate Info Section
+    function animateInfoSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#infoGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for cards
+      gsap.to('.info-card', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Animate Experiences Section
+    function animateExperiencesSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#experiencesGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for experience cards
+      gsap.to('.experience-card', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Animate Guide Section
+    function animateGuideSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#guideGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for guide features
+      gsap.to('.guide-feature', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Animate Tips Section
+    function animateTipsSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#tipsGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for tip cards
+      gsap.to('.tip-card', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Animate Amenities Section
+    function animateAmenitiesSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#amenitiesGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for amenity cards
+      gsap.to('.amenity-card', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Animate Contact Section
+    function animateContactSection() {
+      if (typeof gsap === 'undefined') return;
+      
+      // Fade in grid container
+      gsap.to('#contactGrid', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.6,
+        ease: 'power2.out'
+      });
+      
+      // Staggered animation for contact cards
+      gsap.to('.contact-card', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        delay: 0.8,
+        ease: 'power2.out'
+      });
+    }
+    
+    // Create sun icon animations throughout the site
+    function createSunIconAnimations() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      
+      // Create smaller sun icons for each section
+      const sections = document.querySelectorAll('.section:not(#home)');
+      
+      sections.forEach(section => {
+        const container = document.createElement('div');
+        container.className = 'sun-container';
+        container.style.opacity = '0.05';
+        
+        const sunIcon = document.createElement('div');
+        sunIcon.className = 'sun-icon';
+        
+        // Create center of sun
+        const sunCenter = document.createElement('div');
+        sunCenter.className = 'sun-center';
+        sunCenter.style.width = '20px';
+        sunCenter.style.height = '20px';
+        sunIcon.appendChild(sunCenter);
+        
+        // Create rays (fewer than main sun)
+        const numberOfRays = 12;
+        for (let i = 0; i < numberOfRays; i++) {
+          const ray = document.createElement('div');
+          ray.className = 'sun-ray';
+          
+          // Position and rotate ray
+          const angle = (i * 360) / numberOfRays;
+          ray.style.transform = `rotate(${angle}deg)`;
+          ray.style.width = '1px';
+          
+          // Add ray to sun icon
+          sunIcon.appendChild(ray);
+        }
+        
+        // Add sun icon to container
+        container.appendChild(sunIcon);
+        
+        // Position the sun randomly in the section
+        const randomX = Math.random() * 80 + 10; // Between 10% and 90%
+        const randomY = Math.random() * 80 + 10; // Between 10% and 90%
+        
+        container.style.position = 'absolute';
+        container.style.top = `${randomY}%`;
+        container.style.left = `${randomX}%`;
+        container.style.transform = 'translate(-50%, -50%)';
+        
+        // Add to section
+        section.appendChild(container);
+        
+        // Create animation for this sun
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          onEnter: () => {
+            // Animate sun when section is entered
+            gsap.to(container, {
+              opacity: 0.1,
+              duration: 1
+            });
+            
+            // Animate rays
+            const rays = container.querySelectorAll('.sun-ray');
+            gsap.to(rays, {
+              height: 50,
+              duration: 1.5,
+              stagger: 0.05,
+              ease: 'power2.out'
+            });
+          },
+          onLeave: () => {
+            // Hide sun when section is left
+            gsap.to(container, {
+              opacity: 0,
+              duration: 1
+            });
+          },
+          onEnterBack: () => {
+            // Show sun when scrolling back up
+            gsap.to(container, {
+              opacity: 0.1,
+              duration: 1
+            });
+          },
+          onLeaveBack: () => {
+            // Hide sun when scrolling further up
+            gsap.to(container, {
+              opacity: 0,
+              duration: 1
+            });
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
