@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/DrawSVGPlugin.min.js"></script>
   <style>
     /* Core Variables */
     :root {
@@ -111,13 +112,6 @@
       font-weight: 500;
     }
 
-    .number-indicator {
-      font-family: var(--font-heading);
-      font-size: 1rem;
-      color: var(--gold);
-      margin-right: var(--space-sm);
-    }
-
     /* Layout */
     .container {
       width: 100%;
@@ -130,6 +124,7 @@
       position: relative;
       padding: var(--space-xl) 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      min-height: 100vh;
       overflow: hidden;
     }
     
@@ -146,10 +141,6 @@
       grid-template-columns: 1fr;
     }
     
-    .grid-4 {
-      grid-template-columns: 1fr;
-    }
-    
     @media (min-width: 768px) {
       .grid-2 {
         grid-template-columns: repeat(2, 1fr);
@@ -157,16 +148,6 @@
       
       .grid-3 {
         grid-template-columns: repeat(3, 1fr);
-      }
-      
-      .grid-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (min-width: 1024px) {
-      .grid-4 {
-        grid-template-columns: repeat(4, 1fr);
       }
     }
 
@@ -597,97 +578,6 @@
       transform: translateY(-5px);
     }
 
-    /* Quick Info Section */
-    .quick-info {
-      background-color: var(--black);
-      border-top: 1px solid var(--gold);
-      border-bottom: 1px solid rgba(172, 122, 42, 0.3);
-      position: relative;
-    }
-    
-    .quick-info::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 50%, rgba(172, 122, 42, 0.08), rgba(8, 8, 8, 0) 70%);
-      z-index: 0;
-    }
-    
-    .info-card {
-      background-color: rgba(255, 255, 255, 0.02);
-      padding: var(--space-md);
-      border-left: 1px solid var(--gold);
-      transition: transform var(--transition-medium),
-                  box-shadow var(--transition-medium);
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
-      transform: translateY(50px);
-      opacity: 0;
-    }
-    
-    .info-card.visible {
-      transform: translateY(0);
-      opacity: 1;
-      transition: transform var(--transition-slow),
-                  opacity var(--transition-slow),
-                  box-shadow var(--transition-medium);
-      transition-delay: calc(var(--index) * 0.1s);
-    }
-    
-    .info-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 30px rgba(172, 122, 42, 0.07);
-    }
-    
-    .info-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.03), rgba(8, 8, 8, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .info-card:hover::before {
-      opacity: 1;
-    }
-    
-    .info-icon {
-      color: var(--gold);
-      font-size: 1.5rem;
-      margin-bottom: var(--space-sm);
-      transform: translateY(0);
-      transition: transform var(--transition-medium);
-    }
-    
-    .info-card:hover .info-icon {
-      transform: translateY(-5px);
-    }
-    
-    .info-content h3 {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      margin-bottom: var(--space-xs);
-      color: var(--gold);
-      text-transform: uppercase;
-      font-weight: 500;
-    }
-    
-    .info-content p {
-      font-size: 0.75rem;
-      margin-bottom: var(--space-xs);
-      font-weight: 300;
-    }
-
     /* Section Styles */
     .section-header {
       margin-bottom: var(--space-lg);
@@ -838,527 +728,43 @@
       font-weight: 300;
     }
     
-    /* Search & Filter */
-    .search-filter-container {
-      margin-bottom: var(--space-lg);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.5s;
-    }
-    
-    .search-filter-container.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .search-bar {
-      display: flex;
-      margin-bottom: var(--space-md);
-    }
-    
-    .search-input {
-      flex: 1;
-      background-color: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--off-white);
-      padding: var(--space-sm) var(--space-md);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      transition: border-color var(--transition-fast),
-                  background-color var(--transition-fast);
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: var(--gold);
-      background-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    .search-button {
-      background-color: var(--gold);
-      color: var(--black);
-      border: none;
-      padding: 0 var(--space-md);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      cursor: pointer;
-      transition: background-color var(--transition-fast);
-    }
-    
-    .search-button:hover {
-      background-color: var(--gold-highlight);
-    }
-    
-    .filter-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-xs);
-    }
-    
-    .filter-tag {
-      background-color: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--off-white);
-      padding: 5px 15px;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background-color var(--transition-fast),
-                  color var(--transition-fast),
-                  border-color var(--transition-fast);
-    }
-    
-    .filter-tag:hover,
-    .filter-tag.active {
-      background-color: var(--gold);
-      color: var(--black);
-      border-color: var(--gold);
+    .accent-text {
+      color: var(--gold);
     }
 
-    /* Experience Showcase Section */
-    .experience-showcase {
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .showcase-container {
-      position: relative;
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .showcase-item {
-      position: absolute;
+    /* Geometric elements */
+    .geometric-background {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      opacity: 0;
-      transition: opacity var(--transition-slow);
+      pointer-events: none;
+      z-index: -1;
     }
     
-    .showcase-item.active {
-      opacity: 1;
-    }
-    
-    .showcase-icon {
-      width: 120px;
-      height: 120px;
-      margin-bottom: var(--space-md);
-    }
-    
-    .showcase-title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin-bottom: var(--space-md);
-      color: var(--gold);
-    }
-    
-    .showcase-description {
-      max-width: 600px;
-      margin: 0 auto var(--space-lg);
-    }
-    
-    .showcase-indicator {
-      position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: var(--space-sm);
-    }
-    
-    .indicator-dot {
-      width: 10px;
-      height: 10px;
-      background-color: rgba(255, 255, 255, 0.2);
-      transition: background-color var(--transition-medium),
-                  transform var(--transition-medium);
-      cursor: pointer;
-    }
-    
-    .indicator-dot.active {
-      background-color: var(--gold);
-      transform: scale(1.2);
-    }
-    
-    /* Animated SVG styles */
-    .svg-path {
-      fill: none;
-      stroke: var(--gold);
-      stroke-width: 1px;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    
-    /* Geometric Background Elements */
     .geometric-element {
       position: absolute;
-      will-change: transform, opacity;
-      pointer-events: none;
       opacity: 0;
-      z-index: -1;
       border: 1px solid var(--gold);
     }
     
-    .geo-circle {
-      border-radius: 50%;
-    }
-    
-    .geo-line {
-      height: 1px;
-      background-color: var(--gold);
-      border: none;
-    }
-    
-    .geo-dot {
-      width: 4px;
-      height: 4px;
-      background-color: var(--gold);
-      border-radius: 50%;
-      border: none;
-    }
-    
-    /* Features Slider Section */
-    .features-slider {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
-    
-    .slider-container {
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
-    
-    .slider-item {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .showcase-section {
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      opacity: 0;
-      transition: opacity var(--transition-slow);
-    }
-    
-    .slider-item.active {
-      opacity: 1;
-    }
-    
-    .feature-image {
-      width: 50%;
-      height: 100%;
       position: relative;
       overflow: hidden;
     }
     
-    .feature-image img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .showcase-icon {
+      width: 200px;
+      height: 200px;
+      stroke: var(--gold);
+      fill: none;
+      margin: 0 auto 2rem;
     }
-    
-    .feature-content {
-      width: 50%;
-      padding: var(--space-lg);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    
-    .feature-title {
-      margin-bottom: var(--space-md);
-      color: var(--gold);
-    }
-    
-    .feature-description {
-      margin-bottom: var(--space-lg);
-    }
-    
-    .slider-navigation {
-      position: absolute;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: var(--space-md);
-    }
-    
-    .slider-button {
-      background: none;
-      border: none;
-      color: var(--off-white);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: color var(--transition-fast);
-    }
-    
-    .slider-button:hover {
-      color: var(--gold);
-    }
-    
-    /* Scroll Drawing Canvas */
-    .drawing-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 10;
-    }
-    
-    /* Footer */
-    footer {
-      background-color: var(--black);
-      padding: var(--space-lg) 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 70% 30%, rgba(172, 122, 42, 0.05), rgba(8, 8, 8, 0) 70%);
-      z-index: 0;
-    }
-    
-    .footer-content {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-      position: relative;
-      z-index: 1;
-    }
-    
-    @media (min-width: 768px) {
-      .footer-content {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-    
-    .footer-logo {
-      font-family: var(--font-heading);
-      font-weight: 900;
-      font-size: 1.5rem;
-      letter-spacing: 0;
-      text-transform: uppercase;
-    }
-    
-    .footer-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-md);
-    }
-    
-    .footer-link {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--off-white);
-      text-decoration: none;
-      transition: color var(--transition-fast);
-      position: relative;
-      padding: 5px 0;
-    }
-    
-    .footer-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: var(--gold);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform var(--transition-medium);
-    }
-    
-    .footer-link:hover {
-      color: var(--gold);
-    }
-    
-    .footer-link:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    
-    .copyright {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: rgba(255, 255, 255, 0.4);
-      margin-top: var(--space-lg);
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      letter-spacing: 0.1em;
-    }
-    
-    /* Side Navigation */
-    .side-nav {
-      position: fixed;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      display: none;
-      flex-direction: column;
-      gap: var(--space-sm);
-      z-index: 100;
-    }
-    
-    @media (min-width: 992px) {
-      .side-nav {
-        display: flex;
-      }
-    }
-    
-    .side-nav-item {
-      width: 10px;
-      height: 10px;
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 0;
-      cursor: pointer;
-      transition: transform var(--transition-medium),
-                  background-color var(--transition-medium);
-      position: relative;
-    }
-    
-    .side-nav-item::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      width: 4px;
-      height: 4px;
-      background-color: var(--gold);
-      transition: transform var(--transition-medium);
-    }
-    
-    .side-nav-item:hover,
-    .side-nav-item.active {
-      background-color: rgba(255, 255, 255, 0.4);
-      transform: scale(1.2);
-    }
-    
-    .side-nav-item:hover::before,
-    .side-nav-item.active::before {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    
-    .side-nav-label {
-      position: absolute;
-      right: 25px;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(8, 8, 8, 0.9);
-      padding: 5px 10px;
-      border-left: 1px solid var(--gold);
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition-medium),
-                  visibility var(--transition-medium),
-                  transform var(--transition-medium);
-      transform: translateX(10px) translateY(-50%);
-    }
-    
-    .side-nav-item:hover .side-nav-label {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(0) translateY(-50%);
-    }
-    
-    /* Animation Classes */
-    .animate-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .animate-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .fade-in {
-      opacity: 0;
-      transition: opacity var(--transition-slow);
-    }
-    
-    .fade-in.visible {
-      opacity: 1;
-    }
-    
-    .slide-in-left {
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .slide-in-left.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    
-    .slide-in-right {
-      opacity: 0;
-      transform: translateX(50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .slide-in-right.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    
-    .scale-in {
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .scale-in.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-    
+
     /* Progress Bar */
     .progress-container {
       position: fixed;
@@ -1420,221 +826,12 @@
       color: var(--black);
       transform: translateY(-3px);
     }
-    
-    /* Additional Features */
-    .accent-text {
-      color: var(--gold);
-    }
-    
-    .text-reveal {
-      position: relative;
-      display: inline-block;
-      overflow: hidden;
-    }
-    
-    .text-reveal-content {
-      display: block;
-      transform: translateY(100%);
-      transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    
-    .text-reveal.visible .text-reveal-content {
-      transform: translateY(0);
-    }
-    
-    /* Scroll Indicator */
-    .scroll-indicator {
-      position: fixed;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 99;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    
-    .scroll-icon {
-      width: 30px;
-      height: 50px;
-      border: 2px solid var(--gold);
-      border-radius: 15px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-    
-    .scroll-dot {
-      width: 6px;
-      height: 6px;
-      background-color: var(--gold);
-      border-radius: 50%;
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: scrollDot 2s infinite;
-    }
-    
-    @keyframes scrollDot {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, 25px);
-      }
-    }
-    
-    .scroll-text {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-    }
-    
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: var(--black);
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: var(--gold-shadow);
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--gold);
-    }
-
-    /* Hand-drawn SVG wrapper */
-    .handdrawn-svg-container {
-      position: absolute;
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    /* Pinned Section */
-    .pinned-section {
-      height: 300vh;
-      position: relative;
-    }
-    
-    .pinned-container {
-      height: 100vh;
-      width: 100%;
-      position: sticky;
-      top: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    
-    /* Sequence Animation Frame */
-    .sequence-frame {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition-medium),
-                  visibility var(--transition-medium);
-    }
-    
-    .sequence-frame.active {
-      opacity: 1;
-      visibility: visible;
-    }
   </style>
 </head>
 <body>
-  <!-- SVG Definitions -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <!-- Geometric Icons -->
-    <symbol id="geo-circle" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="geo-square" viewBox="0 0 100 100">
-      <rect x="10" y="10" width="80" height="80" fill="none" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="geo-diamond" viewBox="0 0 100 100">
-      <rect x="15" y="15" width="70" height="70" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(45, 50, 50)" />
-    </symbol>
-    
-    <symbol id="geo-line-h" viewBox="0 0 100 100">
-      <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="geo-line-v" viewBox="0 0 100 100">
-      <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="geo-wave" viewBox="0 0 100 100">
-      <path d="M10,50 Q25,20 40,50 Q55,80 70,50 Q85,20 90,50" fill="none" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <!-- Hand-drawn Icons -->
-    <symbol id="hand-circle" viewBox="0 0 100 100">
-      <path d="M30,52 C28,38 40,25 49,27 C61,29 75,37 73,51 C71,65 60,77 47,74 C34,71 28,62 30,52 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-    </symbol>
-    
-    <symbol id="hand-square" viewBox="0 0 100 100">
-      <path d="M28,27 L73,29 L74,74 L25,73 Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-    </symbol>
-    
-    <symbol id="hand-wave" viewBox="0 0 100 100">
-      <path d="M15,50 C25,30 35,70 50,50 C65,30 75,70 85,50" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-    </symbol>
-    
-    <!-- Luxury Icons -->
-    <symbol id="luxury-pool" viewBox="0 0 100 100">
-      <path d="M15,45 L85,45" stroke="currentColor" stroke-width="1" />
-      <path d="M15,50 L85,50" stroke="currentColor" stroke-width="1" />
-      <path d="M15,55 C35,57 65,57 85,55" stroke="currentColor" stroke-width="1" fill="none" />
-      <path d="M15,60 C35,64 65,64 85,60" stroke="currentColor" stroke-width="1" fill="none" />
-      <path d="M15,65 C35,72 65,72 85,65" stroke="currentColor" stroke-width="1" fill="none" />
-      <path d="M15,45 L15,65" stroke="currentColor" stroke-width="1" />
-      <path d="M85,45 L85,65" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="luxury-yacht" viewBox="0 0 100 100">
-      <path d="M20,60 L80,60 L70,75 L30,75 Z" fill="none" stroke="currentColor" stroke-width="1" />
-      <path d="M50,30 L50,60" stroke="currentColor" stroke-width="1" />
-      <path d="M50,30 L70,45 L70,60" fill="none" stroke="currentColor" stroke-width="1" />
-    </symbol>
-    
-    <symbol id="luxury-chef" viewBox="0 0 100 100">
-      <path d="M40,60 L40,75 L60,75 L60,60" fill="none" stroke="currentColor" stroke-width="1" />
-      <path d="M30,60 C20,55 20,40 30,35 C35,25 45,25 50,35 C55,25 65,25 70,35 C80,40 80,55 70,60 Z" fill="none" stroke="currentColor" stroke-width="1" />
-    </symbol>
-  </svg>
-
   <!-- Progress Bar -->
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <!-- Scroll Indicator -->
-  <div class="scroll-indicator" id="scrollIndicator">
-    <div class="scroll-icon">
-      <div class="scroll-dot"></div>
-    </div>
-    <div class="scroll-text">Scroll to explore</div>
   </div>
 
   <!-- Header -->
@@ -1647,7 +844,6 @@
           <li><a href="#get-excited" class="nav-link active">HOME</a></li>
           <li><a href="#experiences" class="nav-link">EXPERIENCES</a></li>
           <li><a href="#guide" class="nav-link">HOUSE GUIDE</a></li>
-          <li><a href="#tips" class="nav-link">LOCAL TIPS</a></li>
           <li><a href="#amenities" class="nav-link">AMENITIES</a></li>
           <li><a href="#contact" class="nav-link">CONTACT</a></li>
         </ul>
@@ -1667,43 +863,32 @@
       <li><a href="#get-excited" class="mobile-nav-link" style="--index: 0;">HOME</a></li>
       <li><a href="#experiences" class="mobile-nav-link" style="--index: 1;">EXPERIENCES</a></li>
       <li><a href="#guide" class="mobile-nav-link" style="--index: 2;">HOUSE GUIDE</a></li>
-      <li><a href="#tips" class="mobile-nav-link" style="--index: 3;">LOCAL TIPS</a></li>
-      <li><a href="#amenities" class="mobile-nav-link" style="--index: 4;">AMENITIES</a></li>
-      <li><a href="#contact" class="mobile-nav-link" style="--index: 5;">CONTACT</a></li>
+      <li><a href="#amenities" class="mobile-nav-link" style="--index: 3;">AMENITIES</a></li>
+      <li><a href="#contact" class="mobile-nav-link" style="--index: 4;">CONTACT</a></li>
     </ul>
   </div>
-  
-  <!-- Side Navigation -->
-  <nav class="side-nav">
-    <a href="#get-excited" class="side-nav-item active">
-      <span class="side-nav-label">HOME</span>
-    </a>
-    <a href="#info" class="side-nav-item">
-      <span class="side-nav-label">INFO</span>
-    </a>
-    <a href="#experience-showcase" class="side-nav-item">
-      <span class="side-nav-label">SHOWCASE</span>
-    </a>
-    <a href="#experiences" class="side-nav-item">
-      <span class="side-nav-label">EXPERIENCES</span>
-    </a>
-    <a href="#guide" class="side-nav-item">
-      <span class="side-nav-label">HOUSE GUIDE</span>
-    </a>
-    <a href="#tips" class="side-nav-item">
-      <span class="side-nav-label">LOCAL TIPS</span>
-    </a>
-    <a href="#amenities" class="side-nav-item">
-      <span class="side-nav-label">AMENITIES</span>
-    </a>
-    <a href="#contact" class="side-nav-item">
-      <span class="side-nav-label">CONTACT</span>
-    </a>
-  </nav>
   
   <!-- Get Excited Section -->
   <section class="get-excited-section" id="get-excited">
     <div class="get-excited-bg"></div>
+    <div class="hand-drawn-bg">
+      <!-- Hand-drawn artistic elements -->
+      <svg class="hand-drawn-element" style="top: 10%; left: 5%; width: 300px; height: 300px;">
+        <path d="M50,10 C80,10 100,30 100,60 C100,90 80,120 50,140 C20,120 0,90 0,60 C0,30 20,10 50,10" 
+              class="hand-drawn-svg" stroke-dasharray="400" stroke-dashoffset="400"/>
+      </svg>
+      
+      <svg class="hand-drawn-element" style="top: 30%; right: 10%; width: 200px; height: 200px;">
+        <path d="M10,100 Q50,20 100,100 T190,100" 
+              class="hand-drawn-svg" stroke-dasharray="300" stroke-dashoffset="300"/>
+      </svg>
+      
+      <svg class="hand-drawn-element" style="bottom: 10%; left: 15%; width: 250px; height: 250px;">
+        <path d="M125,5 C140,10 145,25 140,40 C135,55 120,65 105,70 C90,75 75,70 65,55 C55,40 60,25 75,15 C90,5 110,5 125,5" 
+              class="hand-drawn-svg" stroke-dasharray="350" stroke-dashoffset="350"/>
+      </svg>
+    </div>
+    
     <div class="container get-excited-container">
       <h1 class="get-excited-title">
         <span class="get-excited-bracket">[</span>
@@ -1718,351 +903,185 @@
       <p class="question-text">WELCOME TO YOUR LUXURY EXPERIENCE</p>
       
       <div class="section-navigation">
-        <a href="#experience-showcase" class="section-nav-item" style="--index: 0;">SHOWCASE</a>
-        <a href="#experiences" class="section-nav-item" style="--index: 1;">EXPERIENCES</a>
-        <a href="#guide" class="section-nav-item" style="--index: 2;">HOUSE GUIDE</a>
-        <a href="#tips" class="section-nav-item" style="--index: 3;">LOCAL TIPS</a>
-        <a href="#amenities" class="section-nav-item" style="--index: 4;">AMENITIES</a>
-        <a href="#contact" class="section-nav-item" style="--index: 5;">CONTACT</a>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Quick Info Section -->
-  <section class="quick-info" id="info">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">01</div>
-        <p class="subtitle animate-in">ESSENTIAL INFORMATION</p>
-        <h2 class="section-title animate-in">QUICK INFO</h2>
-        <div class="section-divider animate-in"></div>
-      </div>
-      
-      <div class="grid grid-4">
-        <div class="info-card" style="--index: 0;">
-          <div class="info-icon">
-            <i class="fas fa-wifi"></i>
-          </div>
-          <div class="info-content">
-            <h3>WIFI</h3>
-            <p>Network: Guest_Network</p>
-            <p>Password: sunshine2025</p>
-          </div>
-        </div>
-        
-        <div class="info-card" style="--index: 1;">
-          <div class="info-icon">
-            <i class="fas fa-key"></i>
-          </div>
-          <div class="info-content">
-            <h3>ACCESS</h3>
-            <p>Door code: 2580</p>
-            <p>Check-in: After 3 PM</p>
-            <p>Check-out: Before 11 AM</p>
-          </div>
-        </div>
-        
-        <div class="info-card" style="--index: 2;">
-          <div class="info-icon">
-            <i class="fas fa-phone"></i>
-          </div>
-          <div class="info-content">
-            <h3>CONTACT</h3>
-            <p>Host: (123) 456-7890</p>
-            <p>Emergency: 911</p>
-          </div>
-        </div>
-        
-        <div class="info-card" style="--index: 3;">
-          <div class="info-icon">
-            <i class="fas fa-car"></i>
-          </div>
-          <div class="info-content">
-            <h3>PARKING</h3>
-            <p>Use space #42 in the garage</p>
-            <p>Gate code: 3791</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- NEW: Experience Showcase Section with Pinned Scroll Animation -->
-  <section class="pinned-section" id="experience-showcase">
-    <div class="pinned-container">
-      <div class="container">
-        <h2 class="section-title">LUXURY LIVING</h2>
-        
-        <!-- Sequence frames - these will be shown/hidden based on scroll -->
-        <div class="sequence-frame" data-index="0">
-          <svg width="200" height="200" class="showcase-icon">
-            <use xlink:href="#luxury-pool" class="svg-path"></use>
-          </svg>
-          <h3>INFINITY POOL</h3>
-          <p>Experience the seamless blend of sky and water in our custom-designed infinity pool with panoramic ocean views.</p>
-        </div>
-        
-        <div class="sequence-frame" data-index="1">
-          <svg width="200" height="200" class="showcase-icon">
-            <use xlink:href="#luxury-yacht" class="svg-path"></use>
-          </svg>
-          <h3>PRIVATE YACHT</h3>
-          <p>Explore the coastline aboard our exclusive yacht, available for private charters with a professional crew.</p>
-        </div>
-        
-        <div class="sequence-frame" data-index="2">
-          <svg width="200" height="200" class="showcase-icon">
-            <use xlink:href="#luxury-chef" class="svg-path"></use>
-          </svg>
-          <h3>PERSONAL CHEF</h3>
-          <p>Indulge in bespoke culinary experiences prepared by your personal chef in the comfort of your luxury residence.</p>
-        </div>
+        <a href="#experiences" class="section-nav-item" style="--index: 0;">EXPERIENCES</a>
+        <a href="#guide" class="section-nav-item" style="--index: 1;">HOUSE GUIDE</a>
+        <a href="#amenities" class="section-nav-item" style="--index: 2;">AMENITIES</a>
+        <a href="#contact" class="section-nav-item" style="--index: 3;">CONTACT</a>
       </div>
     </div>
   </section>
   
   <!-- Experiences Section -->
-  <section class="experiences" id="experiences">
+  <section id="experiences">
+    <div class="hand-drawn-bg">
+      <!-- Artistic patterns that draw as you scroll -->
+      <svg class="scroll-reveal-svg" style="top: 20%; right: 5%; width: 400px; height: 600px;">
+        <path d="M20,20 C40,30 60,20 80,40 C100,60 80,80 60,100 C40,120 60,140 80,160 C100,180 120,160 140,180 C160,200 180,180 200,200" 
+              class="hand-drawn-svg" stroke-dasharray="800" stroke-dashoffset="800"/>
+        <path d="M30,50 C50,70 70,50 90,70 C110,90 130,70 150,90" 
+              class="hand-drawn-svg" stroke-dasharray="400" stroke-dashoffset="400" style="stroke-width: 0.5px; opacity: 0.5;"/>
+      </svg>
+      
+      <svg class="scroll-reveal-svg" style="bottom: 10%; left: 5%; width: 300px; height: 400px;">
+        <path d="M50,10 Q100,50 50,100 Q0,140 50,180 Q100,220 50,260" 
+              class="hand-drawn-svg" stroke-dasharray="600" stroke-dashoffset="600"/>
+      </svg>
+    </div>
+    
     <div class="container">
       <div class="section-header">
-        <div class="section-number">02</div>
-        <p class="subtitle animate-in">CURATED FOR YOU</p>
-        <h2 class="section-title animate-in">EXPERIENCES</h2>
-        <div class="section-divider animate-in"></div>
-        <p class="section-description animate-in">Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.</p>
+        <div class="section-number">01</div>
+        <p class="subtitle">CURATED FOR YOU</p>
+        <h2 class="section-title">EXPERIENCES</h2>
+        <div class="section-divider"></div>
+        <p class="section-description">Indulge in the finest curated experiences the area has to offer.</p>
       </div>
       
-      <!-- Search & Filter -->
-      <div class="search-filter-container animate-in">
-        <div class="search-bar">
-          <input type="text" class="search-input" placeholder="Search experiences..." id="experienceSearch">
-          <button class="search-button">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-        <div class="filter-tags">
-          <button class="filter-tag active" data-filter="all">All</button>
-          <button class="filter-tag" data-filter="adventure">Adventure</button>
-          <button class="filter-tag" data-filter="culinary">Culinary</button>
-          <button class="filter-tag" data-filter="cultural">Cultural</button>
-          <button class="filter-tag" data-filter="wellness">Wellness</button>
-        </div>
-      </div>
-      
-      <div class="grid grid-3" id="experiencesGrid">
-        <div class="card" style="--index: 0;" data-category="adventure">
+      <div class="grid grid-3">
+        <div class="card" style="--index: 0;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <circle cx="30" cy="30" r="28" class="hand-drawn-svg" stroke-dasharray="180" stroke-dashoffset="180"/>
+          </svg>
           <h3 class="card-title">PRIVATE YACHT TOUR</h3>
           <div class="card-content">
-            <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch included.</p>
+            <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch.</p>
             <p><span class="accent-text">Duration:</span> 4 hours</p>
             <p><span class="accent-text">Price:</span> $750 per group</p>
           </div>
         </div>
         
-        <div class="card" style="--index: 1;" data-category="culinary">
+        <div class="card" style="--index: 1;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <rect x="2" y="2" width="56" height="56" class="hand-drawn-svg" stroke-dasharray="224" stroke-dashoffset="224"/>
+          </svg>
           <h3 class="card-title">CHEF'S TABLE DINNER</h3>
           <div class="card-content">
-            <p>An exclusive culinary journey with a Michelin-starred chef preparing a personalized tasting menu right before your eyes.</p>
+            <p>An exclusive culinary journey with a Michelin-starred chef.</p>
             <p><span class="accent-text">Duration:</span> 3 hours</p>
             <p><span class="accent-text">Price:</span> $350 per person</p>
           </div>
         </div>
         
-        <div class="card" style="--index: 2;" data-category="cultural">
+        <div class="card" style="--index: 2;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <path d="M30,2 L58,30 L30,58 L2,30 Z" class="hand-drawn-svg" stroke-dasharray="160" stroke-dashoffset="160"/>
+          </svg>
           <h3 class="card-title">PRIVATE ART GALLERY TOUR</h3>
           <div class="card-content">
-            <p>Enjoy after-hours access to premiere galleries with an expert curator revealing the stories behind masterpieces.</p>
+            <p>Enjoy after-hours access to premiere galleries with an expert curator.</p>
             <p><span class="accent-text">Duration:</span> 2 hours</p>
             <p><span class="accent-text">Price:</span> $200 per person</p>
           </div>
         </div>
-        
-        <div class="card" style="--index: 3;" data-category="wellness">
-          <h3 class="card-title">MOUNTAINTOP YOGA</h3>
-          <div class="card-content">
-            <p>Private helicopter transport to a scenic mountaintop for a guided sunrise yoga session followed by champagne breakfast.</p>
-            <p><span class="accent-text">Duration:</span> 4 hours</p>
-            <p><span class="accent-text">Price:</span> $500 per person</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 4;" data-category="adventure">
-          <h3 class="card-title">DESERT STARGAZING</h3>
-          <div class="card-content">
-            <p>Chauffeured journey into the desert with an astronomer guide, high-powered telescopes, and premium picnic dinner.</p>
-            <p><span class="accent-text">Duration:</span> 5 hours</p>
-            <p><span class="accent-text">Price:</span> $375 per person</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 5;" data-category="culinary">
-          <h3 class="card-title">PRIVATE WINE TASTING</h3>
-          <div class="card-content">
-            <p>Exclusive cellar tour and tasting of rare vintages with a master sommelier in a historic vineyard estate.</p>
-            <p><span class="accent-text">Duration:</span> 3 hours</p>
-            <p><span class="accent-text">Price:</span> $250 per person</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
   
-  <!-- Guide Section -->
-  <section class="guide" id="guide">
+  <!-- House Guide Section -->
+  <section id="guide">
+    <div class="hand-drawn-bg">
+      <!-- Interactive hand-drawn patterns for house guide -->
+      <svg class="scroll-reveal-svg" style="top: 5%; left: 8%; width: 500px; height: 800px;">
+        <path d="M50,100 C100,50 150,150 200,100 C250,50 300,150 350,100 C400,50 450,150 500,100" 
+              class="hand-drawn-svg" stroke-dasharray="1000" stroke-dashoffset="1000" style="stroke-width: 0.8px; opacity: 0.6;"/>
+        <path d="M20,50 L480,50 M20,150 L480,150 M20,250 L480,250" 
+              class="hand-drawn-svg" stroke-dasharray="1400" stroke-dashoffset="1400" style="stroke-width: 0.3px; opacity: 0.3;"/>
+      </svg>
+      
+      <svg class="artistic-pattern" style="bottom: 15%; right: 10%; width: 300px; height: 300px;">
+        <path d="M150,10 C200,40 180,100 130,130 C80,160 20,120 20,70 C20,20 100,10 150,10" 
+              class="hand-drawn-svg" stroke-dasharray="500" stroke-dashoffset="500" style="filter: url(#rough); opacity: 0.05;"/>
+      </svg>
+    </div>
+    
     <div class="container">
       <div class="section-header">
-        <div class="section-number">03</div>
-        <p class="subtitle animate-in">STAY INFORMATION</p>
-        <h2 class="section-title animate-in">HOUSE GUIDE</h2>
-        <div class="section-divider animate-in"></div>
-        <p class="section-description animate-in">Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.</p>
+        <div class="section-number">02</div>
+        <p class="subtitle">STAY INFORMATION</p>
+        <h2 class="section-title">HOUSE GUIDE</h2>
+        <div class="section-divider"></div>
+        <p class="section-description">Everything you need to know to make your stay comfortable.</p>
       </div>
       
       <div class="grid grid-3">
         <div class="card" style="--index: 0;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <path d="M30,5 L55,30 L30,55 L5,30 Z M15,30 L45,30 M30,15 L30,45" 
+                  class="hand-drawn-svg" stroke-dasharray="200" stroke-dashoffset="200"/>
+          </svg>
           <h3 class="card-title">CHECKING IN & OUT</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Check-in time: After 3:00 PM</li>
-              <li style="margin-bottom: var(--space-xs);">• Self check-in with keypad (code: 2580)</li>
-              <li style="margin-bottom: var(--space-xs);">• Check-out time: Before 11:00 AM</li>
-              <li style="margin-bottom: var(--space-xs);">• Personal concierge available 24/7</li>
-              <li>• Housekeeping service included daily</li>
-            </ul>
+            <p>• Check-in time: After 3:00 PM</p>
+            <p>• Check-out time: Before 11:00 AM</p>
+            <p>• Personal concierge available 24/7</p>
           </div>
         </div>
         
         <div class="card" style="--index: 1;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <path d="M10,10 L50,10 L50,50 L10,50 Z M10,30 L50,30 M30,10 L30,50" 
+                  class="hand-drawn-svg" stroke-dasharray="240" stroke-dashoffset="240"/>
+          </svg>
           <h3 class="card-title">HOUSE FEATURES</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Smart home system controls lighting, climate, music</li>
-              <li style="margin-bottom: var(--space-xs);">• Heated infinity pool with panoramic views</li>
-              <li style="margin-bottom: var(--space-xs);">• Private screening room with 4K projector</li>
-              <li style="margin-bottom: var(--space-xs);">• Private spa with sauna and steam room</li>
-              <li>• Wine cellar with curated selection</li>
-            </ul>
+            <p>• Smart home system controls</p>
+            <p>• Heated infinity pool</p>
+            <p>• Private screening room</p>
           </div>
         </div>
         
         <div class="card" style="--index: 2;">
+          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
+            <path d="M30,10 C40,10 50,20 50,30 C50,40 40,50 30,50 C20,50 10,40 10,30 C10,20 20,10 30,10 M20,25 L40,25" 
+                  class="hand-drawn-svg" stroke-dasharray="200" stroke-dashoffset="200"/>
+          </svg>
           <h3 class="card-title">PRIVATE SERVICES</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Private chef available upon request</li>
-              <li style="margin-bottom: var(--space-xs);">• In-home massage and spa treatments</li>
-              <li style="margin-bottom: var(--space-xs);">• Chauffeur service with luxury vehicles</li>
-              <li style="margin-bottom: var(--space-xs);">• Personal shopping assistance</li>
-              <li>• Yacht and helicopter bookings</li>
-            </ul>
+            <p>• Private chef available</p>
+            <p>• In-home massage and spa</p>
+            <p>• Chauffeur service</p>
           </div>
         </div>
       </div>
     </div>
   </section>
   
-  <!-- Tips Section -->
-  <section class="tips" id="tips">
+  <!-- Amenities Section -->
+  <section id="amenities">
     <div class="container">
       <div class="section-header">
-        <div class="section-number">04</div>
-        <p class="subtitle animate-in">INSIDER KNOWLEDGE</p>
-        <h2 class="section-title animate-in">LOCAL TIPS</h2>
-        <div class="section-divider animate-in"></div>
-        <p class="section-description animate-in">Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.</p>
-      </div>
-      
-      <div class="grid grid-2">
-        <div class="card" style="--index: 0;">
-          <h3 class="card-title">EXCLUSIVE DINING</h3>
-          <div class="card-content">
-            <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 500; margin-bottom: 4px;">LA MAISON DORÉE</p>
-              <p style="margin-bottom: var(--space-xs);">Hidden gem with no signage, access through private entrance. Book 2 months in advance, request the chef's special menu.</p>
-            </div>
-            <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 500; margin-bottom: 4px;">OCEAN & VINE</p>
-              <p style="margin-bottom: var(--space-xs);">Request the private pavilion overlooking the water. Their aged wagyu is imported weekly.</p>
-            </div>
-            <div>
-              <p style="font-weight: 500; margin-bottom: 4px;">THE GARDEN ROOM</p>
-              <p>Michelin-starred secret garden dining. Ask for Maurice, he'll ensure the best experience.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 1;">
-          <h3 class="card-title">HIDDEN TREASURES</h3>
-          <div class="card-content">
-            <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 500; margin-bottom: 4px;">PRIVATE BEACH COVE</p>
-              <p style="margin-bottom: var(--space-xs);">Accessible only by boat or hidden trail. We can arrange transportation and a luxury picnic setup.</p>
-            </div>
-            <div style="margin-bottom: var(--space-sm);">
-              <p style="font-weight: 500; margin-bottom: 4px;">ARTISAN ATELIER</p>
-              <p style="margin-bottom: var(--space-xs);">Invitation-only workshops with master craftspeople. Create bespoke souvenirs from your stay.</p>
-            </div>
-            <div>
-              <p style="font-weight: 500; margin-bottom: 4px;">THE CURATOR'S GALLERY</p>
-              <p>Rotating private collection not open to the public. We can arrange after-hours viewings.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Amenities Section with Scroll Animation -->
-  <section class="amenities" id="amenities">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">05</div>
-        <p class="subtitle animate-in">FOR YOUR PLEASURE</p>
-        <h2 class="section-title animate-in">AMENITIES</h2>
-        <div class="section-divider animate-in"></div>
-        <p class="section-description animate-in">Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.</p>
+        <div class="section-number">03</div>
+        <p class="subtitle">FOR YOUR PLEASURE</p>
+        <h2 class="section-title">AMENITIES</h2>
+        <div class="section-divider"></div>
+        <p class="section-description">Every detail has been meticulously considered for your luxury experience.</p>
       </div>
       
       <div class="grid grid-3">
         <div class="card" style="--index: 0;">
           <h3 class="card-title">CULINARY</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Full chef's kitchen with premium appliances</li>
-              <li style="margin-bottom: var(--space-xs);">• Wine refrigerator stocked with curated selection</li>
-              <li style="margin-bottom: var(--space-xs);">• Gourmet coffee and espresso bar</li>
-              <li style="margin-bottom: var(--space-xs);">• Crystal glassware and fine china</li>
-              <li style="margin-bottom: var(--space-xs);">• Refrigerator pre-stocked with essentials</li>
-              <li>• Private chef available on request</li>
-            </ul>
+            <p>• Full chef's kitchen</p>
+            <p>• Wine refrigerator</p>
+            <p>• Gourmet coffee bar</p>
           </div>
         </div>
         
         <div class="card" style="--index: 1;">
           <h3 class="card-title">BEDROOM & SPA</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Custom king-size mattress with Italian linens</li>
-              <li style="margin-bottom: var(--space-xs);">• Pillow menu with 8 luxury options</li>
-              <li style="margin-bottom: var(--space-xs);">• Marble bathroom with heated floors</li>
-              <li style="margin-bottom: var(--space-xs);">• Soaking tub with panoramic views</li>
-              <li style="margin-bottom: var(--space-xs);">• Premium bath amenities by Diptyque</li>
-              <li>• In-room massage services available</li>
-            </ul>
+            <p>• Custom king-size mattress</p>
+            <p>• Italian linens</p>
+            <p>• Private spa facilities</p>
           </div>
         </div>
         
         <div class="card" style="--index: 2;">
           <h3 class="card-title">TECHNOLOGY</h3>
           <div class="card-content">
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Ultra-high-speed WiFi throughout</li>
-              <li style="margin-bottom: var(--space-xs);">• 85" OLED Smart TV with surround sound</li>
-              <li style="margin-bottom: var(--space-xs);">• All premium streaming services included</li>
-              <li style="margin-bottom: var(--space-xs);">• Smart home controls via tablet or voice</li>
-              <li style="margin-bottom: var(--space-xs);">• Private cinema room with leather recliners</li>
-              <li>• Ambient sound system throughout property</li>
-            </ul>
+            <p>• Ultra-high-speed WiFi</p>
+            <p>• Smart home controls</p>
+            <p>• Private cinema room</p>
           </div>
         </div>
       </div>
@@ -2070,66 +1089,37 @@
   </section>
   
   <!-- Contact Section -->
-  <section class="contact" id="contact">
+  <section id="contact">
     <div class="container">
       <div class="section-header">
-        <div class="section-number">06</div>
-        <p class="subtitle animate-in">AT YOUR SERVICE</p>
-        <h2 class="section-title animate-in">PERSONAL CONCIERGE</h2>
-        <div class="section-divider animate-in"></div>
-        <p class="section-description animate-in">Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.</p>
+        <div class="section-number">04</div>
+        <p class="subtitle">AT YOUR SERVICE</p>
+        <h2 class="section-title">PERSONAL CONCIERGE</h2>
+        <div class="section-divider"></div>
+        <p class="section-description">Your dedicated team is available 24/7.</p>
       </div>
       
       <div class="grid grid-2">
         <div class="card" style="--index: 0;">
           <h3 class="card-title">YOUR PERSONAL TEAM</h3>
           <div class="card-content">
-            <p>Our team of hospitality experts is entirely at your disposal throughout your stay.</p>
-            <p><span class="accent-text">Concierge:</span> (123) 456-7890 (Available 24/7)</p>
+            <p><span class="accent-text">Concierge:</span> (123) 456-7890</p>
             <p><span class="accent-text">Private Chef:</span> (123) 456-7891</p>
-            <p><span class="accent-text">Chauffeur:</span> (123) 456-7892</p>
-            <p><span class="accent-text">Wellness Expert:</span> (123) 456-7893</p>
-            <p><span class="accent-text">Email:</span> concierge@luxuryproperty.com</p>
+            <p><span class="accent-text">Email:</span> concierge@luxury.com</p>
           </div>
         </div>
         
         <div class="card" style="--index: 1;">
           <h3 class="card-title">ADDITIONAL SERVICES</h3>
           <div class="card-content">
-            <p>Simply contact your concierge to arrange any of these premium services:</p>
-            <ul style="list-style: none; padding: 0;">
-              <li style="margin-bottom: var(--space-xs);">• Private yacht or helicopter charter</li>
-              <li style="margin-bottom: var(--space-xs);">• VIP restaurant reservations</li>
-              <li style="margin-bottom: var(--space-xs);">• After-hours shopping at luxury boutiques</li>
-              <li style="margin-bottom: var(--space-xs);">• Priority access to exclusive events</li>
-              <li style="margin-bottom: var(--space-xs);">• In-home spa and wellness treatments</li>
-              <li>• Custom itinerary planning for your stay</li>
-            </ul>
+            <p>• Private yacht or helicopter charter</p>
+            <p>• VIP restaurant reservations</p>
+            <p>• In-home spa and wellness treatments</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-  
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">LUXURY PROPERTY</div>
-        
-        <div class="footer-nav">
-          <a href="#get-excited" class="footer-link">HOME</a>
-          <a href="#experiences" class="footer-link">EXPERIENCES</a>
-          <a href="#guide" class="footer-link">HOUSE GUIDE</a>
-          <a href="#tips" class="footer-link">LOCAL TIPS</a>
-          <a href="#amenities" class="footer-link">AMENITIES</a>
-          <a href="#contact" class="footer-link">CONTACT</a>
-        </div>
-      </div>
-      
-      <p class="copyright">© 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.</p>
-    </div>
-  </footer>
   
   <!-- Back to Top Button -->
   <div class="back-to-top" id="back-to-top" aria-label="Back to top">
@@ -2139,387 +1129,31 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Register ScrollTrigger plugin
+      // Register ScrollTrigger
       gsap.registerPlugin(ScrollTrigger);
       
-      // Initialize all animations and effects
-      initializeWebsite();
+      // Initialize all animations
+      initNavigation();
+      initHomepageAnimations();
+      initScrollAnimations();
+      initProgressBar();
+      initBackToTop();
+      createAnimatedBackground();
     });
     
-    function initializeWebsite() {
-      // Create geometric background elements
-      createGeometricElements();
-      
-      // Initialize homepage dynamic elements
-      initHomepage();
-      
-      // Initialize scroll animations
-      initScrollAnimations();
-      
-      // Initialize navigation
-      initNavigation();
-      
-      // Initialize scroll-based showcase sequence
-      initShowcaseSequence();
-      
-      // Initialize section-specific animations
-      initSectionAnimations();
-      
-      // Initialize progress bar
-      initProgressBar();
-      
-      // Initialize back to top button
-      initBackToTop();
-      
-      // Initialize scroll indicator
-      initScrollIndicator();
-      
-      // Initialize experiences search and filter
-      initExperiencesFilter();
-      
-      // Initialize hand-drawn SVG animations
-      initSvgAnimations();
-    }
-    
-    // Geometric background elements
-    function createGeometricElements() {
-      // Create geometric background container
-      const geometricBg = document.createElement('div');
-      geometricBg.className = 'geometric-background';
-      geometricBg.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-      `;
-      document.body.appendChild(geometricBg);
-      
-      // Create various geometric shapes
-      const shapes = [
-        // Circles
-        { type: 'circle', x: '10%', y: '20%', size: '150px' },
-        { type: 'circle', x: '85%', y: '15%', size: '100px' },
-        { type: 'circle', x: '70%', y: '85%', size: '120px' },
-        
-        // Lines
-        { type: 'line', x: '20%', y: '40%', width: '200px', angle: 0 },
-        { type: 'line', x: '80%', y: '60%', width: '150px', angle: 45 },
-        { type: 'line', x: '40%', y: '80%', width: '100px', angle: 90 },
-        
-        // Squares/Diamonds
-        { type: 'square', x: '75%', y: '30%', size: '80px' },
-        { type: 'square', x: '15%', y: '70%', size: '60px' },
-        
-        // Dots
-        { type: 'dot', x: '30%', y: '25%', size: '4px' },
-        { type: 'dot', x: '65%', y: '45%', size: '4px' },
-        { type: 'dot', x: '25%', y: '90%', size: '4px' },
-        { type: 'dot', x: '90%', y: '75%', size: '4px' }
-      ];
-      
-      // Add shapes to the background
-      shapes.forEach((shape, index) => {
-        const element = document.createElement('div');
-        element.className = `geometric-element geo-${shape.type}`;
-        element.dataset.index = index;
-        
-        // Basic positioning
-        element.style.cssText = `
-          position: absolute;
-          left: ${shape.x};
-          top: ${shape.y};
-          opacity: 0;
-          will-change: transform, opacity;
-        `;
-        
-        // Shape-specific styling
-        switch(shape.type) {
-          case 'circle':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              border: 1px solid var(--gold);
-              border-radius: 50%;
-            `;
-            break;
-            
-          case 'line':
-            element.style.cssText += `
-              width: ${shape.width};
-              height: 1px;
-              background-color: var(--gold);
-              transform: rotate(${shape.angle}deg);
-            `;
-            break;
-            
-          case 'square':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              border: 1px solid var(--gold);
-              transform: rotate(45deg);
-            `;
-            break;
-            
-          case 'dot':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              background-color: var(--gold);
-              border-radius: 50%;
-            `;
-            break;
-        }
-        
-        geometricBg.appendChild(element);
-        
-        // Create staggered fade-in and subtle animation for each element
-        gsap.to(element, {
-          opacity: 0.3,
-          duration: 1,
-          delay: index * 0.1,
-          ease: "power2.out"
-        });
-        
-        // Add scroll-based parallax effect
-        gsap.to(element, {
-          y: (index % 2 === 0) ? '10vh' : '-10vh',
-          x: (index % 3 === 0) ? '5vw' : '-5vw',
-          rotation: (index % 2 === 0) ? '+=30' : '-=30',
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.5
-          }
-        });
-      });
-    }
-    
-    // Homepage animations
-    function initHomepage() {
-      // Show background radial gradient with GSAP
-      gsap.to('.get-excited-bg', {
-        opacity: 1,
-        scale: 1,
-        duration: 1.5,
-        ease: "power3.out"
-      });
-      
-      // Get excited section elements
-      const excitedBrackets = document.querySelectorAll('.get-excited-bracket');
-      const questionText = document.querySelector('.question-text');
-      const navItems = document.querySelectorAll('.section-nav-item');
-      
-      // Create staggered animation timeline
-      const tl = gsap.timeline();
-      
-      // Bracket animation with staggered delay
-      tl.to(excitedBrackets[0], {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, 0.3);
-      
-      tl.to(excitedBrackets[1], {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "back.out(1.7)"
-      }, 0.5);
-      
-      // Question text animation
-      tl.to(questionText, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, 0.7);
-      
-      // Nav items animation with stagger
-      tl.to(navItems, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power2.out"
-      }, 0.9);
-      
-      // Create parallax effect for the excited section
-      gsap.to('#get-excited', {
-        backgroundPosition: '0 20%',
-        ease: "none",
-        scrollTrigger: {
-          trigger: '#get-excited',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true
-        }
-      });
-    }
-    
-    // Scroll animations for sections
-    function initScrollAnimations() {
-      // Animate section headers when they enter viewport
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
-      };
-      
-      // Observe section numbers
-      document.querySelectorAll('.section-number').forEach(el => {
-        gsap.from(el, {
-          x: -50,
-          opacity: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: el.parentElement,
-            start: 'top 80%',
-            end: 'top 50%',
-            scrub: true
-          }
-        });
-      });
-      
-      // Observe section titles
-      document.querySelectorAll('.section-title').forEach(el => {
-        gsap.from(el, {
-          y: 50,
-          opacity: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            end: 'top 60%',
-            scrub: true
-          }
-        });
-      });
-      
-      // Observe section dividers
-      document.querySelectorAll('.section-divider').forEach(el => {
-        gsap.from(el, {
-          width: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            end: 'top 60%',
-            scrub: true
-          }
-        });
-      });
-      
-      // Observe section descriptions
-      document.querySelectorAll('.section-description').forEach(el => {
-        gsap.from(el, {
-          y: 30,
-          opacity: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            end: 'top 60%',
-            scrub: true
-          }
-        });
-      });
-      
-      // Create staggered animations for cards
-      const cards = document.querySelectorAll('.card, .info-card');
-      cards.forEach(card => {
-        gsap.from(card, {
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-            end: 'top 65%',
-            scrub: true
-          }
-        });
-        
-        // Add SVG outline animation for cards
-        addCardOutline(card);
-      });
-    }
-    
-    // Add SVG outline drawing animation to cards
-    function addCardOutline(card) {
-      // Create SVG outline for card drawing effect
-      const svgOutline = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svgOutline.classList.add('card-outline');
-      svgOutline.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-      `;
-      
-      // Create rectangle path
-      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-      rect.setAttribute('x', '0');
-      rect.setAttribute('y', '0');
-      rect.setAttribute('width', '100%');
-      rect.setAttribute('height', '100%');
-      rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', 'var(--gold)');
-      rect.setAttribute('stroke-width', '1');
-      rect.setAttribute('opacity', '0.5');
-      
-      // Calculate perimeter for stroke-dasharray
-      setTimeout(() => {
-        const cardWidth = card.offsetWidth;
-        const cardHeight = card.offsetHeight;
-        const perimeter = 2 * (cardWidth + cardHeight);
-        
-        rect.setAttribute('stroke-dasharray', perimeter);
-        rect.setAttribute('stroke-dashoffset', perimeter);
-        
-        // Add animation on scroll
-        gsap.to(rect, {
-          strokeDashoffset: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 80%',
-            end: 'top 60%',
-            scrub: true
-          }
-        });
-      }, 100);
-      
-      svgOutline.appendChild(rect);
-      card.appendChild(svgOutline);
-    }
-    
-    // Navigation functionality
     function initNavigation() {
       const header = document.querySelector('.header');
       const menuButton = document.querySelector('.menu-button');
       const mobileMenu = document.querySelector('.mobile-menu');
       const navLinks = document.querySelectorAll('.nav-link');
       const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-      const sideNavItems = document.querySelectorAll('.side-nav-item');
       
       // Shrink header on scroll
-      ScrollTrigger.create({
-        start: 'top -80',
-        end: 99999,
-        onUpdate: (self) => {
-          if (self.direction === -1) {
-            header.classList.remove('scrolled');
-          } else {
-            header.classList.add('scrolled');
-          }
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
         }
       });
       
@@ -2528,7 +1162,6 @@
         menuButton.classList.toggle('menu-open');
         mobileMenu.classList.toggle('open');
         
-        // Prevent scrolling when menu is open
         if (mobileMenu.classList.contains('open')) {
           document.body.style.overflow = 'hidden';
         } else {
@@ -2536,8 +1169,8 @@
         }
       });
       
-      // Handle navigation link clicks
-      [...navLinks, ...mobileNavLinks, ...sideNavItems].forEach(link => {
+      // Handle navigation clicks
+      [...navLinks, ...mobileNavLinks].forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           
@@ -2546,667 +1179,377 @@
           mobileMenu.classList.remove('open');
           document.body.style.overflow = '';
           
-          // Get target section
+          // Smooth scroll to section
           const targetId = link.getAttribute('href');
           const targetSection = document.querySelector(targetId);
           
           if (targetSection) {
-            // Calculate offset considering header height
             const headerHeight = header.offsetHeight;
+            const offsetTop = targetSection.offsetTop - headerHeight;
             
-            // Smooth scroll to section
-            gsap.to(window, {
-              duration: 1,
-              scrollTo: { 
-                y: targetSection, 
-                offsetY: headerHeight 
-              },
-              ease: "power2.inOut"
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
             });
           }
         });
       });
       
       // Update active nav link on scroll
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach(section => {
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'top center',
-          end: 'bottom center',
-          onEnter: () => updateActiveNav(section.id),
-          onEnterBack: () => updateActiveNav(section.id)
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + header.offsetHeight + 50;
+        const sections = document.querySelectorAll('section[id]');
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionBottom = sectionTop + section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
         });
       });
-      
-      function updateActiveNav(sectionId) {
-        // Update main navigation
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-          }
-        });
-        
-        // Update side navigation
-        sideNavItems.forEach(item => {
-          item.classList.remove('active');
-          if (item.getAttribute('href') === `#${sectionId}`) {
-            item.classList.add('active');
-          }
-        });
-      }
     }
     
-    // Showcase section with scroll-based sequence
-    function initShowcaseSequence() {
-      const showcaseSection = document.getElementById('experience-showcase');
-      if (!showcaseSection) return;
-      
-      const showcaseContainer = showcaseSection.querySelector('.pinned-container');
-      const frames = showcaseSection.querySelectorAll('.sequence-frame');
-      const svgPaths = showcaseSection.querySelectorAll('.showcase-icon path, .showcase-icon line, .showcase-icon circle, .showcase-icon rect');
-      
-      // Pin the showcase container during scroll
-      ScrollTrigger.create({
-        trigger: showcaseSection,
-        start: 'top top',
-        end: '+=300%', // Duration of the pinned section (3x viewport height)
-        pin: showcaseContainer,
-        pinSpacing: true
-      });
-      
-      // Set initial state for all frames
-      gsap.set(frames, { 
-        opacity: 0,
-        visibility: 'hidden'
-      });
-      
-      // Make first frame visible initially
-      gsap.set(frames[0], { 
+    function initHomepageAnimations() {
+      // Show background with artistic effect
+      gsap.to('.get-excited-bg', {
         opacity: 1,
-        visibility: 'visible'
+        scale: 1,
+        duration: 2,
+        ease: "expo.out"
       });
       
-      // Set up SVG paths for drawing animation
-      gsap.set(svgPaths, function(i, target) {
-        const path = target;
-        const length = path.getTotalLength ? path.getTotalLength() : 100;
-        return {
-          strokeDasharray: length,
-          strokeDashoffset: length
-        };
-      });
-      
-      // Create animation sequence triggered by scroll
-      frames.forEach((frame, index) => {
-        // Calculate scroll positions
-        const scrollStart = index * (100 / frames.length);
-        const scrollEnd = (index + 1) * (100 / frames.length);
+      // Animate hand-drawn elements with strokeDasharray
+      gsap.utils.toArray('.hand-drawn-svg').forEach((path, i) => {
+        const length = path.getTotalLength ? path.getTotalLength() : 500;
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
         
-        // Create a timeline for each frame transition
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: showcaseSection,
-            start: `top+=${scrollStart}% top`,
-            end: `top+=${scrollEnd}% top`,
-            scrub: true,
-            onEnter: () => {
-              // Make current frame visible, hide others
-              frames.forEach((f, i) => {
-                if (i === index) {
-                  gsap.to(f, { opacity: 1, visibility: 'visible', duration: 0.5 });
-                } else {
-                  gsap.to(f, { opacity: 0, visibility: 'hidden', duration: 0.5 });
-                }
+        gsap.to(path, {
+          strokeDashoffset: 0,
+          duration: 2 + i * 0.5,
+          ease: "power1.inOut",
+          delay: 0.5 + i * 0.2,
+          onComplete: () => {
+            // Add subtle breathing animation
+            gsap.to(path, {
+              opacity: 0.7,
+              duration: 2,
+              yoyo: true,
+              repeat: -1,
+              ease: "sine.inOut"
+            });
+          }
+        });
+      });
+      
+      // Organic bracket animations
+      gsap.from('.get-excited-bracket', {
+        opacity: 0,
+        y: 50,
+        rotation: -15,
+        duration: 1.5,
+        stagger: 0.3,
+        ease: "elastic.out(1, 0.8)",
+        delay: 1
+      });
+      
+      // Question text with artistic entrance
+      gsap.from('.question-text', {
+        opacity: 0,
+        y: 30,
+        letterSpacing: "0.5em",
+        duration: 1.5,
+        ease: "power2.out",
+        delay: 1.5
+      });
+      
+      // Nav items floating in
+      gsap.from('.section-nav-item', {
+        opacity: 0,
+        y: 30,
+        scale: 0.9,
+        rotation: -5,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        delay: 2
+      });
+    }
+    
+    function initScrollAnimations() {
+      // Hand-drawn scroll-responsive patterns
+      gsap.utils.toArray('.scroll-reveal-svg path').forEach(path => {
+        const length = path.getTotalLength ? path.getTotalLength() : 1000;
+        
+        ScrollTrigger.create({
+          trigger: path.closest('.scroll-reveal-svg'),
+          start: 'top 80%',
+          end: 'bottom 20%',
+          scrub: 1,
+          animation: gsap.fromTo(path, 
+            {
+              strokeDasharray: length,
+              strokeDashoffset: length
+            },
+            {
+              strokeDashoffset: 0,
+              duration: 1,
+              ease: "none"
+            }
+          ),
+          onUpdate: (self) => {
+            // Organic drawing effect with slight variations
+            const progress = self.progress;
+            if (progress > 0.5) {
+              path.style.filter = `blur(0.3px)`;
+            }
+          }
+        });
+      });
+      
+      // Card animations with hand-drawn borders
+      gsap.utils.toArray('.card').forEach((card, i) => {
+        const drawingSVG = card.querySelector('.card-drawing path, .card-drawing circle, .card-drawing rect');
+        
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 70%',
+          onEnter: () => {
+            // Card entrance animation
+            gsap.from(card, {
+              opacity: 0,
+              y: 100,
+              rotation: 2,
+              duration: 1,
+              ease: "power2.out",
+              delay: i * 0.1
+            });
+            
+            // Drawing animation
+            if (drawingSVG) {
+              const length = drawingSVG.getTotalLength ? drawingSVG.getTotalLength() : 200;
+              drawingSVG.style.strokeDasharray = length;
+              drawingSVG.style.strokeDashoffset = length;
+              
+              gsap.to(drawingSVG, {
+                strokeDashoffset: 0,
+                duration: 1.5,
+                ease: "power1.inOut",
+                delay: 0.5 + i * 0.1
               });
             }
           }
         });
-        
-        // Animate SVG drawing for the current frame
-        const framePaths = frame.querySelectorAll('path, line, circle, rect');
-        tl.to(framePaths, {
-          strokeDashoffset: 0,
-          duration: 1,
-          stagger: 0.1
-        }, 0);
-        
-        // Animate content with stagger
-        const content = frame.querySelectorAll('h3, p');
-        tl.from(content, {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.1
-        }, 0.3);
       });
-    }
-    
-    // Section-specific animations
-    function initSectionAnimations() {
-      // Initialize section-specific custom animations
-      initExperiencesAnimations();
-      initGuideAnimations();
-      initTipsAnimations();
-      initAmenitiesAnimations();
-    }
-    
-    // Experiences section animations
-    function initExperiencesAnimations() {
-      const experiencesSection = document.getElementById('experiences');
-      if (!experiencesSection) return;
       
-      // Add hand-drawn SVG decorations
-      const handDrawnContainer = document.createElement('div');
-      handDrawnContainer.className = 'handdrawn-svg-container';
-      handDrawnContainer.style.cssText = `
-        right: 5%;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 150px;
-        height: 300px;
-      `;
+      // Section headers with artistic effects
+      gsap.utils.toArray('.section-number').forEach(number => {
+        ScrollTrigger.create({
+          trigger: number,
+          start: 'top 80%',
+          animation: gsap.from(number, {
+            opacity: 0,
+            scale: 0.5,
+            x: -100,
+            rotation: -20,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.7)"
+          })
+        });
+      });
       
-      // Create SVG
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('width', '100%');
-      svg.setAttribute('height', '100%');
-      svg.setAttribute('viewBox', '0 0 100 300');
+      gsap.utils.toArray('.section-title').forEach(title => {
+        ScrollTrigger.create({
+          trigger: title,
+          start: 'top 75%',
+          animation: gsap.from(title, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power2.out"
+          })
+        });
+      });
       
-      // Add hand-drawn paths
-      const paths = [
-        'M20,50 C20,30 80,30 80,50 C80,70 20,70 20,50 Z',
-        'M30,150 L50,120 L70,150 L50,180 Z',
-        'M30,230 L70,230 L70,270 L30,270 Z'
-      ];
+      gsap.utils.toArray('.section-divider').forEach(divider => {
+        ScrollTrigger.create({
+          trigger: divider,
+          start: 'top 75%',
+          animation: gsap.from(divider, {
+            width: 0,
+            duration: 1.5,
+            ease: "power2.inOut"
+          })
+        });
+      });
       
-      paths.forEach((d, i) => {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', d);
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke', 'var(--gold)');
-        path.setAttribute('stroke-width', '1');
-        path.setAttribute('stroke-linecap', 'round');
-        path.setAttribute('opacity', '0.3');
-        
-        // Calculate length for stroke animation
-        const length = path.getTotalLength ? path.getTotalLength() : 100;
-        path.setAttribute('stroke-dasharray', length);
-        path.setAttribute('stroke-dashoffset', length);
-        
-        svg.appendChild(path);
-        
-        // Create drawing animation on scroll
-        gsap.to(path, {
-          strokeDashoffset: 0,
-          duration: 1,
+      // Parallax effects for sections with organic movement
+      gsap.utils.toArray('section').forEach(section => {
+        gsap.to(section, {
+          backgroundPositionY: '30%',
+          ease: 'none',
           scrollTrigger: {
-            trigger: experiencesSection,
-            start: 'top 60%',
-            end: 'center center',
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
             scrub: true
           }
         });
       });
-      
-      handDrawnContainer.appendChild(svg);
-      experiencesSection.appendChild(handDrawnContainer);
-      
-      // Enhance search & filter container
-      const searchFilter = experiencesSection.querySelector('.search-filter-container');
-      if (searchFilter) {
-        gsap.from(searchFilter, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: searchFilter,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse'
-          }
-        });
-      }
     }
     
-    // Guide section animations
-    function initGuideAnimations() {
-      const guideSection = document.getElementById('guide');
-      if (!guideSection) return;
-      
-      // Add hand-drawn decorative elements
-      const svgContainer = document.createElement('div');
-      svgContainer.className = 'handdrawn-svg-container';
-      svgContainer.style.cssText = `
-        left: 5%;
-        top: 30%;
-        width: 100px;
-        height: 400px;
-      `;
-      
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('width', '100%');
-      svg.setAttribute('height', '100%');
-      svg.setAttribute('viewBox', '0 0 100 400');
-      
-      // Create multiple decorative lines
-      for (let i = 0; i < 5; i++) {
-        const y = 80 * i + 40;
-        
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        line.setAttribute('d', `M20,${y} Q50,${y-20} 80,${y}`);
-        line.setAttribute('fill', 'none');
-        line.setAttribute('stroke', 'var(--gold)');
-        line.setAttribute('stroke-width', '1');
-        line.setAttribute('opacity', '0.2');
-        
-        const length = line.getTotalLength ? line.getTotalLength() : 100;
-        line.setAttribute('stroke-dasharray', length);
-        line.setAttribute('stroke-dashoffset', length);
-        
-        svg.appendChild(line);
-        
-        // Animate each line with delay
-        gsap.to(line, {
-          strokeDashoffset: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: guideSection,
-            start: 'top 70%',
-            end: 'top 30%',
-            scrub: true
-          }
-        });
-      }
-      
-      svgContainer.appendChild(svg);
-      guideSection.appendChild(svgContainer);
-      
-      // Staggered reveal animation for list items
-      const listItems = guideSection.querySelectorAll('li');
-      listItems.forEach((item, i) => {
-        gsap.from(item, {
-          x: -20,
-          opacity: 0,
-          duration: 0.4,
-          scrollTrigger: {
-            trigger: item.closest('.card'),
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          },
-          delay: i * 0.1
-        });
-      });
-    }
-    
-    // Tips section animations
-    function initTipsAnimations() {
-      const tipsSection = document.getElementById('tips');
-      if (!tipsSection) return;
-      
-      // Add geometric decorative elements
-      const geoContainer = document.createElement('div');
-      geoContainer.className = 'geometric-decorations';
-      geoContainer.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-      `;
-      
-      // Create various geometric shapes
-      const shapes = [
-        { type: 'circle', x: '10%', y: '20%', size: '50px', opacity: 0.1 },
-        { type: 'line', x: '85%', y: '30%', width: '100px', angle: 45, opacity: 0.1 },
-        { type: 'diamond', x: '15%', y: '80%', size: '40px', opacity: 0.1 },
-        { type: 'dot', x: '80%', y: '85%', size: '5px', opacity: 0.3 },
-        { type: 'dot', x: '75%', y: '15%', size: '5px', opacity: 0.3 }
-      ];
-      
-      shapes.forEach(shape => {
-        const element = document.createElement('div');
-        element.className = `geometric-element geo-${shape.type}`;
-        
-        // Styling based on shape type
-        element.style.cssText = `
-          position: absolute;
-          left: ${shape.x};
-          top: ${shape.y};
-          opacity: 0;
-        `;
-        
-        switch(shape.type) {
-          case 'circle':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              border: 1px solid var(--gold);
-              border-radius: 50%;
-            `;
-            break;
-          case 'line':
-            element.style.cssText += `
-              width: ${shape.width};
-              height: 1px;
-              background-color: var(--gold);
-              transform: rotate(${shape.angle}deg);
-            `;
-            break;
-          case 'diamond':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              border: 1px solid var(--gold);
-              transform: rotate(45deg);
-            `;
-            break;
-          case 'dot':
-            element.style.cssText += `
-              width: ${shape.size};
-              height: ${shape.size};
-              background-color: var(--gold);
-              border-radius: 50%;
-            `;
-            break;
-        }
-        
-        geoContainer.appendChild(element);
-        
-        // Animate each element on scroll
-        gsap.to(element, {
-          opacity: shape.opacity,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: tipsSection,
-            start: 'top 80%',
-            end: 'top 40%',
-            scrub: true
-          }
-        });
-      });
-      
-      tipsSection.appendChild(geoContainer);
-      
-      // Enhance tip content with staggered animations
-      const tipItems = tipsSection.querySelectorAll('.card-content > div');
-      tipItems.forEach((item, i) => {
-        gsap.from(item, {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: item.closest('.card'),
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          },
-          delay: i * 0.2
-        });
-      });
-    }
-    
-    // Amenities section animations
-    function initAmenitiesAnimations() {
-      const amenitiesSection = document.getElementById('amenities');
-      if (!amenitiesSection) return;
-      
-      // Add glow effect to cards
-      const cards = amenitiesSection.querySelectorAll('.card');
-      cards.forEach(card => {
-        // Create glow overlay
-        const glowEffect = document.createElement('div');
-        glowEffect.className = 'card-glow';
-        glowEffect.style.cssText = `
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle at 50% 0%, rgba(172, 122, 42, 0.15), transparent 70%);
-          opacity: 0;
-          z-index: -1;
-          pointer-events: none;
-        `;
-        
-        card.style.position = 'relative';
-        card.style.overflow = 'hidden';
-        card.appendChild(glowEffect);
-        
-        // Animate glow effect on scroll
-        gsap.to(glowEffect, {
-          opacity: 1,
-          duration: 1,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 70%',
-            end: 'top 30%',
-            scrub: true
-          }
-        });
-        
-        // Enhanced hover effect
-        card.addEventListener('mouseenter', () => {
-          gsap.to(glowEffect, {
-            opacity: 0.8,
-            duration: 0.3
-          });
-        });
-        
-        card.addEventListener('mouseleave', () => {
-          gsap.to(glowEffect, {
-            opacity: 0.3,
-            duration: 0.3
-          });
-        });
-      });
-      
-      // Staggered animation for list items
-      const listItems = amenitiesSection.querySelectorAll('li');
-      listItems.forEach((item, i) => {
-        const card = item.closest('.card');
-        const index = Array.from(card.querySelectorAll('li')).indexOf(item);
-        
-        gsap.from(item, {
-          x: -20,
-          opacity: 0,
-          duration: 0.4,
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          },
-          delay: index * 0.1
-        });
-      });
-    }
-    
-    // Progress bar animation
     function initProgressBar() {
       const progressBar = document.getElementById('progressBar');
       
-      // Create smoother progress bar animation
-      gsap.to(progressBar, {
-        width: '100%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.3
-        }
+      window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = (scrolled / windowHeight) * 100;
+        
+        progressBar.style.width = progress + '%';
       });
     }
     
-    // Back to top button
     function initBackToTop() {
       const backToTopButton = document.getElementById('back-to-top');
       
-      // Show/hide based on scroll position
-      ScrollTrigger.create({
-        start: 100,
-        end: 99999,
-        toggleClass: {
-          targets: backToTopButton,
-          className: 'visible'
-        },
-        toggleActions: 'play none none reverse'
-      });
-      
-      // Scroll to top when clicked
-      backToTopButton.addEventListener('click', () => {
-        gsap.to(window, {
-          duration: 1,
-          scrollTo: 0,
-          ease: "power2.inOut"
-        });
-      });
-    }
-    
-    // Scroll indicator animation
-    function initScrollIndicator() {
-      const scrollIndicator = document.getElementById('scrollIndicator');
-      
-      // Show indicator after delay
-      gsap.to(scrollIndicator, {
-        opacity: 1,
-        delay: 2,
-        duration: 0.5
-      });
-      
-      // Hide once user starts scrolling
-      ScrollTrigger.create({
-        start: 10,
-        end: 20,
-        onEnter: () => {
-          gsap.to(scrollIndicator, {
-            opacity: 0,
-            duration: 0.5,
-            onComplete: () => scrollIndicator.remove()
-          });
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTopButton.classList.add('visible');
+        } else {
+          backToTopButton.classList.remove('visible');
         }
       });
-    }
-    
-    // Experiences search and filter
-    function initExperiencesFilter() {
-      const searchInput = document.getElementById('experienceSearch');
-      const filterTags = document.querySelectorAll('.filter-tag');
-      const experienceCards = document.querySelectorAll('#experiencesGrid .card');
       
-      if (!searchInput || !filterTags.length || !experienceCards.length) return;
-      
-      // Search functionality
-      searchInput.addEventListener('input', filterExperiences);
-      
-      // Filter tag functionality
-      filterTags.forEach(tag => {
-        tag.addEventListener('click', () => {
-          // Update active state
-          filterTags.forEach(t => t.classList.remove('active'));
-          tag.classList.add('active');
-          
-          // Filter experiences
-          filterExperiences();
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
         });
       });
-      
-      function filterExperiences() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const activeFilter = document.querySelector('.filter-tag.active').getAttribute('data-filter');
-        
-        experienceCards.forEach(card => {
-          const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
-          const cardContent = card.querySelector('.card-content').textContent.toLowerCase();
-          const cardCategory = card.getAttribute('data-category');
-          
-          const matchesSearch = cardTitle.includes(searchTerm) || cardContent.includes(searchTerm);
-          const matchesFilter = activeFilter === 'all' || cardCategory === activeFilter;
-          
-          if (matchesSearch && matchesFilter) {
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.4,
-              display: 'block',
-              ease: "power2.out"
-            });
-          } else {
-            gsap.to(card, {
-              opacity: 0,
-              y: 20,
-              duration: 0.4,
-              display: 'none',
-              ease: "power2.in"
-            });
-          }
-        });
-      }
     }
     
-    // SVG drawing animations
-    function initSvgAnimations() {
-      // Find all SVG elements with paths
-      const svgElements = document.querySelectorAll('svg:not(.card-outline)');
+    function createAnimatedBackground() {
+      // Create simple SVG filter for rough/hand-drawn effect
+      const filterDiv = document.createElement('div');
+      filterDiv.style.position = 'absolute';
+      filterDiv.style.width = '0';
+      filterDiv.style.height = '0';
+      filterDiv.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="roughness" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" />
+            </filter>
+          </defs>
+        </svg>
+      `;
+      document.body.appendChild(filterDiv);
       
-      svgElements.forEach(svg => {
-        const paths = svg.querySelectorAll('path, line, circle, rect');
-        
-        // Set up paths for drawing animation
-        paths.forEach(path => {
-          const length = path.getTotalLength ? path.getTotalLength() : 100;
-          
-          gsap.set(path, {
-            strokeDasharray: length,
-            strokeDashoffset: length
-          });
-          
-          // Create drawing animation on scroll
-          gsap.to(path, {
-            strokeDashoffset: 0,
-            duration: 1,
-            scrollTrigger: {
-              trigger: svg.closest('section') || svg,
-              start: 'top 70%',
-              end: 'top 30%',
-              scrub: true
-            }
-          });
-        });
-      });
+      // Create hand-drawn background patterns
+      const geometricBg = document.createElement('div');
+      geometricBg.className = 'geometric-background';
+      document.body.appendChild(geometricBg);
       
-      // Add hover animation for SVG icons
-      const icons = document.querySelectorAll('.showcase-icon, .info-icon');
+      // Artistic hand-drawn elements
+      const handDrawnPatterns = [
+        {
+          type: 'svg',
+          x: '5%',
+          y: '15%',
+          size: '200px',
+          path: 'M20,10 C40,5 60,20 80,15 C100,10 120,30 100,50 C80,70 60,55 40,60 C20,65 10,45 20,30 C30,15 40,25 50,20',
+          opacity: 0.08
+        },
+        {
+          type: 'svg',
+          x: '80%',
+          y: '25%',
+          size: '150px',
+          path: 'M10,75 Q40,30 75,75 T140,75',
+          opacity: 0.06
+        },
+        {
+          type: 'svg',
+          x: '15%',
+          y: '70%',
+          size: '180px',
+          path: 'M90,10 C120,40 100,80 70,100 C40,120 10,90 20,60 C30,30 60,20 90,10',
+          opacity: 0.08
+        },
+        {
+          type: 'svg',
+          x: '70%',
+          y: '80%',
+          size: '120px',
+          path: 'M10,60 C30,40 50,60 70,40 C90,20 110,40 100,60 C90,80 70,100 50,80 C30,60 20,80 10,60',
+          opacity: 0.07
+        }
+      ];
       
-      icons.forEach(icon => {
-        icon.addEventListener('mouseenter', () => {
-          const paths = icon.querySelectorAll('path, line, circle, rect');
+      handDrawnPatterns.forEach((pattern, index) => {
+        if (pattern.type === 'svg') {
+          const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svgElement.classList.add('artistic-pattern');
+          svgElement.style.cssText = `
+            position: absolute;
+            left: ${pattern.x};
+            top: ${pattern.y};
+            width: ${pattern.size};
+            height: ${pattern.size};
+            opacity: 0;
+          `;
           
-          gsap.to(paths, {
-            stroke: 'var(--gold-highlight)',
-            duration: 0.3
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute('d', pattern.path);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', 'var(--gold)');
+          path.setAttribute('stroke-width', '1');
+          path.style.filter = 'url(#roughness)';
+          
+          svgElement.appendChild(path);
+          geometricBg.appendChild(svgElement);
+          
+          // Fade in animation
+          gsap.to(svgElement, {
+            opacity: pattern.opacity,
+            duration: 2,
+            delay: index * 0.3,
+            ease: "power2.out"
           });
           
-          gsap.to(icon, {
-            scale: 1.05,
-            duration: 0.3
-          });
-        });
-        
-        icon.addEventListener('mouseleave', () => {
-          const paths = icon.querySelectorAll('path, line, circle, rect');
-          
-          gsap.to(paths, {
-            stroke: 'var(--gold)',
-            duration: 0.3
+          // Subtle rotation and scale animation
+          gsap.to(svgElement, {
+            rotation: 2,
+            scale: 1.02,
+            duration: 5 + index,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
           });
           
-          gsap.to(icon, {
-            scale: 1,
-            duration: 0.3
+          // Parallax effect based on scroll
+          ScrollTrigger.create({
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+            animation: gsap.to(svgElement, {
+              y: (index % 2 === 0) ? '50px' : '-50px',
+              rotation: (index % 2 === 0) ? '5deg' : '-5deg',
+              ease: 'none'
+            })
           });
-        });
+        }
       });
     }
   </script>
