@@ -1,1557 +1,1557 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elevated Luxury Experience</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Archivo+Black&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/DrawSVGPlugin.min.js"></script>
-  <style>
-    /* Core Variables */
-    :root {
-      --black: #080808;
-      --true-black: #000000;
-      --off-white: #F7F7F2;
-      --white: #FFFFFF;
-      --gold: #AC7A2A;
-      --gold-highlight: #C08C35;
-      --gold-shadow: #8D6422;
-      --charcoal: #1C1C1C;
-      --light-charcoal: #2A2A2A;
-      --cream: #F4F0E8;
-      
-      /* Typography */
-      --font-heading: 'Archivo Black', 'Helvetica Neue', sans-serif;
-      --font-mono: 'IBM Plex Mono', monospace;
-      
-      /* Spacing */
-      --space-xs: 8px;
-      --space-sm: 16px;
-      --space-md: 32px;
-      --space-lg: 64px;
-      --space-xl: 120px;
-      
-      /* Transitions */
-      --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --transition-medium: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --transition-slow: 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-      --transition-extra-slow: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-    }
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Camera,
+  ChevronDown,
+  Clock,
+  Coffee,
+  Compass,
+  Flower,
+  Home,
+  Leaf,
+  Map,
+  MapPin,
+  Menu,
+  Mountain,
+  Phone,
+  Sparkles,
+  Star,
+  Utensils,
+  Wifi,
+  Wind,
+  X,
+  Calendar,
+  Key,
+  Car,
+  ArrowRight,
+  Search,
+  Bed,
+  Coffee,
+  TreePine,
+  Waves,
+  ChevronUp,
+  Shield,
+  Moon,
+  Sun,
+  Heart
+} from 'lucide-react';
 
-    /* Reset & Base Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+// Custom Styles
+const styles = `
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      background-color: var(--black);
-      color: var(--off-white);
-    }
+  :root {
+    --primary: #080808;
+    --secondary: #F7F7F2;
+    --gold: #AC7A2A;
+    --gold-light: #D4B48C;
+    --gold-dark: #A38354;
+    --charcoal: #2A2A2A;
+  }
 
-    body {
-      font-family: var(--font-mono);
-      line-height: 1.6;
-      letter-spacing: 0.02em;
-      overflow-x: hidden;
-    }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-    /* Typography */
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-heading);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: var(--space-md);
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
-    }
-    
-    h1 {
-      font-size: clamp(3.5rem, 10vw, 7rem);
-      letter-spacing: -0.01em;
-    }
-    
-    h2 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      letter-spacing: -0.01em;
-    }
-    
-    h3 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-    }
-    
-    h4 {
-      font-size: clamp(1.2rem, 3vw, 1.8rem);
-    }
-    
-    p {
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      letter-spacing: 0.02em;
-      margin-bottom: var(--space-md);
-      max-width: 760px;
-      line-height: 1.8;
-      font-weight: 300;
-    }
+  body {
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: var(--primary);
+    color: var(--secondary);
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
 
-    .subtitle {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      margin-bottom: var(--space-sm);
-      font-weight: 500;
-    }
+  h1, h2, h3 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+  }
 
-    /* Layout */
-    .container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 var(--space-md);
+  h1 {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: 0.85;
+  }
+
+  h2 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 0.9;
+  }
+
+  h3 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 0.95;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Hero Animations */
+  .wind-rose {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    animation: windRoseReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes windRoseReveal {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+      rotate: 0deg;
     }
-    
-    section {
-      position: relative;
-      padding: var(--space-xl) 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      min-height: 100vh;
-      overflow: hidden;
+    40% {
+      opacity: 1;
+      transform: scale(2);
+      rotate: 0deg;
     }
-    
-    .grid {
-      display: grid;
-      gap: var(--space-md);
+    70% {
+      opacity: 1;
+      transform: scale(0.8);
+      rotate: 45deg;
     }
-    
+    90% {
+      opacity: 0.5;
+      transform: scale(0.1);
+      rotate: 45deg;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0);
+      rotate: 45deg;
+    }
+  }
+
+  .bracket {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: bracketAppear 0.5s ease-out forwards;
+  }
+
+  .bracket-left {
+    animation-delay: 1.0s;
+  }
+
+  .bracket-right {
+    animation-delay: 1.1s;
+  }
+
+  @keyframes bracketAppear {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dynamic-text {
+    min-width: 12rem;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  /* Card Animations */
+  .card {
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card:hover {
+    transform: scale(1.03);
+  }
+
+  .card:hover .card-content {
+    box-shadow: inset 0 0 100px rgba(172, 122, 42, 0.15);
+  }
+
+  .card-hover-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .card:hover .card-hover-glow::after {
+    opacity: 1;
+  }
+
+  /* Experience Cards */
+  .experience-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+  }
+
+  .experience-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  /* House Guide Animations */
+  .guide-item {
+    transition: all 0.3s ease;
+  }
+
+  .guide-item:hover {
+    color: var(--gold);
+  }
+
+  .guide-sibling {
+    transition: all 0.3s ease;
+    opacity: 1;
+  }
+
+  .guide-item:hover ~ .guide-sibling {
+    opacity: 0.2;
+    filter: blur(4px);
+  }
+
+  .guide-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+
+  .guide-item:hover .guide-content {
+    max-height: 150px;
+    margin-left: 2rem;
+    margin-top: 1rem;
+  }
+
+  /* Scroll Progress */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--gold-light));
+    z-index: 1000;
+    transform-origin: left;
+    transition: width 0.1s ease;
+  }
+
+  /* Side Navigation */
+  .side-nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+  }
+
+  .side-nav-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--secondary);
+    border-radius: 50%;
+    margin: 2rem 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .side-nav-dot:hover {
+    background: var(--gold);
+    transform: scale(1.5);
+  }
+
+  .side-nav-dot.active {
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(172, 122, 42, 0.2);
+  }
+
+  .side-nav-label {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--charcoal);
+    color: var(--secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .side-nav-dot:hover .side-nav-label {
+    opacity: 1;
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(8, 8, 8, 0.95);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu-link {
+    font-size: 2rem;
+    color: var(--secondary);
+    text-decoration: none;
+    margin: 1rem 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu.open .mobile-menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-menu-link:hover {
+    color: var(--gold);
+  }
+
+  /* Back to Top */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 100;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .back-to-top:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(172, 122, 42, 0.3);
+  }
+
+  /* Header */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    background: var(--primary);
+    z-index: 100;
+    transition: all 0.3s ease;
+  }
+
+  .header.scrolled {
+    height: 60px;
+    background: rgba(8, 8, 8, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Footer Animation */
+  .footer-link {
+    position: relative;
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .footer-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .footer-link:hover {
+    color: var(--gold);
+  }
+
+  /* Section Headers */
+  .section-number {
+    font-size: clamp(8rem, 20vw, 16rem);
+    font-weight: 900;
+    opacity: 0.05;
+    line-height: 0.8;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .section {
+    padding: 8rem 0;
+    position: relative;
+  }
+
+  .section-divider {
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+    animation: expandLine 0.8s ease-out forwards;
+  }
+
+  @keyframes expandLine {
+    to {
+      width: 100px;
+    }
+  }
+
+  /* Label Value Style */
+  .label-value {
+    margin: 1rem 0;
+  }
+
+  .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .value {
+    font-size: 1.25rem;
+    color: var(--secondary);
+  }
+
+  /* Experience Filters */
+  .filter-tag {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--gold);
+    border-radius: 2rem;
+    background: transparent;
+    color: var(--secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .filter-tag:hover {
+    background: var(--gold);
+    color: var(--primary);
+  }
+
+  .filter-tag.active {
+    background: var(--gold);
+    color: var(--primary);
+  }
+
+  /* Masonry */
+  .masonry-grid {
+    column-count: 3;
+    column-gap: 2rem;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 991px) {
+    .masonry-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .masonry-grid {
+      column-count: 1;
+    }
+  }
+
+  /* Responsive Cards */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
     .grid-2 {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
     
     .grid-3 {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, 1fr);
     }
     
-    @media (min-width: 768px) {
-      .grid-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .grid-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    .grid-4 {
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
 
-    /* Header & Navigation */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      background-color: rgba(8, 8, 8, 0.9);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      height: 80px;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background-color var(--transition-medium),
-                  height var(--transition-medium);
+  @media (min-width: 992px) {
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
     }
     
-    .header.scrolled {
-      height: 60px;
-      background-color: rgba(8, 8, 8, 0.95);
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
     }
-    
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
     }
-    
-    .logo {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      color: var(--white);
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      padding: 5px 0;
-      text-transform: uppercase;
-    }
-    
-    .logo::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: var(--gold);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform var(--transition-medium);
-    }
-    
-    .logo:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    
-    .nav-links {
+  }
+
+  .nav-link {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-link:hover {
+    color: var(--gold);
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 991px) {
+    .desktop-nav {
       display: none;
     }
     
-    @media (min-width: 992px) {
-      .nav-links {
-        display: flex;
-        gap: var(--space-md);
-      }
-      
-      .menu-button {
-        display: none;
-      }
-    }
-    
-    .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--off-white);
-      text-decoration: none;
-      padding: var(--space-xs) 0;
-      position: relative;
-      font-weight: 400;
-      transition: color var(--transition-fast);
-    }
-    
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: var(--gold);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform var(--transition-medium);
-    }
-    
-    .nav-link:hover {
-      color: var(--gold);
-    }
-    
-    .nav-link:hover::after,
-    .nav-link.active::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    
-    .menu-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      width: 30px;
-      height: 20px;
-      position: relative;
-      z-index: 1001;
-    }
-    
-    .menu-line {
-      width: 100%;
-      height: 1px;
-      background-color: var(--off-white);
-      display: block;
-      position: absolute;
-      left: 0;
-      transition: transform var(--transition-medium),
-                  opacity var(--transition-medium),
-                  background-color var(--transition-fast);
-    }
-    
-    .menu-button:hover .menu-line {
-      background-color: var(--gold);
-    }
-    
-    .menu-line:nth-child(1) {
-      top: 0;
-    }
-    
-    .menu-line:nth-child(2) {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    
-    .menu-line:nth-child(3) {
-      bottom: 0;
-    }
-    
-    .menu-open .menu-line:nth-child(1) {
-      transform: translateY(9px) rotate(45deg);
-      background-color: var(--gold);
-    }
-    
-    .menu-open .menu-line:nth-child(2) {
-      opacity: 0;
-    }
-    
-    .menu-open .menu-line:nth-child(3) {
-      transform: translateY(-9px) rotate(-45deg);
-      background-color: var(--gold);
-    }
-    
-    .mobile-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(8, 8, 8, 0.98);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity var(--transition-slow),
-                  visibility var(--transition-slow);
-      opacity: 0;
-      visibility: hidden;
-    }
-    
-    .mobile-menu.open {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .mobile-nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-lg);
-      text-align: center;
-      list-style: none;
-    }
-    
-    .mobile-nav-link {
-      font-family: var(--font-heading);
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--off-white);
-      text-decoration: none;
-      position: relative;
-      display: inline-block;
-      overflow: hidden;
-      padding: 5px 0;
-      transform: translateY(50px);
-      opacity: 0;
-      transition: color var(--transition-fast),
-                  transform var(--transition-slow),
-                  opacity var(--transition-slow);
-      transition-delay: calc(var(--index) * 0.1s);
-      text-transform: uppercase;
-    }
-    
-    .mobile-menu.open .mobile-nav-link {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .mobile-nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: var(--gold);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform var(--transition-medium);
-    }
-    
-    .mobile-nav-link:hover {
-      color: var(--gold);
-    }
-    
-    .mobile-nav-link:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    /* Get Excited Section */
-    .get-excited-section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-top: 80px;
-      background-color: var(--black);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .get-excited-container {
-      position: relative;
-      z-index: 2;
-    }
-    
-    .get-excited-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, rgba(172, 122, 42, 0.08), rgba(0, 0, 0, 0) 70%);
-      z-index: 1;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .get-excited-bg.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .get-excited-title {
-      font-size: clamp(3.5rem, 6.5vw, 6.5rem);
-      line-height: 0.9;
-      margin-bottom: var(--space-lg);
-      color: var(--white);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      overflow: visible;
-    }
-    
-    .get-excited-bracket {
-      display: inline-block;
-      color: var(--white);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .get-excited-bracket.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .excited-text-wrapper {
-      position: relative;
-      display: inline-block;
-      overflow: hidden;
-      width: min-content;
-      margin: 0 10px;
-      height: 1.1em;
-      vertical-align: bottom;
-    }
-    
-    .excited-text {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      color: var(--gold);
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateY(100%);
-      animation: textCycle 10s infinite;
+    .mobile-nav-toggle {
       display: block;
     }
     
-    .excited-text:nth-child(1) {
-      position: relative;
-      opacity: 1;
-      transform: translateY(0);
-      animation-delay: 0s;
+    .side-nav {
+      display: none;
     }
-    
-    .excited-text:nth-child(2) {
-      animation-delay: 2.5s;
-    }
-    
-    .excited-text:nth-child(3) {
-      animation-delay: 5s;
-    }
-    
-    .excited-text:nth-child(4) {
-      animation-delay: 7.5s;
-    }
-    
-    @keyframes textCycle {
-      0%, 20%, 100% {
-        opacity: 0;
-        transform: translateY(100%);
+  }
+`;
+
+const LuxuryGuidebook = () => {
+  const [activeSection, setActiveSection] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dynamicWord, setDynamicWord] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
+  const progressRef = useRef(null);
+  const sectionsRef = useRef([]);
+  
+  const dynamicWords = ['EXCITED', 'INSPIRED', 'LUXURIOUS', 'PAMPERED'];
+  
+  // Dynamic word rotation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDynamicWord(prev => (prev + 1) % dynamicWords.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Scroll effects
+  useEffect(() => {
+    const handleScroll = () => {
+      // Progress bar
+      const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY;
+      const progress = (scrolled / windowHeight) * 100;
+      if (progressRef.current) {
+        progressRef.current.style.width = `${progress}%`;
       }
-      25%, 45% {
-        opacity: 1;
-        transform: translateY(0);
+      
+      // Header scroll effect
+      setHeaderScrolled(scrolled > 50);
+      
+      // Back to top button
+      setShowBackToTop(scrolled > 500);
+      
+      // Active section tracking
+      if (sectionsRef.current) {
+        sectionsRef.current.forEach((section, index) => {
+          if (!section) return;
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+            setActiveSection(index);
+          }
+        });
       }
-      50% {
-        opacity: 0;
-        transform: translateY(-100%);
-      }
-    }
+    };
     
-    .question-text {
-      font-family: var(--font-mono);
-      font-size: clamp(0.75rem, 1.5vw, 0.875rem);
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: var(--space-lg);
-      font-weight: 300;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.3s;
-    }
-    
-    .question-text.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .section-navigation {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      margin-top: var(--space-lg);
-    }
-    
-    .section-nav-item {
-      font-family: var(--font-mono);
-      font-weight: 400;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      background-color: transparent;
-      color: var(--off-white);
-      border: 1px solid rgba(172, 122, 42, 0.3);
-      padding: var(--space-sm) var(--space-md);
-      cursor: pointer;
-      transition: background-color var(--transition-medium),
-                  color var(--transition-medium),
-                  border-color var(--transition-medium),
-                  transform var(--transition-medium),
-                  opacity var(--transition-slow);
-      text-decoration: none;
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(30px);
-      transition-delay: calc(0.4s + var(--index) * 0.1s);
-    }
-    
-    .section-nav-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .section-nav-item:hover {
-      background-color: var(--gold);
-      border-color: var(--gold);
-      color: var(--black);
-      transform: translateY(-5px);
-    }
-
-    /* Section Styles */
-    .section-header {
-      margin-bottom: var(--space-lg);
-      position: relative;
-    }
-    
-    .section-number {
-      font-family: var(--font-heading);
-      font-size: clamp(4rem, 15vw, 9rem);
-      color: rgba(255, 255, 255, 0.02);
-      position: absolute;
-      top: -80px;
-      left: -30px;
-      z-index: -1;
-      font-weight: 900;
-      line-height: 1;
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-    }
-    
-    .section-number.visible {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    
-    .section-title {
-      font-family: var(--font-heading);
-      font-weight: 900;
-      font-size: clamp(2.5rem, 8vw, 3.5rem);
-      letter-spacing: -0.01em;
-      margin-bottom: var(--space-md);
-      position: relative;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.1s;
-      text-transform: uppercase;
-    }
-    
-    .section-title.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .section-divider {
-      width: 0;
-      height: 2px;
-      background-color: var(--gold);
-      margin-bottom: var(--space-md);
-      transition: width var(--transition-slow);
-      transition-delay: 0.3s;
-    }
-    
-    .section-divider.visible {
-      width: 60px;
-    }
-    
-    .section-description {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity var(--transition-slow),
-                  transform var(--transition-slow);
-      transition-delay: 0.4s;
-    }
-    
-    .section-description.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Card Styles */
-    .card {
-      background-color: rgba(255, 255, 255, 0.02);
-      border-left: 1px solid var(--gold);
-      padding: var(--space-md);
-      height: 100%;
-      transition: transform var(--transition-slow),
-                  box-shadow var(--transition-medium),
-                  opacity var(--transition-slow);
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: calc(var(--index) * 0.1s);
-    }
-    
-    .card:hover {
-      transform: translateY(-15px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
-                  0 5px 15px rgba(172, 122, 42, 0.05);
-    }
-    
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, rgba(172, 122, 42, 0.03), rgba(8, 8, 8, 0) 70%);
-      z-index: -1;
-      opacity: 0;
-      transition: opacity var(--transition-medium);
-    }
-    
-    .card:hover::before {
-      opacity: 1;
-    }
-    
-    .card-title {
-      font-family: var(--font-heading);
-      font-weight: 900;
-      font-size: 1.25rem;
-      margin-bottom: var(--space-sm);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: var(--space-sm);
-      position: relative;
-      text-transform: uppercase;
-      letter-spacing: 0;
-    }
-    
-    .card-title::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background-color: var(--gold);
-      transition: width var(--transition-medium);
-    }
-    
-    .card:hover .card-title::after {
-      width: 100%;
-    }
-    
-    .card-content {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 300;
-    }
-    
-    .accent-text {
-      color: var(--gold);
-    }
-
-    /* Geometric elements */
-    .geometric-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-    
-    .geometric-element {
-      position: absolute;
-      opacity: 0;
-      border: 1px solid var(--gold);
-    }
-    
-    .showcase-section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .showcase-icon {
-      width: 200px;
-      height: 200px;
-      stroke: var(--gold);
-      fill: none;
-      margin: 0 auto 2rem;
-    }
-
-    /* Progress Bar */
-    .progress-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: transparent;
-      z-index: 1001;
-      overflow: hidden;
-    }
-    
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, var(--gold-shadow), var(--gold), var(--gold-highlight));
-      width: 0;
-      transition: width var(--transition-fast);
-    }
-    
-    /* Back to Top Button */
-    .back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      background-color: rgba(8, 8, 8, 0.9);
-      border: 1px solid var(--gold);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 99;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity var(--transition-medium),
-                  visibility var(--transition-medium),
-                  background-color var(--transition-fast),
-                  transform var(--transition-medium);
-    }
-    
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .back-to-top:hover {
-      background-color: var(--gold);
-      transform: translateY(-5px);
-    }
-    
-    .back-to-top i {
-      color: var(--off-white);
-      font-size: 1rem;
-      transition: transform var(--transition-medium);
-    }
-    
-    .back-to-top:hover i {
-      color: var(--black);
-      transform: translateY(-3px);
-    }
-  </style>
-</head>
-<body>
-  <!-- Progress Bar -->
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
-
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <nav class="navbar">
-        <a href="#" class="logo">LUXURY PROPERTY</a>
-        
-        <ul class="nav-links">
-          <li><a href="#get-excited" class="nav-link active">HOME</a></li>
-          <li><a href="#experiences" class="nav-link">EXPERIENCES</a></li>
-          <li><a href="#guide" class="nav-link">HOUSE GUIDE</a></li>
-          <li><a href="#amenities" class="nav-link">AMENITIES</a></li>
-          <li><a href="#contact" class="nav-link">CONTACT</a></li>
-        </ul>
-        
-        <button class="menu-button" aria-label="Toggle menu">
-          <span class="menu-line"></span>
-          <span class="menu-line"></span>
-          <span class="menu-line"></span>
-        </button>
-      </nav>
-    </div>
-  </header>
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
-  <!-- Mobile Menu -->
-  <div class="mobile-menu">
-    <ul class="mobile-nav-links">
-      <li><a href="#get-excited" class="mobile-nav-link" style="--index: 0;">HOME</a></li>
-      <li><a href="#experiences" class="mobile-nav-link" style="--index: 1;">EXPERIENCES</a></li>
-      <li><a href="#guide" class="mobile-nav-link" style="--index: 2;">HOUSE GUIDE</a></li>
-      <li><a href="#amenities" class="mobile-nav-link" style="--index: 3;">AMENITIES</a></li>
-      <li><a href="#contact" class="mobile-nav-link" style="--index: 4;">CONTACT</a></li>
-    </ul>
-  </div>
-  
-  <!-- Get Excited Section -->
-  <section class="get-excited-section" id="get-excited">
-    <div class="get-excited-bg"></div>
-    <div class="hand-drawn-bg">
-      <!-- Hand-drawn artistic elements -->
-      <svg class="hand-drawn-element" style="top: 10%; left: 5%; width: 300px; height: 300px;">
-        <path d="M50,10 C80,10 100,30 100,60 C100,90 80,120 50,140 C20,120 0,90 0,60 C0,30 20,10 50,10" 
-              class="hand-drawn-svg" stroke-dasharray="400" stroke-dashoffset="400"/>
-      </svg>
-      
-      <svg class="hand-drawn-element" style="top: 30%; right: 10%; width: 200px; height: 200px;">
-        <path d="M10,100 Q50,20 100,100 T190,100" 
-              class="hand-drawn-svg" stroke-dasharray="300" stroke-dashoffset="300"/>
-      </svg>
-      
-      <svg class="hand-drawn-element" style="bottom: 10%; left: 15%; width: 250px; height: 250px;">
-        <path d="M125,5 C140,10 145,25 140,40 C135,55 120,65 105,70 C90,75 75,70 65,55 C55,40 60,25 75,15 C90,5 110,5 125,5" 
-              class="hand-drawn-svg" stroke-dasharray="350" stroke-dashoffset="350"/>
-      </svg>
-    </div>
+  // Intersection Observer for card animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
     
-    <div class="container get-excited-container">
-      <h1 class="get-excited-title">
-        <span class="get-excited-bracket">[</span>
-        <span class="excited-text-wrapper">
-          <span class="excited-text">EXCITED</span>
-          <span class="excited-text">INSPIRED</span>
-          <span class="excited-text">LUXURIOUS</span>
-          <span class="excited-text">PAMPERED</span>
-        </span>
-        <span class="get-excited-bracket">]</span>
-      </h1>
-      <p class="question-text">WELCOME TO YOUR LUXURY EXPERIENCE</p>
-      
-      <div class="section-navigation">
-        <a href="#experiences" class="section-nav-item" style="--index: 0;">EXPERIENCES</a>
-        <a href="#guide" class="section-nav-item" style="--index: 1;">HOUSE GUIDE</a>
-        <a href="#amenities" class="section-nav-item" style="--index: 2;">AMENITIES</a>
-        <a href="#contact" class="section-nav-item" style="--index: 3;">CONTACT</a>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Experiences Section -->
-  <section id="experiences">
-    <div class="hand-drawn-bg">
-      <!-- Artistic patterns that draw as you scroll -->
-      <svg class="scroll-reveal-svg" style="top: 20%; right: 5%; width: 400px; height: 600px;">
-        <path d="M20,20 C40,30 60,20 80,40 C100,60 80,80 60,100 C40,120 60,140 80,160 C100,180 120,160 140,180 C160,200 180,180 200,200" 
-              class="hand-drawn-svg" stroke-dasharray="800" stroke-dashoffset="800"/>
-        <path d="M30,50 C50,70 70,50 90,70 C110,90 130,70 150,90" 
-              class="hand-drawn-svg" stroke-dasharray="400" stroke-dashoffset="400" style="stroke-width: 0.5px; opacity: 0.5;"/>
-      </svg>
-      
-      <svg class="scroll-reveal-svg" style="bottom: 10%; left: 5%; width: 300px; height: 400px;">
-        <path d="M50,10 Q100,50 50,100 Q0,140 50,180 Q100,220 50,260" 
-              class="hand-drawn-svg" stroke-dasharray="600" stroke-dashoffset="600"/>
-      </svg>
-    </div>
-    
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">01</div>
-        <p class="subtitle">CURATED FOR YOU</p>
-        <h2 class="section-title">EXPERIENCES</h2>
-        <div class="section-divider"></div>
-        <p class="section-description">Indulge in the finest curated experiences the area has to offer.</p>
-      </div>
-      
-      <div class="grid grid-3">
-        <div class="card" style="--index: 0;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <circle cx="30" cy="30" r="28" class="hand-drawn-svg" stroke-dasharray="180" stroke-dashoffset="180"/>
-          </svg>
-          <h3 class="card-title">PRIVATE YACHT TOUR</h3>
-          <div class="card-content">
-            <p>Experience the coastline from a luxury yacht with a private captain and gourmet lunch.</p>
-            <p><span class="accent-text">Duration:</span> 4 hours</p>
-            <p><span class="accent-text">Price:</span> $750 per group</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 1;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <rect x="2" y="2" width="56" height="56" class="hand-drawn-svg" stroke-dasharray="224" stroke-dashoffset="224"/>
-          </svg>
-          <h3 class="card-title">CHEF'S TABLE DINNER</h3>
-          <div class="card-content">
-            <p>An exclusive culinary journey with a Michelin-starred chef.</p>
-            <p><span class="accent-text">Duration:</span> 3 hours</p>
-            <p><span class="accent-text">Price:</span> $350 per person</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 2;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <path d="M30,2 L58,30 L30,58 L2,30 Z" class="hand-drawn-svg" stroke-dasharray="160" stroke-dashoffset="160"/>
-          </svg>
-          <h3 class="card-title">PRIVATE ART GALLERY TOUR</h3>
-          <div class="card-content">
-            <p>Enjoy after-hours access to premiere galleries with an expert curator.</p>
-            <p><span class="accent-text">Duration:</span> 2 hours</p>
-            <p><span class="accent-text">Price:</span> $200 per person</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- House Guide Section -->
-  <section id="guide">
-    <div class="hand-drawn-bg">
-      <!-- Interactive hand-drawn patterns for house guide -->
-      <svg class="scroll-reveal-svg" style="top: 5%; left: 8%; width: 500px; height: 800px;">
-        <path d="M50,100 C100,50 150,150 200,100 C250,50 300,150 350,100 C400,50 450,150 500,100" 
-              class="hand-drawn-svg" stroke-dasharray="1000" stroke-dashoffset="1000" style="stroke-width: 0.8px; opacity: 0.6;"/>
-        <path d="M20,50 L480,50 M20,150 L480,150 M20,250 L480,250" 
-              class="hand-drawn-svg" stroke-dasharray="1400" stroke-dashoffset="1400" style="stroke-width: 0.3px; opacity: 0.3;"/>
-      </svg>
-      
-      <svg class="artistic-pattern" style="bottom: 15%; right: 10%; width: 300px; height: 300px;">
-        <path d="M150,10 C200,40 180,100 130,130 C80,160 20,120 20,70 C20,20 100,10 150,10" 
-              class="hand-drawn-svg" stroke-dasharray="500" stroke-dashoffset="500" style="filter: url(#rough); opacity: 0.05;"/>
-      </svg>
-    </div>
-    
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">02</div>
-        <p class="subtitle">STAY INFORMATION</p>
-        <h2 class="section-title">HOUSE GUIDE</h2>
-        <div class="section-divider"></div>
-        <p class="section-description">Everything you need to know to make your stay comfortable.</p>
-      </div>
-      
-      <div class="grid grid-3">
-        <div class="card" style="--index: 0;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <path d="M30,5 L55,30 L30,55 L5,30 Z M15,30 L45,30 M30,15 L30,45" 
-                  class="hand-drawn-svg" stroke-dasharray="200" stroke-dashoffset="200"/>
-          </svg>
-          <h3 class="card-title">CHECKING IN & OUT</h3>
-          <div class="card-content">
-            <p>• Check-in time: After 3:00 PM</p>
-            <p>• Check-out time: Before 11:00 AM</p>
-            <p>• Personal concierge available 24/7</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 1;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <path d="M10,10 L50,10 L50,50 L10,50 Z M10,30 L50,30 M30,10 L30,50" 
-                  class="hand-drawn-svg" stroke-dasharray="240" stroke-dashoffset="240"/>
-          </svg>
-          <h3 class="card-title">HOUSE FEATURES</h3>
-          <div class="card-content">
-            <p>• Smart home system controls</p>
-            <p>• Heated infinity pool</p>
-            <p>• Private screening room</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 2;">
-          <svg class="card-drawing" width="60" height="60" style="position: absolute; top: -30px; right: -30px;">
-            <path d="M30,10 C40,10 50,20 50,30 C50,40 40,50 30,50 C20,50 10,40 10,30 C10,20 20,10 30,10 M20,25 L40,25" 
-                  class="hand-drawn-svg" stroke-dasharray="200" stroke-dashoffset="200"/>
-          </svg>
-          <h3 class="card-title">PRIVATE SERVICES</h3>
-          <div class="card-content">
-            <p>• Private chef available</p>
-            <p>• In-home massage and spa</p>
-            <p>• Chauffeur service</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Amenities Section -->
-  <section id="amenities">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">03</div>
-        <p class="subtitle">FOR YOUR PLEASURE</p>
-        <h2 class="section-title">AMENITIES</h2>
-        <div class="section-divider"></div>
-        <p class="section-description">Every detail has been meticulously considered for your luxury experience.</p>
-      </div>
-      
-      <div class="grid grid-3">
-        <div class="card" style="--index: 0;">
-          <h3 class="card-title">CULINARY</h3>
-          <div class="card-content">
-            <p>• Full chef's kitchen</p>
-            <p>• Wine refrigerator</p>
-            <p>• Gourmet coffee bar</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 1;">
-          <h3 class="card-title">BEDROOM & SPA</h3>
-          <div class="card-content">
-            <p>• Custom king-size mattress</p>
-            <p>• Italian linens</p>
-            <p>• Private spa facilities</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 2;">
-          <h3 class="card-title">TECHNOLOGY</h3>
-          <div class="card-content">
-            <p>• Ultra-high-speed WiFi</p>
-            <p>• Smart home controls</p>
-            <p>• Private cinema room</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Contact Section -->
-  <section id="contact">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-number">04</div>
-        <p class="subtitle">AT YOUR SERVICE</p>
-        <h2 class="section-title">PERSONAL CONCIERGE</h2>
-        <div class="section-divider"></div>
-        <p class="section-description">Your dedicated team is available 24/7.</p>
-      </div>
-      
-      <div class="grid grid-2">
-        <div class="card" style="--index: 0;">
-          <h3 class="card-title">YOUR PERSONAL TEAM</h3>
-          <div class="card-content">
-            <p><span class="accent-text">Concierge:</span> (123) 456-7890</p>
-            <p><span class="accent-text">Private Chef:</span> (123) 456-7891</p>
-            <p><span class="accent-text">Email:</span> concierge@luxury.com</p>
-          </div>
-        </div>
-        
-        <div class="card" style="--index: 1;">
-          <h3 class="card-title">ADDITIONAL SERVICES</h3>
-          <div class="card-content">
-            <p>• Private yacht or helicopter charter</p>
-            <p>• VIP restaurant reservations</p>
-            <p>• In-home spa and wellness treatments</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Back to Top Button -->
-  <div class="back-to-top" id="back-to-top" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
-  </div>
-  
-  <!-- JavaScript -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Register ScrollTrigger
-      gsap.registerPlugin(ScrollTrigger);
-      
-      // Initialize all animations
-      initNavigation();
-      initHomepageAnimations();
-      initScrollAnimations();
-      initProgressBar();
-      initBackToTop();
-      createAnimatedBackground();
+    document.querySelectorAll('.card').forEach(card => {
+      observer.observe(card);
     });
     
-    function initNavigation() {
-      const header = document.querySelector('.header');
-      const menuButton = document.querySelector('.menu-button');
-      const mobileMenu = document.querySelector('.mobile-menu');
-      const navLinks = document.querySelectorAll('.nav-link');
-      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    return () => observer.disconnect();
+  }, []);
+  
+  const scrollToSection = (index) => {
+    if (sectionsRef.current[index]) {
+      sectionsRef.current[index].scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+  const experiences = [
+    {
+      title: 'Private Helicopter Tour',
+      description: 'Soar above breathtaking landscapes with a private guide.',
+      category: 'adventure',
+      duration: '2 hours',
+      price: '$750',
+      image: '/api/placeholder/600/400'
+    },
+    {
+      title: 'Michelin Star Dining',
+      description: 'Exclusive reservation at the finest culinary establishments.',
+      category: 'culinary',
+      duration: '3 hours',
+      price: '$500',
+      image: '/api/placeholder/600/400'
+    },
+    {
+      title: 'Art Gallery Private Tour',
+      description: 'Personal guide through prestigious collection.',
+      category: 'cultural',
+      duration: '2.5 hours',
+      price: '$350',
+      image: '/api/placeholder/600/400'
+    },
+    {
+      title: 'Luxury Spa Retreat',
+      description: 'Full-day rejuvenation with master therapists.',
+      category: 'wellness',
+      duration: '6 hours',
+      price: '$800',
+      image: '/api/placeholder/600/400'
+    },
+    {
+      title: 'Wildlife Photography Safari',
+      description: 'Capture rare moments with professional equipment.',
+      category: 'adventure',
+      duration: '4 hours',
+      price: '$650',
+      image: '/api/placeholder/600/400'
+    },
+    {
+      title: 'Private Wine Tasting',
+      description: 'Exclusive access to award-winning cellars.',
+      category: 'culinary',
+      duration: '3 hours',
+      price: '$400',
+      image: '/api/placeholder/600/400'
+    }
+  ];
+  
+  const sectionTitles = [
+    'WELCOME',
+    'QUICK INFO',
+    'EXPERIENCES',
+    'HOUSE GUIDE',
+    'LOCAL TIPS',
+    'AMENITIES',
+    'CONCIERGE'
+  ];
+  
+  const filteredExperiences = experiences.filter(exp => {
+    const matchesSearch = exp.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          exp.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = activeFilter === 'all' || exp.category === activeFilter;
+    return matchesSearch && matchesFilter;
+  });
+  
+  const localTips = [
+    {
+      title: 'Reservations Only',
+      establishment: 'Le Jardin Secret',
+      description: 'Michelin-starred garden restaurant hidden behind an unmarked door. Reservation code: "HERITAGE"',
+      type: 'dining'
+    },
+    {
+      title: 'Morning Ritual',
+      establishment: 'Café Antiquaire',
+      description: 'Order their secret "sunrise blend" - not on the menu, tell them Philippe sent you.',
+      type: 'coffee'
+    },
+    {
+      title: 'After Hours',
+      establishment: 'Gallery District',
+      description: 'Private viewings at Meridian Gallery Fridays after 8pm. Ask for Marie.',
+      type: 'culture'
+    },
+    {
+      title: 'Sunrise Experience',
+      establishment: 'West Cliff Trail',
+      description: 'Access the private path before dawn. Password at gate: "AURORA2025"',
+      type: 'adventure'
+    },
+    {
+      title: 'Hidden Treasure',
+      establishment: 'Antique Quarter',
+      description: 'Visit Marcel's - third door, yellow awning. Tell him you're seeking "the collection."',
+      type: 'shopping'
+    },
+    {
+      title: 'Sunset Spot',
+      establishment: 'Glass House Terrace',
+      description: 'Exclusive cocktails served only from 5-7pm. Request the "skyline special."',
+      type: 'cocktails'
+    }
+  ];
+  
+  const guideItems = [
+    {
+      title: 'CHECK-IN PROCESS',
+      content: 'Private entrance located at the north side. Use gold keycard for access.'
+    },
+    {
+      title: 'SMART HOME SYSTEM',
+      content: 'Control lighting, climate, and entertainment via tablet. Voice commands: "Casa, [instruction]"'
+    },
+    {
+      title: 'PRIVATE CHEF',
+      content: 'Available for in-villa dining. Request via tablet minimum 6 hours in advance.'
+    },
+    {
+      title: 'HOUSEKEEPING',
+      content: 'Daily service at 10 AM. Request alternate time via Do Not Disturb tablet button.'
+    },
+    {
+      title: 'SECURITY FEATURES',
+      content: 'Biometric entry, 24/7 monitoring, panic button in master suite.'
+    },
+    {
+      title: 'WELLNESS FACILITIES',
+      content: 'Private spa, saltwater pool (heated), meditation garden access.'
+    },
+    {
+      title: 'TRANSPORTATION',
+      content: 'Tesla & chauffeur available 24/7. Request via concierge.'
+    },
+    {
+      title: 'DEPARTURE',
+      content: 'Check-out by 12 PM. Late departure available upon request.'
+    }
+  ];
+  
+  return (
+    <div style={{ fontFamily: 'IBM Plex Mono, monospace' }}>
+      <style>{styles}</style>
       
-      // Shrink header on scroll
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      });
+      {/* Scroll Progress Bar */}
+      <div className="scroll-progress" ref={progressRef} />
       
-      // Toggle mobile menu
-      menuButton.addEventListener('click', () => {
-        menuButton.classList.toggle('menu-open');
-        mobileMenu.classList.toggle('open');
+      {/* Header */}
+      <header className={`header ${headerScrolled ? 'scrolled' : ''}`}>
+        <div className="container">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3 style={{ color: 'var(--gold)', fontWeight: 'bold' }}>LUXURY PROPERTY</h3>
+            <nav className="desktop-nav">
+              <div style={{ display: 'flex', gap: '2rem' }}>
+                {sectionTitles.map((title, index) => (
+                  <button
+                    key={title}
+                    className="nav-link"
+                    onClick={() => scrollToSection(index)}
+                    style={{ background: 'none', border: 'none', padding: '0.5rem 1rem' }}
+                  >
+                    {title}
+                  </button>
+                ))}
+              </div>
+            </nav>
+            <button 
+              className="mobile-nav-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </header>
+      
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+        {sectionTitles.map((title, index) => (
+          <a
+            key={title}
+            href={`#section-${index}`}
+            className="mobile-menu-link"
+            style={{ transitionDelay: `${index * 0.1}s` }}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              scrollToSection(index);
+            }}
+          >
+            {title}
+          </a>
+        ))}
+      </div>
+      
+      {/* Side Navigation */}
+      <div className="side-nav">
+        {sectionTitles.map((title, index) => (
+          <div
+            key={title}
+            className={`side-nav-dot ${activeSection === index ? 'active' : ''}`}
+            onClick={() => scrollToSection(index)}
+          >
+            <div className="side-nav-label">{title}</div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Section 1: Hero */}
+      <section 
+        ref={(el) => sectionsRef.current[0] = el}
+        style={{ 
+          minHeight: '100vh', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          position: 'relative',
+          padding: '4rem 2rem',
+          textAlign: 'center'
+        }}
+      >
+        <div className="wind-rose">
+          <Wind size={120} style={{ color: 'var(--gold)' }} />
+        </div>
         
-        if (mobileMenu.classList.contains('open')) {
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.style.overflow = '';
-        }
-      });
-      
-      // Handle navigation clicks
-      [...navLinks, ...mobileNavLinks].forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          // Close mobile menu if open
-          menuButton.classList.remove('menu-open');
-          mobileMenu.classList.remove('open');
-          document.body.style.overflow = '';
-          
-          // Smooth scroll to section
-          const targetId = link.getAttribute('href');
-          const targetSection = document.querySelector(targetId);
-          
-          if (targetSection) {
-            const headerHeight = header.offsetHeight;
-            const offsetTop = targetSection.offsetTop - headerHeight;
-            
-            window.scrollTo({
-              top: offsetTop,
-              behavior: 'smooth'
-            });
-          }
-        });
-      });
-      
-      // Update active nav link on scroll
-      window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY + header.offsetHeight + 50;
-        const sections = document.querySelectorAll('section[id]');
+        <h1 style={{ marginBottom: '4rem' }}>
+          GET{' '}
+          <span className="bracket bracket-left">[</span>
+          <span className="dynamic-text">
+            {dynamicWords[dynamicWord]}
+          </span>
+          <span className="bracket bracket-right">]</span>
+        </h1>
         
-        sections.forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionBottom = sectionTop + section.offsetHeight;
-          const sectionId = section.getAttribute('id');
+        <p style={{ 
+          fontSize: '1.5rem', 
+          marginBottom: '6rem', 
+          maxWidth: '40ch',
+          opacity: 0,
+          animation: 'fadeIn 0.8s ease-out 1.5s forwards'
+        }}>
+          WELCOME TO YOUR LUXURY EXPERIENCE
+        </p>
+        
+        <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {sectionTitles.slice(1).map((title, index) => (
+            <button
+              key={title}
+              onClick={() => scrollToSection(index + 1)}
+              style={{
+                background: 'transparent',
+                border: '1px solid var(--gold)',
+                color: 'var(--secondary)',
+                padding: '1rem 2rem',
+                fontSize: '0.875rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                opacity: 0,
+                transform: 'translateY(20px)',
+                animation: `fadeIn 0.5s ease-out ${2 + index * 0.1}s forwards`
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'var(--gold)';
+                e.target.style.color = 'var(--primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'transparent';
+                e.target.style.color = 'var(--secondary)';
+              }}
+            >
+              {title}
+            </button>
+          ))}
+        </div>
+      </section>
+      
+      {/* Section 2: Quick Info */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[1] = el}
+      >
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>01 ESSENTIAL INFORMATION</h2>
+          <h3 style={{ marginBottom: '1rem' }}>QUICK INFO</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)' }}>
+            Everything you need for a seamless arrival and stay.
+          </p>
           
-          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
+          <div className="grid-4">
+            {[
+              {
+                icon: <Wifi />,
+                title: 'Wi-Fi Network',
+                label: 'Network',
+                value: 'LUXURY_GUEST',
+                label2: 'Password',
+                value2: 'Excellence2025!'
+              },
+              {
+                icon: <Key />,
+                title: 'Access Codes',
+                label: 'Main Gate',
+                value: '#7823',
+                label2: 'Residence',
+                value2: '#2947'
+              },
+              {
+                icon: <Clock />,
+                title: 'Check Times',
+                label: 'Check-in',
+                value: '3:00 PM',
+                label2: 'Check-out',
+                value2: '12:00 PM'
+              },
+              {
+                icon: <Car />,
+                title: 'Parking',
+                label: 'Spaces',
+                value: '4 Dedicated',
+                label2: 'EV Charging',
+                value2: 'Tesla Compatible'
               }
-            });
-          }
-        });
-      });
-    }
-    
-    function initHomepageAnimations() {
-      // Show background with artistic effect
-      gsap.to('.get-excited-bg', {
-        opacity: 1,
-        scale: 1,
-        duration: 2,
-        ease: "expo.out"
-      });
+            ].map((item, index) => (
+              <div 
+                key={index}
+                className="card"
+                style={{ transitionDelay: `${index * 0.1}s` }}
+              >
+                <div 
+                  className="card-content"
+                  style={{
+                    borderLeft: '1px solid var(--gold)',
+                    padding: '2rem',
+                    background: 'var(--charcoal)',
+                    transition: 'all 0.5s ease'
+                  }}
+                >
+                  <div className="card-hover-glow" style={{ position: 'relative' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
+                      <div style={{ color: 'var(--gold)', marginRight: '1rem' }}>
+                        {item.icon}
+                      </div>
+                      <h4 style={{ fontSize: '1.125rem' }}>{item.title}</h4>
+                    </div>
+                    
+                    <div className="label-value">
+                      <div className="label">{item.label}</div>
+                      <div className="value">{item.value}</div>
+                    </div>
+                    
+                    <div className="label-value">
+                      <div className="label">{item.label2}</div>
+                      <div className="value">{item.value2}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       
-      // Animate hand-drawn elements with strokeDasharray
-      gsap.utils.toArray('.hand-drawn-svg').forEach((path, i) => {
-        const length = path.getTotalLength ? path.getTotalLength() : 500;
-        path.style.strokeDasharray = length;
-        path.style.strokeDashoffset = length;
-        
-        gsap.to(path, {
-          strokeDashoffset: 0,
-          duration: 2 + i * 0.5,
-          ease: "power1.inOut",
-          delay: 0.5 + i * 0.2,
-          onComplete: () => {
-            // Add subtle breathing animation
-            gsap.to(path, {
-              opacity: 0.7,
-              duration: 2,
-              yoyo: true,
-              repeat: -1,
-              ease: "sine.inOut"
-            });
-          }
-        });
-      });
-      
-      // Organic bracket animations
-      gsap.from('.get-excited-bracket', {
-        opacity: 0,
-        y: 50,
-        rotation: -15,
-        duration: 1.5,
-        stagger: 0.3,
-        ease: "elastic.out(1, 0.8)",
-        delay: 1
-      });
-      
-      // Question text with artistic entrance
-      gsap.from('.question-text', {
-        opacity: 0,
-        y: 30,
-        letterSpacing: "0.5em",
-        duration: 1.5,
-        ease: "power2.out",
-        delay: 1.5
-      });
-      
-      // Nav items floating in
-      gsap.from('.section-nav-item', {
-        opacity: 0,
-        y: 30,
-        scale: 0.9,
-        rotation: -5,
-        stagger: 0.15,
-        duration: 0.8,
-        ease: "back.out(1.7)",
-        delay: 2
-      });
-    }
-    
-    function initScrollAnimations() {
-      // Hand-drawn scroll-responsive patterns
-      gsap.utils.toArray('.scroll-reveal-svg path').forEach(path => {
-        const length = path.getTotalLength ? path.getTotalLength() : 1000;
-        
-        ScrollTrigger.create({
-          trigger: path.closest('.scroll-reveal-svg'),
-          start: 'top 80%',
-          end: 'bottom 20%',
-          scrub: 1,
-          animation: gsap.fromTo(path, 
-            {
-              strokeDasharray: length,
-              strokeDashoffset: length
-            },
-            {
-              strokeDashoffset: 0,
-              duration: 1,
-              ease: "none"
-            }
-          ),
-          onUpdate: (self) => {
-            // Organic drawing effect with slight variations
-            const progress = self.progress;
-            if (progress > 0.5) {
-              path.style.filter = `blur(0.3px)`;
-            }
-          }
-        });
-      });
-      
-      // Card animations with hand-drawn borders
-      gsap.utils.toArray('.card').forEach((card, i) => {
-        const drawingSVG = card.querySelector('.card-drawing path, .card-drawing circle, .card-drawing rect');
-        
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 70%',
-          onEnter: () => {
-            // Card entrance animation
-            gsap.from(card, {
-              opacity: 0,
-              y: 100,
-              rotation: 2,
-              duration: 1,
-              ease: "power2.out",
-              delay: i * 0.1
-            });
+      {/* Section 3: Experiences */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[2] = el}
+      >
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>02 CURATED FOR YOU</h2>
+          <h3 style={{ marginBottom: '1rem' }}>EXPERIENCES</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)', maxWidth: '60ch' }}>
+            Indulge in the finest curated experiences the area has to offer. From breathtaking adventures to exclusive culinary journeys, each experience has been handpicked to create unforgettable memories during your stay.
+          </p>
+          
+          <div style={{ marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
+              <div style={{ position: 'relative', flex: '1', minWidth: '300px' }}>
+                <Search 
+                  size={18} 
+                  style={{ 
+                    position: 'absolute', 
+                    left: '1rem', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    color: 'var(--gold)' 
+                  }} 
+                />
+                <input
+                  type="text"
+                  placeholder="Search experiences..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '1rem 1rem 1rem 3rem',
+                    background: 'var(--charcoal)',
+                    border: '1px solid var(--gold)',
+                    color: 'var(--secondary)',
+                    fontSize: '1rem',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+            </div>
             
-            // Drawing animation
-            if (drawingSVG) {
-              const length = drawingSVG.getTotalLength ? drawingSVG.getTotalLength() : 200;
-              drawingSVG.style.strokeDasharray = length;
-              drawingSVG.style.strokeDashoffset = length;
-              
-              gsap.to(drawingSVG, {
-                strokeDashoffset: 0,
-                duration: 1.5,
-                ease: "power1.inOut",
-                delay: 0.5 + i * 0.1
-              });
-            }
-          }
-        });
-      });
-      
-      // Section headers with artistic effects
-      gsap.utils.toArray('.section-number').forEach(number => {
-        ScrollTrigger.create({
-          trigger: number,
-          start: 'top 80%',
-          animation: gsap.from(number, {
-            opacity: 0,
-            scale: 0.5,
-            x: -100,
-            rotation: -20,
-            duration: 1.5,
-            ease: "elastic.out(1, 0.7)"
-          })
-        });
-      });
-      
-      gsap.utils.toArray('.section-title').forEach(title => {
-        ScrollTrigger.create({
-          trigger: title,
-          start: 'top 75%',
-          animation: gsap.from(title, {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            ease: "power2.out"
-          })
-        });
-      });
-      
-      gsap.utils.toArray('.section-divider').forEach(divider => {
-        ScrollTrigger.create({
-          trigger: divider,
-          start: 'top 75%',
-          animation: gsap.from(divider, {
-            width: 0,
-            duration: 1.5,
-            ease: "power2.inOut"
-          })
-        });
-      });
-      
-      // Parallax effects for sections with organic movement
-      gsap.utils.toArray('section').forEach(section => {
-        gsap.to(section, {
-          backgroundPositionY: '30%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
-        });
-      });
-    }
-    
-    function initProgressBar() {
-      const progressBar = document.getElementById('progressBar');
-      
-      window.addEventListener('scroll', () => {
-        const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrolled = window.scrollY;
-        const progress = (scrolled / windowHeight) * 100;
-        
-        progressBar.style.width = progress + '%';
-      });
-    }
-    
-    function initBackToTop() {
-      const backToTopButton = document.getElementById('back-to-top');
-      
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
-          backToTopButton.classList.add('visible');
-        } else {
-          backToTopButton.classList.remove('visible');
-        }
-      });
-      
-      backToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    }
-    
-    function createAnimatedBackground() {
-      // Create simple SVG filter for rough/hand-drawn effect
-      const filterDiv = document.createElement('div');
-      filterDiv.style.position = 'absolute';
-      filterDiv.style.width = '0';
-      filterDiv.style.height = '0';
-      filterDiv.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="roughness" x="-20%" y="-20%" width="140%" height="140%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" />
-            </filter>
-          </defs>
-        </svg>
-      `;
-      document.body.appendChild(filterDiv);
-      
-      // Create hand-drawn background patterns
-      const geometricBg = document.createElement('div');
-      geometricBg.className = 'geometric-background';
-      document.body.appendChild(geometricBg);
-      
-      // Artistic hand-drawn elements
-      const handDrawnPatterns = [
-        {
-          type: 'svg',
-          x: '5%',
-          y: '15%',
-          size: '200px',
-          path: 'M20,10 C40,5 60,20 80,15 C100,10 120,30 100,50 C80,70 60,55 40,60 C20,65 10,45 20,30 C30,15 40,25 50,20',
-          opacity: 0.08
-        },
-        {
-          type: 'svg',
-          x: '80%',
-          y: '25%',
-          size: '150px',
-          path: 'M10,75 Q40,30 75,75 T140,75',
-          opacity: 0.06
-        },
-        {
-          type: 'svg',
-          x: '15%',
-          y: '70%',
-          size: '180px',
-          path: 'M90,10 C120,40 100,80 70,100 C40,120 10,90 20,60 C30,30 60,20 90,10',
-          opacity: 0.08
-        },
-        {
-          type: 'svg',
-          x: '70%',
-          y: '80%',
-          size: '120px',
-          path: 'M10,60 C30,40 50,60 70,40 C90,20 110,40 100,60 C90,80 70,100 50,80 C30,60 20,80 10,60',
-          opacity: 0.07
-        }
-      ];
-      
-      handDrawnPatterns.forEach((pattern, index) => {
-        if (pattern.type === 'svg') {
-          const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-          svgElement.classList.add('artistic-pattern');
-          svgElement.style.cssText = `
-            position: absolute;
-            left: ${pattern.x};
-            top: ${pattern.y};
-            width: ${pattern.size};
-            height: ${pattern.size};
-            opacity: 0;
-          `;
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {['all', 'adventure', 'culinary', 'cultural', 'wellness'].map(filter => (
+                <button
+                  key={filter}
+                  className={`filter-tag ${activeFilter === filter ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
           
-          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          path.setAttribute('d', pattern.path);
-          path.setAttribute('fill', 'none');
-          path.setAttribute('stroke', 'var(--gold)');
-          path.setAttribute('stroke-width', '1');
-          path.style.filter = 'url(#roughness)';
+          <div className="grid-3">
+            {filteredExperiences.map((exp, index) => (
+              <div 
+                key={index}
+                className="experience-card card"
+                style={{ transitionDelay: `${index * 0.1}s` }}
+              >
+                <div style={{ overflow: 'hidden' }}>
+                  <img 
+                    src={exp.image} 
+                    alt={exp.title}
+                    style={{ 
+                      width: '100%', 
+                      height: '300px', 
+                      objectFit: 'cover',
+                      transition: 'transform 0.5s ease'
+                    }}
+                  />
+                </div>
+                <div style={{ padding: '2rem' }}>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <h4 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{exp.title}</h4>
+                    <p style={{ color: 'var(--gold)', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
+                      {exp.category}
+                    </p>
+                  </div>
+                  <p style={{ marginBottom: '1.5rem', color: 'rgba(247, 247, 242, 0.7)' }}>
+                    {exp.description}
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div className="label">Duration</div>
+                      <div className="value" style={{ fontSize: '1rem' }}>{exp.duration}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div className="label">Price</div>
+                      <div className="value" style={{ fontSize: '1rem' }}>{exp.price}</div>
+                    </div>
+                  </div>
+                  <button style={{
+                    marginTop: '2rem',
+                    background: 'transparent',
+                    border: '1px solid var(--gold)',
+                    color: 'var(--secondary)',
+                    padding: '0.75rem 2rem',
+                    width: '100%',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'var(--gold)';
+                    e.target.style.color = 'var(--primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                    e.target.style.color = 'var(--secondary)';
+                  }}
+                  >
+                    Reserve Now
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Section 4: House Guide */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[3] = el}
+        style={{ position: 'relative' }}
+      >
+        <div className="section-number" style={{ left: '2rem' }}>03</div>
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>03 STAY INFORMATION</h2>
+          <h3 style={{ marginBottom: '1rem' }}>HOUSE GUIDE</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)', maxWidth: '60ch' }}>
+            Everything you need to know to make your stay seamlessly comfortable and utterly luxurious. Our premium amenities and services are designed for your effortless enjoyment.
+          </p>
           
-          svgElement.appendChild(path);
-          geometricBg.appendChild(svgElement);
+          <div style={{ maxWidth: '800px' }}>
+            {guideItems.map((item, index) => (
+              <div key={index} style={{ position: 'relative' }}>
+                <h4 
+                  className="guide-item"
+                  style={{ 
+                    fontSize: '1.5rem', 
+                    marginBottom: '3rem',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {item.title}
+                  <div className="guide-content" style={{ fontSize: '1rem', color: 'rgba(247, 247, 242, 0.7)' }}>
+                    {item.content}
+                  </div>
+                </h4>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Section 5: Local Tips */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[4] = el}
+        style={{ position: 'relative' }}
+      >
+        <div className="section-number" style={{ left: '2rem' }}>04</div>
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>04 INSIDER KNOWLEDGE</h2>
+          <h3 style={{ marginBottom: '1rem' }}>LOCAL TIPS</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)', maxWidth: '60ch' }}>
+            Discover the area's most exclusive and hidden treasures with our curated insider recommendations, ensuring your experience transcends the ordinary.
+          </p>
           
-          // Fade in animation
-          gsap.to(svgElement, {
-            opacity: pattern.opacity,
-            duration: 2,
-            delay: index * 0.3,
-            ease: "power2.out"
-          });
+          <div className="masonry-grid">
+            {localTips.map((tip, index) => (
+              <div key={index} className="masonry-item card" style={{ transitionDelay: `${index * 0.1}s` }}>
+                <div style={{ background: 'var(--charcoal)', padding: '2rem', borderLeft: '1px solid var(--gold)' }}>
+                  <div className="label" style={{ marginBottom: '0.5rem' }}>{tip.type}</div>
+                  <h4 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{tip.title}</h4>
+                  <div className="label-value" style={{ marginBottom: '1rem' }}>
+                    <div className="label">ESTABLISHMENT</div>
+                    <div className="value" style={{ color: 'var(--gold)' }}>{tip.establishment}</div>
+                  </div>
+                  <p style={{ color: 'rgba(247, 247, 242, 0.7)' }}>{tip.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Section 6: Amenities */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[5] = el}
+        style={{ position: 'relative' }}
+      >
+        <div className="section-number" style={{ left: '2rem' }}>05</div>
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>05 FOR YOUR PLEASURE</h2>
+          <h3 style={{ marginBottom: '1rem' }}>AMENITIES</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)', maxWidth: '60ch' }}>
+            Every detail has been meticulously considered to provide an unparalleled luxury experience during your stay.
+          </p>
           
-          // Subtle rotation and scale animation
-          gsap.to(svgElement, {
-            rotation: 2,
-            scale: 1.02,
-            duration: 5 + index,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-          });
+          <div className="grid-3">
+            {[
+              {
+                title: 'CULINARY EXCELLENCE',
+                icon: <Coffee />,
+                items: [
+                  'La Marzocco espresso machine',
+                  'Wine cellar with sommelier selection',
+                  'Chef\'s kitchen with premium appliances',
+                  'Herb garden for fresh ingredients',
+                  'Personal chef on request'
+                ]
+              },
+              {
+                title: 'WELLNESS & SPA',
+                icon: <Flower />,
+                items: [
+                  'Saltwater infinity pool',
+                  'Private massage studio',
+                  'Steam room & sauna',
+                  'Meditation garden',
+                  'Fitness suite with personal trainer'
+                ]
+              },
+              {
+                title: 'ENTERTAINMENT',
+                icon: <Sparkles />,
+                items: [
+                  'Home theater with Dolby Atmos',
+                  'Music room with grand piano',
+                  'Outdoor cinema setup',
+                  'Game room with billiards',
+                  'Library with rare editions'
+                ]
+              },
+              {
+                title: 'COMFORT & LUXURY',
+                icon: <Bed />,
+                items: [
+                  'Egyptian cotton bedding',
+                  'Heated floors throughout',
+                  'Smart home automation',
+                  'Frette robes and linens',
+                  'Custom temperature control'
+                ]
+              },
+              {
+                title: 'OUTDOOR LIVING',
+                icon: <Leaf />,
+                items: [
+                  'Private beach access',
+                  'Outdoor kitchen with grill',
+                  'Zen garden with fountain',
+                  'Outdoor fireplace lounge',
+                  'Stargazing terrace'
+                ]
+              },
+              {
+                title: 'EXCLUSIVE SERVICES',
+                icon: <Shield />,
+                items: [
+                  '24/7 concierge',
+                  'Private security',
+                  'Housekeeping twice daily',
+                  'Limousine service',
+                  'Personal shopping assistant'
+                ]
+              }
+            ].map((category, index) => (
+              <div 
+                key={index}
+                className="card"
+                style={{ transitionDelay: `${index * 0.1}s` }}
+              >
+                <div 
+                  style={{ 
+                    background: 'var(--charcoal)', 
+                    borderLeft: '1px solid var(--gold)',
+                    padding: '2rem',
+                    height: '100%',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <div style={{ color: 'var(--gold)', marginRight: '1rem' }}>
+                      {category.icon}
+                    </div>
+                    <h4 style={{ fontSize: '1.25rem' }}>{category.title}</h4>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>
+                    {category.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex}
+                        style={{ 
+                          marginBottom: '0.75rem',
+                          paddingLeft: '1rem',
+                          position: 'relative',
+                          color: 'rgba(247, 247, 242, 0.7)',
+                          transition: 'all 0.3s ease',
+                          transitionDelay: `${itemIndex * 0.05}s`
+                        }}
+                      >
+                        <span style={{ 
+                          position: 'absolute', 
+                          left: 0, 
+                          top: '50%', 
+                          transform: 'translateY(-50%)',
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: 'var(--gold)',
+                        }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Section 7: Contact */}
+      <section 
+        className="section"
+        ref={(el) => sectionsRef.current[6] = el}
+        style={{ position: 'relative' }}
+      >
+        <div className="section-number" style={{ left: '2rem' }}>06</div>
+        <div className="container">
+          <h2 style={{ marginBottom: '1rem' }}>06 AT YOUR SERVICE</h2>
+          <h3 style={{ marginBottom: '1rem' }}>PERSONAL CONCIERGE</h3>
+          <div className="section-divider" />
+          <p style={{ marginBottom: '4rem', fontSize: '1.125rem', color: 'rgba(247, 247, 242, 0.7)', maxWidth: '60ch' }}>
+            Your dedicated concierge team is available 24/7 to ensure that every aspect of your stay exceeds expectations.
+          </p>
           
-          // Parallax effect based on scroll
-          ScrollTrigger.create({
-            trigger: document.body,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-            animation: gsap.to(svgElement, {
-              y: (index % 2 === 0) ? '50px' : '-50px',
-              rotation: (index % 2 === 0) ? '5deg' : '-5deg',
-              ease: 'none'
-            })
-          });
-        }
-      });
-    }
-  </script>
-</body>
-</html>
+          <div className="grid-3">
+            <div className="card">
+              <div style={{ background: 'var(--charcoal)', padding: '2rem', borderLeft: '1px solid var(--gold)' }}>
+                <h4 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>DIRECT CONTACT</h4>
+                <div className="label-value">
+                  <div className="label">PHONE</div>
+                  <div className="value">+1 (555) 123-4567</div>
+                </div>
+                <div className="label-value">
+                  <div className="label">TEXT/WHATSAPP</div>
+                  <div className="value">+1 (555) 123-4568</div>
+                </div>
+                <div className="label-value">
+                  <div className="label">EMAIL</div>
+                  <div className="value">concierge@luxury-property.com</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="card">
+              <div style={{ background: 'var(--charcoal)', padding: '2rem', borderLeft: '1px solid var(--gold)' }}>
+                <h4 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>AVAILABLE SERVICES</h4>
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {[
+                    'Restaurant reservations',
+                    'Transportation arrangements',
+                    'Spa & wellness bookings',
+                    'Grocery & shopping services',
+                    'Event planning',
+                    'Tour guide arrangements'
+                  ].map((service, index) => (
+                    <li 
+                      key={index}
+                      style={{ 
+                        marginBottom: '0.75rem',
+                        paddingLeft: '1rem',
+                        position: 'relative',
+                        color: 'rgba(247, 247, 242, 0.7)'
+                      }}
+                    >
+                      <span style={{ 
+                        position: 'absolute', 
+                        left: 0, 
+                        top: '50%', 
+                        transform: 'translateY(-50%)',
+                        width: '4px',
+                        height: '4px',
+                        borderRadius: '50%',
+                        background: 'var(--gold)'
+                      }} />
+                      {service}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            <div className="card">
+              <div style={{ background: 'var(--charcoal)', padding: '2rem', borderLeft: '1px solid var(--gold)' }}>
+                <h4 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>EMERGENCY CONTACT</h4>
+                <div className="label-value">
+                  <div className="label">24/7 SUPPORT</div>
+                  <div className="value">+1 (555) 911-HELP</div>
+                </div>
+                <div className="label-value">
+                  <div className="label">MEDICAL EMERGENCY</div>
+                  <div className="value">911</div>
+                </div>
+                <div className="label-value">
+                  <div className="label">PROPERTY MANAGER</div>
+                  <div className="value">Sarah Mitchell</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer 
+        style={{ 
+          background: 'rgba(42, 42, 42, 0.5)',
+          padding: '6rem 0',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <div className="container">
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            textAlign: 'center' 
+          }}>
+            <h2 style={{ 
+              fontSize: '3rem', 
+              marginBottom: '3rem',
+              color: 'var(--gold)'
+            }}>
+              LUXURY PROPERTY
+            </h2>
+            
+            <nav style={{ marginBottom: '3rem' }}>
+              <div style={{ 
+                display: 'flex', 
+                gap: '3rem', 
+                flexWrap: 'wrap',
+                justifyContent: 'center'
+              }}>
+                {sectionTitles.map((title, index) => (
+                  <a
+                    key={title}
+                    href={`#section-${index}`}
+                    className="footer-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection(index);
+                    }}
+                  >
+                    {title}
+                  </a>
+                ))}
+              </div>
+            </nav>
+            
+            <p style={{ 
+              color: 'rgba(247, 247, 242, 0.5)',
+              fontSize: '0.875rem',
+              letterSpacing: '0.1em'
+            }}>
+              © 2025 LUXURY PROPERTY. ALL RIGHTS RESERVED.
+            </p>
+          </div>
+        </div>
+      </footer>
+      
+      {/* Back to Top Button */}
+      <button 
+        className={`back-to-top ${showBackToTop ? 'visible' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      >
+        <ChevronUp size={20} />
+      </button>
+    </div>
+  );
+};
+
+export default LuxuryGuidebook;
