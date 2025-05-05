@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>01 EXPERIENCES</title>
+    <title>Luxury Experience</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
@@ -16,8 +16,10 @@
         
         html, body {
             height: 100%;
+            width: 100%;
             overflow: hidden;
             background: #F8F8F8;
+            position: fixed;
         }
         
         body {
@@ -25,47 +27,55 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        .container {
-            height: 100vh;
-            overflow: hidden;
+        .main-container {
             position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
         }
         
         .section {
-            height: 100vh;
-            width: 100%;
             position: absolute;
-            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            will-change: transform;
         }
         
-        .section-1 {
+        /* Hero Section */
+        .hero-section {
             background: #F8F8F8;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1;
         }
         
-        .section-2 {
+        /* Stay Info Section */
+        .stay-section {
             background: #000;
             color: #fff;
-            padding: 8vh 5vw;
-            transform: translateY(100%);
             z-index: 2;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
         
-        .section-3 {
+        /* Explore Section */
+        .explore-section {
             background: #F8F8F8;
-            padding: 8vh 5vw;
-            transform: translateY(100%);
+            color: #000;
             z-index: 3;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
         
+        /* Header Styles */
         .header {
             letter-spacing: 10px;
             text-transform: uppercase;
@@ -73,63 +83,105 @@
             margin-bottom: 4vh;
         }
         
+        /* Text System for Hero */
         .text-system {
             display: flex;
             gap: 0.3em;
             align-items: center;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 900;
+            font-weight: 1000;
             text-transform: lowercase;
             letter-spacing: -0.04em;
             font-size: clamp(45px, 5.5vw, 70px);
             line-height: 1.2;
         }
         
-        .words-container {
+        /* Word List Container */
+        .word-list {
             position: relative;
             display: inline-block;
             min-width: fit-content;
-            height: 1.2em;
-            overflow: hidden;
         }
         
+        /* Individual Words */
         .word {
             position: absolute;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            line-height: 1.2;
-            left: 0;
+            transform: translateY(-10px);
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.0;
+            width: 100%;
+            white-space: nowrap;
         }
         
-        .word:first-child {
-            opacity: 1;
+        .word.visible {
+            opacity: calc(1 - var(--word-index) * 0.25);
             transform: translateY(0);
         }
         
-        .nav-container {
+        .word:first-child {
+            position: relative;
+            opacity: 1;
+            transform: none;
+        }
+        
+        .word:nth-child(1) { top: 0; --word-index: 0; }
+        .word:nth-child(2) { top: 1.1em; --word-index: 0; }
+        .word:nth-child(3) { top: 2.2em; --word-index: 1.5; }
+        .word:nth-child(4) { top: 3.3em; --word-index: 2.5; }
+        .word:nth-child(5) { top: 4.4em; --word-index: 3.5; }
+        .word:nth-child(6) { top: 5.5em; --word-index: 4.5; }
+        .word:nth-child(7) { top: 6.6em; --word-index: 5.5; }
+        .word:nth-child(8) { top: 7.7em; --word-index: 6.5; }
+        
+        /* Nav List */
+        .nav-list {
             position: relative;
             display: block;
+            width: fit-content;
+            margin: 0 auto;
             height: 300px;
-            width: 100%;
         }
         
+        /* Navigation Items */
         .nav-item {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
             opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
+            transform: translateY(-10px);
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.0;
             width: 100%;
+            white-space: nowrap;
+            text-align: center;
         }
         
+        .nav-item.visible {
+            opacity: calc(1 - var(--word-index) * 0.25);
+            transform: translateY(0);
+        }
+        
+        .nav-item:first-child {
+            visibility: hidden;
+            position: relative;
+            opacity: 1;
+            transform: none;
+        }
+        
+        .nav-item:nth-child(2) { top: 0.9em; --word-index: 0; }
+        .nav-item:nth-child(3) { top: 1.8em; --word-index: 1.5; }
+        .nav-item:nth-child(4) { top: 2.7em; --word-index: 2.5; }
+        .nav-item:nth-child(5) { top: 3.6em; --word-index: 3.5; }
+        .nav-item:nth-child(6) { top: 4.5em; --word-index: 4.5; }
+        
+        /* Stay Section Content */
         .content-text {
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
+            padding: 8vh 5vw;
         }
         
+        /* Stay Info Divider */
         .divider {
             height: 1px;
             background: #fff;
@@ -137,9 +189,10 @@
             margin: 6vh 0;
         }
         
+        /* Typography */
         h1 {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 900;
+            font-weight: 1000;
             letter-spacing: -0.03em;
             text-transform: lowercase;
             font-size: min(7vw, 75px);
@@ -155,12 +208,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <section class="section section-1" id="section1">
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="section hero-section" id="hero">
             <header class="header" id="dynamic-header">it's go time</header>
             <div class="text-system">
                 <span>get</span>
-                <div class="words-container">
+                <div class="word-list">
                     <div class="word">excited</div>
                     <div class="word">pampered</div>
                     <div class="word">relaxed</div>
@@ -173,7 +227,8 @@
             </div>
         </section>
         
-        <section class="section section-2" id="section2">
+        <!-- Stay Info Section -->
+        <section class="section stay-section" id="stay">
             <div class="content-text">
                 <header class="header" style="color: #fff; margin-bottom: 3vh;">ABOUT YOUR STAY</header>
                 
@@ -199,31 +254,27 @@
             </div>
         </section>
         
-        <section class="section section-3" id="section3">
-            <header class="header" style="color: #000; margin-bottom: 4vh; text-align: center;">SOMETHING YOU'RE LOOKING FOR?</header>
+        <!-- Explore Section -->
+        <section class="section explore-section" id="explore">
+            <header class="header" style="margin-bottom: 4vh; text-align: center;">SOMETHING YOU'RE LOOKING FOR?</header>
             <div class="text-system" style="flex-direction: column; align-items: center; width: 100%; gap: 0;">
                 <span style="margin: 0; display: block; text-align: center;">explore</span>
-                <div class="nav-container">
-                    <div class="nav-item" style="top: 0em;">stay info</div>
-                    <div class="nav-item" style="top: 1.5em;">experiences</div>
-                    <div class="nav-item" style="top: 3em;">local tips</div>
-                    <div class="nav-item" style="top: 4.5em;">amenities</div>
-                    <div class="nav-item" style="top: 6em;">contact</div>
+                <div class="nav-list">
+                    <div class="nav-item">&nbsp;</div>
+                    <div class="nav-item">stay info</div>
+                    <div class="nav-item">experiences</div>
+                    <div class="nav-item">local tips</div>
+                    <div class="nav-item">amenities</div>
+                    <div class="nav-item">contact</div>
                 </div>
             </div>
         </section>
     </div>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Elements
-            const sections = document.querySelectorAll('.section');
-            const words = document.querySelectorAll('.word');
-            const navItems = document.querySelectorAll('.nav-item');
-            const dynamicHeader = document.getElementById('dynamic-header');
-            
-            // Header phrases
-            const headerPhrases = [
+            // Define header text options
+            const headerTexts = [
                 "it's go time",
                 "vacay-ready",
                 "welcome to your stay",
@@ -236,216 +287,240 @@
                 "find your peace"
             ];
             
-            // State
-            let currentSection = 0;
-            let wordsRevealed = false;
-            let navRevealed = false;
-            let isAnimating = false;
-            let section2Position = 100;
-            let section3Position = 100;
-            let lastScrollTime = 0;
+            // DOM Elements
+            const hero = document.getElementById('hero');
+            const stay = document.getElementById('stay');
+            const explore = document.getElementById('explore');
+            const words = document.querySelectorAll('.word');
+            const navItems = document.querySelectorAll('.nav-item');
+            const headerElement = document.getElementById('dynamic-header');
             
-            // Initialize
-            setRandomHeader();
-            setupEventListeners();
+            // Set a random header text
+            headerElement.textContent = headerTexts[Math.floor(Math.random() * headerTexts.length)];
             
-            function setRandomHeader() {
-                dynamicHeader.textContent = headerPhrases[Math.floor(Math.random() * headerPhrases.length)];
-            }
+            // App State
+            const state = {
+                currentSection: 0, // 0: hero, 1: stay, 2: explore
+                heroWordsRevealed: false,
+                exploreNavRevealed: false,
+                stayPosition: 100, // 0 = fully visible, 100 = below screen
+                explorePosition: 100, // 0 = fully visible, 100 = below screen
+                scrolling: false,
+                lastScrollTime: 0
+            };
             
-            function setupEventListeners() {
-                // Wheel event
-                window.addEventListener('wheel', handleScroll, { passive: false });
-                
-                // Touch events
-                let touchStartY = 0;
-                document.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                }, { passive: false });
-                
-                document.addEventListener('touchmove', function(e) {
-                    const touchY = e.touches[0].clientY;
-                    const diff = touchStartY - touchY;
-                    
-                    if (Math.abs(diff) > 10) {
-                        handleScroll({ 
-                            preventDefault: () => e.preventDefault(),
-                            deltaY: diff
-                        });
-                        touchStartY = touchY;
+            // Throttle function for smoother scrolling
+            function throttle(callback, delay) {
+                let lastCall = 0;
+                return function(...args) {
+                    const now = Date.now();
+                    if (now - lastCall >= delay) {
+                        lastCall = now;
+                        callback.apply(this, args);
                     }
-                }, { passive: false });
+                };
             }
             
-            function handleScroll(e) {
+            // Handle mouse wheel events
+            function handleWheel(e) {
                 e.preventDefault();
                 
-                // Throttle scrolling
-                const now = Date.now();
-                if (now - lastScrollTime < 150) return;
-                lastScrollTime = now;
+                // Skip if we're still in an animation
+                if (state.scrolling) return;
                 
+                // Determine scroll direction
                 const direction = e.deltaY > 0 ? 1 : -1;
                 
-                // SECTION 1
-                if (currentSection === 0) {
-                    if (direction > 0) {
-                        if (!wordsRevealed) {
-                            revealWords();
+                // Process based on current section
+                processScroll(direction);
+            }
+            
+            // Process scroll based on current section and direction
+            function processScroll(direction) {
+                // HERO SECTION
+                if (state.currentSection === 0) {
+                    if (direction > 0) { // Scrolling down
+                        if (!state.heroWordsRevealed) {
+                            revealHeroWords();
                         } else {
-                            smoothScrollSection2(direction);
+                            moveSection(stay, state.stayPosition - 10);
+                            state.stayPosition -= 10;
+                            
+                            // If stay section is fully visible
+                            if (state.stayPosition <= 0) {
+                                state.stayPosition = 0;
+                                state.currentSection = 1;
+                            }
                         }
-                    } else {
-                        if (wordsRevealed) {
-                            hideWords();
+                    } else if (state.heroWordsRevealed) { // Scrolling up and words are revealed
+                        hideHeroWords();
+                    }
+                }
+                
+                // STAY SECTION
+                else if (state.currentSection === 1) {
+                    if (direction > 0) { // Scrolling down
+                        moveSection(explore, state.explorePosition - 10);
+                        state.explorePosition -= 10;
+                        
+                        // If explore section is fully visible
+                        if (state.explorePosition <= 0) {
+                            state.explorePosition = 0;
+                            state.currentSection = 2;
+                        }
+                    } else { // Scrolling up
+                        moveSection(stay, state.stayPosition + 10);
+                        state.stayPosition += 10;
+                        
+                        // If stay section is fully hidden
+                        if (state.stayPosition >= 100) {
+                            state.stayPosition = 100;
+                            state.currentSection = 0;
                         }
                     }
                 }
-                // SECTION 2
-                else if (currentSection === 1) {
-                    if (direction > 0) {
-                        smoothScrollSection3(direction);
-                    } else {
-                        smoothScrollSection2(direction);
-                    }
-                }
-                // SECTION 3
-                else if (currentSection === 2) {
-                    if (direction > 0) {
-                        if (!navRevealed) {
-                            revealNavItems();
+                
+                // EXPLORE SECTION
+                else if (state.currentSection === 2) {
+                    if (direction > 0) { // Scrolling down
+                        if (!state.exploreNavRevealed) {
+                            revealExploreNav();
                         }
-                    } else {
-                        if (navRevealed) {
-                            hideNavItems();
+                    } else { // Scrolling up
+                        if (state.exploreNavRevealed) {
+                            hideExploreNav();
                         } else {
-                            smoothScrollSection3(direction);
+                            moveSection(explore, state.explorePosition + 10);
+                            state.explorePosition += 10;
+                            
+                            // If explore section is fully hidden
+                            if (state.explorePosition >= 100) {
+                                state.explorePosition = 100;
+                                state.currentSection = 1;
+                            }
                         }
                     }
                 }
             }
             
-            function revealWords() {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Move a section to a specific position
+            function moveSection(section, position) {
+                // Clamp position between 0 and 100
+                position = Math.max(0, Math.min(100, position));
+                
+                // Apply the transform
+                section.style.transform = `translateY(${position}%)`;
+                
+                return position;
+            }
+            
+            // Reveal words in hero section
+            function revealHeroWords() {
+                state.scrolling = true;
                 
                 let delay = 0;
                 words.forEach((word, index) => {
                     if (index > 0) {
                         setTimeout(() => {
-                            word.style.opacity = '1';
-                            word.style.transform = 'translateY(0)';
+                            word.classList.add('visible');
                         }, delay);
-                        delay += 150;
+                        delay += 120;
                     }
                 });
                 
                 setTimeout(() => {
-                    wordsRevealed = true;
-                    isAnimating = false;
-                }, words.length * 150);
+                    state.heroWordsRevealed = true;
+                    state.scrolling = false;
+                }, delay + 300);
             }
             
-            function hideWords() {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Hide words in hero section
+            function hideHeroWords() {
+                state.scrolling = true;
                 
                 let delay = 0;
                 Array.from(words).slice(1).reverse().forEach((word, index) => {
                     setTimeout(() => {
-                        word.style.opacity = '0';
-                        word.style.transform = 'translateY(20px)';
+                        word.classList.remove('visible');
                     }, delay);
                     delay += 100;
                 });
                 
                 setTimeout(() => {
-                    wordsRevealed = false;
-                    isAnimating = false;
-                }, words.length * 100);
+                    state.heroWordsRevealed = false;
+                    state.scrolling = false;
+                }, delay + 300);
             }
             
-            function revealNavItems() {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Reveal navigation in explore section
+            function revealExploreNav() {
+                state.scrolling = true;
                 
                 let delay = 0;
                 navItems.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateX(-50%) translateY(0)';
-                    }, delay);
-                    delay += 150;
+                    if (index > 0) {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, delay);
+                        delay += 120;
+                    }
                 });
                 
                 setTimeout(() => {
-                    navRevealed = true;
-                    isAnimating = false;
-                }, navItems.length * 150);
+                    state.exploreNavRevealed = true;
+                    state.scrolling = false;
+                }, delay + 300);
             }
             
-            function hideNavItems() {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Hide navigation in explore section
+            function hideExploreNav() {
+                state.scrolling = true;
                 
                 let delay = 0;
-                Array.from(navItems).reverse().forEach((item, index) => {
+                Array.from(navItems).slice(1).reverse().forEach((item, index) => {
                     setTimeout(() => {
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateX(-50%) translateY(20px)';
+                        item.classList.remove('visible');
                     }, delay);
                     delay += 100;
                 });
                 
                 setTimeout(() => {
-                    navRevealed = false;
-                    isAnimating = false;
-                }, navItems.length * 100);
+                    state.exploreNavRevealed = false;
+                    state.scrolling = false;
+                }, delay + 300);
             }
             
-            function smoothScrollSection2(direction) {
-                const section2 = document.getElementById('section2');
-                const scrollIncrement = 10;
+            // Set up event listeners
+            function setupEventListeners() {
+                // Mouse wheel
+                const throttledWheel = throttle(handleWheel, 50);
+                window.addEventListener('wheel', throttledWheel, { passive: false });
                 
-                if (direction > 0) {
-                    // Scrolling down - move section 2 up
-                    section2Position = Math.max(0, section2Position - scrollIncrement);
-                } else {
-                    // Scrolling up - move section 2 down
-                    section2Position = Math.min(100, section2Position + scrollIncrement);
-                }
+                // Touch events for mobile
+                let touchStartY = 0;
                 
-                section2.style.transform = `translateY(${section2Position}%)`;
+                document.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: false });
                 
-                // Update current section
-                if (section2Position === 0) {
-                    currentSection = 1;
-                } else if (section2Position === 100) {
-                    currentSection = 0;
-                }
+                document.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    
+                    if (state.scrolling) return;
+                    
+                    const touchY = e.touches[0].clientY;
+                    const diff = touchStartY - touchY;
+                    
+                    if (Math.abs(diff) > 5) {
+                        const direction = diff > 0 ? 1 : -1;
+                        processScroll(direction);
+                        touchStartY = touchY;
+                    }
+                }, { passive: false });
             }
             
-            function smoothScrollSection3(direction) {
-                const section3 = document.getElementById('section3');
-                const scrollIncrement = 10;
-                
-                if (direction > 0) {
-                    // Scrolling down - move section 3 up
-                    section3Position = Math.max(0, section3Position - scrollIncrement);
-                } else {
-                    // Scrolling up - move section 3 down
-                    section3Position = Math.min(100, section3Position + scrollIncrement);
-                }
-                
-                section3.style.transform = `translateY(${section3Position}%)`;
-                
-                // Update current section
-                if (section3Position === 0) {
-                    currentSection = 2;
-                } else if (section3Position === 100) {
-                    currentSection = 1;
-                }
-            }
+            // Initialize
+            setupEventListeners();
         });
     </script>
 </body>
