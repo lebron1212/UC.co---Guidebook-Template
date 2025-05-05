@@ -57,7 +57,7 @@
             color: #fff;
             padding: 8vh 5vw;
             z-index: 2;
-            transition: transform 0.05s ease-out;
+            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         
         .explore-section {
@@ -70,7 +70,7 @@
             align-items: center;
             justify-content: center;
             z-index: 3;
-            transition: transform 0.05s ease-out;
+            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         
         .header {
@@ -271,7 +271,7 @@
                 },
                 scrollLocked: false,
                 touchStartY: 0,
-                scrollIncrement: 5 // How much to scroll per event
+                scrollIncrement: 8 // How much to scroll per event
             };
             
             // Function to show words with animation
@@ -354,10 +354,18 @@
                 }, delay + 300);
             }
             
-            // Update section positions based on state
+            // Function to update positions with debounce
+            let positionUpdateTimeout;
+            
             function updatePositions() {
-                content.style.transform = `translateY(${state.content.position}vh)`;
-                explore.style.transform = `translateY(${state.explore.position}vh)`;
+                // Clear previous timeout
+                clearTimeout(positionUpdateTimeout);
+                
+                // Set new timeout to update positions
+                positionUpdateTimeout = setTimeout(() => {
+                    content.style.transform = `translateY(${state.content.position}vh)`;
+                    explore.style.transform = `translateY(${state.explore.position}vh)`;
+                }, 5); // Short delay for smoother updates
             }
             
             // Handle scroll events
@@ -443,8 +451,16 @@
             // Event listeners
             
             // Mouse wheel
+            let lastScrollTime = 0;
+            const scrollThrottle = 20; // Minimum time between scrolls in ms
+            
             window.addEventListener('wheel', (e) => {
                 e.preventDefault();
+                
+                const now = Date.now();
+                if (now - lastScrollTime < scrollThrottle) return;
+                
+                lastScrollTime = now;
                 const direction = e.deltaY > 0 ? 1 : -1;
                 handleScroll(direction);
             }, { passive: false });
