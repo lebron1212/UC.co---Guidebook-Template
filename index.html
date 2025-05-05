@@ -8,15 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         html, body {
             height: 100%;
-            width: 100vw;
             overflow: hidden;
-            touch-action: pan-y;
             background: #F8F8F8;
-            position: fixed;
         }
         
         body {
@@ -24,8 +25,7 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        .scroll-container {
-            width: 100%;
+        .container {
             height: 100vh;
             overflow: hidden;
             position: relative;
@@ -35,42 +35,35 @@
             height: 100vh;
             width: 100%;
             position: absolute;
-            top: 0;
-            left: 0;
-            will-change: transform;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
         
-        .hero {
-            transform: translateY(0);
+        .section-1 {
             background: #F8F8F8;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0 5vw;
             z-index: 1;
         }
         
-        .content {
-            transform: translateY(100vh);
+        .section-2 {
             background: #000;
             color: #fff;
             padding: 8vh 5vw;
+            transform: translateY(100%);
             z-index: 2;
-            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         
-        .explore-section {
-            transform: translateY(100vh);
+        .section-3 {
             background: #F8F8F8;
-            color: #000;
             padding: 8vh 5vw;
+            transform: translateY(100%);
+            z-index: 3;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 3;
-            transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         
         .header {
@@ -85,53 +78,56 @@
             gap: 0.3em;
             align-items: center;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 1000;
+            font-weight: 900;
             text-transform: lowercase;
             letter-spacing: -0.04em;
             font-size: clamp(45px, 5.5vw, 70px);
             line-height: 1.2;
         }
         
-        .word-list, .nav-list {
+        .words-container {
             position: relative;
             display: inline-block;
             min-width: fit-content;
+            height: 1.2em;
+            overflow: hidden;
         }
         
-        .word, .nav-item {
+        .word {
             position: absolute;
             opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-            line-height: 1.0;
-            width: 100%;
-            white-space: nowrap;
-            text-align: center;
-        }
-        
-        .word.visible, .nav-item.visible {
-            opacity: calc(1 - var(--word-index) * 0.25);
-            transform: translateY(0);
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.2;
+            left: 0;
         }
         
         .word:first-child {
-            position: relative;
             opacity: 1;
-            transform: none;
+            transform: translateY(0);
         }
         
-        .word:nth-child(1) { top: 0; --word-index: 0; }
-        .word:nth-child(2) { top: 1.1em; --word-index: 0; }
-        .word:nth-child(3) { top: 2.2em; --word-index: 1.5; }
-        .word:nth-child(4) { top: 3.3em; --word-index: 2.5; }
-        .word:nth-child(5) { top: 4.4em; --word-index: 3.5; }
-        .word:nth-child(6) { top: 5.5em; --word-index: 4.5; }
-        .word:nth-child(7) { top: 6.6em; --word-index: 5.5; }
-        .word:nth-child(8) { top: 7.7em; --word-index: 6.5; }
+        .nav-container {
+            position: relative;
+            display: block;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .nav-item {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            width: 100%;
+        }
         
         .content-text {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
+            text-align: center;
         }
         
         .divider {
@@ -141,34 +137,30 @@
             margin: 6vh 0;
         }
         
-        .nav-list {
-            position: relative;
-            display: block;
-            width: fit-content;
-            margin: 0 auto;
+        h1 {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            text-transform: lowercase;
+            font-size: min(7vw, 75px);
+            margin-bottom: 2vh;
+            color: #fff;
         }
         
-        .nav-item:first-child {
-            visibility: hidden;
-            position: relative;
-            opacity: 1;
-            transform: none;
+        p {
+            font-size: 14px;
+            margin-bottom: 2vh;
+            opacity: 0.8;
         }
-        
-        .nav-item:nth-child(2) { top: 0.9em; --word-index: 0; }
-        .nav-item:nth-child(3) { top: 1.8em; --word-index: 1.5; }
-        .nav-item:nth-child(4) { top: 2.7em; --word-index: 2.5; }
-        .nav-item:nth-child(5) { top: 3.6em; --word-index: 3.5; }
-        .nav-item:nth-child(6) { top: 4.5em; --word-index: 4.5; }
     </style>
 </head>
 <body>
-    <div class="scroll-container">
-        <section class="section hero" data-section="0">
+    <div class="container">
+        <section class="section section-1" id="section1">
             <header class="header" id="dynamic-header">it's go time</header>
             <div class="text-system">
                 <span>get</span>
-                <div class="word-list">
+                <div class="words-container">
                     <div class="word">excited</div>
                     <div class="word">pampered</div>
                     <div class="word">relaxed</div>
@@ -181,308 +173,279 @@
             </div>
         </section>
         
-        <section class="section content" data-section="1">
+        <section class="section section-2" id="section2">
             <div class="content-text">
                 <header class="header" style="color: #fff; margin-bottom: 3vh;">ABOUT YOUR STAY</header>
                 
-                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                    <h1 style="font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 1000; letter-spacing: -0.03em; text-transform: lowercase; font-size: min(7vw, 75px); margin-bottom: 2vh; color: #fff;">check-in details</h1>
-                    
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-bottom: 2vh; opacity: 0.8;">Check-in time: 3:00 PM - 10:00 PM</p>
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-bottom: 2vh; opacity: 0.8;">Check-out time: 11:00 AM</p>
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-bottom: 2vh; opacity: 0.8;">Reservation: #LUX-2405</p>
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-bottom: 2vh; opacity: 0.8;">Duration: May 5 - May 8, 2025</p>
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-bottom: 2vh; opacity: 0.8;">Concierge: Available 24/7</p>
-                    <div class="divider"></div>
-                    
-                    <p style="font-size: 14px; margin-top: 5vh; margin-bottom: 4vh;">Your luxury experience begins now</p>
-                </div>
+                <h1>check-in details</h1>
+                
+                <div class="divider"></div>
+                <p>Check-in time: 3:00 PM - 10:00 PM</p>
+                <div class="divider"></div>
+                
+                <p>Check-out time: 11:00 AM</p>
+                <div class="divider"></div>
+                
+                <p>Reservation: #LUX-2405</p>
+                <div class="divider"></div>
+                
+                <p>Duration: May 5 - May 8, 2025</p>
+                <div class="divider"></div>
+                
+                <p>Concierge: Available 24/7</p>
+                <div class="divider"></div>
+                
+                <p style="margin-top: 5vh; margin-bottom: 4vh;">Your luxury experience begins now</p>
             </div>
         </section>
         
-        <section class="section explore-section" data-section="2">
+        <section class="section section-3" id="section3">
             <header class="header" style="color: #000; margin-bottom: 4vh; text-align: center;">SOMETHING YOU'RE LOOKING FOR?</header>
             <div class="text-system" style="flex-direction: column; align-items: center; width: 100%; gap: 0;">
                 <span style="margin: 0; display: block; text-align: center;">explore</span>
-                <div class="nav-list" style="margin: 0 auto; position: relative; text-align: center;">
-                    <div class="nav-item" style="text-align: center;">&nbsp;</div>
-                    <div class="nav-item" style="text-align: center;">stay info</div>
-                    <div class="nav-item" style="text-align: center;">experiences</div>
-                    <div class="nav-item" style="text-align: center;">local tips</div>
-                    <div class="nav-item" style="text-align: center;">amenities</div>
-                    <div class="nav-item" style="text-align: center;">contact</div>
+                <div class="nav-container">
+                    <div class="nav-item" style="top: 0em;">stay info</div>
+                    <div class="nav-item" style="top: 1.5em;">experiences</div>
+                    <div class="nav-item" style="top: 3em;">local tips</div>
+                    <div class="nav-item" style="top: 4.5em;">amenities</div>
+                    <div class="nav-item" style="top: 6em;">contact</div>
                 </div>
             </div>
         </section>
     </div>
-    
+
     <script>
-        const headerTexts = [
-            "it's go time",
-            "vacay-ready",
-            "welcome to your stay",
-            "settle in now",
-            "you've arrived",
-            "ready for luxury",
-            "your escape awaits",
-            "time to unwind",
-            "embrace the moment",
-            "find your peace"
-        ];
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get essential DOM elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
             const sections = document.querySelectorAll('.section');
-            const hero = document.querySelector('.hero');
-            const content = document.querySelector('.content');
-            const explore = document.querySelector('.explore-section');
             const words = document.querySelectorAll('.word');
             const navItems = document.querySelectorAll('.nav-item');
             const dynamicHeader = document.getElementById('dynamic-header');
             
-            // Set random header text
-            dynamicHeader.textContent = headerTexts[Math.floor(Math.random() * headerTexts.length)];
+            // Header phrases
+            const headerPhrases = [
+                "it's go time",
+                "vacay-ready",
+                "welcome to your stay",
+                "settle in now",
+                "you've arrived",
+                "ready for luxury",
+                "your escape awaits",
+                "time to unwind",
+                "embrace the moment",
+                "find your peace"
+            ];
             
-            // Track state
-            let state = {
-                currentSection: 0,
-                hero: { 
-                    wordsRevealed: false,
-                    locked: true
-                },
-                content: {
-                    position: 100, // 0 = fully visible, 100 = below screen
-                    visible: false
-                },
-                explore: {
-                    position: 100, // 0 = fully visible, 100 = below screen
-                    navRevealed: false,
-                    visible: false
-                },
-                scrollLocked: false,
-                touchStartY: 0,
-                scrollIncrement: 8 // How much to scroll per event
-            };
+            // State
+            let currentSection = 0;
+            let wordsRevealed = false;
+            let navRevealed = false;
+            let isAnimating = false;
+            let section2Position = 100;
+            let section3Position = 100;
+            let lastScrollTime = 0;
             
-            // Function to show words with animation
-            function showWords() {
-                state.scrollLocked = true;
-                let delay = 0;
+            // Initialize
+            setRandomHeader();
+            setupEventListeners();
+            
+            function setRandomHeader() {
+                dynamicHeader.textContent = headerPhrases[Math.floor(Math.random() * headerPhrases.length)];
+            }
+            
+            function setupEventListeners() {
+                // Wheel event
+                window.addEventListener('wheel', handleScroll, { passive: false });
                 
-                words.forEach((word, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            word.classList.add('visible');
-                        }, delay);
-                        delay += 120;
+                // Touch events
+                let touchStartY = 0;
+                document.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: false });
+                
+                document.addEventListener('touchmove', function(e) {
+                    const touchY = e.touches[0].clientY;
+                    const diff = touchStartY - touchY;
+                    
+                    if (Math.abs(diff) > 10) {
+                        handleScroll({ 
+                            preventDefault: () => e.preventDefault(),
+                            deltaY: diff
+                        });
+                        touchStartY = touchY;
                     }
-                });
-                
-                setTimeout(() => {
-                    state.hero.wordsRevealed = true;
-                    state.scrollLocked = false;
-                }, delay + 300);
+                }, { passive: false });
             }
             
-            // Function to hide words with animation
-            function hideWords() {
-                state.scrollLocked = true;
-                let delay = 0;
+            function handleScroll(e) {
+                e.preventDefault();
                 
-                [...words].reverse().forEach((word, index) => {
-                    if (index < words.length - 1) { // Skip the first word
-                        setTimeout(() => {
-                            word.classList.remove('visible');
-                        }, delay);
-                        delay += 100;
-                    }
-                });
+                // Throttle scrolling
+                const now = Date.now();
+                if (now - lastScrollTime < 150) return;
+                lastScrollTime = now;
                 
-                setTimeout(() => {
-                    state.hero.wordsRevealed = false;
-                    state.scrollLocked = false;
-                }, delay + 300);
-            }
-            
-            // Function to show navigation items with animation
-            function showNavItems() {
-                state.scrollLocked = true;
-                let delay = 0;
+                const direction = e.deltaY > 0 ? 1 : -1;
                 
-                navItems.forEach((item, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            item.classList.add('visible');
-                        }, delay);
-                        delay += 120;
-                    }
-                });
-                
-                setTimeout(() => {
-                    state.explore.navRevealed = true;
-                    state.scrollLocked = false;
-                }, delay + 300);
-            }
-            
-            // Function to hide navigation items with animation
-            function hideNavItems() {
-                state.scrollLocked = true;
-                let delay = 0;
-                
-                [...navItems].reverse().forEach((item, index) => {
-                    if (index < navItems.length - 1) { // Skip the first item
-                        setTimeout(() => {
-                            item.classList.remove('visible');
-                        }, delay);
-                        delay += 100;
-                    }
-                });
-                
-                setTimeout(() => {
-                    state.explore.navRevealed = false;
-                    state.scrollLocked = false;
-                }, delay + 300);
-            }
-            
-            // Function to update positions with debounce
-            let positionUpdateTimeout;
-            
-            function updatePositions() {
-                // Clear previous timeout
-                clearTimeout(positionUpdateTimeout);
-                
-                // Set new timeout to update positions
-                positionUpdateTimeout = setTimeout(() => {
-                    content.style.transform = `translateY(${state.content.position}vh)`;
-                    explore.style.transform = `translateY(${state.explore.position}vh)`;
-                }, 5); // Short delay for smoother updates
-            }
-            
-            // Handle scroll events
-            function handleScroll(direction) {
-                if (state.scrollLocked) return;
-                
-                // Section 0 (Hero)
-                if (state.currentSection === 0) {
-                    if (direction > 0) { // Scroll down
-                        if (!state.hero.wordsRevealed) {
-                            // First reveal words
-                            showWords();
+                // SECTION 1
+                if (currentSection === 0) {
+                    if (direction > 0) {
+                        if (!wordsRevealed) {
+                            revealWords();
                         } else {
-                            // Words revealed, move section 1 up
-                            state.content.position = Math.max(0, state.content.position - state.scrollIncrement);
-                            updatePositions();
-                            
-                            // Check if section 1 is fully visible
-                            if (state.content.position === 0) {
-                                state.currentSection = 1;
-                                state.content.visible = true;
-                            }
+                            smoothScrollSection2(direction);
                         }
-                    } else { // Scroll up
-                        if (state.hero.wordsRevealed) {
-                            // Hide words
+                    } else {
+                        if (wordsRevealed) {
                             hideWords();
                         }
                     }
                 }
-                
-                // Section 1 (Content)
-                else if (state.currentSection === 1) {
-                    if (direction > 0) { // Scroll down
-                        // Move section 2 up
-                        state.explore.position = Math.max(0, state.explore.position - state.scrollIncrement);
-                        updatePositions();
-                        
-                        // Check if section 2 is fully visible
-                        if (state.explore.position === 0) {
-                            state.currentSection = 2;
-                            state.explore.visible = true;
-                        }
-                    } else { // Scroll up
-                        // Move section 1 down to reveal section 0
-                        state.content.position = Math.min(100, state.content.position + state.scrollIncrement);
-                        updatePositions();
-                        
-                        // Check if section 1 is fully hidden
-                        if (state.content.position === 100) {
-                            state.currentSection = 0;
-                            state.content.visible = false;
-                        }
+                // SECTION 2
+                else if (currentSection === 1) {
+                    if (direction > 0) {
+                        smoothScrollSection3(direction);
+                    } else {
+                        smoothScrollSection2(direction);
                     }
                 }
-                
-                // Section 2 (Explore)
-                else if (state.currentSection === 2) {
-                    if (direction > 0) { // Scroll down
-                        if (!state.explore.navRevealed) {
-                            // Reveal nav items
-                            showNavItems();
+                // SECTION 3
+                else if (currentSection === 2) {
+                    if (direction > 0) {
+                        if (!navRevealed) {
+                            revealNavItems();
                         }
-                    } else { // Scroll up
-                        if (state.explore.navRevealed) {
-                            // Hide nav items
+                    } else {
+                        if (navRevealed) {
                             hideNavItems();
                         } else {
-                            // Move section 2 down to reveal section 1
-                            state.explore.position = Math.min(100, state.explore.position + state.scrollIncrement);
-                            updatePositions();
-                            
-                            // Check if section 2 is fully hidden
-                            if (state.explore.position === 100) {
-                                state.currentSection = 1;
-                                state.explore.visible = false;
-                            }
+                            smoothScrollSection3(direction);
                         }
                     }
                 }
             }
             
-            // Event listeners
-            
-            // Mouse wheel
-            let lastScrollTime = 0;
-            const scrollThrottle = 20; // Minimum time between scrolls in ms
-            
-            window.addEventListener('wheel', (e) => {
-                e.preventDefault();
+            function revealWords() {
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                const now = Date.now();
-                if (now - lastScrollTime < scrollThrottle) return;
+                let delay = 0;
+                words.forEach((word, index) => {
+                    if (index > 0) {
+                        setTimeout(() => {
+                            word.style.opacity = '1';
+                            word.style.transform = 'translateY(0)';
+                        }, delay);
+                        delay += 150;
+                    }
+                });
                 
-                lastScrollTime = now;
-                const direction = e.deltaY > 0 ? 1 : -1;
-                handleScroll(direction);
-            }, { passive: false });
+                setTimeout(() => {
+                    wordsRevealed = true;
+                    isAnimating = false;
+                }, words.length * 150);
+            }
             
-            // Touch events for mobile
-            document.addEventListener('touchstart', (e) => {
-                state.touchStartY = e.touches[0].clientY;
-            }, { passive: false });
-            
-            document.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const currentY = e.touches[0].clientY;
-                const deltaY = state.touchStartY - currentY;
+            function hideWords() {
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                if (Math.abs(deltaY) > 5) {
-                    handleScroll(deltaY > 0 ? 1 : -1);
-                    state.touchStartY = currentY;
+                let delay = 0;
+                Array.from(words).slice(1).reverse().forEach((word, index) => {
+                    setTimeout(() => {
+                        word.style.opacity = '0';
+                        word.style.transform = 'translateY(20px)';
+                    }, delay);
+                    delay += 100;
+                });
+                
+                setTimeout(() => {
+                    wordsRevealed = false;
+                    isAnimating = false;
+                }, words.length * 100);
+            }
+            
+            function revealNavItems() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                let delay = 0;
+                navItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateX(-50%) translateY(0)';
+                    }, delay);
+                    delay += 150;
+                });
+                
+                setTimeout(() => {
+                    navRevealed = true;
+                    isAnimating = false;
+                }, navItems.length * 150);
+            }
+            
+            function hideNavItems() {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                let delay = 0;
+                Array.from(navItems).reverse().forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateX(-50%) translateY(20px)';
+                    }, delay);
+                    delay += 100;
+                });
+                
+                setTimeout(() => {
+                    navRevealed = false;
+                    isAnimating = false;
+                }, navItems.length * 100);
+            }
+            
+            function smoothScrollSection2(direction) {
+                const section2 = document.getElementById('section2');
+                const scrollIncrement = 10;
+                
+                if (direction > 0) {
+                    // Scrolling down - move section 2 up
+                    section2Position = Math.max(0, section2Position - scrollIncrement);
+                } else {
+                    // Scrolling up - move section 2 down
+                    section2Position = Math.min(100, section2Position + scrollIncrement);
                 }
-            }, { passive: false });
+                
+                section2.style.transform = `translateY(${section2Position}%)`;
+                
+                // Update current section
+                if (section2Position === 0) {
+                    currentSection = 1;
+                } else if (section2Position === 100) {
+                    currentSection = 0;
+                }
+            }
             
-            // Prevent default touch behavior
-            document.body.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+            function smoothScrollSection3(direction) {
+                const section3 = document.getElementById('section3');
+                const scrollIncrement = 10;
+                
+                if (direction > 0) {
+                    // Scrolling down - move section 3 up
+                    section3Position = Math.max(0, section3Position - scrollIncrement);
+                } else {
+                    // Scrolling up - move section 3 down
+                    section3Position = Math.min(100, section3Position + scrollIncrement);
+                }
+                
+                section3.style.transform = `translateY(${section3Position}%)`;
+                
+                // Update current section
+                if (section3Position === 0) {
+                    currentSection = 2;
+                } else if (section3Position === 100) {
+                    currentSection = 1;
+                }
+            }
         });
     </script>
 </body>
