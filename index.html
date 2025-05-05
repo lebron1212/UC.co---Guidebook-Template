@@ -395,14 +395,14 @@
             slideInSection(index, targetPosition = 100) {
                 const section = this.sections[index];
                 const startPosition = 100; // Start from below viewport
-                const duration = 900; // in ms
+                const duration = index === 1 ? 2000 : 900; // Slower for section 1 (2000ms instead of 900ms)
                 const startTime = Date.now();
                 
                 const animate = () => {
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     // Cubic bezier approximation
-                    const easedProgress = this.cubicBezier(0.4, 0, 0.2, 1, progress);
+                    const easedProgress = this.cubicBezier(0.2, 0, 0.1, 1, progress); // Slower easing for smoother effect
                     const currentPosition = startPosition - (easedProgress * startPosition);
                     
                     section.style.transform = `translateY(${currentPosition}vh)`;
@@ -423,14 +423,14 @@
                 const section = this.sections[index];
                 const startPosition = 0; // Start at current position
                 const targetPosition = 100; // Move down off screen
-                const duration = 900; // in ms
+                const duration = index === 1 ? 2000 : 900; // Slower for section 1 (2000ms instead of 900ms)
                 const startTime = Date.now();
                 
                 const animate = () => {
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     // Cubic bezier approximation
-                    const easedProgress = this.cubicBezier(0.4, 0, 0.2, 1, progress);
+                    const easedProgress = this.cubicBezier(0.2, 0, 0.1, 1, progress); // Slower easing for smoother effect
                     const currentPosition = startPosition + (easedProgress * (targetPosition - startPosition));
                     
                     section.style.transform = `translateY(${currentPosition}vh)`;
