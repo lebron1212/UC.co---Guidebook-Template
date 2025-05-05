@@ -338,12 +338,10 @@
                 if (this.currentSection === 0) {
                     if (scrollAmount > 0) { // Scrolling down
                         if (!this.sectionStates[0].wordsRevealed) {
-                            // First reveal words
-                            if (!this.isScrolling) {
-                                this.isScrolling = true;
-                                this.showWords();
-                                this.sectionStates[0].wordsRevealed = true;
-                            }
+                            // First reveal words - removed isScrolling check that was blocking the reveal
+                            this.showWords();
+                            this.sectionStates[0].wordsRevealed = true;
+                            return; // Return to prevent further processing in this scroll event
                         } else {
                             // Words are revealed, start scrolling section 1 up
                             this.sectionStates[1].position = Math.max(0, this.sectionStates[1].position - scrollAmount);
@@ -357,12 +355,10 @@
                         }
                     } else { // Scrolling up
                         if (this.sectionStates[0].wordsRevealed) {
-                            // Hide words if we're scrolling up
-                            if (!this.isScrolling) {
-                                this.isScrolling = true;
-                                this.hideWords();
-                                this.sectionStates[0].wordsRevealed = false;
-                            }
+                            // Hide words if we're scrolling up - removed isScrolling check that was blocking
+                            this.hideWords();
+                            this.sectionStates[0].wordsRevealed = false;
+                            return; // Return to prevent further processing in this scroll event
                         }
                     }
                 } 
@@ -394,21 +390,17 @@
                 else if (this.currentSection === 2) {
                     if (scrollAmount > 0) { // Scrolling down
                         if (!this.sectionStates[2].wordsRevealed) {
-                            // Reveal nav items
-                            if (!this.isScrolling) {
-                                this.isScrolling = true;
-                                this.showNavItems();
-                                this.sectionStates[2].wordsRevealed = true;
-                            }
+                            // Reveal nav items - removed isScrolling check
+                            this.showNavItems();
+                            this.sectionStates[2].wordsRevealed = true;
+                            return; // Return to prevent further processing
                         }
                     } else { // Scrolling up
                         if (this.sectionStates[2].wordsRevealed) {
-                            // First hide nav items
-                            if (!this.isScrolling) {
-                                this.isScrolling = true;
-                                this.hideNavItems();
-                                this.sectionStates[2].wordsRevealed = false;
-                            }
+                            // First hide nav items - removed isScrolling check
+                            this.hideNavItems();
+                            this.sectionStates[2].wordsRevealed = false;
+                            return; // Return to prevent further processing
                         } else {
                             // Start moving section 2 back down
                             this.sectionStates[2].position = Math.min(100, this.sectionStates[2].position - scrollAmount);
