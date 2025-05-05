@@ -261,16 +261,25 @@
                 this.navStates = new Array(this.navItems.length).fill(false);
                 this.sectionStates = {
                     0: { locked: true, wordsRevealed: false },
-                    1: { locked: false, visible: false, position: 0 }, // position 0-100 (percentage)
-                    2: { locked: true, wordsRevealed: false, visible: false }
+                    1: { 
+                        position: 100, // 0 = fully visible, 100 = below screen
+                        visible: false 
+                    },
+                    2: { 
+                        position: 100, // 0 = fully visible, 100 = below screen
+                        visible: false,
+                        wordsRevealed: false 
+                    }
                 };
                 
+                this.scrollAmountPerEvent = 10; // How much to scroll per wheel event
                 this.init();
             }
             
             init() {
                 this.setRandomHeader();
                 this.addEventListeners();
+                this.updateSectionPositions();
             }
             
             setRandomHeader() {
@@ -296,20 +305,19 @@
             }
             
             handleTouchStart(e) {
-                if (this.isScrolling) return;
                 this.touchStartY = e.touches[0].clientY;
             }
             
             handleTouchMove(e) {
-                if (this.isScrolling) return;
                 e.preventDefault();
                 
                 const currentY = e.touches[0].clientY;
                 const deltaY = this.touchStartY - currentY;
                 
-                // Threshold for triggering scroll
-                if (Math.abs(deltaY) > 30) {
-                    this.handleScroll(deltaY > 0 ? 1 : -1);
+                // Use a smaller threshold for smoother scrolling
+                if (Math.abs(deltaY) > 5) {
+                    this.handleSmoothScroll(deltaY > 0 ? this.scrollAmountPerEvent : -this.scrollAmountPerEvent);
+                    this.touchStartY = currentY;
                 }
             }
             
@@ -318,150 +326,183 @@
             }
             
             handleWheel(e) {
-                if (this.isScrolling) return;
                 e.preventDefault();
                 
-                const direction = e.deltaY > 0 ? 1 : -1;
-                this.handleScroll(direction);
+                // Convert wheel delta to a constant value for consistent scrolling
+                const direction = e.deltaY > 0 ? this.scrollAmountPerEvent : -this.scrollAmountPerEvent;
+                this.handleSmoothScroll(direction);
             }
             
-            handleScroll(direction) {
-                if (this.isScrolling) return;
-                
-                if (direction > 0) {
-                    this.scrollForward();
-                } else {
-                    this.scrollBackward();
-                }
-            }
-            
-            scrollForward() {
-                this.isScrolling = true;
-                
-                // Section 0 (Hero) - First reveal words, then overlay section 1
-                if (this.currentSection === 0 && !this.sectionStates[0].wordsRevealed) {
-                    this.showWords();
-                    this.sectionStates[0].wordsRevealed = true;
+            handleSmoothScroll(scrollAmount) {
+                // SECTION 0 - First section with words
+                if (this.currentSection === 0) {
+                    if (scrollAmount > 0) { // Scrolling down
+                        if (!this.sectionStates[0].wordsRevealed) {
+                            // First reveal words
+                            if (!this.isScrolling) {
+                                this.isScrolling = true;
+                                this.showWords();
+                                this.sectionStates[0].wordsRevealed = true;
+                            }
+                        } else {
+                            // Words are revealed, start scrolling section 1 up
+                            this.sectionStates[1].position = Math.max(0, this.sectionStates[1].position - scrollAmount);
+                            this.updateSectionPositions();
+                            
+                            // If section 1 is now fully visible, switch current section
+                            if (this.sectionStates[1].position === 0) {
+                                this.currentSection = 1;
+                                this.sectionStates[1].visible = true;
+                            }
+                        }
+                    } else { // Scrolling up
+                        if (this.sectionStates[0].wordsRevealed) {
+                            // Hide words if we're scrolling up
+                            if (!this.isScrolling) {
+                                this.isScrolling = true;
+                                this.hideWords();
+                                this.sectionStates[0].wordsRevealed = false;
+                            }
+                        }
+                    }
                 } 
-                // Words revealed, start bringing up section 1 on top
-                else if (this.currentSection === 0 && this.sectionStates[0].wordsRevealed) {
-                    this.slideInSection(1, 100);
-                    this.sectionStates[1].visible = true;
-                    this.currentSection = 1;
-                } 
-                // Section 1 (Content) - Scroll up to reveal section 2
-                else if (this.currentSection === 1 && !this.sectionStates[2].visible) {
-                    this.slideInSection(2, 100);
-                    this.sectionStates[2].visible = true;
-                    this.currentSection = 2;
-                }
-                // Section 2 (Explore) - Reveal navigation items
-                else if (this.currentSection === 2 && !this.sectionStates[2].wordsRevealed) {
-                    this.showNavItems();
-                    this.sectionStates[2].wordsRevealed = true;
-                } else {
-                    this.isScrolling = false;
-                }
-            }
-            
-            scrollBackward() {
-                this.isScrolling = true;
-                
-                // Section 2 (Explore) - First hide nav items, then slide down to reveal section 1
-                if (this.currentSection === 2 && this.sectionStates[2].wordsRevealed) {
-                    this.hideNavItems();
-                    this.sectionStates[2].wordsRevealed = false;
-                } 
-                else if (this.currentSection === 2 && !this.sectionStates[2].wordsRevealed) {
-                    this.slideOutSection(2);
-                    this.sectionStates[2].visible = false;
-                    this.currentSection = 1;
-                }
-                // Section 1 (Content) - Slide down to reveal section 0
+                // SECTION 1 - Middle section
                 else if (this.currentSection === 1) {
-                    this.slideOutSection(1);
-                    this.sectionStates[1].visible = false;
-                    this.currentSection = 0;
-                } 
-                // Section 0 (Hero) - Hide words
-                else if (this.currentSection === 0 && this.sectionStates[0].wordsRevealed) {
-                    this.hideWords();
-                    this.sectionStates[0].wordsRevealed = false;
-                } else {
-                    this.isScrolling = false;
+                    if (scrollAmount > 0) { // Scrolling down
+                        // Start bringing in section 2
+                        this.sectionStates[2].position = Math.max(0, this.sectionStates[2].position - scrollAmount);
+                        this.updateSectionPositions();
+                        
+                        // If section 2 is now fully visible, switch current section
+                        if (this.sectionStates[2].position === 0) {
+                            this.currentSection = 2;
+                            this.sectionStates[2].visible = true;
+                        }
+                    } else { // Scrolling up
+                        // Start moving section 1 back down
+                        this.sectionStates[1].position = Math.min(100, this.sectionStates[1].position - scrollAmount);
+                        this.updateSectionPositions();
+                        
+                        // If section 1 is no longer visible, switch back to section 0
+                        if (this.sectionStates[1].position >= 100) {
+                            this.currentSection = 0;
+                            this.sectionStates[1].visible = false;
+                        }
+                    }
+                }
+                // SECTION 2 - Last section with nav items
+                else if (this.currentSection === 2) {
+                    if (scrollAmount > 0) { // Scrolling down
+                        if (!this.sectionStates[2].wordsRevealed) {
+                            // Reveal nav items
+                            if (!this.isScrolling) {
+                                this.isScrolling = true;
+                                this.showNavItems();
+                                this.sectionStates[2].wordsRevealed = true;
+                            }
+                        }
+                    } else { // Scrolling up
+                        if (this.sectionStates[2].wordsRevealed) {
+                            // First hide nav items
+                            if (!this.isScrolling) {
+                                this.isScrolling = true;
+                                this.hideNavItems();
+                                this.sectionStates[2].wordsRevealed = false;
+                            }
+                        } else {
+                            // Start moving section 2 back down
+                            this.sectionStates[2].position = Math.min(100, this.sectionStates[2].position - scrollAmount);
+                            this.updateSectionPositions();
+                            
+                            // If section 2 is no longer visible, switch back to section 1
+                            if (this.sectionStates[2].position >= 100) {
+                                this.currentSection = 1;
+                                this.sectionStates[2].visible = false;
+                            }
+                        }
+                    }
                 }
             }
             
-            slideInSection(index, targetPosition = 100) {
-                const section = this.sections[index];
-                const startPosition = 100; // Start from below viewport
-                const duration = index === 1 ? 2000 : 900; // Slower for section 1 (2000ms instead of 900ms)
-                const startTime = Date.now();
+            updateSectionPositions() {
+                // Always keep section 0 fixed at 0
+                this.sections[0].style.transform = `translateY(0)`;
                 
-                const animate = () => {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Cubic bezier approximation
-                    const easedProgress = this.cubicBezier(0.2, 0, 0.1, 1, progress); // Slower easing for smoother effect
-                    const currentPosition = startPosition - (easedProgress * startPosition);
-                    
-                    section.style.transform = `translateY(${currentPosition}vh)`;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        setTimeout(() => {
-                            this.isScrolling = false;
-                        }, 50);
-                    }
-                };
+                // Position section 1 based on its current position value
+                this.sections[1].style.transform = `translateY(${this.sectionStates[1].position}vh)`;
                 
-                animate();
+                // Position section 2 based on its current position value
+                this.sections[2].style.transform = `translateY(${this.sectionStates[2].position}vh)`;
             }
             
-            slideOutSection(index) {
-                const section = this.sections[index];
-                const startPosition = 0; // Start at current position
-                const targetPosition = 100; // Move down off screen
-                const duration = index === 1 ? 2000 : 900; // Slower for section 1 (2000ms instead of 900ms)
-                const startTime = Date.now();
-                
-                const animate = () => {
-                    const elapsed = Date.now() - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Cubic bezier approximation
-                    const easedProgress = this.cubicBezier(0.2, 0, 0.1, 1, progress); // Slower easing for smoother effect
-                    const currentPosition = startPosition + (easedProgress * (targetPosition - startPosition));
-                    
-                    section.style.transform = `translateY(${currentPosition}vh)`;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
+            showWords() {
+                let delay = 0;
+                this.words.forEach((word, index) => {
+                    if (index > 0) {
                         setTimeout(() => {
-                            this.isScrolling = false;
-                        }, 50);
+                            word.classList.add('visible');
+                            this.wordStates[index] = true;
+                        }, delay);
+                        delay += 120;
                     }
-                };
+                });
                 
-                animate();
+                setTimeout(() => {
+                    this.isScrolling = false;
+                }, 900);
             }
             
-            // Cubic bezier implementation
-            cubicBezier(x1, y1, x2, y2, t) {
-                const cx = 3 * x1;
-                const bx = 3 * (x2 - x1) - cx;
-                const ax = 1 - cx - bx;
+            hideWords() {
+                let delay = 0;
+                [...this.words].reverse().forEach((word, index) => {
+                    if (word !== this.words[0]) {
+                        setTimeout(() => {
+                            word.classList.remove('visible');
+                            this.wordStates[this.words.length - 1 - index] = false;
+                        }, delay);
+                        delay += 100;
+                    }
+                });
                 
-                const cy = 3 * y1;
-                const by = 3 * (y2 - y1) - cy;
-                const ay = 1 - cy - by;
-                
-                const bezierX = t => ((ax * t + bx) * t + cx) * t;
-                const bezierY = t => ((ay * t + by) * t + cy) * t;
-                
-                return bezierY(t);
+                setTimeout(() => {
+                    this.isScrolling = false;
+                }, 900);
             }
+            
+            showNavItems() {
+                let delay = 0;
+                this.navItems.forEach((item, index) => {
+                    if (index > 0) {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                            this.navStates[index] = true;
+                        }, delay);
+                        delay += 120;
+                    }
+                });
+                
+                setTimeout(() => {
+                    this.isScrolling = false;
+                }, 900);
+            }
+            
+            hideNavItems() {
+                let delay = 0;
+                [...this.navItems].reverse().forEach((item, index) => {
+                    if (item !== this.navItems[0]) {
+                        setTimeout(() => {
+                            item.classList.remove('visible');
+                            this.navStates[this.navItems.length - 1 - index] = false;
+                        }, delay);
+                        delay += 100;
+                    }
+                });
+                
+                setTimeout(() => {
+                    this.isScrolling = false;
+                }, 900);
+            }
+        }
             
             showWords() {
                 let delay = 0;
