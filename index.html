@@ -381,11 +381,8 @@
                 if (isScrolling) return;
                 isScrolling = true;
                 
-                // Set start position
-                section.style.transform = `translateY(${startY}%)`;
-                
                 // Use requestAnimationFrame for smooth animation
-                const duration = 600; // ms
+                const duration = 800; // ms - longer duration for smoother motion
                 const startTime = performance.now();
                 
                 function animate(currentTime) {
@@ -427,10 +424,24 @@
                         if (!wordsRevealed) {
                             revealWords();
                         } else {
-                            // Move section 2 up gradually
-                            smoothTransition(section2, 100, 0, () => {
+                            // Get the current transform value of section2
+                            const currentTransform = getComputedStyle(section2).transform;
+                            const matrix = new DOMMatrix(currentTransform);
+                            const currentY = (matrix.m42 / window.innerHeight) * 100;
+                            
+                            // Calculate target Y (move up by increments)
+                            const targetY = Math.max(0, currentY - 10);
+                            
+                            // Apply the incremental transformation
+                            section2.style.transform = `translateY(${targetY}%)`;
+                            
+                            // If fully visible, update current section
+                            if (targetY === 0) {
                                 currentSection = 2;
-                            });
+                            }
+                            
+                            // Allow the next scroll event
+                            isScrolling = false;
                         }
                     } else if (wordsRevealed) { // Scroll up when words are shown
                         hideWords();
@@ -440,15 +451,43 @@
                 // SECTION 2 (Info)
                 else if (currentSection === 2) {
                     if (direction > 0) { // Scroll down
-                        // Move section 3 up gradually
-                        smoothTransition(section3, 100, 0, () => {
+                        // Get the current transform value of section3
+                        const currentTransform = getComputedStyle(section3).transform;
+                        const matrix = new DOMMatrix(currentTransform);
+                        const currentY = (matrix.m42 / window.innerHeight) * 100;
+                        
+                        // Calculate target Y (move up by increments)
+                        const targetY = Math.max(0, currentY - 10);
+                        
+                        // Apply the incremental transformation
+                        section3.style.transform = `translateY(${targetY}%)`;
+                        
+                        // If fully visible, update current section
+                        if (targetY === 0) {
                             currentSection = 3;
-                        });
+                        }
+                        
+                        // Allow the next scroll event
+                        isScrolling = false;
                     } else { // Scroll up
-                        // Move section 2 down gradually
-                        smoothTransition(section2, 0, 100, () => {
+                        // Get the current transform value of section2
+                        const currentTransform = getComputedStyle(section2).transform;
+                        const matrix = new DOMMatrix(currentTransform);
+                        const currentY = (matrix.m42 / window.innerHeight) * 100;
+                        
+                        // Calculate target Y (move down by increments)
+                        const targetY = Math.min(100, currentY + 10);
+                        
+                        // Apply the incremental transformation
+                        section2.style.transform = `translateY(${targetY}%)`;
+                        
+                        // If fully hidden, update current section
+                        if (targetY === 100) {
                             currentSection = 1;
-                        });
+                        }
+                        
+                        // Allow the next scroll event
+                        isScrolling = false;
                     }
                 }
                 
@@ -462,10 +501,24 @@
                         if (navRevealed) {
                             hideNavItems();
                         } else {
-                            // Move section 3 down gradually
-                            smoothTransition(section3, 0, 100, () => {
+                            // Get the current transform value of section3
+                            const currentTransform = getComputedStyle(section3).transform;
+                            const matrix = new DOMMatrix(currentTransform);
+                            const currentY = (matrix.m42 / window.innerHeight) * 100;
+                            
+                            // Calculate target Y (move down by increments)
+                            const targetY = Math.min(100, currentY + 10);
+                            
+                            // Apply the incremental transformation
+                            section3.style.transform = `translateY(${targetY}%)`;
+                            
+                            // If fully hidden, update current section
+                            if (targetY === 100) {
                                 currentSection = 2;
-                            });
+                            }
+                            
+                            // Allow the next scroll event
+                            isScrolling = false;
                         }
                     }
                 }
