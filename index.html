@@ -38,19 +38,6 @@
             top: 0;
             left: 0;
             will-change: transform;
-            z-index: 1;
-        }
-        
-        .hero {
-            z-index: 1;
-        }
-        
-        .content {
-            z-index: 2;
-        }
-        
-        .explore-section {
-            z-index: 3;
         }
         
         .hero {
@@ -61,6 +48,7 @@
             align-items: center;
             justify-content: center;
             padding: 0 5vw;
+            z-index: 1;
         }
         
         .content {
@@ -68,6 +56,8 @@
             background: #000;
             color: #fff;
             padding: 8vh 5vw;
+            z-index: 2;
+            transition: transform 0.05s ease-out;
         }
         
         .explore-section {
@@ -79,6 +69,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 3;
+            transition: transform 0.05s ease-out;
         }
         
         .header {
@@ -106,7 +98,7 @@
             min-width: fit-content;
         }
         
-        .word,         .nav-item {
+        .word, .nav-item {
             position: absolute;
             opacity: 0;
             transform: translateY(-10px);
@@ -248,326 +240,233 @@
             "find your peace"
         ];
         
-        class LuxuryScroll {
-            constructor() {
-                this.currentSection = 0;
-                this.isScrolling = false;
-                this.touchStartY = 0;
-                this.sections = document.querySelectorAll('.section');
-                this.words = document.querySelectorAll('.word');
-                this.navItems = document.querySelectorAll('.nav-item');
-                this.dynamicHeader = document.getElementById('dynamic-header');
-                this.wordStates = new Array(this.words.length).fill(false);
-                this.navStates = new Array(this.navItems.length).fill(false);
-                this.sectionStates = {
-                    0: { locked: true, wordsRevealed: false },
-                    1: { 
-                        position: 100, // 0 = fully visible, 100 = below screen
-                        visible: false 
-                    },
-                    2: { 
-                        position: 100, // 0 = fully visible, 100 = below screen
-                        visible: false,
-                        wordsRevealed: false 
-                    }
-                };
-                
-                this.scrollAmountPerEvent = 10; // How much to scroll per wheel event
-                this.init();
-            }
-            
-            init() {
-                this.setRandomHeader();
-                this.addEventListeners();
-                this.updateSectionPositions();
-            }
-            
-            setRandomHeader() {
-                const randomIndex = Math.floor(Math.random() * headerTexts.length);
-                this.dynamicHeader.textContent = headerTexts[randomIndex];
-            }
-            
-            addEventListeners() {
-                // Touch events for mobile
-                this.touchStartHandler = this.handleTouchStart.bind(this);
-                this.touchMoveHandler = this.handleTouchMove.bind(this);
-                this.touchEndHandler = this.handleTouchEnd.bind(this);
-                
-                document.addEventListener('touchstart', this.touchStartHandler, { passive: false });
-                document.addEventListener('touchmove', this.touchMoveHandler, { passive: false });
-                document.addEventListener('touchend', this.touchEndHandler, { passive: true });
-                
-                // Wheel events for desktop
-                window.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
-                
-                // Prevent default touch behavior
-                document.body.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-            }
-            
-            handleTouchStart(e) {
-                this.touchStartY = e.touches[0].clientY;
-            }
-            
-            handleTouchMove(e) {
-                e.preventDefault();
-                
-                const currentY = e.touches[0].clientY;
-                const deltaY = this.touchStartY - currentY;
-                
-                // Use a smaller threshold for smoother scrolling
-                if (Math.abs(deltaY) > 5) {
-                    this.handleSmoothScroll(deltaY > 0 ? this.scrollAmountPerEvent : -this.scrollAmountPerEvent);
-                    this.touchStartY = currentY;
-                }
-            }
-            
-            handleTouchEnd() {
-                this.touchStartY = 0;
-            }
-            
-            handleWheel(e) {
-                e.preventDefault();
-                
-                // Convert wheel delta to a constant value for consistent scrolling
-                const direction = e.deltaY > 0 ? this.scrollAmountPerEvent : -this.scrollAmountPerEvent;
-                this.handleSmoothScroll(direction);
-            }
-            
-            handleSmoothScroll(scrollAmount) {
-                // SECTION 0 - First section with words
-                if (this.currentSection === 0) {
-                    if (scrollAmount > 0) { // Scrolling down
-                        if (!this.sectionStates[0].wordsRevealed) {
-                            // First reveal words - removed isScrolling check that was blocking the reveal
-                            this.showWords();
-                            this.sectionStates[0].wordsRevealed = true;
-                            return; // Return to prevent further processing in this scroll event
-                        } else {
-                            // Words are revealed, start scrolling section 1 up
-                            this.sectionStates[1].position = Math.max(0, this.sectionStates[1].position - scrollAmount);
-                            this.updateSectionPositions();
-                            
-                            // If section 1 is now fully visible, switch current section
-                            if (this.sectionStates[1].position === 0) {
-                                this.currentSection = 1;
-                                this.sectionStates[1].visible = true;
-                            }
-                        }
-                    } else { // Scrolling up
-                        if (this.sectionStates[0].wordsRevealed) {
-                            // Hide words if we're scrolling up - removed isScrolling check that was blocking
-                            this.hideWords();
-                            this.sectionStates[0].wordsRevealed = false;
-                            return; // Return to prevent further processing in this scroll event
-                        }
-                    }
-                } 
-                // SECTION 1 - Middle section
-                else if (this.currentSection === 1) {
-                    if (scrollAmount > 0) { // Scrolling down
-                        // Start bringing in section 2
-                        this.sectionStates[2].position = Math.max(0, this.sectionStates[2].position - scrollAmount);
-                        this.updateSectionPositions();
-                        
-                        // If section 2 is now fully visible, switch current section
-                        if (this.sectionStates[2].position === 0) {
-                            this.currentSection = 2;
-                            this.sectionStates[2].visible = true;
-                        }
-                    } else { // Scrolling up
-                        // Start moving section 1 back down
-                        this.sectionStates[1].position = Math.min(100, this.sectionStates[1].position - scrollAmount);
-                        this.updateSectionPositions();
-                        
-                        // If section 1 is no longer visible, switch back to section 0
-                        if (this.sectionStates[1].position >= 100) {
-                            this.currentSection = 0;
-                            this.sectionStates[1].visible = false;
-                        }
-                    }
-                }
-                // SECTION 2 - Last section with nav items
-                else if (this.currentSection === 2) {
-                    if (scrollAmount > 0) { // Scrolling down
-                        if (!this.sectionStates[2].wordsRevealed) {
-                            // Reveal nav items - removed isScrolling check
-                            this.showNavItems();
-                            this.sectionStates[2].wordsRevealed = true;
-                            return; // Return to prevent further processing
-                        }
-                    } else { // Scrolling up
-                        if (this.sectionStates[2].wordsRevealed) {
-                            // First hide nav items - removed isScrolling check
-                            this.hideNavItems();
-                            this.sectionStates[2].wordsRevealed = false;
-                            return; // Return to prevent further processing
-                        } else {
-                            // Start moving section 2 back down
-                            this.sectionStates[2].position = Math.min(100, this.sectionStates[2].position - scrollAmount);
-                            this.updateSectionPositions();
-                            
-                            // If section 2 is no longer visible, switch back to section 1
-                            if (this.sectionStates[2].position >= 100) {
-                                this.currentSection = 1;
-                                this.sectionStates[2].visible = false;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            updateSectionPositions() {
-                // Always keep section 0 fixed at 0
-                this.sections[0].style.transform = `translateY(0)`;
-                
-                // Position section 1 based on its current position value
-                this.sections[1].style.transform = `translateY(${this.sectionStates[1].position}vh)`;
-                
-                // Position section 2 based on its current position value
-                this.sections[2].style.transform = `translateY(${this.sectionStates[2].position}vh)`;
-            }
-            
-            showWords() {
-                let delay = 0;
-                this.words.forEach((word, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            word.classList.add('visible');
-                            this.wordStates[index] = true;
-                        }, delay);
-                        delay += 120;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            hideWords() {
-                let delay = 0;
-                [...this.words].reverse().forEach((word, index) => {
-                    if (word !== this.words[0]) {
-                        setTimeout(() => {
-                            word.classList.remove('visible');
-                            this.wordStates[this.words.length - 1 - index] = false;
-                        }, delay);
-                        delay += 100;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            showNavItems() {
-                let delay = 0;
-                this.navItems.forEach((item, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            item.classList.add('visible');
-                            this.navStates[index] = true;
-                        }, delay);
-                        delay += 120;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            hideNavItems() {
-                let delay = 0;
-                [...this.navItems].reverse().forEach((item, index) => {
-                    if (item !== this.navItems[0]) {
-                        setTimeout(() => {
-                            item.classList.remove('visible');
-                            this.navStates[this.navItems.length - 1 - index] = false;
-                        }, delay);
-                        delay += 100;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-        }
-            
-            showWords() {
-                let delay = 0;
-                this.words.forEach((word, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            word.classList.add('visible');
-                            this.wordStates[index] = true;
-                        }, delay);
-                        delay += 120;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            hideWords() {
-                let delay = 0;
-                [...this.words].reverse().forEach((word, index) => {
-                    if (word !== this.words[0]) {
-                        setTimeout(() => {
-                            word.classList.remove('visible');
-                            this.wordStates[this.words.length - 1 - index] = false;
-                        }, delay);
-                        delay += 100;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            showNavItems() {
-                let delay = 0;
-                this.navItems.forEach((item, index) => {
-                    if (index > 0) {
-                        setTimeout(() => {
-                            item.classList.add('visible');
-                            this.navStates[index] = true;
-                        }, delay);
-                        delay += 120;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-            
-            hideNavItems() {
-                let delay = 0;
-                [...this.navItems].reverse().forEach((item, index) => {
-                    if (item !== this.navItems[0]) {
-                        setTimeout(() => {
-                            item.classList.remove('visible');
-                            this.navStates[this.navItems.length - 1 - index] = false;
-                        }, delay);
-                        delay += 100;
-                    }
-                });
-                
-                setTimeout(() => {
-                    this.isScrolling = false;
-                }, 900);
-            }
-        }
-        
-        // Initialize on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', () => {
-            new LuxuryScroll();
+            // Get essential DOM elements
+            const sections = document.querySelectorAll('.section');
+            const hero = document.querySelector('.hero');
+            const content = document.querySelector('.content');
+            const explore = document.querySelector('.explore-section');
+            const words = document.querySelectorAll('.word');
+            const navItems = document.querySelectorAll('.nav-item');
+            const dynamicHeader = document.getElementById('dynamic-header');
+            
+            // Set random header text
+            dynamicHeader.textContent = headerTexts[Math.floor(Math.random() * headerTexts.length)];
+            
+            // Track state
+            let state = {
+                currentSection: 0,
+                hero: { 
+                    wordsRevealed: false,
+                    locked: true
+                },
+                content: {
+                    position: 100, // 0 = fully visible, 100 = below screen
+                    visible: false
+                },
+                explore: {
+                    position: 100, // 0 = fully visible, 100 = below screen
+                    navRevealed: false,
+                    visible: false
+                },
+                scrollLocked: false,
+                touchStartY: 0,
+                scrollIncrement: 5 // How much to scroll per event
+            };
+            
+            // Function to show words with animation
+            function showWords() {
+                state.scrollLocked = true;
+                let delay = 0;
+                
+                words.forEach((word, index) => {
+                    if (index > 0) {
+                        setTimeout(() => {
+                            word.classList.add('visible');
+                        }, delay);
+                        delay += 120;
+                    }
+                });
+                
+                setTimeout(() => {
+                    state.hero.wordsRevealed = true;
+                    state.scrollLocked = false;
+                }, delay + 300);
+            }
+            
+            // Function to hide words with animation
+            function hideWords() {
+                state.scrollLocked = true;
+                let delay = 0;
+                
+                [...words].reverse().forEach((word, index) => {
+                    if (index < words.length - 1) { // Skip the first word
+                        setTimeout(() => {
+                            word.classList.remove('visible');
+                        }, delay);
+                        delay += 100;
+                    }
+                });
+                
+                setTimeout(() => {
+                    state.hero.wordsRevealed = false;
+                    state.scrollLocked = false;
+                }, delay + 300);
+            }
+            
+            // Function to show navigation items with animation
+            function showNavItems() {
+                state.scrollLocked = true;
+                let delay = 0;
+                
+                navItems.forEach((item, index) => {
+                    if (index > 0) {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, delay);
+                        delay += 120;
+                    }
+                });
+                
+                setTimeout(() => {
+                    state.explore.navRevealed = true;
+                    state.scrollLocked = false;
+                }, delay + 300);
+            }
+            
+            // Function to hide navigation items with animation
+            function hideNavItems() {
+                state.scrollLocked = true;
+                let delay = 0;
+                
+                [...navItems].reverse().forEach((item, index) => {
+                    if (index < navItems.length - 1) { // Skip the first item
+                        setTimeout(() => {
+                            item.classList.remove('visible');
+                        }, delay);
+                        delay += 100;
+                    }
+                });
+                
+                setTimeout(() => {
+                    state.explore.navRevealed = false;
+                    state.scrollLocked = false;
+                }, delay + 300);
+            }
+            
+            // Update section positions based on state
+            function updatePositions() {
+                content.style.transform = `translateY(${state.content.position}vh)`;
+                explore.style.transform = `translateY(${state.explore.position}vh)`;
+            }
+            
+            // Handle scroll events
+            function handleScroll(direction) {
+                if (state.scrollLocked) return;
+                
+                // Section 0 (Hero)
+                if (state.currentSection === 0) {
+                    if (direction > 0) { // Scroll down
+                        if (!state.hero.wordsRevealed) {
+                            // First reveal words
+                            showWords();
+                        } else {
+                            // Words revealed, move section 1 up
+                            state.content.position = Math.max(0, state.content.position - state.scrollIncrement);
+                            updatePositions();
+                            
+                            // Check if section 1 is fully visible
+                            if (state.content.position === 0) {
+                                state.currentSection = 1;
+                                state.content.visible = true;
+                            }
+                        }
+                    } else { // Scroll up
+                        if (state.hero.wordsRevealed) {
+                            // Hide words
+                            hideWords();
+                        }
+                    }
+                }
+                
+                // Section 1 (Content)
+                else if (state.currentSection === 1) {
+                    if (direction > 0) { // Scroll down
+                        // Move section 2 up
+                        state.explore.position = Math.max(0, state.explore.position - state.scrollIncrement);
+                        updatePositions();
+                        
+                        // Check if section 2 is fully visible
+                        if (state.explore.position === 0) {
+                            state.currentSection = 2;
+                            state.explore.visible = true;
+                        }
+                    } else { // Scroll up
+                        // Move section 1 down to reveal section 0
+                        state.content.position = Math.min(100, state.content.position + state.scrollIncrement);
+                        updatePositions();
+                        
+                        // Check if section 1 is fully hidden
+                        if (state.content.position === 100) {
+                            state.currentSection = 0;
+                            state.content.visible = false;
+                        }
+                    }
+                }
+                
+                // Section 2 (Explore)
+                else if (state.currentSection === 2) {
+                    if (direction > 0) { // Scroll down
+                        if (!state.explore.navRevealed) {
+                            // Reveal nav items
+                            showNavItems();
+                        }
+                    } else { // Scroll up
+                        if (state.explore.navRevealed) {
+                            // Hide nav items
+                            hideNavItems();
+                        } else {
+                            // Move section 2 down to reveal section 1
+                            state.explore.position = Math.min(100, state.explore.position + state.scrollIncrement);
+                            updatePositions();
+                            
+                            // Check if section 2 is fully hidden
+                            if (state.explore.position === 100) {
+                                state.currentSection = 1;
+                                state.explore.visible = false;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Event listeners
+            
+            // Mouse wheel
+            window.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const direction = e.deltaY > 0 ? 1 : -1;
+                handleScroll(direction);
+            }, { passive: false });
+            
+            // Touch events for mobile
+            document.addEventListener('touchstart', (e) => {
+                state.touchStartY = e.touches[0].clientY;
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const currentY = e.touches[0].clientY;
+                const deltaY = state.touchStartY - currentY;
+                
+                if (Math.abs(deltaY) > 5) {
+                    handleScroll(deltaY > 0 ? 1 : -1);
+                    state.touchStartY = currentY;
+                }
+            }, { passive: false });
+            
+            // Prevent default touch behavior
+            document.body.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
         });
     </script>
 </body>
