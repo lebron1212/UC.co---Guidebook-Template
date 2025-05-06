@@ -570,27 +570,74 @@
                 }
             }
             
-            // Section transitions with continuous scrolling
+            // Section transitions with simplified direct animations for mobile reliability
             function moveToSection(targetSection, instant = false) {
-                if (isScrolling && !instant) return;
+                // Cancel any ongoing animations for reliability
+                if (scrollAnimationId) {
+                    cancelAnimationFrame(scrollAnimationId);
+                    scrollAnimationId = null;
+                }
                 
-                // Define the scrollProgress target based on which section we're moving to
+                const duration = instant ? 0.1 : 0.5; // Faster for instant transitions
+                
+                // Define the section transitions with direct GSAP animations for reliability
                 if (targetSection === 1) {
-                    scrollTo(0);
+                    // Move to section 1
+                    currentSection = 1;
+                    scrollProgress = 0;
+                    targetScrollProgress = 0;
+                    
+                    gsap.to(section2, { 
+                        y: "100%", 
+                        duration: duration,
+                        ease: "power2.inOut"
+                    });
+                    
+                    gsap.set(section1, { visibility: "visible" });
+                    gsap.set(section3, { visibility: "hidden", y: "100%" });
                 }
                 else if (targetSection === 2) {
-                    scrollTo(1);
+                    // Move to section 2
+                    currentSection = 2;
+                    scrollProgress = 1;
+                    targetScrollProgress = 1;
+                    
+                    gsap.to(section2, { 
+                        y: "0%", 
+                        duration: duration,
+                        ease: "power2.inOut"
+                    });
+                    
+                    gsap.set(section1, { visibility: "hidden" });
+                    gsap.set(section3, { visibility: "hidden", y: "100%" });
                 }
                 else if (targetSection === 3) {
-                    scrollTo(2);
-                } 
-                else if (targetSection === 2.5) {
-                    // Special case - back to section 2 from 3
-                    scrollTo(1);
+                    // Move to section 3
+                    currentSection = 3;
+                    scrollProgress = 2;
+                    targetScrollProgress = 2;
+                    section3FullyVisible = true;
+                    
+                    gsap.to(section2, { 
+                        y: "-100%", 
+                        duration: duration,
+                        ease: "power2.inOut"
+                    });
+                    
+                    gsap.set(section1, { visibility: "hidden" });
+                    gsap.set(section3, { visibility: "visible", y: "0%" });
+                    
+                    // Make sure the main text "explore" is visible
+                    gsap.set(section3.querySelector('.text-system'), { 
+                        opacity: 1, 
+                        y: "0px" 
+                    });
                 }
+                
+                isScrolling = false;
             }
             
-            // Premium scroll event handler with continuous scrolling
+            // Premium scroll event handler with simplified reliable behavior
             function handleScrollEvent(direction) {
                 // Clear any pending timeouts
                 if (scrollTimeout) {
@@ -599,11 +646,8 @@
                 
                 // Get current timestamp to manage scroll frequency
                 const now = Date.now();
-                if (now - lastScrollTime < 60 && isScrolling) return;
+                if (now - lastScrollTime < 120 && isScrolling) return; // Increased debounce time for stability
                 lastScrollTime = now;
-                
-                // Calculate scroll delta based on direction and multiply by sensitivity
-                const scrollDelta = direction * SCROLL_MULTIPLIER;
                 
                 // SECTION 1 (Hero)
                 if (currentSection === 1) {
@@ -611,9 +655,8 @@
                         if (!wordsRevealed) {
                             revealWords();
                         } else {
-                            // Incrementally update target scroll position for smooth transition
-                            targetScrollProgress += scrollDelta;
-                            scrollTo(targetScrollProgress);
+                            // Move directly to section 2 - more reliable than continuous scrolling
+                            moveToSection(2);
                         }
                     } else if (wordsRevealed) { // Scroll up when words are shown
                         hideWords();
@@ -622,29 +665,25 @@
                 
                 // SECTION 2 (Info)
                 else if (currentSection === 2) {
-                    // Incrementally update target scroll position
-                    targetScrollProgress += scrollDelta;
-                    scrollTo(targetScrollProgress);
+                    if (direction > 0) { // Scroll down
+                        moveToSection(3);
+                    } else { // Scroll up
+                        moveToSection(1);
+                    }
                 }
                 
                 // SECTION 3 (Explore)
                 else if (currentSection === 3) {
                     if (direction > 0) { // Scroll down
-                        // Only reveal nav items when section is fully visible and user scrolls again
+                        // Only reveal nav items when section is fully visible
                         if (section3FullyVisible && !navRevealed) {
                             revealNavItems();
-                        } else if (!section3FullyVisible) {
-                            // Ensure section is fully visible first
-                            targetScrollProgress = 2.0;
-                            scrollTo(targetScrollProgress);
                         }
                     } else { // Scroll up
                         if (navRevealed) {
                             hideNavItems();
                         } else {
-                            // Incrementally update target scroll position
-                            targetScrollProgress += scrollDelta;
-                            scrollTo(targetScrollProgress);
+                            moveToSection(2);
                         }
                     }
                 }
@@ -658,7 +697,7 @@
             
             // Enhanced touch events for butter-smooth mobile scrolling
             document.addEventListener('touchstart', function(e) {
-                e.preventDefault();
+                // Don't prevent default to allow natural scrolling behavior on mobile
                 initialTouchY = e.touches[0].clientY;
                 lastTouchY = initialTouchY;
                 isTouching = true;
@@ -670,106 +709,98 @@
                     cancelAnimationFrame(scrollAnimationId);
                     scrollAnimationId = null;
                 }
-            }, { passive: false });
+            }, { passive: true });
             
             document.addEventListener('touchmove', function(e) {
-                e.preventDefault();
-                
+                // Don't prevent default to allow better mobile scrolling
                 if (!isTouching) return;
                 
                 const currentTouchY = e.touches[0].clientY;
                 const touchDelta = lastTouchY - currentTouchY;
                 
-                // Calculate velocity for momentum scrolling (increased sensitivity)
-                touchVelocity = touchDelta * (TOUCH_SENSITIVITY * 2); // Adjusted for more consistent mobile scrolling
+                // Calculate velocity for momentum scrolling with reduced sensitivity for stability
+                touchVelocity = touchDelta * (TOUCH_SENSITIVITY); 
                 
-                // SECTION 1 (Hero)
-                if (currentSection === 1) {
-                    if (touchDelta > 0) { // Swipe up (scroll down)
-                        if (!wordsRevealed) {
-                            revealWords();
-                        } else {
-                            // Smooth continuous scrolling
-                            targetScrollProgress += touchVelocity;
-                            scrollTo(targetScrollProgress);
+                // Add debouncing to reduce processing on rapid movements
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                
+                scrollTimeout = setTimeout(() => {
+                    // SECTION 1 (Hero)
+                    if (currentSection === 1) {
+                        if (touchDelta > 5) { // Swipe up (scroll down) with threshold
+                            if (!wordsRevealed) {
+                                revealWords();
+                            } else {
+                                // Snap directly to the next section for more reliable mobile experience
+                                moveToSection(2, true);
+                            }
+                        } else if (wordsRevealed && touchDelta < -5) { // Swipe down (scroll up) with threshold
+                            hideWords();
                         }
-                    } else if (wordsRevealed && touchDelta < 0) { // Swipe down (scroll up)
-                        hideWords();
                     }
-                }
-                // SECTION 2 & 3
-                else {
-                    // Continuous scrolling based on touch movement
-                    targetScrollProgress += touchVelocity;
-                    scrollTo(targetScrollProgress);
-                    
-                    // Handle nav items specially in section 3
-                    if (currentSection === 3 && touchDelta > 0 && section3FullyVisible && !navRevealed) {
-                        revealNavItems();
-                    } else if (currentSection === 3 && touchDelta < 0 && navRevealed) {
-                        hideNavItems();
+                    // SECTION 2 
+                    else if (currentSection === 2) {
+                        // Simplify mobile experience by snapping directly to sections
+                        if (touchDelta > 5) { // Swipe up (scroll down)
+                            moveToSection(3, true);
+                        } else if (touchDelta < -5) { // Swipe down (scroll up)
+                            moveToSection(1, true);
+                        }
                     }
-                }
+                    // SECTION 3
+                    else if (currentSection === 3) {
+                        if (touchDelta > 5) { // Swipe up (scroll down)
+                            // Only reveal nav items when section is fully visible
+                            if (section3FullyVisible && !navRevealed) {
+                                revealNavItems();
+                            }
+                        } else if (touchDelta < -5) { // Swipe down (scroll up)
+                            if (navRevealed) {
+                                hideNavItems();
+                            } else {
+                                moveToSection(2, true);
+                            }
+                        }
+                    }
+                }, 10); // Small timeout for debouncing
                 
                 // Store for next frame
                 lastTouchY = currentTouchY;
-                touchMomentum = touchVelocity;
-            }, { passive: false });
+            }, { passive: true });
             
             document.addEventListener('touchend', function(e) {
                 isTouching = false;
                 
-                // Apply momentum scrolling with snapping to sections
-                const applyMomentum = () => {
-                    // Gradually reduce momentum
-                    touchMomentum *= 0.9; // Faster deceleration for quicker snapping
-                    
-                    // Apply momentum to scroll position
-                    if (Math.abs(touchMomentum) > 0.001) {
-                        targetScrollProgress += touchMomentum;
-                        
-                        // Add snapping behavior after momentum slows
-                        if (Math.abs(touchMomentum) < 0.01) {
-                            // Round to nearest section
-                            if (targetScrollProgress < 0.5) {
-                                targetScrollProgress = 0;
-                            } else if (targetScrollProgress < 1.5) {
-                                targetScrollProgress = 1;
-                            } else {
-                                targetScrollProgress = 2;
-                            }
-                        }
-                        
-                        scrollTo(targetScrollProgress);
-                        requestAnimationFrame(applyMomentum);
-                    } else {
-                        // Final snap
-                        if (targetScrollProgress < 0.5) {
-                            targetScrollProgress = 0;
-                        } else if (targetScrollProgress < 1.5) {
-                            targetScrollProgress = 1;
-                        } else {
-                            targetScrollProgress = 2;
-                        }
-                        scrollTo(targetScrollProgress);
+                // Simplified mobile momentum with direct snapping to sections
+                // This makes for a more reliable experience on mobile
+                if (currentSection === 1 && wordsRevealed) {
+                    // If words are revealed and we were moving downward
+                    if (touchMomentum > 0.01) {
+                        moveToSection(2, false);
                     }
-                };
-                
-                // Only start momentum if there's significant velocity
-                if (Math.abs(touchMomentum) > 0.01) {
-                    requestAnimationFrame(applyMomentum);
-                } else {
-                    // Snap to nearest section if velocity is low
-                    if (targetScrollProgress < 0.5) {
-                        targetScrollProgress = 0;
-                    } else if (targetScrollProgress < 1.5) {
-                        targetScrollProgress = 1;
-                    } else {
-                        targetScrollProgress = 2;
+                } 
+                else if (currentSection === 2) {
+                    // Snap based on momentum direction
+                    if (touchMomentum > 0.01) {
+                        moveToSection(3, false);
+                    } else if (touchMomentum < -0.01) {
+                        moveToSection(1, false);
                     }
-                    scrollTo(targetScrollProgress);
                 }
-            }, { passive: false });
+                else if (currentSection === 3 && !navRevealed) {
+                    // If we're in section 3 but nav not shown yet, and moving upward
+                    if (touchMomentum < -0.01) {
+                        moveToSection(2, false);
+                    }
+                }
+                
+                // Clear any pending timeouts
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+            }, { passive: true });
             
             // Initialize GSAP for smoother animations
             gsap.defaults({
