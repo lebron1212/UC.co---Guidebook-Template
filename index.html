@@ -26,6 +26,7 @@
             font-family: 'IBM Plex Mono', monospace;
             -webkit-font-smoothing: antialiased;
             background: #F8F8F8;
+            touch-action: none; /* Disable browser handling of all panning and zooming gestures */
         }
         
         .container {
@@ -33,7 +34,6 @@
             height: 100vh;
             width: 100%;
             overflow: hidden;
-            will-change: transform;
         }
         
         /* ===== SECTIONS ===== */
@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            will-change: transform, opacity;
+            will-change: transform;
         }
         
         .hero-section {
@@ -60,14 +60,13 @@
             color: #fff;
             z-index: 2;
             transform: translateY(100%);
-            will-change: transform;
             box-shadow: 0 0 40px rgba(0,0,0,0.2);
         }
         
         .explore-section {
             background: #F8F8F8;
             color: #000;
-            z-index: 0; /* Lower z-index so it appears to be the "same" as section 1 */
+            z-index: 0;
             transform: translateY(100%);
             display: flex;
             flex-direction: column;
@@ -105,17 +104,9 @@
             position: absolute;
             opacity: 0;
             transform: translateY(10px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
-                         transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             line-height: 1.0;
             width: 100%;
             white-space: nowrap;
-            will-change: opacity, transform;
-        }
-        
-        .word.visible {
-            opacity: calc(1 - var(--word-index) * 0.25);
-            transform: translateY(0);
         }
         
         .word:first-child {
@@ -124,14 +115,14 @@
             transform: none;
         }
         
-        .word:nth-child(1) { top: 0; --word-index: 0; }
-        .word:nth-child(2) { top: 1.1em; --word-index: 0; }
-        .word:nth-child(3) { top: 2.2em; --word-index: 1.5; }
-        .word:nth-child(4) { top: 3.3em; --word-index: 2.5; }
-        .word:nth-child(5) { top: 4.4em; --word-index: 3.5; }
-        .word:nth-child(6) { top: 5.5em; --word-index: 4.5; }
-        .word:nth-child(7) { top: 6.6em; --word-index: 5.5; }
-        .word:nth-child(8) { top: 7.7em; --word-index: 6.5; }
+        .word:nth-child(1) { top: 0; }
+        .word:nth-child(2) { top: 1.1em; }
+        .word:nth-child(3) { top: 2.2em; }
+        .word:nth-child(4) { top: 3.3em; }
+        .word:nth-child(5) { top: 4.4em; }
+        .word:nth-child(6) { top: 5.5em; }
+        .word:nth-child(7) { top: 6.6em; }
+        .word:nth-child(8) { top: 7.7em; }
         
         .nav-list {
             position: relative;
@@ -145,32 +136,22 @@
             position: absolute;
             opacity: 0;
             transform: translateY(10px);
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
-                         transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             line-height: 1.0;
             width: 100%;
             white-space: nowrap;
             text-align: center;
-            will-change: opacity, transform;
-        }
-        
-        .nav-item.visible {
-            opacity: calc(1 - var(--word-index) * 0.25);
-            transform: translateY(0);
         }
         
         .nav-item:first-child {
             visibility: hidden;
             position: relative;
-            opacity: 1;
-            transform: none;
         }
         
-        .nav-item:nth-child(2) { top: 0.9em; --word-index: 0; }
-        .nav-item:nth-child(3) { top: 1.8em; --word-index: 1.5; }
-        .nav-item:nth-child(4) { top: 2.7em; --word-index: 2.5; }
-        .nav-item:nth-child(5) { top: 3.6em; --word-index: 3.5; }
-        .nav-item:nth-child(6) { top: 4.5em; --word-index: 4.5; }
+        .nav-item:nth-child(2) { top: 0.9em; }
+        .nav-item:nth-child(3) { top: 1.8em; }
+        .nav-item:nth-child(4) { top: 2.7em; }
+        .nav-item:nth-child(5) { top: 3.6em; }
+        .nav-item:nth-child(6) { top: 4.5em; }
         
         .content-text {
             max-width: 800px;
@@ -200,6 +181,50 @@
             font-size: 14px;
             margin-bottom: 2vh;
             opacity: 0.8;
+        }
+        
+        /* Navigation buttons for a fail-safe alternative */
+        .nav-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            gap: 20px;
+            opacity: 0.3;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-buttons:hover {
+            opacity: 0.8;
+        }
+        
+        .nav-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        #section-indicator {
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.5);
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
@@ -262,22 +287,26 @@
                 </div>
             </div>
         </section>
+        
+        <!-- Fail-safe navigation buttons -->
+        <div class="nav-buttons">
+            <button class="nav-button" id="prev-btn">←</button>
+            <div id="section-indicator">1/3</div>
+            <button class="nav-button" id="next-btn">→</button>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Make sure both section text systems are initially properly styled
-            // Section 3 text itself should be visible, but nav items hidden
-            gsap.set(document.querySelector('#section3 .text-system'), { 
-                opacity: 1, 
-                y: 0 
-            });
-            
-            // Only the nav items should be hidden initially
-            gsap.set(document.querySelectorAll('#section3 .nav-item'), { 
-                opacity: 0, 
-                y: '10px' 
-            });
+            // DOM Elements
+            const section1 = document.getElementById('section1');
+            const section2 = document.getElementById('section2');
+            const section3 = document.getElementById('section3');
+            const words = document.querySelectorAll('.word');
+            const navItems = document.querySelectorAll('.nav-item');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const sectionIndicator = document.getElementById('section-indicator');
             
             // Random header text
             const headerTexts = [
@@ -289,526 +318,270 @@
             document.getElementById('dynamic-header').textContent = 
                 headerTexts[Math.floor(Math.random() * headerTexts.length)];
             
-            // DOM Elements
-            const section1 = document.getElementById('section1');
-            const section2 = document.getElementById('section2');
-            const section3 = document.getElementById('section3');
-            const words = document.querySelectorAll('.word');
-            const navItems = document.querySelectorAll('.nav-item');
-            
-            // State variables
+            // Application state
             let currentSection = 1;
             let wordsRevealed = false;
             let navRevealed = false;
-            let isScrolling = false;
-            let scrollTimeout;
-            let lastScrollTime = 0;
-            let section3FullyVisible = false; // Track if section 3 is fully visible
+            let isAnimating = false;
+            let startY, currentY;
+            let touchStartTime;
             
-            // Premium smooth scrolling system with enhanced responsiveness
-            class SmoothScroll {
-                constructor() {
-                    this.endY = 0;
-                    this.y = 0;
-                    this.scrollRequest = 0;
-                    this.rafID = null;
-                    this.lastY = window.scrollY;
-                    this.direction = 0;
-                    this.delta = 0;
-                    this.lastDelta = 0;
-                    this.scrollStrength = 0;
-                }
-                
-                onScroll(e) {
-                    // Get normalized scroll delta with variable strength
-                    this.delta = e.deltaY;
-                    
-                    // Add momentum for smoother continuous scrolling
-                    this.scrollStrength = Math.min(1, Math.abs(this.delta) / 100);
-                    
-                    // Calculate direction (positive = down, negative = up)
-                    this.direction = this.delta > 0 ? 1 : -1;
-                    
-                    // Use the direction and strength for more natural feeling
-                    const weightedDirection = this.direction * this.scrollStrength;
-                    
-                    // Cancel previous frame if it hasn't executed yet
-                    if (this.rafID) {
-                        cancelAnimationFrame(this.rafID);
-                    }
-                    
-                    // Request new frame
-                    this.rafID = requestAnimationFrame(() => this.update(weightedDirection));
-                    
-                    // Store for momentum calculations
-                    this.lastDelta = this.delta;
-                }
-                
-                update(weightedDirection) {
-                    this.rafID = null;
-                    
-                    // Apply scrolling logic based on direction and strength
-                    handleScrollEvent(weightedDirection);
-                }
-            }
+            // Initialize sections
+            gsap.set(section2, { y: "100%" });
+            gsap.set(section3, { y: "100%" });
+            updateSectionIndicator();
             
-            // Instantiate the smooth scroller with enhanced configuration
-            const smoother = new SmoothScroll();
+            // ===== CORE ANIMATION FUNCTIONS =====
             
-            // Initialize scrolling variables for touch devices
-            let initialTouchY = 0;
-            let lastTouchY = 0;
-            let touchVelocity = 0;
-            let touchMomentum = 0;
-            let isTouching = false;
-            const TOUCH_SENSITIVITY = 0.025; // Reduced for more consistent speed with mouse scrolling
-            
-            // Reveal/hide word animations with GSAP
+            // Show words animation
             function revealWords() {
-                if (isScrolling) return;
-                isScrolling = true;
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                // Use GSAP for smoother animations
-                let tl = gsap.timeline({
+                gsap.to(Array.from(words).slice(1), {
+                    duration: 0.6,
+                    opacity: (i) => 1 - (i * 0.25),
+                    y: 0,
+                    stagger: 0.08,
+                    ease: "power2.out",
                     onComplete: () => {
                         wordsRevealed = true;
-                        isScrolling = false;
+                        isAnimating = false;
                     }
-                });
-                
-                // Stagger the animations for a premium feel
-                tl.to(Array.from(words).slice(1), {
-                    duration: 0.6,
-                    opacity: (i) => 1 - (i * 0.25),
-                    y: 0,
-                    stagger: 0.12,
-                    ease: "power3.out"
                 });
             }
             
+            // Hide words animation
             function hideWords() {
-                if (isScrolling) return;
-                isScrolling = true;
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                // Reverse animation with GSAP
-                let tl = gsap.timeline({
+                gsap.to(Array.from(words).slice(1), {
+                    duration: 0.4,
+                    opacity: 0,
+                    y: 10,
+                    stagger: 0.05,
+                    ease: "power2.in",
                     onComplete: () => {
                         wordsRevealed = false;
-                        isScrolling = false;
+                        isAnimating = false;
                     }
-                });
-                
-                // Stagger in reverse for a premium feel
-                tl.to(Array.from(words).slice(1).reverse(), {
-                    duration: 0.5,
-                    opacity: 0,
-                    y: 10,
-                    stagger: 0.08,
-                    ease: "power2.in"
                 });
             }
             
-            // Nav items animations with GSAP
+            // Show nav items animation
             function revealNavItems() {
-                if (isScrolling) return;
-                isScrolling = true;
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                let tl = gsap.timeline({
-                    onComplete: () => {
-                        navRevealed = true;
-                        isScrolling = false;
-                    }
-                });
-                
-                tl.to(Array.from(navItems).slice(1), {
+                gsap.to(Array.from(navItems).slice(1), {
                     duration: 0.6,
                     opacity: (i) => 1 - (i * 0.25),
                     y: 0,
-                    stagger: 0.12,
-                    ease: "power3.out"
+                    stagger: 0.08,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        navRevealed = true;
+                        isAnimating = false;
+                    }
                 });
             }
             
+            // Hide nav items animation
             function hideNavItems() {
-                if (isScrolling) return;
-                isScrolling = true;
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                let tl = gsap.timeline({
-                    onComplete: () => {
-                        navRevealed = false;
-                        isScrolling = false;
-                    }
-                });
-                
-                tl.to(Array.from(navItems).slice(1).reverse(), {
-                    duration: 0.5,
+                gsap.to(Array.from(navItems).slice(1), {
+                    duration: 0.4,
                     opacity: 0,
                     y: 10,
-                    stagger: 0.08,
-                    ease: "power2.in"
+                    stagger: 0.05,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        navRevealed = false;
+                        isAnimating = false;
+                    }
                 });
             }
             
-            // Continuous scrolling variables
-            let scrollProgress = 0;
-            let targetScrollProgress = 0;
-            let scrollAnimationId = null;
-            const SCROLL_MULTIPLIER = 0.15; // Reduced for more consistent speed across sections
-            const MAX_SCROLL_PROGRESS = 2; // Total scroll distance (0 = section1, 1 = section2, 2 = section3)
+            // ===== NAVIGATION FUNCTIONS =====
             
-            // Smooth continuous scrolling function with section replacement
-            function updateScrollPosition() {
-                // Smoothly animate toward target scroll position with faster speed
-                scrollProgress += (targetScrollProgress - scrollProgress) * 0.1; // Reduced speed for smoother transitions
+            // Core navigation function - rock solid and simple
+            function goToSection(sectionNumber) {
+                if (isAnimating) return;
+                isAnimating = true;
                 
-                // Calculate positions for each section based on scroll progress
-                if (scrollProgress <= 1) {
-                    // Between section 1 and 2
-                    const section2Progress = Math.max(0, Math.min(1, scrollProgress));
-                    gsap.set(section2, { y: `${100 - (section2Progress * 100)}%` });
-                    
-                    // Keep section 1 visible
-                    gsap.set(section1, { visibility: "visible" });
-                    gsap.set(section3, { visibility: "hidden" });
-                    
-                    // When section 2 is halfway up, prepare section 3
-                    if (section2Progress > 0.5) {
-                        // Pre-position section 3 (still hidden)
-                        gsap.set(section3, { y: "0%" });
-                    }
-                } else {
-                    // Between section 2 and 3
-                    const section3Progress = Math.max(0, Math.min(1, (scrollProgress - 1) * 0.5)); // Slow down this transition specifically
-                    
-                    // Section 2 slide up and out at a more controlled pace
-                    gsap.set(section2, { y: `${-section3Progress * 100}%` });
-                    
-                    // Completely hide section 1 and show section 3 when section 2 fills viewport
-                    if (scrollProgress >= 1.0) {
-                        gsap.set(section1, { visibility: "hidden" });
-                        gsap.set(section3, { visibility: "visible", y: "0%" });
-                        
-                        // Make sure the main text "explore" is visible
-                        gsap.set(section3.querySelector('.text-system'), { opacity: 1, y: "0px" });
-                        
-                        // Hide only the nav items until fully visible and additional scroll
-                        gsap.set(section3.querySelectorAll('.nav-item'), { opacity: 0, y: "10px" });
-                    }
+                // Update state
+                const previousSection = currentSection;
+                currentSection = sectionNumber;
+                updateSectionIndicator();
+                
+                // Handle section 1 special case (words)
+                if (previousSection === 1 && wordsRevealed) {
+                    hideWords();
                 }
                 
-                // Update current section based on scroll progress and check if we need to lock
-                if (scrollProgress < 0.5) {
-                    currentSection = 1;
-                } else if (scrollProgress < 1.5) {
-                    currentSection = 2;
-                } else {
-                    currentSection = 3;
-                    
-                    // If section 3 is approaching full view, gradually slow down to prevent speed surges
-                    if (scrollProgress > 1.7) {
-                        // Apply a gentle braking effect as we approach full visibility of section 3
-                        const remainingDistance = 2.0 - scrollProgress;
-                        if (remainingDistance < 0.3) {
-                            // Gradually reduce scrolling speed as we get closer to the end
-                            targetScrollProgress = scrollProgress + (remainingDistance * 0.2);
-                        }
-                        
-                        // Only mark as fully visible when we're very close to the target
-                        if (scrollProgress > 1.95) {
-                            targetScrollProgress = 2.0;
-                            scrollProgress = 2.0;
-                            section3FullyVisible = true;
-                        }
-                    }
+                // Handle section 3 special case (nav items)
+                if (previousSection === 3 && navRevealed) {
+                    hideNavItems();
                 }
                 
-                // Continue animation if there's still movement to make
-                if (Math.abs(targetScrollProgress - scrollProgress) > 0.001) {
-                    scrollAnimationId = requestAnimationFrame(updateScrollPosition);
-                } else {
-                    scrollProgress = targetScrollProgress; // Snap to exact position when very close
-                    
-                    // Ensure proper section positions after scrolling stops
-                    if (Math.abs(scrollProgress - 1.0) < 0.05) {
-                        scrollProgress = 1.0;
-                        gsap.set(section2, { y: "0%" });
-                        
-                        // Section 2 is now filling viewport - switch sections
-                        gsap.set(section1, { visibility: "hidden" });
-                        gsap.set(section3, { visibility: "visible", y: "0%" });
-                        
-                        // Make sure the main text "explore" is visible
-                        gsap.set(section3.querySelector('.text-system'), { opacity: 1, y: "0px" });
-                    } else if (Math.abs(scrollProgress - 2.0) < 0.05) {
-                        scrollProgress = 2.0;
-                        gsap.set(section2, { y: "-100%" });
-                        gsap.set(section3, { visibility: "visible", y: "0%" });
-                        
-                        // Make sure the main text "explore" is visible
-                        gsap.set(section3.querySelector('.text-system'), { opacity: 1, y: "0px" });
-                    } else if (Math.abs(scrollProgress - 0.0) < 0.05) {
-                        scrollProgress = 0.0;
-                        gsap.set(section2, { y: "100%" });
-                        gsap.set(section1, { visibility: "visible" });
-                        gsap.set(section3, { visibility: "hidden" });
-                    }
-                    
-                    scrollAnimationId = null;
-                    isScrolling = false;
-                }
-            }
-            
-            // Scroll to a specific position with continuous animation
-            function scrollTo(target) {
-                // Constrain target scroll position
-                targetScrollProgress = Math.max(0, Math.min(MAX_SCROLL_PROGRESS, target));
-                
-                // Start animation if not already running
-                if (!scrollAnimationId) {
-                    isScrolling = true;
-                    scrollAnimationId = requestAnimationFrame(updateScrollPosition);
-                }
-            }
-            
-            // Section transitions with simplified direct animations for mobile reliability
-            function moveToSection(targetSection, instant = false) {
-                // Cancel any ongoing animations for reliability
-                if (scrollAnimationId) {
-                    cancelAnimationFrame(scrollAnimationId);
-                    scrollAnimationId = null;
-                }
-                
-                const duration = instant ? 0.1 : 0.5; // Faster for instant transitions
-                
-                // Define the section transitions with direct GSAP animations for reliability
-                if (targetSection === 1) {
+                // Slide transitions with GSAP
+                if (sectionNumber === 1) {
                     // Move to section 1
-                    currentSection = 1;
-                    scrollProgress = 0;
-                    targetScrollProgress = 0;
-                    
-                    gsap.to(section2, { 
-                        y: "100%", 
-                        duration: duration,
+                    gsap.to(section2, {
+                        y: "100%",
+                        duration: 0.7,
                         ease: "power2.inOut"
                     });
                     
-                    gsap.set(section1, { visibility: "visible" });
-                    gsap.set(section3, { visibility: "hidden", y: "100%" });
+                    gsap.to(section3, {
+                        y: "100%",
+                        duration: 0.7,
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            isAnimating = false;
+                        }
+                    });
                 }
-                else if (targetSection === 2) {
+                else if (sectionNumber === 2) {
                     // Move to section 2
-                    currentSection = 2;
-                    scrollProgress = 1;
-                    targetScrollProgress = 1;
-                    
-                    gsap.to(section2, { 
-                        y: "0%", 
-                        duration: duration,
+                    gsap.to(section2, {
+                        y: "0%",
+                        duration: 0.7,
                         ease: "power2.inOut"
                     });
                     
-                    gsap.set(section1, { visibility: "hidden" });
-                    gsap.set(section3, { visibility: "hidden", y: "100%" });
+                    gsap.to(section3, {
+                        y: "100%", 
+                        duration: 0.7,
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            isAnimating = false;
+                        }
+                    });
                 }
-                else if (targetSection === 3) {
+                else if (sectionNumber === 3) {
                     // Move to section 3
-                    currentSection = 3;
-                    scrollProgress = 2;
-                    targetScrollProgress = 2;
-                    section3FullyVisible = true;
-                    
-                    gsap.to(section2, { 
-                        y: "-100%", 
-                        duration: duration,
+                    gsap.to(section2, {
+                        y: "-100%",
+                        duration: 0.7,
                         ease: "power2.inOut"
                     });
                     
-                    gsap.set(section1, { visibility: "hidden" });
-                    gsap.set(section3, { visibility: "visible", y: "0%" });
-                    
-                    // Make sure the main text "explore" is visible
-                    gsap.set(section3.querySelector('.text-system'), { 
-                        opacity: 1, 
-                        y: "0px" 
+                    gsap.to(section3, {
+                        y: "0%",
+                        duration: 0.7,
+                        ease: "power2.inOut",
+                        onComplete: () => {
+                            isAnimating = false;
+                        }
                     });
                 }
-                
-                isScrolling = false;
             }
             
-            // Premium scroll event handler with simplified reliable behavior
-            function handleScrollEvent(direction) {
-                // Clear any pending timeouts
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
-                
-                // Get current timestamp to manage scroll frequency
-                const now = Date.now();
-                if (now - lastScrollTime < 120 && isScrolling) return; // Increased debounce time for stability
-                lastScrollTime = now;
-                
-                // SECTION 1 (Hero)
+            // Update indicator
+            function updateSectionIndicator() {
+                sectionIndicator.textContent = `${currentSection}/3`;
+            }
+            
+            // Next section
+            function nextSection() {
                 if (currentSection === 1) {
-                    if (direction > 0) { // Scroll down
-                        if (!wordsRevealed) {
-                            revealWords();
-                        } else {
-                            // Move directly to section 2 - more reliable than continuous scrolling
-                            moveToSection(2);
-                        }
-                    } else if (wordsRevealed) { // Scroll up when words are shown
-                        hideWords();
-                    }
-                }
-                
-                // SECTION 2 (Info)
-                else if (currentSection === 2) {
-                    if (direction > 0) { // Scroll down
-                        moveToSection(3);
-                    } else { // Scroll up
-                        moveToSection(1);
-                    }
-                }
-                
-                // SECTION 3 (Explore)
-                else if (currentSection === 3) {
-                    if (direction > 0) { // Scroll down
-                        // Only reveal nav items when section is fully visible
-                        if (section3FullyVisible && !navRevealed) {
-                            revealNavItems();
-                        }
-                    } else { // Scroll up
-                        if (navRevealed) {
-                            hideNavItems();
-                        } else {
-                            moveToSection(2);
-                        }
-                    }
-                }
-            }
-            
-            // Event listeners with passive false to prevent default scrolling
-            window.addEventListener('wheel', function(e) {
-                e.preventDefault();
-                smoother.onScroll(e);
-            }, { passive: false });
-            
-            // Enhanced touch events for butter-smooth mobile scrolling
-            document.addEventListener('touchstart', function(e) {
-                // Don't prevent default to allow natural scrolling behavior on mobile
-                initialTouchY = e.touches[0].clientY;
-                lastTouchY = initialTouchY;
-                isTouching = true;
-                touchVelocity = 0;
-                touchMomentum = 0;
-                
-                // Cancel any ongoing momentum scrolling
-                if (scrollAnimationId) {
-                    cancelAnimationFrame(scrollAnimationId);
-                    scrollAnimationId = null;
-                }
-            }, { passive: true });
-            
-            document.addEventListener('touchmove', function(e) {
-                // Don't prevent default to allow better mobile scrolling
-                if (!isTouching) return;
-                
-                const currentTouchY = e.touches[0].clientY;
-                const touchDelta = lastTouchY - currentTouchY;
-                
-                // Calculate velocity for momentum scrolling with reduced sensitivity for stability
-                touchVelocity = touchDelta * (TOUCH_SENSITIVITY); 
-                
-                // Add debouncing to reduce processing on rapid movements
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
-                
-                scrollTimeout = setTimeout(() => {
-                    // SECTION 1 (Hero)
-                    if (currentSection === 1) {
-                        if (touchDelta > 5) { // Swipe up (scroll down) with threshold
-                            if (!wordsRevealed) {
-                                revealWords();
-                            } else {
-                                // Snap directly to the next section for more reliable mobile experience
-                                moveToSection(2, true);
-                            }
-                        } else if (wordsRevealed && touchDelta < -5) { // Swipe down (scroll up) with threshold
-                            hideWords();
-                        }
-                    }
-                    // SECTION 2 
-                    else if (currentSection === 2) {
-                        // Simplify mobile experience by snapping directly to sections
-                        if (touchDelta > 5) { // Swipe up (scroll down)
-                            moveToSection(3, true);
-                        } else if (touchDelta < -5) { // Swipe down (scroll up)
-                            moveToSection(1, true);
-                        }
-                    }
-                    // SECTION 3
-                    else if (currentSection === 3) {
-                        if (touchDelta > 5) { // Swipe up (scroll down)
-                            // Only reveal nav items when section is fully visible
-                            if (section3FullyVisible && !navRevealed) {
-                                revealNavItems();
-                            }
-                        } else if (touchDelta < -5) { // Swipe down (scroll up)
-                            if (navRevealed) {
-                                hideNavItems();
-                            } else {
-                                moveToSection(2, true);
-                            }
-                        }
-                    }
-                }, 10); // Small timeout for debouncing
-                
-                // Store for next frame
-                lastTouchY = currentTouchY;
-            }, { passive: true });
-            
-            document.addEventListener('touchend', function(e) {
-                isTouching = false;
-                
-                // Simplified mobile momentum with direct snapping to sections
-                // This makes for a more reliable experience on mobile
-                if (currentSection === 1 && wordsRevealed) {
-                    // If words are revealed and we were moving downward
-                    if (touchMomentum > 0.01) {
-                        moveToSection(2, false);
+                    if (!wordsRevealed) {
+                        revealWords();
+                    } else {
+                        goToSection(2);
                     }
                 } 
                 else if (currentSection === 2) {
-                    // Snap based on momentum direction
-                    if (touchMomentum > 0.01) {
-                        moveToSection(3, false);
-                    } else if (touchMomentum < -0.01) {
-                        moveToSection(1, false);
+                    goToSection(3);
+                }
+                else if (currentSection === 3) {
+                    if (!navRevealed) {
+                        revealNavItems();
                     }
                 }
-                else if (currentSection === 3 && !navRevealed) {
-                    // If we're in section 3 but nav not shown yet, and moving upward
-                    if (touchMomentum < -0.01) {
-                        moveToSection(2, false);
+            }
+            
+            // Previous section
+            function prevSection() {
+                if (currentSection === 1) {
+                    if (wordsRevealed) {
+                        hideWords();
+                    }
+                }
+                else if (currentSection === 2) {
+                    goToSection(1);
+                }
+                else if (currentSection === 3) {
+                    if (navRevealed) {
+                        hideNavItems();
+                    } else {
+                        goToSection(2);
+                    }
+                }
+            }
+            
+            // ===== EVENT LISTENERS =====
+            
+            // Mouse wheel event (desktop)
+            document.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                
+                // Simple direction detection
+                if (e.deltaY > 0) {
+                    nextSection();
+                } else {
+                    prevSection();
+                }
+            }, { passive: false });
+            
+            // Touch events (mobile) - simple and reliable
+            document.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+                touchStartTime = Date.now();
+            }, { passive: true });
+            
+            document.addEventListener('touchmove', function(e) {
+                currentY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', function(e) {
+                if (!startY || !currentY) return;
+                
+                const diffY = startY - currentY;
+                const touchDuration = Date.now() - touchStartTime;
+                
+                // Only trigger for significant swipes (>30px) that weren't too slow
+                if (Math.abs(diffY) > 30 && touchDuration < 300) {
+                    if (diffY > 0) {
+                        // Swipe up = next section
+                        nextSection();
+                    } else {
+                        // Swipe down = previous section
+                        prevSection();
                     }
                 }
                 
-                // Clear any pending timeouts
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
+                // Reset
+                startY = null;
+                currentY = null;
             }, { passive: true });
             
-            // Initialize GSAP for smoother animations
-            gsap.defaults({
-                ease: "power3.out"
-            });
+            // Button navigation - fail-safe fallback
+            nextBtn.addEventListener('click', nextSection);
+            prevBtn.addEventListener('click', prevSection);
             
-            // Preload and initialize
-            gsap.set([section2, section3], { y: "100%" });
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                    nextSection();
+                } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                    prevSection();
+                }
+            });
         });
     </script>
 </body>
