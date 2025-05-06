@@ -264,7 +264,7 @@
         </section>
     </div>
 
-            <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Make sure both section text systems are initially properly styled
             // Section 3 text itself should be visible, but nav items hidden
@@ -361,7 +361,7 @@
             let touchVelocity = 0;
             let touchMomentum = 0;
             let isTouching = false;
-            const TOUCH_SENSITIVITY = 0.05;
+            const TOUCH_SENSITIVITY = 0.025; // Reduced for more consistent speed with mouse scrolling
             
             // Reveal/hide word animations with GSAP
             function revealWords() {
@@ -453,13 +453,13 @@
             let scrollProgress = 0;
             let targetScrollProgress = 0;
             let scrollAnimationId = null;
-            const SCROLL_MULTIPLIER = 0.3; // Increased for faster movement
+            const SCROLL_MULTIPLIER = 0.15; // Reduced for more consistent speed across sections
             const MAX_SCROLL_PROGRESS = 2; // Total scroll distance (0 = section1, 1 = section2, 2 = section3)
             
             // Smooth continuous scrolling function with section replacement
             function updateScrollPosition() {
                 // Smoothly animate toward target scroll position with faster speed
-                scrollProgress += (targetScrollProgress - scrollProgress) * 0.2;
+                scrollProgress += (targetScrollProgress - scrollProgress) * 0.1; // Reduced speed for smoother transitions
                 
                 // Calculate positions for each section based on scroll progress
                 if (scrollProgress <= 1) {
@@ -478,9 +478,9 @@
                     }
                 } else {
                     // Between section 2 and 3
-                    const section3Progress = Math.max(0, Math.min(1, scrollProgress - 1));
+                    const section3Progress = Math.max(0, Math.min(1, (scrollProgress - 1) * 0.5)); // Slow down this transition specifically
                     
-                    // Section 2 slide up and out
+                    // Section 2 slide up and out at a more controlled pace
                     gsap.set(section2, { y: `${-section3Progress * 100}%` });
                     
                     // Completely hide section 1 and show section 3 when section 2 fills viewport
@@ -504,11 +504,21 @@
                 } else {
                     currentSection = 3;
                     
-                    // If section 3 is fully in view, snap to exact position 2.0
-                    if (scrollProgress > 1.9 && scrollProgress < 2.0) {
-                        targetScrollProgress = 2.0;
-                        scrollProgress = 2.0;
-                        section3FullyVisible = true;
+                    // If section 3 is approaching full view, gradually slow down to prevent speed surges
+                    if (scrollProgress > 1.7) {
+                        // Apply a gentle braking effect as we approach full visibility of section 3
+                        const remainingDistance = 2.0 - scrollProgress;
+                        if (remainingDistance < 0.3) {
+                            // Gradually reduce scrolling speed as we get closer to the end
+                            targetScrollProgress = scrollProgress + (remainingDistance * 0.2);
+                        }
+                        
+                        // Only mark as fully visible when we're very close to the target
+                        if (scrollProgress > 1.95) {
+                            targetScrollProgress = 2.0;
+                            scrollProgress = 2.0;
+                            section3FullyVisible = true;
+                        }
                     }
                 }
                 
@@ -671,7 +681,7 @@
                 const touchDelta = lastTouchY - currentTouchY;
                 
                 // Calculate velocity for momentum scrolling (increased sensitivity)
-                touchVelocity = touchDelta * (TOUCH_SENSITIVITY * 3); // Increased for faster movement
+                touchVelocity = touchDelta * (TOUCH_SENSITIVITY * 2); // Adjusted for more consistent mobile scrolling
                 
                 // SECTION 1 (Hero)
                 if (currentSection === 1) {
