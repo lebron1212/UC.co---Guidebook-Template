@@ -109,20 +109,25 @@
             white-space: nowrap;
         }
         
+        .word.visible {
+            opacity: calc(1 - var(--word-index) * 0.25);
+            transform: translateY(0);
+        }
+        
         .word:first-child {
             position: relative;
             opacity: 1;
             transform: none;
         }
         
-        .word:nth-child(1) { top: 0; }
-        .word:nth-child(2) { top: 1.1em; }
-        .word:nth-child(3) { top: 2.2em; }
-        .word:nth-child(4) { top: 3.3em; }
-        .word:nth-child(5) { top: 4.4em; }
-        .word:nth-child(6) { top: 5.5em; }
-        .word:nth-child(7) { top: 6.6em; }
-        .word:nth-child(8) { top: 7.7em; }
+        .word:nth-child(1) { top: 0; --word-index: 0; }
+        .word:nth-child(2) { top: 1.1em; --word-index: 0; }
+        .word:nth-child(3) { top: 2.2em; --word-index: 1.5; }
+        .word:nth-child(4) { top: 3.3em; --word-index: 2.5; }
+        .word:nth-child(5) { top: 4.4em; --word-index: 3.5; }
+        .word:nth-child(6) { top: 5.5em; --word-index: 4.5; }
+        .word:nth-child(7) { top: 6.6em; --word-index: 5.5; }
+        .word:nth-child(8) { top: 7.7em; --word-index: 6.5; }
         
         .nav-list {
             position: relative;
@@ -142,16 +147,23 @@
             text-align: center;
         }
         
+        .nav-item.visible {
+            opacity: calc(1 - var(--word-index) * 0.25);
+            transform: translateY(0);
+        }
+        
         .nav-item:first-child {
             visibility: hidden;
             position: relative;
+            opacity: 1;
+            transform: none;
         }
         
-        .nav-item:nth-child(2) { top: 0.9em; }
-        .nav-item:nth-child(3) { top: 1.8em; }
-        .nav-item:nth-child(4) { top: 2.7em; }
-        .nav-item:nth-child(5) { top: 3.6em; }
-        .nav-item:nth-child(6) { top: 4.5em; }
+        .nav-item:nth-child(2) { top: 0.9em; --word-index: 0; }
+        .nav-item:nth-child(3) { top: 1.8em; --word-index: 1.5; }
+        .nav-item:nth-child(4) { top: 2.7em; --word-index: 2.5; }
+        .nav-item:nth-child(5) { top: 3.6em; --word-index: 3.5; }
+        .nav-item:nth-child(6) { top: 4.5em; --word-index: 4.5; }
         
         .content-text {
             max-width: 800px;
@@ -288,6 +300,11 @@
                 if (isAnimating) return;
                 isAnimating = true;
                 
+                // Add visible class to all words
+                Array.from(words).slice(1).forEach(word => {
+                    word.classList.add('visible');
+                });
+                
                 gsap.to(Array.from(words).slice(1), {
                     duration: 0.6,
                     opacity: (i) => 1 - (i * 0.25),
@@ -305,6 +322,11 @@
             function hideWords() {
                 if (isAnimating) return;
                 isAnimating = true;
+                
+                // Remove visible class from all words
+                Array.from(words).slice(1).forEach(word => {
+                    word.classList.remove('visible');
+                });
                 
                 gsap.to(Array.from(words).slice(1), {
                     duration: 0.4,
@@ -324,6 +346,11 @@
                 if (isAnimating) return;
                 isAnimating = true;
                 
+                // Add visible class to all nav items
+                Array.from(navItems).slice(1).forEach(item => {
+                    item.classList.add('visible');
+                });
+                
                 gsap.to(Array.from(navItems).slice(1), {
                     duration: 0.6,
                     opacity: (i) => 1 - (i * 0.25),
@@ -341,6 +368,11 @@
             function hideNavItems() {
                 if (isAnimating) return;
                 isAnimating = true;
+                
+                // Remove visible class from all nav items
+                Array.from(navItems).slice(1).forEach(item => {
+                    item.classList.remove('visible');
+                });
                 
                 gsap.to(Array.from(navItems).slice(1), {
                     duration: 0.4,
@@ -426,6 +458,12 @@
                         onComplete: () => {
                             isAnimating = false;
                         }
+                    });
+                    
+                    // Ensure the main text "explore" is visible with proper styling
+                    gsap.set(section3.querySelector('.text-system'), { 
+                        opacity: 1, 
+                        y: 0
                     });
                 }
             }
