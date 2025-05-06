@@ -183,49 +183,7 @@
             opacity: 0.8;
         }
         
-        /* Navigation buttons for a fail-safe alternative */
-        .nav-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 100;
-            gap: 20px;
-            opacity: 0.3;
-            transition: opacity 0.3s ease;
-        }
-        
-        .nav-buttons:hover {
-            opacity: 0.8;
-        }
-        
-        .nav-button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .nav-button:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
-        
-        #section-indicator {
-            font-size: 12px;
-            color: rgba(0, 0, 0, 0.5);
-            padding: 0 10px;
-            display: flex;
-            align-items: center;
-        }
+        /* Navigation styling removed */
     </style>
 </head>
 <body>
@@ -288,12 +246,7 @@
             </div>
         </section>
         
-        <!-- Fail-safe navigation buttons -->
-        <div class="nav-buttons">
-            <button class="nav-button" id="prev-btn">←</button>
-            <div id="section-indicator">1/3</div>
-            <button class="nav-button" id="next-btn">→</button>
-        </div>
+        <!-- Navigation buttons removed -->
     </div>
 
     <script>
@@ -304,9 +257,7 @@
             const section3 = document.getElementById('section3');
             const words = document.querySelectorAll('.word');
             const navItems = document.querySelectorAll('.nav-item');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const sectionIndicator = document.getElementById('section-indicator');
+            // Navigation elements removed
             
             // Random header text
             const headerTexts = [
@@ -329,7 +280,6 @@
             // Initialize sections
             gsap.set(section2, { y: "100%" });
             gsap.set(section3, { y: "100%" });
-            updateSectionIndicator();
             
             // ===== CORE ANIMATION FUNCTIONS =====
             
@@ -415,7 +365,6 @@
                 // Update state
                 const previousSection = currentSection;
                 currentSection = sectionNumber;
-                updateSectionIndicator();
                 
                 // Handle section 1 special case (words)
                 if (previousSection === 1 && wordsRevealed) {
@@ -481,11 +430,6 @@
                 }
             }
             
-            // Update indicator
-            function updateSectionIndicator() {
-                sectionIndicator.textContent = `${currentSection}/3`;
-            }
-            
             // Next section
             function nextSection() {
                 if (currentSection === 1) {
@@ -526,14 +470,14 @@
             
             // ===== EVENT LISTENERS =====
             
-            // Mouse wheel event (desktop)
+            // Mouse wheel event (desktop) - more sensitive
             document.addEventListener('wheel', function(e) {
                 e.preventDefault();
                 
-                // Simple direction detection
-                if (e.deltaY > 0) {
+                // Simple direction detection with minimal threshold
+                if (e.deltaY > 5) {
                     nextSection();
-                } else {
+                } else if (e.deltaY < -5) {
                     prevSection();
                 }
             }, { passive: false });
@@ -554,8 +498,8 @@
                 const diffY = startY - currentY;
                 const touchDuration = Date.now() - touchStartTime;
                 
-                // Only trigger for significant swipes (>30px) that weren't too slow
-                if (Math.abs(diffY) > 30 && touchDuration < 300) {
+                // More sensitive swipe detection with lower threshold
+                if (Math.abs(diffY) > 15 && touchDuration < 400) {
                     if (diffY > 0) {
                         // Swipe up = next section
                         nextSection();
@@ -570,9 +514,7 @@
                 currentY = null;
             }, { passive: true });
             
-            // Button navigation - fail-safe fallback
-            nextBtn.addEventListener('click', nextSection);
-            prevBtn.addEventListener('click', prevSection);
+            // Button navigation removed
             
             // Keyboard navigation
             document.addEventListener('keydown', function(e) {
